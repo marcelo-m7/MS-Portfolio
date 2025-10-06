@@ -59,6 +59,9 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Framer Motion
+- React Three Fiber
+- Google Translate (widget invisível)
 
 ## How can I deploy this project?
 
@@ -71,3 +74,26 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Internationalização automática
+
+A interface é traduzida usando o widget oficial do Google Translate, carregado de forma invisível. Para alterar o idioma da interface:
+
+1. O componente `LanguageSwitcher` oferece botões PT/EN/ES/FR que chamam o utilitário `setLanguage`.
+2. O arquivo [`src/lib/translate.ts`](src/lib/translate.ts) encapsula toda a lógica:
+   - `setLanguage(lang)` simula a seleção do widget e sincroniza `localStorage`.
+   - `getInitialLanguage()` detecta o idioma salvo ou o `navigator.language`.
+   - `useGoogleTranslateGuard()` mantém o widget totalmente oculto através de `MutationObserver`.
+3. `App.tsx` chama `registerGlobalLanguageSetter()` e aplica automaticamente o idioma detectado na primeira montagem.
+
+Ao adicionar novas linguagens, atualize o array `SUPPORTED_LANGUAGES` em `translate.ts` e replique o botão no `LanguageSwitcher`.
+
+## Adicionando novos projetos ao portfólio
+
+1. Edite [`public/data/cv.json`](public/data/cv.json) e inclua um objeto na chave `projects` com os campos:
+   - `slug`: identificador único em minúsculas (usado para relacionar séries e artes).
+   - `name`, `summary`, `stack`, `url`, `thumbnail` (use apenas SVGs em `public/images`).
+   - `category` e `year` para organizar filtros e metadados.
+2. Crie um SVG 16:9 em `public/images` com gradiente e `<title>` descritivo.
+3. Atualize `series` ou `artworks` para referenciar o novo `slug`, quando necessário.
+4. O layout do portfólio e o grid da Home leem automaticamente os dados do JSON – não é preciso ajustar componentes.

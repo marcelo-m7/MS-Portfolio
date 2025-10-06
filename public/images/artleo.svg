@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Art Leo immersive portfolio thumbnail</title>
+  <defs>
+    <linearGradient id="artleo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0EA5E9" />
+      <stop offset="50%" stop-color="#22D3EE" />
+      <stop offset="100%" stop-color="#F472B6" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="180" rx="24" fill="#111827" />
+  <circle cx="80" cy="90" r="52" fill="url(#artleo)" opacity="0.7" />
+  <circle cx="200" cy="70" r="36" fill="url(#artleo)" opacity="0.5" />
+  <circle cx="240" cy="128" r="48" fill="url(#artleo)" opacity="0.6" />
+  <text x="160" y="150" font-family="'Inter','Segoe UI',sans-serif" font-size="26" font-weight="700" text-anchor="middle" fill="#F8FAFC">Art Leo</text>
+</svg>

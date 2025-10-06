@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180" role="img" aria-labelledby="title">
+  <title id="title">Monagent AI framework thumbnail</title>
+  <defs>
+    <linearGradient id="monagent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="180" rx="24" fill="#0B1120" />
+  <rect x="32" y="32" width="256" height="116" rx="24" fill="url(#monagent)" opacity="0.85" />
+  <g fill="none" stroke="#F8FAFC" stroke-width="2.5" opacity="0.85">
+    <path d="M108 90c0-18 12-32 28-32s28 14 28 32-12 32-28 32-28-14-28-32z" />
+    <path d="M188 90c0-18 12-32 28-32s28 14 28 32-12 32-28 32-28-14-28-32z" />
+    <path d="M136 90h48" />
+  </g>
+  <text x="160" y="148" font-family="'Inter','Segoe UI',sans-serif" font-size="22" font-weight="600" text-anchor="middle" fill="#0B1120">Monagent</text>
+</svg>

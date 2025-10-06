@@ -1,58 +1,66 @@
-import { Globe } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { LanguageCode, SUPPORTED_LANGUAGES, setLanguage, getInitialLanguage } from "@/lib/translate";
 
-const languages = [
-  { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-];
+const LABELS: Record<LanguageCode, string> = {
+  pt: "PT",
+  en: "EN",
+  es: "ES",
+  fr: "FR",
+};
 
 export default function LanguageSwitcher() {
-  const [currentLang, setCurrentLang] = useState('pt');
+  const [currentLang, setCurrentLang] = useState<LanguageCode>("pt");
 
   useEffect(() => {
-    // Auto-detect browser language on mount
-    const browserLang = navigator.language.split('-')[0];
-    if (browserLang !== 'pt' && languages.some(l => l.code === browserLang)) {
-      setTimeout(() => setLanguage(browserLang), 1000);
-    }
+    const updateFromDocument = (lang?: string) => {
+      if (!lang) return;
+      const normalized = SUPPORTED_LANGUAGES.includes(lang as LanguageCode)
+        ? (lang as LanguageCode)
+        : "pt";
+      setCurrentLang(normalized);
+    };
+
+    updateFromDocument(document.documentElement.lang);
+    const stored = getInitialLanguage();
+    setCurrentLang(stored);
+
+    const listener = (event: Event) => {
+      const detail = (event as CustomEvent<LanguageCode>).detail;
+      updateFromDocument(detail);
+    };
+
+    window.addEventListener("monynha:languagechange", listener as EventListener);
+
+    return () => window.removeEventListener("monynha:languagechange", listener as EventListener);
   }, []);
 
-  const setLanguage = (lang: string) => {
+  const handleChange = (lang: LanguageCode) => {
     setCurrentLang(lang);
-    if (typeof window !== 'undefined' && (window as any).setLanguage) {
-      (window as any).setLanguage(lang);
-    }
+    setLanguage(lang);
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="rounded-xl">
-          <Globe className="h-5 w-5" />
-          <span className="sr-only">Selecionar idioma</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="glass rounded-2xl">
-        {languages.map((lang) => (
-          <DropdownMenuItem
-            key={lang.code}
-            onClick={() => setLanguage(lang.code)}
-            className={`rounded-xl ${currentLang === lang.code ? 'bg-primary/20' : ''}`}
-          >
-            <span className="mr-2">{lang.flag}</span>
-            {lang.name}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <div
+      role="group"
+      aria-label="Selecionar idioma"
+      className="inline-flex rounded-full border border-border/60 bg-background/40 p-1 backdrop-blur supports-[backdrop-filter]:bg-background/30"
+    >
+      {SUPPORTED_LANGUAGES.map((lang) => (
+        <button
+          key={lang}
+          type="button"
+          onClick={() => handleChange(lang)}
+          aria-pressed={currentLang === lang}
+          className={`relative min-w-[2.75rem] rounded-full px-3 py-1 text-xs font-semibold uppercase transition ${
+            currentLang === lang
+              ? "bg-gradient-to-r from-primary/70 to-secondary/70 text-white shadow-[0_0_12px_rgba(124,58,237,0.45)]"
+              : "text-muted-foreground hover:text-foreground"
+          } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary focus-visible:ring-offset-background`}
+        >
+          <span aria-hidden="true">{LABELS[lang]}</span>
+          <span className="sr-only">{`Alterar idioma para ${LABELS[lang]}`}</span>
+        </button>
+      ))}
+    </div>
   );
 }
