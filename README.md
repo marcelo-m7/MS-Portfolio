@@ -71,3 +71,35 @@ Yes, you can!
 To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+
+## Internationalization & Google Translate
+
+The multi-idioma experience is powered by the official Google Translate widget, fully hidden and configured at runtime.
+
+- The script is injected in `index.html` and initialised with `window.googleTranslateElementInit`.
+- `src/lib/googleTranslate.ts` exposes helpers:
+  - `initializeGoogleTranslate()` sets up MutationObservers that hide Google artefacts and ensures the `<body>` spacing stays untouched.
+  - `detectInitialLanguage()` checks `localStorage` (`monynha-lang`) and `navigator.language` to determine the preferred locale.
+  - `setLanguage(lang)` simulates the widget `<select>` (PT, EN, ES, FR) and dispatches the `monynha:languagechange` custom event.
+- `LanguageSwitcher` listens to that event and renders accessible pill buttons with focus-visible outlines.
+
+To change the language programmatically you can simply call:
+
+```ts
+import { setLanguage } from '@/lib/googleTranslate';
+
+setLanguage('es');
+```
+
+The helpers automatically hide Google’s toolbar, banners and iframes so no additional CSS tweaks are required.
+
+## Adding new projects to `cv.json`
+
+Project cards, portfolio thumbnails and extra pages consume the single source of truth located at `public/data/cv.json`.
+
+1. Duplicate an existing entry inside the `projects` array and adjust the fields (`name`, `summary`, `stack`, `url`, `category`, `year`).
+2. Create a **vector** thumbnail (SVG only) under `public/images/`. Make sure to include a descriptive `<title>` element for accessibility and keep the canvas 16:9 (640x360 works well).
+3. Reference the SVG through the `thumbnail` property (e.g. `"thumbnail": "/images/novo-projeto.svg"`).
+4. Run `npm run build` to ensure the bundle stays under budget.
+
+Thoughts, artworks or series follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.

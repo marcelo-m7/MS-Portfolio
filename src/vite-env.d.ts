@@ -8,3 +8,12 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare global {
+  interface Window {
+    setLanguage?: (lang: 'pt' | 'en' | 'es' | 'fr') => void;
+    __afterGoogleTranslateInit?: () => void;
+  }
+}
+
+export {};

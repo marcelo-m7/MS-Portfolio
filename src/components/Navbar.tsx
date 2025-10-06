@@ -1,9 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import cvData from '../../public/data/cv.json';
+
+const MotionLink = motion(Link);
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,122 +21,152 @@ export default function Navbar() {
 
   const isActive = (path: string) => location.pathname === path;
 
-  return (
-    <nav className="fixed top-0 w-full z-50 glass border-b border-border/50">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="text-xl font-display font-bold">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {cvData.profile.name}
-            </span>
-          </Link>
+  const shouldReduceMotion = useReducedMotion();
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className={`font-medium transition-colors hover:text-primary ${
-                  isActive(link.href) ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="flex items-center gap-4 ml-4 border-l border-border pl-4">
-              <a
-                href={cvData.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-                aria-label="GitHub"
-              >
-                <Github size={20} />
-              </a>
-              <a
-                href={cvData.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-secondary transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={20} />
-              </a>
-              <a
-                href={cvData.links.email}
-                className="text-muted-foreground hover:text-accent transition-colors"
-                aria-label="Email"
-              >
-                <Mail size={20} />
-              </a>
-              <LanguageSwitcher />
-            </div>
+  return (
+    <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-4 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.55)] backdrop-blur-xl">
+        <Link
+          to="/"
+          className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(56,189,248,0.45)]">
+            M
+          </span>
+          <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+            {cvData.profile.name}
+          </span>
+        </Link>
+
+        <div className="hidden flex-1 items-center justify-end gap-6 md:flex">
+          <div className="flex items-center gap-2 rounded-full border border-border/60 bg-background/40 p-1">
+            {navLinks.map((link) => {
+              const active = isActive(link.href);
+              return (
+                <MotionLink
+                  key={link.href}
+                  to={link.href}
+                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                    active ? 'text-white' : 'text-muted-foreground'
+                  }`}
+                  {...(!shouldReduceMotion
+                    ? {
+                        whileHover: {
+                          y: -2,
+                          boxShadow:
+                            '0 12px 24px -18px rgba(56,189,248,0.6), 0 0 12px rgba(124,58,237,0.45)',
+                        },
+                      }
+                    : {})}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="nav-pill"
+                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80"
+                      transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+                    />
+                  )}
+                  {link.label}
+                </MotionLink>
+              );
+            })}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-foreground"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-3 pl-4">
+            <a
+              href={cvData.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-label="GitHub"
+            >
+              <Github size={18} />
+            </a>
+            <a
+              href={cvData.links.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={18} />
+            </a>
+            <a
+              href={cvData.links.email}
+              className="rounded-full p-2 text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-label="Email"
+            >
+              <Mail size={18} />
+            </a>
+            <LanguageSwitcher />
+          </div>
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 pb-4"
-            >
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
+          aria-label="Abrir menu"
+          aria-expanded={isOpen}
+        >
+          {isOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mx-auto mt-3 max-w-6xl rounded-3xl border border-border/60 bg-card/80 p-4 backdrop-blur-xl md:hidden"
+          >
+            <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`block py-2 font-medium transition-colors ${
-                    isActive(link.href) ? 'text-primary' : 'text-muted-foreground'
+                  className={`rounded-2xl px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                    isActive(link.href) ? 'bg-gradient-to-r from-primary/60 via-secondary/50 to-accent/50 text-white' : 'text-muted-foreground hover:bg-card'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-4">
+              <div className="flex items-center gap-3">
                 <a
                   href={cvData.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="rounded-full p-2 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   aria-label="GitHub"
                 >
-                  <Github size={20} />
+                  <Github size={18} />
                 </a>
                 <a
                   href={cvData.links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-secondary transition-colors"
+                  className="rounded-full p-2 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   aria-label="LinkedIn"
                 >
-                  <Linkedin size={20} />
+                  <Linkedin size={18} />
                 </a>
                 <a
                   href={cvData.links.email}
-                  className="text-muted-foreground hover:text-accent transition-colors"
+                  className="rounded-full p-2 text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   aria-label="Email"
                 >
-                  <Mail size={20} />
+                  <Mail size={18} />
                 </a>
-                <LanguageSwitcher />
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+              <LanguageSwitcher />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

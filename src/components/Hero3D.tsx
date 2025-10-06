@@ -1,80 +1,48 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, Suspense, useMemo } from 'react';
-import { Mesh, BufferGeometry, PointsMaterial, Float32BufferAttribute } from 'three';
-import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei';
+import { lazy, Suspense } from 'react';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
-function Particles() {
-  const points = useRef<any>(null);
-  
-  const particlesGeometry = useMemo(() => {
-    const geometry = new BufferGeometry();
-    const count = 2000;
-    const positions = new Float32Array(count * 3);
-    
-    for (let i = 0; i < count * 3; i++) {
-      positions[i] = (Math.random() - 0.5) * 10;
-    }
-    
-    geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-    return geometry;
-  }, []);
+const HeroCanvas = lazy(() => import('./HeroCanvas'));
 
-  useFrame((state) => {
-    if (!points.current) return;
-    points.current.rotation.y = state.clock.getElapsedTime() * 0.05;
-    points.current.rotation.x = Math.sin(state.clock.getElapsedTime() * 0.1) * 0.2;
-  });
-
-  return (
-    <points ref={points} geometry={particlesGeometry}>
-      <pointsMaterial
-        size={0.015}
-        color="#0EA5E9"
-        transparent
-        opacity={0.6}
-        sizeAttenuation
+const StaticIllustration = () => (
+  <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
+    <svg
+      width="480"
+      height="320"
+      viewBox="0 0 480 320"
+      className="max-w-[80vw] text-secondary/40"
+      role="img"
+      aria-labelledby="hero-visual-title"
+    >
+      <title id="hero-visual-title">Forma abstrata representando criatividade digital</title>
+      <defs>
+        <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(124,58,237,0.55)" />
+          <stop offset="50%" stopColor="rgba(14,165,233,0.35)" />
+          <stop offset="100%" stopColor="rgba(236,72,153,0.45)" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M60 180C60 90 160 20 240 20s180 70 180 160-80 120-160 100S60 270 60 180Z"
+        fill="url(#heroGradient)"
+        opacity="0.65"
       />
-    </points>
-  );
-}
-
-function AnimatedSphere() {
-  const meshRef = useRef<Mesh>(null);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-    meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
-  });
-
-  return (
-    <Sphere ref={meshRef} args={[1, 100, 100]} scale={2.5}>
-      <MeshDistortMaterial
-        color="#7C3AED"
-        attach="material"
-        distort={0.5}
-        speed={2}
-        roughness={0.2}
-        metalness={0.8}
-      />
-    </Sphere>
-  );
-}
+      <circle cx="120" cy="110" r="40" fill="rgba(14,165,233,0.4)" />
+      <circle cx="340" cy="220" r="60" fill="rgba(236,72,153,0.35)" />
+      <circle cx="250" cy="160" r="90" stroke="rgba(124,58,237,0.45)" strokeWidth="6" fill="none" />
+    </svg>
+  </div>
+);
 
 export default function Hero3D() {
+  const prefersReducedMotion = usePrefersReducedMotion();
+
+  if (prefersReducedMotion) {
+    return <StaticIllustration />;
+  }
+
   return (
-    <div className="w-full h-full absolute inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-        <Suspense fallback={null}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <pointLight position={[-10, -10, -5]} color="#0EA5E9" intensity={0.5} />
-          <pointLight position={[10, -10, -5]} color="#EC4899" intensity={0.3} />
-          <Particles />
-          <AnimatedSphere />
-          <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
-        </Suspense>
-      </Canvas>
-    </div>
+    <Suspense fallback={<StaticIllustration />}>
+      <HeroCanvas />
+    </Suspense>
   );
 }

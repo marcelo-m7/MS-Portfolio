@@ -61,6 +61,12 @@ All colors MUST be HSL.
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
+  :focus-visible {
+    outline: 2px solid hsl(var(--secondary));
+    outline-offset: 4px;
+    border-radius: calc(var(--radius) / 1.5);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -91,15 +97,5 @@ All colors MUST be HSL.
 
   .glow-pink {
     box-shadow: 0 0 40px hsl(var(--glow-pink) / 0.3);
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
   }
 }
