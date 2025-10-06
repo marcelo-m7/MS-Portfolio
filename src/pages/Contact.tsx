@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
-import { createLead } from '@/lib/supabase';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -23,18 +23,27 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      await createLead({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-        company: formData.company.trim() || null,
-        project: formData.project.trim() || null,
+      if (!supabase) {
+        throw new Error('Supabase client is not configured.');
+      }
+
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          to: 'hello@monynha.com',
+        },
       });
 
+      if (error) {
+        throw error;
+      }
+
       toast.success(cvData.contact.successMessage);
-      setFormData({ name: '', email: '', company: '', project: '', message: '' });
+      setFormData({ name: '', email: '', message: '' });
     } catch (error) {
-      console.error('Failed to create contact lead', error);
+      console.error('Erro ao enviar mensagem de contato:', error);
       toast.error(cvData.contact.errorMessage);
     } finally {
       setIsSubmitting(false);
