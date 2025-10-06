@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -19,12 +20,32 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      if (!supabase) {
+        throw new Error('Supabase client is not configured.');
+      }
+
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          to: 'hello@monynha.com',
+        },
+      });
+
+      if (error) {
+        throw error;
+      }
+
       toast.success(cvData.contact.successMessage);
       setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Erro ao enviar mensagem de contato:', error);
+      toast.error(cvData.contact.errorMessage);
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
