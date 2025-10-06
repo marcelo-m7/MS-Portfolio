@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, PenSquare } from 'lucide-react';
+import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Hero3D from '@/components/Hero3D';
@@ -188,6 +188,76 @@ export default function Home() {
               </Link>
             </Button>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Collections & Art */}
+      <section className="pb-24 px-6">
+        <div className="container mx-auto">
+          <motion.div
+            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12 text-center"
+          >
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+              Coleções & Arte
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Experiências imersivas e séries experimentais que conectam tecnologia, narrativa e arte digital.
+            </p>
+          </motion.div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <motion.div
+              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <Link
+                to="/series/creative-systems"
+                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_rgba(56,189,248,0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
+                    <Layers aria-hidden className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
+                    Creative Systems
+                  </h3>
+                  <p className="mt-3 text-sm text-muted-foreground/90">
+                    Coleção de trabalhos que explora IA aplicada, automação inteligente e interfaces artísticas conectadas ao laboratório Monynha.
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Link
+                to="/art/artleo"
+                className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_rgba(124,58,237,0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(56,189,248,0.6)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_rgba(56,189,248,0.45)]">
+                    <Palette aria-hidden className="h-6 w-6" />
+                  </div>
+                  <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
+                    Art Leo Creative Spaces
+                  </h3>
+                  <p className="mt-3 text-sm text-muted-foreground/90">
+                    Experiência 3D com narrativas interativas e composição sonora inspirada nos espaços criativos de Leonardo Silva.
+                  </p>
+                </div>
+              </Link>
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>

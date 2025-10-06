@@ -1,13 +1,20 @@
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, Calendar, BookOpen } from 'lucide-react';
+import { ArrowLeft, Calendar, BookOpen, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import {
+  languageToLocale,
+  useCurrentLanguage,
+} from '@/hooks/useCurrentLanguage';
+import { calculateReadingTime } from '@/lib/content';
 
 export default function ThoughtDetail() {
   const { slug } = useParams<{ slug: string }>();
   const prefersReducedMotion = useReducedMotion();
+  const language = useCurrentLanguage();
+  const locale = languageToLocale(language);
   const thought = cvData.thoughts.find((item) => item.slug === slug);
 
   if (!thought) {
@@ -25,6 +32,13 @@ export default function ThoughtDetail() {
       </div>
     );
   }
+
+  const formattedDate = new Intl.DateTimeFormat(locale, {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date(thought.date));
+  const readingTime = calculateReadingTime(thought.body);
 
   return (
     <div className="min-h-screen py-24 px-6">
@@ -49,11 +63,11 @@ export default function ThoughtDetail() {
           <div className="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
             <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
               <Calendar className="h-3 w-3" aria-hidden />
-              Atualizado em 2025
+              {formattedDate}
             </span>
             <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
               <BookOpen className="h-3 w-3" aria-hidden />
-              Leitura de 3 min
+              {readingTime} min
             </span>
           </div>
 
@@ -63,9 +77,21 @@ export default function ThoughtDetail() {
 
           <p className="mt-4 text-lg text-muted-foreground/90">{thought.excerpt}</p>
 
-          <div className="mt-8 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground">
-            <ReactMarkdown>{thought.body}</ReactMarkdown>
+          <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
+            {thought.tags.map((tag) => (
+              <span
+                key={`${thought.slug}-${tag}`}
+                className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
+              >
+                <Tag className="h-3 w-3" aria-hidden />
+                {tag}
+              </span>
+            ))}
           </div>
+
+          <article className="mt-8 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground">
+            <ReactMarkdown>{thought.body}</ReactMarkdown>
+          </article>
 
           <footer className="mt-12 rounded-2xl border border-border/60 bg-background/60 p-6">
             <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>

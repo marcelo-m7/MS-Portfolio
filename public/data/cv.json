@@ -16,6 +16,7 @@
   },
   "projects": [
     {
+      "slug": "monynha-com",
       "name": "Monynha.com",
       "summary": "Website institucional da Monynha Softwares — vitrine de produtos, valores e visão da marca.",
       "stack": ["Next.js", "TailwindCSS", "Payload CMS", "Supabase"],
@@ -25,6 +26,7 @@
       "year": 2024
     },
     {
+      "slug": "monynha-tech",
       "name": "Monynha Tech",
       "summary": "Blog técnico e central de documentação dos projetos Monynha. Plataforma voltada para desenvolvedores e estudantes.",
       "stack": ["Next.js", "Supabase", "CI/CD", "Markdown"],
@@ -34,6 +36,7 @@
       "year": 2025
     },
     {
+      "slug": "facodi",
       "name": "FACODI",
       "summary": "Faculdade Comunitária Digital — portal gratuito de ensino superior aberto e colaborativo, alimentado por currículos oficiais e conteúdo público.",
       "stack": ["Next.js", "Supabase", "Payload CMS"],
@@ -43,6 +46,7 @@
       "year": 2025
     },
     {
+      "slug": "boteco-pro",
       "name": "Boteco Pro",
       "summary": "Aplicativo de gestão para bares e restaurantes, desenvolvido em Flutter e Supabase.",
       "stack": ["Flutter", "Supabase", "PostgreSQL"],
@@ -52,6 +56,7 @@
       "year": 2025
     },
     {
+      "slug": "art-leo",
       "name": "Art Leo",
       "summary": "Website 3D imersivo para o artista Leonardo Silva, explorando arte, animação e interação digital.",
       "stack": ["Next.js", "react-three-fiber", "Supabase"],
@@ -61,6 +66,7 @@
       "year": 2025
     },
     {
+      "slug": "monagent",
       "name": "Monagent",
       "summary": "Framework modular em Python para criação de agentes de IA e integração com automações (n8n, APIs, ferramentas de dados).",
       "stack": ["Python", "FastAPI", "n8n", "Supabase"],
@@ -130,12 +136,16 @@
   "thoughts": [
     {
       "slug": "design-tecnologia-inclusiva",
+      "date": "2025-01-17",
+      "tags": ["Acessibilidade", "Design", "Experiência do utilizador"],
       "title": "Design e Tecnologia Inclusiva",
       "excerpt": "A tecnologia é mais humana quando é acessível.",
       "body": "Acredito que design e acessibilidade não são opostos, mas aliados. No ecossistema Monynha, cada interface nasce com empatia: contraste adequado, navegação por teclado e respeito ao prefers-reduced-motion fazem parte do nosso DNA digital."
     },
     {
       "slug": "por-tras-da-monynha",
+      "date": "2025-02-02",
+      "tags": ["Cultura", "Comunidade", "Empreendedorismo"],
       "title": "Por trás da Monynha",
       "excerpt": "Mais do que software, é movimento.",
       "body": "Monynha Softwares nasceu da vontade de unir diversidade e tecnologia em um só propósito: criar ferramentas que empoderem pessoas e transformem ideias em experiências digitais acessíveis, criativas e babadeiras 💅."
