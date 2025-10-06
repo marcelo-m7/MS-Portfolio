@@ -6,12 +6,14 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
-import { sendContactEmail } from '@/lib/supabase';
+import { createLead } from '@/lib/supabase';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    company: '',
+    project: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,16 +23,18 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      await sendContactEmail({
+      await createLead({
         name: formData.name,
         email: formData.email,
         message: formData.message,
+        company: formData.company.trim() || null,
+        project: formData.project.trim() || null,
       });
 
       toast.success(cvData.contact.successMessage);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', company: '', project: '', message: '' });
     } catch (error) {
-      console.error('Failed to send contact email', error);
+      console.error('Failed to create contact lead', error);
       toast.error(cvData.contact.errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -133,34 +137,64 @@ export default function Contact() {
               </h2>
 
               <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Nome
-                  </label>
-                  <Input
-                    id="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="rounded-xl"
-                    placeholder="Seu nome"
-                  />
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      Nome
+                    </label>
+                    <Input
+                      id="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                      className="rounded-xl"
+                      placeholder="Seu nome"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium mb-2">
+                      Empresa <span className="text-muted-foreground">(opcional)</span>
+                    </label>
+                    <Input
+                      id="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="rounded-xl"
+                      placeholder="Onde você trabalha"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="rounded-xl"
-                    placeholder="seu@email.com"
-                  />
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      Email
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                      className="rounded-xl"
+                      placeholder="seu@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="project" className="block text-sm font-medium mb-2">
+                      Projeto <span className="text-muted-foreground">(opcional)</span>
+                    </label>
+                    <Input
+                      id="project"
+                      type="text"
+                      value={formData.project}
+                      onChange={(e) => setFormData({ ...formData, project: e.target.value })}
+                      className="rounded-xl"
+                      placeholder="Sobre o que vamos falar?"
+                    />
+                  </div>
                 </div>
 
                 <div>

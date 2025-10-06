@@ -1,10 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
-type ContactEmailPayload = {
+type LeadPayload = {
   name: string;
   email: string;
   message: string;
-  to?: string;
+  company?: string | null;
+  project?: string | null;
 };
 
 const supabaseUrl = import.meta.env.VITE_PUBLIC_SUPABASE_URL;
@@ -15,21 +16,20 @@ export const supabase =
     ? createClient(supabaseUrl, supabaseAnonKey)
     : null;
 
-export async function sendContactEmail(payload: ContactEmailPayload) {
+export async function createLead(payload: LeadPayload) {
   if (!supabase) {
     throw new Error('Supabase client is not configured.');
   }
 
-  const { data, error } = await supabase.functions.invoke('send-contact-email', {
-    body: {
-      ...payload,
-      to: payload.to ?? 'hello@monynha.com',
-    },
+  const { error } = await supabase.from('leads').insert({
+    name: payload.name,
+    email: payload.email,
+    message: payload.message,
+    company: payload.company ?? null,
+    project: payload.project ?? null,
   });
 
   if (error) {
     throw error;
   }
-
-  return data;
 }
