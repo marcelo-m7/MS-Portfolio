@@ -1,8 +1,10 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Sparkles } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
@@ -102,11 +104,11 @@ export default function Portfolio() {
                       <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors">
                         {project.name}
                       </h3>
-                      <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground whitespace-nowrap ml-2">
-                      {project.category}
-                    </span>
-                  </div>
-                  
+                      <span className="ml-2 inline-flex items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground whitespace-nowrap">
+                        {project.category}
+                      </span>
+                    </div>
+
                     <p className="text-muted-foreground flex-1 text-sm leading-relaxed">
                       {project.summary}
                     </p>
@@ -137,6 +139,77 @@ export default function Portfolio() {
             </motion.div>
           ))}
         </div>
+
+        {cvData.series?.length ? (
+          <motion.section
+            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 28 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6 }}
+            className="mt-20 rounded-3xl border border-border/60 bg-card/70 p-8 shadow-[0_35px_70px_-60px_rgba(56,189,248,0.75)]"
+          >
+            <div className="mb-8 flex flex-col gap-3 text-center">
+              <span className="mx-auto inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                <Sparkles className="h-3 w-3" aria-hidden />
+                Séries criativas
+              </span>
+              <h2 className="text-3xl font-display font-semibold text-foreground">Coleções que contam histórias</h2>
+              <p className="text-base text-muted-foreground/80">
+                Cada série reúne obras, interfaces e experiências que dialogam entre si.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {cvData.series.map((series) => {
+                const artworks = (series.works ?? [])
+                  .map((slug) => cvData.artworks?.find((art) => art.slug === slug))
+                  .filter((item): item is (typeof cvData.artworks)[number] => Boolean(item));
+
+                return (
+                  <motion.article
+                    key={series.slug}
+                    initial={prefersReducedMotion ? undefined : { opacity: 0, y: 16 }}
+                    whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4 }}
+                    className="group flex flex-col rounded-3xl border border-border/60 bg-background/60 p-6 shadow-[0_25px_55px_-45px_rgba(124,58,237,0.75)]"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-2xl font-display font-semibold text-foreground group-hover:text-primary transition-colors">
+                        {series.title}
+                      </h3>
+                      <span className="rounded-full border border-border/60 bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+                        {series.year}
+                      </span>
+                    </div>
+
+                    <p className="mt-3 flex-1 text-sm text-muted-foreground/90">{series.description}</p>
+
+                    {artworks.length > 0 && (
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {artworks.map((art) => (
+                          <Badge key={art.slug} variant="outline" className="border-border/60 text-muted-foreground">
+                            {art.title}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="mt-6">
+                      <Link
+                        to={`/series/${series.slug}`}
+                        className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      >
+                        Ver coleção completa
+                        <ExternalLink className="h-4 w-4" aria-hidden />
+                      </Link>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </div>
+          </motion.section>
+        ) : null}
 
         {filteredProjects.length === 0 && (
           <motion.div
