@@ -1,9 +1,21 @@
+import { lazy, Suspense } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import Hero3D from '@/components/Hero3D';
 import cvData from '../../public/data/cv.json';
+
+const Hero3D = lazy(() => import('@/components/Hero3D'));
+
+const HeroFallback = () => (
+  <div
+    className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+    aria-hidden
+  >
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.35),_transparent_55%),radial-gradient(circle_at_bottom,_rgba(14,165,233,0.28),_transparent_60%)]" />
+    <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-primary/30 via-secondary/25 to-accent/30 blur-3xl" />
+  </div>
+);
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
@@ -12,7 +24,9 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <Hero3D />
+        <Suspense fallback={<HeroFallback />}>
+          <Hero3D />
+        </Suspense>
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
