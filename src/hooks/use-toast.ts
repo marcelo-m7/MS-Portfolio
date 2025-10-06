@@ -3,7 +3,23 @@ import * as React from "react";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 1000000;
+const DEFAULT_TOAST_REMOVE_DELAY = 5000;
+
+type ToastConfig = {
+  removeDelay: number;
+};
+
+const toastConfig: ToastConfig = {
+  removeDelay: DEFAULT_TOAST_REMOVE_DELAY,
+};
+
+const getToastRemoveDelay = () => toastConfig.removeDelay;
+
+export const configureToasts = (config: Partial<ToastConfig>) => {
+  if (typeof config.removeDelay === "number" && config.removeDelay >= 0) {
+    toastConfig.removeDelay = config.removeDelay;
+  }
+};
 
 type ToasterToast = ToastProps & {
   id: string;
@@ -63,7 +79,7 @@ const addToRemoveQueue = (toastId: string) => {
       type: "REMOVE_TOAST",
       toastId: toastId,
     });
-  }, TOAST_REMOVE_DELAY);
+  }, getToastRemoveDelay());
 
   toastTimeouts.set(toastId, timeout);
 };
@@ -174,7 +190,7 @@ function useToast() {
         listeners.splice(index, 1);
       }
     };
-  }, [state]);
+  }, []);
 
   return {
     ...state,

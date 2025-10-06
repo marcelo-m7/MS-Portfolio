@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/use-toast';
 import cvData from '../../public/data/cv.json';
 import { supabase } from '@/lib/supabaseClient';
 
@@ -32,7 +32,7 @@ export default function Contact() {
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          to: 'hello@monynha.com',
+          to: cvData.contact.email,
         },
       });
 
@@ -40,11 +40,16 @@ export default function Contact() {
         throw error;
       }
 
-      toast.success(cvData.contact.successMessage);
-      setFormData({ name: '', email: '', message: '' });
+      toast({
+        title: cvData.contact.successMessage,
+      });
+      setFormData({ name: '', email: '', company: '', project: '', message: '' });
     } catch (error) {
       console.error('Erro ao enviar mensagem de contato:', error);
-      toast.error(cvData.contact.errorMessage);
+      toast({
+        title: cvData.contact.errorMessage,
+        variant: 'destructive',
+      });
     } finally {
       setIsSubmitting(false);
     }
