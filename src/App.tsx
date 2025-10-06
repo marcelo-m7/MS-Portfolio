@@ -14,6 +14,10 @@ import type { SupportedLanguage } from "./lib/googleTranslate";
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
+const Series = lazy(() => import("./pages/Series"));
+const SeriesDetail = lazy(() => import("./pages/SeriesDetail"));
+const Artworks = lazy(() => import("./pages/Artworks"));
+const ArtDetail = lazy(() => import("./pages/ArtDetail"));
 const About = lazy(() => import("./pages/About"));
 const Thoughts = lazy(() => import("./pages/Thoughts"));
 const ThoughtDetail = lazy(() => import("./pages/ThoughtDetail"));
@@ -58,6 +62,10 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/series" element={<Series />} />
+              <Route path="/series/:slug" element={<SeriesDetail />} />
+              <Route path="/art" element={<Artworks />} />
+              <Route path="/art/:slug" element={<ArtDetail />} />
               <Route path="/about" element={<About />} />
               <Route path="/thoughts" element={<Thoughts />} />
               <Route path="/thoughts/:slug" element={<ThoughtDetail />} />

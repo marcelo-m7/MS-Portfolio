@@ -190,6 +190,62 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+      {/* Creative Series & Artworks */}
+      <section className="pb-24 px-6">
+        <div className="container mx-auto">
+          <motion.div
+            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6 }}
+            className="grid gap-8 lg:grid-cols-2"
+          >
+            <div className="rounded-3xl border border-border/70 bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/20 p-8 shadow-[0_45px_85px_-65px_rgba(124,58,237,0.85)]">
+              <h2 className="text-3xl font-display font-semibold text-foreground">Séries Criativas</h2>
+              <p className="mt-4 text-muted-foreground/90">
+                Narrativas em torno de produtos digitais e arte interativa. Conhece a curadoria das experiências que conectam tecnologia, diversidade e storytelling.
+              </p>
+              <Button
+                asChild
+                className="mt-6 rounded-full bg-gradient-to-r from-primary via-secondary to-accent px-6 py-2 text-sm shadow-[0_20px_45px_-28px_rgba(56,189,248,0.65)]"
+              >
+                <Link to="/series">
+                  Explorar séries
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                </Link>
+              </Button>
+            </div>
+
+            <div className="rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_45px_85px_-70px_rgba(14,165,233,0.75)] backdrop-blur-xl">
+              <h2 className="text-3xl font-display font-semibold text-foreground">Galeria de Obras</h2>
+              <p className="mt-4 text-muted-foreground/90">
+                Visuals, motion e protótipos 3D que expandem o universo Monynha. Passeia por imagens e links imersivos para sentir as experiências completas.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {cvData.artworks.slice(0, 3).map((artwork) => (
+                  <span
+                    key={artwork.slug}
+                    className="rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
+                  >
+                    {artwork.title}
+                  </span>
+                ))}
+              </div>
+              <Button
+                asChild
+                variant="outline"
+                className="mt-6 rounded-full border-border/70"
+              >
+                <Link to="/art">
+                  Ver galeria completa
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
+                </Link>
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

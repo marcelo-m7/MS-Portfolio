@@ -149,6 +149,40 @@ export default function Portfolio() {
             </p>
           </motion.div>
         )}
+
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 grid gap-6 lg:grid-cols-2"
+        >
+          <div className="rounded-3xl border border-border/60 bg-card/60 p-6 shadow-[0_40px_75px_-60px_rgba(124,58,237,0.75)] backdrop-blur-xl">
+            <h2 className="text-2xl font-display font-semibold text-foreground">Coleções imersivas</h2>
+            <p className="mt-3 text-sm text-muted-foreground/90">
+              Aprofunda-te em séries que conectam dados, arte e interatividade com curadoria especial.
+            </p>
+            <Button asChild className="mt-5 rounded-full">
+              <Link to="/series">
+                Ver séries
+                <ExternalLink className="ml-2 h-4 w-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+
+          <div className="rounded-3xl border border-border/60 bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/25 p-6 shadow-[0_40px_75px_-55px_rgba(56,189,248,0.75)]">
+            <h2 className="text-2xl font-display font-semibold text-foreground">Galeria de obras</h2>
+            <p className="mt-3 text-sm text-muted-foreground/90">
+              Visualiza renderizações, protótipos e motion design que expandem estes projetos.
+            </p>
+            <Button asChild variant="outline" className="mt-5 rounded-full border-border/70">
+              <Link to="/art">
+                Ir para galeria
+                <ExternalLink className="ml-2 h-4 w-4" aria-hidden />
+              </Link>
+            </Button>
+          </div>
+        </motion.div>
       </div>
     </div>
   );
