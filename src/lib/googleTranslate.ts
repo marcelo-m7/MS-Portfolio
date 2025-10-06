@@ -20,6 +20,13 @@ let hideObserver: MutationObserver | null = null;
 
 const isBrowser = () => typeof window !== 'undefined' && typeof document !== 'undefined';
 
+declare global {
+  interface Window {
+    setLanguage: (lang: SupportedLanguage) => void;
+    __afterGoogleTranslateInit?: () => void;
+  }
+}
+
 const hideGoogleArtifacts = () => {
   if (!isBrowser()) return;
 
@@ -39,7 +46,7 @@ const hideGoogleArtifacts = () => {
 const dispatchLanguageEvent = (lang: SupportedLanguage) => {
   if (!isBrowser()) return;
 
-  window.dispatchEvent(new CustomEvent('monynha:languagechange', { detail: lang }));
+  window.dispatchEvent(new CustomEvent<SupportedLanguage>('monynha:languagechange', { detail: lang }));
 };
 
 const setDocumentLanguage = (lang: SupportedLanguage) => {
@@ -96,8 +103,8 @@ export const initializeGoogleTranslate = () => {
   hideGoogleArtifacts();
   ensureHideObserver();
   ensureComboObserver();
-  (window as any).setLanguage = setLanguage;
-  (window as any).__afterGoogleTranslateInit = () => {
+  window.setLanguage = setLanguage;
+  window.__afterGoogleTranslateInit = () => {
     hideGoogleArtifacts();
     ensureComboObserver();
     if (pendingLanguage) {
