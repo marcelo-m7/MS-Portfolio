@@ -1,0 +1,26 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Monynha Tech blog preview</title>
+  <desc id="desc">Neon interface grid placeholder for Monynha Tech blog</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(59,130,246,0.8)" />
+      <stop offset="100%" stop-color="rgba(236,72,153,0.6)" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" rx="48" fill="url(#bg)" />
+  <g opacity="0.5">
+    <path d="M160 140h880M160 220h880M160 300h880M160 380h880M160 460h880M160 540h880" stroke="rgba(148,163,184,0.25)" stroke-width="2" />
+    <path d="M260 80v520M440 80v520M620 80v520M800 80v520M980 80v520" stroke="rgba(148,163,184,0.15)" stroke-width="2" />
+  </g>
+  <rect x="180" y="180" width="360" height="240" rx="32" fill="rgba(15,23,42,0.6)" stroke="rgba(59,130,246,0.6)" stroke-width="3" />
+  <rect x="580" y="220" width="440" height="160" rx="28" fill="url(#card)" opacity="0.9" />
+  <text x="200" y="240" font-family="'Space Grotesk', 'Arial', sans-serif" font-size="60" fill="#E0F2FE" font-weight="600">Monynha Tech</text>
+  <text x="200" y="290" font-family="'Inter', 'Arial', sans-serif" font-size="28" fill="rgba(191,219,254,0.85)">
+    Documentação, guias técnicos e novidades da Monynha.
+  </text>
+</svg>

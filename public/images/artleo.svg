@@ -1,0 +1,25 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Art Leo immersive website preview</title>
+  <desc id="desc">Placeholder cosmic gradient for the Art Leo immersive website</desc>
+  <defs>
+    <radialGradient id="center" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="40%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#020617" />
+    </radialGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(14,165,233,0.85)" />
+      <stop offset="100%" stop-color="rgba(236,72,153,0.7)" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" rx="48" fill="#020617" />
+  <circle cx="600" cy="340" r="360" fill="url(#center)" />
+  <ellipse cx="600" cy="360" rx="460" ry="160" fill="rgba(14,165,233,0.18)" />
+  <rect x="240" y="160" width="720" height="240" rx="48" fill="rgba(2,6,23,0.6)" stroke="rgba(236,72,153,0.5)" stroke-width="3" />
+  <path d="M320 200h560" stroke="rgba(124,58,237,0.6)" stroke-width="6" stroke-linecap="round" />
+  <path d="M320 240h420" stroke="url(#beam)" stroke-width="4" stroke-linecap="round" />
+  <text x="320" y="320" font-family="'Space Grotesk', 'Arial', sans-serif" font-size="66" fill="#FDF4FF" font-weight="700">Art Leo</text>
+  <text x="320" y="360" font-family="'Inter', 'Arial', sans-serif" font-size="28" fill="rgba(221,214,254,0.85)">
+    Arte 3D, animação e narrativa interativa.
+  </text>
+</svg>

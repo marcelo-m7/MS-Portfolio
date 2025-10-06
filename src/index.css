@@ -61,6 +61,11 @@ All colors MUST be HSL.
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
+  :focus-visible {
+    outline: none;
+    @apply ring-2 ring-primary/70 ring-offset-2 ring-offset-background;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -91,6 +96,29 @@ All colors MUST be HSL.
 
   .glow-pink {
     box-shadow: 0 0 40px hsl(var(--glow-pink) / 0.3);
+  }
+
+  @keyframes auroraFlow {
+    0% {
+      transform: translate3d(-10%, -10%, 0) scale(1.05);
+      filter: hue-rotate(0deg);
+    }
+    50% {
+      transform: translate3d(10%, 10%, 0) scale(1.1);
+      filter: hue-rotate(45deg);
+    }
+    100% {
+      transform: translate3d(-10%, -10%, 0) scale(1.05);
+      filter: hue-rotate(0deg);
+    }
+  }
+
+  .hero-aurora {
+    background: radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.35), transparent 60%),
+      radial-gradient(circle at 80% 30%, rgba(56, 189, 248, 0.28), transparent 55%),
+      linear-gradient(135deg, rgba(12, 74, 110, 0.35), rgba(15, 23, 42, 0.95));
+    filter: saturate(120%);
+    animation: auroraFlow 18s ease-in-out infinite;
   }
 }
 
