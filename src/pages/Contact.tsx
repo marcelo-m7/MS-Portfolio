@@ -12,6 +12,8 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    company: '',
+    project: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -144,34 +146,64 @@ export default function Contact() {
               </h2>
 
               <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Nome
-                  </label>
-                  <Input
-                    id="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    required
-                    className="rounded-xl"
-                    placeholder="Seu nome"
-                  />
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      Nome
+                    </label>
+                    <Input
+                      id="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      required
+                      className="rounded-xl"
+                      placeholder="Seu nome"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium mb-2">
+                      Empresa <span className="text-muted-foreground">(opcional)</span>
+                    </label>
+                    <Input
+                      id="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      className="rounded-xl"
+                      placeholder="Onde você trabalha"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                    className="rounded-xl"
-                    placeholder="seu@email.com"
-                  />
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      Email
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                      className="rounded-xl"
+                      placeholder="seu@email.com"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="project" className="block text-sm font-medium mb-2">
+                      Projeto <span className="text-muted-foreground">(opcional)</span>
+                    </label>
+                    <Input
+                      id="project"
+                      type="text"
+                      value={formData.project}
+                      onChange={(e) => setFormData({ ...formData, project: e.target.value })}
+                      className="rounded-xl"
+                      placeholder="Sobre o que vamos falar?"
+                    />
+                  </div>
                 </div>
 
                 <div>
