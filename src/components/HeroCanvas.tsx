@@ -45,7 +45,7 @@ const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) =>
   useFrame(({ clock }) => {
     if (!visibleRef.current || !pointsRef.current) return;
     const elapsed = clock.getElapsedTime();
-    if (elapsed - lastFrame.current < 1 / 45) return;
+    if (elapsed - lastFrame.current < 1 / 60) return;
     lastFrame.current = elapsed;
     pointsRef.current.rotation.y = elapsed * 0.06;
     pointsRef.current.rotation.x = Math.sin(elapsed * 0.3) * 0.08;
@@ -72,7 +72,7 @@ const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
   useFrame(({ clock }) => {
     if (!visibleRef.current || !meshRef.current) return;
     const elapsed = clock.getElapsedTime();
-    if (elapsed - lastFrame.current < 1 / 45) return;
+    if (elapsed - lastFrame.current < 1 / 60) return;
     lastFrame.current = elapsed;
 
     meshRef.current.rotation.y = elapsed * 0.18;

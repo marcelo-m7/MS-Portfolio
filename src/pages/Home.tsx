@@ -1,9 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import { Button } from '@/components/ui/button';
-import Hero3D from '@/components/Hero3D';
 import cvData from '../../public/data/cv.json';
+
+const Hero3D = lazy(() => import('@/components/Hero3D'));
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
@@ -12,7 +14,13 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <Hero3D />
+        <Suspense
+          fallback={
+            <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.35),_transparent_60%),radial-gradient(circle_at_bottom,_rgba(14,165,233,0.25),_transparent_55%)]" />
+          }
+        >
+          <Hero3D />
+        </Suspense>
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
