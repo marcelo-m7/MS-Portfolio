@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
+import { sendContactEmail } from '@/lib/supabase';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -19,12 +20,21 @@ export default function Contact() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      await sendContactEmail({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      });
+
       toast.success(cvData.contact.successMessage);
       setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Failed to send contact email', error);
+      toast.error(cvData.contact.errorMessage);
+    } finally {
       setIsSubmitting(false);
-    }, 1000);
+    }
   };
 
   return (
