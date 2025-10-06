@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
+  <title>Representação visual 3D do projeto Art Leo</title>
+  <defs>
+    <linearGradient id="artLeo3d" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="50%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="32" fill="#0b1120" />
+  <rect x="36" y="36" width="568" height="288" rx="28" fill="rgba(124,58,237,0.2)" />
+  <path d="M160 200 Q 240 120 320 180 T 500 160" fill="none" stroke="url(#artLeo3d)" stroke-width="22" stroke-linecap="round" />
+  <circle cx="220" cy="140" r="70" fill="rgba(124,58,237,0.35)" />
+  <circle cx="420" cy="220" r="95" fill="rgba(34,211,238,0.3)" />
+  <text x="50%" y="58%" text-anchor="middle" fill="white" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="44" font-weight="600">
+    Art Leo 3D
+  </text>
+</svg>

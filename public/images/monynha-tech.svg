@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
+  <title>Thumbnail abstrata do projeto Monynha Tech</title>
+  <defs>
+    <linearGradient id="monynhaTechGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0ea5e9" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+    <radialGradient id="monynhaTechPulse" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="rgba(14,165,233,0.6)" />
+      <stop offset="100%" stop-color="rgba(14,165,233,0)" />
+    </radialGradient>
+  </defs>
+  <rect width="640" height="360" rx="32" fill="#020617" />
+  <rect x="36" y="36" width="568" height="288" rx="28" fill="url(#monynhaTechGradient)" opacity="0.8" />
+  <ellipse cx="320" cy="180" rx="220" ry="140" fill="url(#monynhaTechPulse)" />
+  <path d="M120 200 Q 200 140 320 180 T 520 150" fill="none" stroke="rgba(148,163,184,0.35)" stroke-width="18" stroke-linecap="round" stroke-dasharray="28 24" />
+  <text x="50%" y="56%" text-anchor="middle" fill="white" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="46" font-weight="600">
+    Monynha Tech
+  </text>
+</svg>

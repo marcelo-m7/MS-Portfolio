@@ -4,6 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style>
+      .goog-te-banner-frame,
+      .goog-te-gadget,
+      .goog-te-gadget-simple,
+      .goog-logo-link,
+      .goog-te-combo,
+      body > .skiptranslate,
+      iframe[id^=":"],
+      #\:1\.container {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      body {
+        top: 0 !important;
+      }
+    </style>
     <title>Marcelo Santos - Software Engineer & Founder @ Monynha Softwares</title>
     <meta name="description" content="Portfolio interativo de Marcelo Santos. Engenheiro de software, fundador da Monynha Softwares. Especialista em Next.js, Supabase, Flutter e DevOps." />
     <meta name="author" content="Marcelo Santos" />
@@ -20,28 +37,28 @@
     <meta name="twitter:title" content="Marcelo Santos - Portfolio" />
     <meta name="twitter:description" content="Software Engineer & Founder @ Monynha Softwares" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
 
   <body>
     <div id="root"></div>
-    <div id="google_translate_element" style="display:none;"></div>
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'pt',
-          includedLanguages: 'pt,en,es,fr',
-          autoDisplay: false
-        }, 'google_translate_element');
-      }
-      window.setLanguage = function(lang) {
-        const combo = document.querySelector('.goog-te-combo');
-        if (!combo) return;
-        combo.value = lang;
-        combo.dispatchEvent(new Event('change'));
-      }
+    <div id="google_translate_element" aria-hidden="true" class="sr-only" tabindex="-1"></div>
+    <script>
+      window.googleTranslateElementInit = function () {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'pt',
+            includedLanguages: 'pt,en,es,fr',
+            autoDisplay: false,
+          },
+          'google_translate_element'
+        );
+
+        if (typeof window.__afterGoogleTranslateInit === 'function') {
+          window.__afterGoogleTranslateInit();
+        }
+      };
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

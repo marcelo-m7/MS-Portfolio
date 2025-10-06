@@ -1,5 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Monynha M (mono)">
-  <rect width="512" height="512" rx="112" ry="112" fill="#111827"/>
-  <path d="M136 368V144h46l74 120 74-120h46v224h-46V232l-74 112-74-112v136z"
-        fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Monynha Softwares - Monograma M</title>
+  <defs>
+    <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="64" fill="#05010d" />
+  <path
+    d="M64 184V72h36l28 50 28-50h36v112h-28V114l-36 62-36-62v70z"
+    fill="none"
+    stroke="url(#faviconGradient)"
+    stroke-width="18"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
 </svg>

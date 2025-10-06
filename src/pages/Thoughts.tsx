@@ -1,88 +1,91 @@
-import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, BookOpen } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowLeft, Calendar, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import cvData from '../../public/data/cv.json';
 
 export default function Thoughts() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <div className="min-h-screen py-24 px-6">
-      <div className="container mx-auto max-w-4xl">
+      <div className="container mx-auto max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <Button
             asChild
             variant="ghost"
-            className="mb-8 rounded-xl hover:bg-card"
+            className="mb-8 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
           >
             <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar
+              <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
+              Voltar para o início
             </Link>
           </Button>
 
-          <div className="mb-12">
+          <header className="mb-12 text-center">
             <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Pensamentos
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground">
-              Reflexões sobre tecnologia, design e acessibilidade
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.
             </p>
-          </div>
+          </header>
 
-          <div className="space-y-8">
+          <div className="grid gap-8 md:grid-cols-2">
             {cvData.thoughts.map((thought, index) => (
               <motion.article
                 key={thought.slug}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="glass rounded-2xl p-8 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 30 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.45 }}
+                className="group flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_35px_65px_-55px_rgba(124,58,237,0.75)] backdrop-blur-xl"
               >
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                  <Calendar className="h-4 w-4" />
-                  <time>2025</time>
-                  <span>•</span>
-                  <BookOpen className="h-4 w-4" />
-                  <span>Leitura de 3 min</span>
+                <div className="mb-6 flex items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+                    <Calendar className="h-3 w-3" aria-hidden />
+                    Atualizado em 2025
+                  </span>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+                    <BookOpen className="h-3 w-3" aria-hidden />
+                    Leitura de 3 min
+                  </span>
                 </div>
 
-                <h2 className="text-3xl font-display font-bold mb-3 hover:text-primary transition-colors">
+                <h2 className="text-3xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
                   {thought.title}
                 </h2>
 
-                <p className="text-lg text-muted-foreground mb-4 italic">
+                <p className="mt-4 text-base text-muted-foreground/90">
                   {thought.excerpt}
                 </p>
 
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {thought.body}
-                  </p>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-border/50">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={cvData.profile.avatar}
-                      alt={cvData.profile.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-medium">{cvData.profile.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {cvData.profile.headline}
-                      </p>
-                    </div>
-                  </div>
+                <div className="mt-auto pt-6">
+                  <Link
+                    to={`/thoughts/${thought.slug}`}
+                    className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/70 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    Ler reflexão completa
+                    <ArrowRight className="h-4 w-4" aria-hidden />
+                  </Link>
                 </div>
               </motion.article>
             ))}
+          </div>
+
+          <div className="mt-16 flex flex-col items-center gap-4 rounded-3xl border border-border/60 bg-background/40 p-8 text-center shadow-[0_35px_70px_-60px_rgba(56,189,248,0.7)]">
+            <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Monynha Softwares Journal</p>
+            <p className="text-2xl font-display font-semibold text-foreground">
+              Ideias, processos criativos e bastidores das experiências imersivas.
+            </p>
+            <Button asChild className="rounded-full bg-gradient-to-r from-primary via-secondary to-accent px-6 py-2 text-sm">
+              <Link to="/contact">Partilhar um pensamento comigo</Link>
+            </Button>
           </div>
         </motion.div>
       </div>
