@@ -1,14 +1,16 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { MapPin, Briefcase, Award } from 'lucide-react';
 import cvData from '../../public/data/cv.json';
 
 export default function About() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-6 max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -22,8 +24,8 @@ export default function About() {
 
         {/* Profile Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
           className="glass rounded-2xl p-8 md:p-12 mb-12"
         >
@@ -56,8 +58,8 @@ export default function About() {
 
         {/* Experience Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.6 }}
           className="mb-12"
         >
@@ -70,8 +72,10 @@ export default function About() {
             {cvData.experience.map((exp, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
+                initial={
+                  prefersReducedMotion ? undefined : { opacity: 0, x: -20 }
+                }
+                animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                 className="glass rounded-2xl p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
               >
@@ -106,8 +110,8 @@ export default function About() {
 
         {/* Skills Section */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
           <div className="flex items-center gap-3 mb-6">
@@ -119,8 +123,10 @@ export default function About() {
             {cvData.skills.map((skill, index) => (
               <motion.div
                 key={skill.name}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={
+                  prefersReducedMotion ? undefined : { opacity: 0, scale: 0.9 }
+                }
+                animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
                 className="glass rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition-shadow"
               >

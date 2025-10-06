@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Github, Linkedin, Send } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import cvData from '../../public/data/cv.json';
 import { supabase } from '@/lib/supabaseClient';
 
 export default function Contact() {
+  const prefersReducedMotion = useReducedMotion();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -54,8 +55,8 @@ export default function Contact() {
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-6 max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -70,8 +71,8 @@ export default function Contact() {
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Info */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={prefersReducedMotion ? undefined : { opacity: 0, x: -20 }}
+            animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
             className="space-y-8"
           >
@@ -79,11 +80,11 @@ export default function Contact() {
               <h2 className="text-2xl font-display font-bold mb-6">
                 Informações de Contato
               </h2>
-              
+
               <div className="space-y-6">
                 <a
                   href={cvData.links.email}
-                  className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors group"
+                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Mail className="text-primary" />
@@ -98,7 +99,7 @@ export default function Contact() {
                   href={cvData.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 text-muted-foreground hover:text-primary transition-colors group"
+                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Github className="text-primary" />
@@ -113,7 +114,7 @@ export default function Contact() {
                   href={cvData.links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 text-muted-foreground hover:text-secondary transition-colors group"
+                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
                 >
                   <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
                     <Linkedin className="text-secondary" />
@@ -136,8 +137,8 @@ export default function Contact() {
 
           {/* Contact Form */}
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={prefersReducedMotion ? undefined : { opacity: 0, x: 20 }}
+            animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             <form onSubmit={handleSubmit} className="glass rounded-2xl p-8">
