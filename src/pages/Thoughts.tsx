@@ -1,11 +1,18 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, Calendar, BookOpen, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Calendar, BookOpen, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import cvData from '../../public/data/cv.json';
+import {
+  languageToLocale,
+  useCurrentLanguage,
+} from '@/hooks/useCurrentLanguage';
+import { calculateReadingTime } from '@/lib/content';
 
 export default function Thoughts() {
   const prefersReducedMotion = useReducedMotion();
+  const language = useCurrentLanguage();
+  const locale = languageToLocale(language);
 
   return (
     <div className="min-h-screen py-24 px-6">
@@ -38,44 +45,65 @@ export default function Thoughts() {
           </header>
 
           <div className="grid gap-8 md:grid-cols-2">
-            {cvData.thoughts.map((thought, index) => (
-              <motion.article
-                key={thought.slug}
-                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 30 }}
-                animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.45 }}
-                className="group flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_35px_65px_-55px_rgba(124,58,237,0.75)] backdrop-blur-xl"
-              >
-                <div className="mb-6 flex items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
-                    <Calendar className="h-3 w-3" aria-hidden />
-                    Atualizado em 2025
-                  </span>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
-                    <BookOpen className="h-3 w-3" aria-hidden />
-                    Leitura de 3 min
-                  </span>
-                </div>
+            {cvData.thoughts.map((thought, index) => {
+              const formattedDate = new Intl.DateTimeFormat(locale, {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+              }).format(new Date(thought.date));
+              const readingTime = calculateReadingTime(thought.body);
 
-                <h2 className="text-3xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
-                  {thought.title}
-                </h2>
+              return (
+                <motion.article
+                  key={thought.slug}
+                  initial={prefersReducedMotion ? undefined : { opacity: 0, y: 30 }}
+                  animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.45 }}
+                  className="group flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_35px_65px_-55px_rgba(124,58,237,0.75)] backdrop-blur-xl"
+                >
+                  <div className="mb-6 flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+                      <Calendar className="h-3 w-3" aria-hidden />
+                      {formattedDate}
+                    </span>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+                      <BookOpen className="h-3 w-3" aria-hidden />
+                      {readingTime} min
+                    </span>
+                  </div>
 
-                <p className="mt-4 text-base text-muted-foreground/90">
-                  {thought.excerpt}
-                </p>
+                  <h2 className="text-3xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
+                    {thought.title}
+                  </h2>
 
-                <div className="mt-auto pt-6">
-                  <Link
-                    to={`/thoughts/${thought.slug}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/70 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    Ler reflexão completa
-                    <ArrowRight className="h-4 w-4" aria-hidden />
-                  </Link>
-                </div>
-              </motion.article>
-            ))}
+                  <p className="mt-4 text-base text-muted-foreground/90">
+                    {thought.excerpt}
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
+                    {thought.tags.map((tag) => (
+                      <span
+                        key={`${thought.slug}-${tag}`}
+                        className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
+                      >
+                        <Tag className="h-3 w-3" aria-hidden />
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-auto pt-6">
+                    <Link
+                      to={`/thoughts/${thought.slug}`}
+                      className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/70 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    >
+                      Ler reflexão completa
+                      <ArrowRight className="h-4 w-4" aria-hidden />
+                    </Link>
+                  </div>
+                </motion.article>
+              );
+            })}
           </div>
 
           <div className="mt-16 flex flex-col items-center gap-4 rounded-3xl border border-border/60 bg-background/40 p-8 text-center shadow-[0_35px_70px_-60px_rgba(56,189,248,0.7)]">
