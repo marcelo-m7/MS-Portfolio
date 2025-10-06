@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, BookOpen } from 'lucide-react';
+import { ArrowLeft, Calendar, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import cvData from '../../public/data/cv.json';
@@ -42,7 +42,7 @@ export default function Thoughts() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="glass rounded-2xl p-8 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+                className="glass rounded-2xl p-8 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 focus-within:ring-offset-background"
               >
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                   <Calendar className="h-4 w-4" />
@@ -56,31 +56,18 @@ export default function Thoughts() {
                   {thought.title}
                 </h2>
 
-                <p className="text-lg text-muted-foreground mb-4 italic">
+                <p className="text-lg text-muted-foreground mb-6 italic">
                   {thought.excerpt}
                 </p>
 
-                <div className="prose prose-invert max-w-none">
-                  <p className="text-foreground/90 leading-relaxed">
-                    {thought.body}
-                  </p>
-                </div>
-
-                <div className="mt-6 pt-6 border-t border-border/50">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={cvData.profile.avatar}
-                      alt={cvData.profile.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-medium">{cvData.profile.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {cvData.profile.headline}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <Link
+                  to={`/thoughts/${thought.slug}`}
+                  className="inline-flex items-center gap-2 text-primary font-medium hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full px-3 py-1"
+                  aria-label={`Ler o artigo ${thought.title}`}
+                >
+                  Ler mais
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Link>
               </motion.article>
             ))}
           </div>

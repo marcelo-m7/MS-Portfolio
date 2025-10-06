@@ -19,24 +19,87 @@
     <meta name="twitter:title" content="Marcelo Santos - Portfolio" />
     <meta name="twitter:description" content="Software Engineer & Founder @ Monynha Softwares" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <style>
+      #google_translate_element,
+      .goog-te-banner-frame,
+      .goog-te-gadget,
+      .goog-te-balloon-frame {
+        display: none !important;
+      }
+
+      body {
+        top: 0 !important;
+      }
+    </style>
   </head>
 
   <body>
     <div id="root"></div>
     <div id="google_translate_element" style="display:none;"></div>
     <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'pt',
-          includedLanguages: 'pt,en,es,fr',
-          autoDisplay: false
-        }, 'google_translate_element');
-      }
-      window.setLanguage = function(lang) {
+      const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'fr'];
+      const LOCAL_STORAGE_KEY = 'preferred_language';
+
+      function applyLanguage(lang) {
+        const targetLang = SUPPORTED_LANGUAGES.includes(lang) ? lang : 'pt';
         const combo = document.querySelector('.goog-te-combo');
-        if (!combo) return;
-        combo.value = lang;
+
+        if (!combo) {
+          requestAnimationFrame(() => applyLanguage(targetLang));
+          return;
+        }
+
+        if (combo.value === targetLang) return;
+
+        combo.value = targetLang;
         combo.dispatchEvent(new Event('change'));
+      }
+
+      window.setLanguage = function (lang) {
+        if (!SUPPORTED_LANGUAGES.includes(lang)) return;
+        try {
+          localStorage.setItem(LOCAL_STORAGE_KEY, lang);
+        } catch (error) {
+          console.warn('Unable to persist language preference', error);
+        }
+        applyLanguage(lang);
+      };
+
+      function detectInitialLanguage() {
+        let preferred = 'pt';
+
+        try {
+          const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+          if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
+            preferred = stored;
+          }
+        } catch (error) {
+          preferred = 'pt';
+        }
+
+        if (preferred === 'pt') {
+          const browserLang = navigator.language?.split('-')[0];
+          if (browserLang && SUPPORTED_LANGUAGES.includes(browserLang)) {
+            preferred = browserLang;
+          }
+        }
+
+        if (preferred !== 'pt') {
+          applyLanguage(preferred);
+        }
+      }
+
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: 'pt',
+            includedLanguages: SUPPORTED_LANGUAGES.join(','),
+            autoDisplay: false,
+          },
+          'google_translate_element',
+        );
+
+        detectInitialLanguage();
       }
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

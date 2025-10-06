@@ -3,6 +3,7 @@ import { ExternalLink, Code2 } from 'lucide-react';
 import { useState } from 'react';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
@@ -42,7 +43,8 @@ export default function Portfolio() {
               key={category}
               variant={filter === category ? 'default' : 'outline'}
               onClick={() => setFilter(category)}
-              className="rounded-2xl"
+              className="rounded-2xl focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-pressed={filter === category}
             >
               {category}
             </Button>
@@ -60,17 +62,24 @@ export default function Portfolio() {
               className="group"
             >
               <div className="glass rounded-2xl overflow-hidden h-full flex flex-col hover:shadow-xl hover:shadow-primary/20 transition-all duration-300">
-                <div className="aspect-video bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Code2 className="w-16 h-16 text-primary/50" />
-                  </div>
+                <div className="relative">
+                  <AspectRatio ratio={16 / 9}>
+                    <img
+                      src={project.thumbnail}
+                      alt={project.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-full w-full object-cover"
+                    />
+                  </AspectRatio>
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background/60 pointer-events-none" aria-hidden="true" />
                   <div className="absolute top-4 right-4">
-                    <span className="px-3 py-1 rounded-full glass text-xs font-medium">
+                    <span className="px-3 py-1 rounded-full bg-background/80 text-xs font-medium text-foreground shadow-lg">
                       {project.year}
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors">
@@ -100,10 +109,11 @@ export default function Portfolio() {
                     href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-full px-2"
+                    aria-label={`Abrir projeto ${project.name}`}
                   >
                     Ver Projeto
-                    <ExternalLink size={16} />
+                    <ExternalLink size={16} aria-hidden="true" />
                   </a>
                 </div>
               </div>
