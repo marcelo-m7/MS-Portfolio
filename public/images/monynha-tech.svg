@@ -1,0 +1,20 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Monynha Tech — central de conteúdo técnico</title>
+  <defs>
+    <linearGradient id="monynha-tech-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="hsl(199 89% 52%)" />
+      <stop offset="50%" stop-color="hsl(263 70% 48%)" />
+      <stop offset="100%" stop-color="hsl(330 81% 62%)" />
+    </linearGradient>
+    <radialGradient id="monynha-tech-rings" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="hsl(210 40% 98% / 0.25)" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="720" fill="hsl(224 71% 6%)" />
+  <circle cx="320" cy="200" r="360" fill="url(#monynha-tech-rings)" />
+  <rect x="160" y="160" width="960" height="400" rx="42" fill="url(#monynha-tech-gradient)" opacity="0.85" />
+  <text x="200" y="320" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="88" font-weight="700">Monynha Tech</text>
+  <text x="200" y="388" fill="hsl(210 40% 98% / 0.75)" font-family="'Inter', sans-serif" font-size="32">Documentação • Tutoriais • Boletins de engenharia</text>
+  <text x="200" y="452" fill="hsl(210 40% 98% / 0.6)" font-family="'Inter', sans-serif" font-size="26">Conhecimento distribuído com foco em DX, automação e cultura open source.</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Monynha.com — website institucional</title>
+  <defs>
+    <linearGradient id="monynha-com-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(263 70% 45%)" />
+      <stop offset="50%" stop-color="hsl(224 70% 12%)" />
+      <stop offset="100%" stop-color="hsl(199 89% 52%)" />
+    </linearGradient>
+    <radialGradient id="monynha-com-glow" cx="75%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="hsl(330 81% 65% / 0.8)" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#monynha-com-gradient)" />
+  <circle cx="1040" cy="160" r="320" fill="url(#monynha-com-glow)" />
+  <rect x="120" y="140" width="1040" height="440" rx="48" fill="hsl(224 71% 6% / 0.7)" stroke="hsl(263 70% 60% / 0.6)" stroke-width="4" />
+  <text x="160" y="300" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="92" font-weight="700">Monynha.com</text>
+  <text x="160" y="380" fill="hsl(213 31% 88%)" font-family="'Inter', sans-serif" font-size="34" letter-spacing="0.08em">ECOSSISTEMA DIGITAL &bull; BRANDING &bull; CONTEÚDO</text>
+  <text x="160" y="456" fill="hsl(213 31% 75%)" font-family="'Inter', sans-serif" font-size="28">Site institucional com foco em performance, acessibilidade e storytelling visual.</text>
+</svg>

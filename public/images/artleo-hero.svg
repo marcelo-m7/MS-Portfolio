@@ -1,0 +1,19 @@
+<svg width="1440" height="810" viewBox="0 0 1440 810" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Art Leo Creative Spaces — cena hero 3D</title>
+  <defs>
+    <linearGradient id="artleo-hero-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(263 70% 50%)" />
+      <stop offset="100%" stop-color="hsl(199 89% 55%)" />
+    </linearGradient>
+    <radialGradient id="artleo-hero-highlight" cx="60%" cy="40%" r="45%">
+      <stop offset="0%" stop-color="hsl(330 81% 62% / 0.7)" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="810" fill="hsl(224 71% 5%)" />
+  <circle cx="720" cy="300" r="380" fill="url(#artleo-hero-bg)" opacity="0.8" />
+  <circle cx="1020" cy="420" r="320" fill="url(#artleo-hero-highlight)" />
+  <rect x="240" y="220" width="960" height="360" rx="72" fill="hsl(224 71% 6% / 0.75)" stroke="hsl(210 40% 98% / 0.2)" stroke-width="6" />
+  <text x="300" y="380" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="96" font-weight="700">Creative Spaces</text>
+  <text x="300" y="440" fill="hsl(210 40% 98% / 0.8)" font-family="'Inter', sans-serif" font-size="34">Imersão WebGL com esculturas dinâmicas e narrativa sonora.</text>
+</svg>

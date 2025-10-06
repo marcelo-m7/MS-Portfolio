@@ -1,0 +1,14 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Monagent — framework de agentes de IA</title>
+  <defs>
+    <linearGradient id="monagent-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(263 70% 52%)" />
+      <stop offset="100%" stop-color="hsl(199 89% 52%)" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="hsl(224 71% 6%)" />
+  <rect x="160" y="160" width="960" height="400" rx="48" fill="url(#monagent-bg)" opacity="0.85" />
+  <text x="200" y="320" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="96" font-weight="700">Monagent</text>
+  <text x="200" y="380" fill="hsl(210 40% 98% / 0.78)" font-family="'Inter', sans-serif" font-size="30">Framework modular para orquestrar agentes de IA e automações.</text>
+  <text x="200" y="442" fill="hsl(210 40% 98% / 0.65)" font-family="'Inter', sans-serif" font-size="26">Integrações com FastAPI, Supabase e n8n para pipelines inteligentes.</text>
+</svg>

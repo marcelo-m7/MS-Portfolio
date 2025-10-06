@@ -1,73 +1,87 @@
-# Welcome to your Lovable project
+# Monynha Portfolio 3D
 
-## Project info
+Experiência interativa construída com React, Vite e Tailwind para apresentar o ecossistema criativo da Monynha Softwares. O conteúdo dinâmico é abastecido a partir de `public/data/cv.json`, garantindo que perfis, projetos, séries e pensamentos possam ser atualizados sem alterar o código-fonte.
 
-**URL**: https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7
+## Tecnologias principais
 
-## How can I edit this code?
+- React + Vite + TypeScript
+- Tailwind CSS e shadcn/ui para componentes acessíveis
+- Framer Motion com respeito a `prefers-reduced-motion`
+- React Three Fiber (carregado sob demanda) para a cena hero e visualizadores 3D
+- Google Translate invisível para multilíngue instantâneo
 
-There are several ways of editing your application.
+## Desenvolvimento local
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+A aplicação estará disponível em `http://localhost:5173`.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Internacionalização com Google Translate
 
-**Use GitHub Codespaces**
+O widget do Google Translate é carregado e ocultado automaticamente em `index.html`. As funções utilitárias vivem em `src/lib/googleTranslate.ts` e expõem a API `setLanguage(lang)` usada pelo componente `LanguageSwitcher`.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Fluxo de idioma
 
-## What technologies are used for this project?
+1. Durante o bootstrap (`src/main.tsx`), `detectInitialLanguage()` procura um idioma salvo em `localStorage` e, se não houver, usa `navigator.language`.
+2. `setLanguage(lang)` seleciona o idioma no widget oculto, emite o evento `app:languagechange` e atualiza `document.documentElement.lang`.
+3. `LanguageSwitcher` (`src/components/LanguageSwitcher.tsx`) responde ao evento para refletir o idioma atual.
 
-This project is built with:
+#### Como adicionar um novo idioma
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+1. Inclua o código ISO (por exemplo, `it` para italiano) em `supportedLanguages` dentro de `src/lib/googleTranslate.ts`.
+2. Atualize o script em `index.html` para incluir o idioma em `includedLanguages`.
+3. Adicione o rótulo no `labels` e `languageNames` do `LanguageSwitcher`.
+4. Opcionalmente, traduza trechos estáticos em `cv.json`.
 
-## How can I deploy this project?
+> **Importante:** o widget padrão permanece totalmente oculto via CSS e `MutationObserver`, atendendo ao requisito de não exibir a barra do Google.
 
-Simply open [Lovable](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and click on Share -> Publish.
+## Estrutura de conteúdo (`cv.json`)
 
-## Can I connect a custom domain to my Lovable project?
+Todo o conteúdo visível é centralizado em `public/data/cv.json`. Os campos principais são:
 
-Yes, you can!
+- `profile`: dados pessoais exibidos no hero.
+- `projects`: cada projeto precisa de `slug`, `thumbnail` (arquivo `.svg`) e informações da stack.
+- `series` e `artworks`: mapeiam séries criativas e artes individuais.
+- `thoughts`: lista de artigos para a rota `/thoughts` e detalhes em `/thoughts/:slug`.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Adicionando novos projetos
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. Gere um `slug` único (kebab-case) e defina `thumbnail` apontando para um SVG em `public/images`.
+2. Crie o arquivo `.svg` com título acessível (`<title>`) e mantenha proporção 16:9.
+3. Inclua `category`, `year`, `summary`, `stack` e `url`.
+4. Para destacar em séries, adicione o `slug` na lista `series[].works`.
+
+### Adicionando novos pensamentos
+
+1. Informe `slug`, `title`, `excerpt`, `body` (Markdown suportado), `date` em ISO (`YYYY-MM-DD`) e `tags`.
+2. O corpo é renderizado via `react-markdown` em `/thoughts/:slug`.
+
+### Adicionando séries ou artes
+
+- Cada série (`series`) aceita `slug`, `title`, `description`, `year` e lista de `works` (slugs de projetos ou artes).
+- Artes (`artworks`) devem apontar para SVGs em `public/images`. Se incluir modelos 3D (`.glb`), eles são carregados sob demanda no modal da rota `/art/:slug`.
+
+## Acessibilidade e UX
+
+- Componentes interativos utilizam `focus-visible` com `ring` consistente.
+- Todas as animações respeitam `prefers-reduced-motion`; o hero 3D é substituído por uma arte estática quando necessário.
+- Navegação completa por teclado: `LanguageSwitcher`, filtros de portfolio e menus receberam melhorias de foco.
+
+## Boas práticas de assets
+
+- **Somente SVGs** são adicionados à pasta `public/images`.
+- Para novos ícones ou miniaturas, prefira gradientes e tipografia vetorial.
+- Backgrounds globais (cores, gradientes) não devem ser alterados conforme a diretriz do projeto.
+
+## Testes
+
+Execute o build para garantir que o bundler está saudável:
+
+```bash
+npm run build
+```
+
+Isso valida a integração do React, Tailwind e das dependências carregadas sob demanda.

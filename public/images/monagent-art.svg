@@ -1,0 +1,15 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Monagent Automation Lab — arte conceitual</title>
+  <defs>
+    <linearGradient id="monagent-art-bg" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="hsl(199 89% 52%)" />
+      <stop offset="50%" stop-color="hsl(263 70% 48%)" />
+      <stop offset="100%" stop-color="hsl(330 81% 62%)" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="hsl(224 71% 5%)" />
+  <rect x="180" y="180" width="920" height="360" rx="52" fill="url(#monagent-art-bg)" opacity="0.85" />
+  <text x="220" y="340" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="80" font-weight="700">Automation Lab</text>
+  <text x="220" y="398" fill="hsl(210 40% 98% / 0.78)" font-family="'Inter', sans-serif" font-size="30">Arquitetura visual dos fluxos de agentes modulares.</text>
+  <text x="220" y="454" fill="hsl(210 40% 98% / 0.65)" font-family="'Inter', sans-serif" font-size="26">Camadas que representam pipelines de dados, triggers e inteligência coletiva.</text>
+</svg>

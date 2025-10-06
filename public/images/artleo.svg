@@ -1,0 +1,20 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Art Leo — experiência 3D imersiva</title>
+  <defs>
+    <linearGradient id="artleo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(263 70% 48%)" />
+      <stop offset="50%" stop-color="hsl(199 89% 52%)" />
+      <stop offset="100%" stop-color="hsl(330 81% 62%)" />
+    </linearGradient>
+    <radialGradient id="artleo-orb" cx="40%" cy="40%" r="45%">
+      <stop offset="0%" stop-color="hsl(210 40% 98% / 0.35)" />
+      <stop offset="100%" stop-color="transparent" />
+    </radialGradient>
+  </defs>
+  <rect width="1280" height="720" fill="hsl(224 71% 5%)" />
+  <circle cx="640" cy="260" r="300" fill="url(#artleo-gradient)" opacity="0.8" />
+  <circle cx="860" cy="420" r="260" fill="url(#artleo-orb)" />
+  <text x="200" y="330" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="92" font-weight="700">Art Leo</text>
+  <text x="200" y="390" fill="hsl(210 40% 98% / 0.78)" font-family="'Inter', sans-serif" font-size="32">Experiência 3D interativa para destacar arte digital e esculturas.</text>
+  <text x="200" y="450" fill="hsl(210 40% 98% / 0.65)" font-family="'Inter', sans-serif" font-size="26">Construído com React Three Fiber, animações imersivas e storytelling visual.</text>
+</svg>

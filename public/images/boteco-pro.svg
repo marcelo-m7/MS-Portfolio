@@ -1,0 +1,16 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg" role="img">
+  <title>Boteco Pro — gestão inteligente para bares</title>
+  <defs>
+    <linearGradient id="boteco-pro-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="hsl(330 81% 62%)" />
+      <stop offset="50%" stop-color="hsl(263 70% 48%)" />
+      <stop offset="100%" stop-color="hsl(199 89% 52%)" />
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="hsl(224 71% 6%)" />
+  <circle cx="320" cy="180" r="320" fill="url(#boteco-pro-gradient)" opacity="0.6" />
+  <rect x="200" y="160" width="880" height="400" rx="44" fill="hsl(224 71% 6% / 0.85)" stroke="hsl(330 81% 62% / 0.6)" stroke-width="4" />
+  <text x="240" y="310" fill="hsl(210 40% 98%)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="88" font-weight="700">Boteco Pro</text>
+  <text x="240" y="370" fill="hsl(210 40% 98% / 0.78)" font-family="'Inter', sans-serif" font-size="30">Gestão de pedidos • Inventário • Automação financeira</text>
+  <text x="240" y="430" fill="hsl(210 40% 98% / 0.65)" font-family="'Inter', sans-serif" font-size="26">Aplicativo Flutter conectado ao Supabase para operações em tempo real.</text>
+</svg>

@@ -18,56 +18,89 @@
     {
       "name": "Monynha.com",
       "summary": "Website institucional da Monynha Softwares — vitrine de produtos, valores e visão da marca.",
-      "stack": ["Next.js", "TailwindCSS", "Payload CMS", "Supabase"],
+      "stack": [
+        "Next.js",
+        "TailwindCSS",
+        "Payload CMS",
+        "Supabase"
+      ],
       "url": "https://monynha.com",
-      "thumbnail": "/images/monynha-com.jpg",
+      "thumbnail": "/images/monynha-com.svg",
       "category": "Website",
-      "year": 2024
+      "year": 2024,
+      "slug": "monynha-com"
     },
     {
       "name": "Monynha Tech",
       "summary": "Blog técnico e central de documentação dos projetos Monynha. Plataforma voltada para desenvolvedores e estudantes.",
-      "stack": ["Next.js", "Supabase", "CI/CD", "Markdown"],
+      "stack": [
+        "Next.js",
+        "Supabase",
+        "CI/CD",
+        "Markdown"
+      ],
       "url": "https://monynha.tech",
-      "thumbnail": "/images/monynha-tech.jpg",
+      "thumbnail": "/images/monynha-tech.svg",
       "category": "Plataforma",
-      "year": 2025
+      "year": 2025,
+      "slug": "monynha-tech"
     },
     {
       "name": "FACODI",
       "summary": "Faculdade Comunitária Digital — portal gratuito de ensino superior aberto e colaborativo, alimentado por currículos oficiais e conteúdo público.",
-      "stack": ["Next.js", "Supabase", "Payload CMS"],
+      "stack": [
+        "Next.js",
+        "Supabase",
+        "Payload CMS"
+      ],
       "url": "https://facodi.pt",
-      "thumbnail": "/images/facodi.jpg",
+      "thumbnail": "/images/facodi.svg",
       "category": "Educação",
-      "year": 2025
+      "year": 2025,
+      "slug": "facodi"
     },
     {
       "name": "Boteco Pro",
       "summary": "Aplicativo de gestão para bares e restaurantes, desenvolvido em Flutter e Supabase.",
-      "stack": ["Flutter", "Supabase", "PostgreSQL"],
+      "stack": [
+        "Flutter",
+        "Supabase",
+        "PostgreSQL"
+      ],
       "url": "https://boteco.monynha.online",
-      "thumbnail": "/images/botecopro.jpg",
+      "thumbnail": "/images/boteco-pro.svg",
       "category": "App",
-      "year": 2025
+      "year": 2025,
+      "slug": "boteco-pro"
     },
     {
       "name": "Art Leo",
       "summary": "Website 3D imersivo para o artista Leonardo Silva, explorando arte, animação e interação digital.",
-      "stack": ["Next.js", "react-three-fiber", "Supabase"],
+      "stack": [
+        "Next.js",
+        "react-three-fiber",
+        "Supabase"
+      ],
       "url": "https://artleo.monynha.com",
-      "thumbnail": "/images/artleo.jpg",
+      "thumbnail": "/images/artleo.svg",
       "category": "Portfólio",
-      "year": 2025
+      "year": 2025,
+      "slug": "artleo"
     },
     {
       "name": "Monagent",
       "summary": "Framework modular em Python para criação de agentes de IA e integração com automações (n8n, APIs, ferramentas de dados).",
-      "stack": ["Python", "FastAPI", "n8n", "Supabase"],
+      "stack": [
+        "Python",
+        "FastAPI",
+        "n8n",
+        "Supabase"
+      ],
       "url": "https://github.com/Monynha-Softwares/Monagent",
-      "thumbnail": "/images/monagent.jpg",
+      "thumbnail": "/images/monagent.svg",
       "category": "IA",
-      "year": 2025
+      "year": 2025,
+      "slug": "monagent"
     }
   ],
   "experience": [
@@ -98,14 +131,46 @@
     }
   ],
   "skills": [
-    { "name": "Next.js", "category": "Frontend", "level": "Avançado" },
-    { "name": "Supabase", "category": "Backend / DB", "level": "Avançado" },
-    { "name": "Flutter", "category": "Mobile", "level": "Intermédio" },
-    { "name": "Docker", "category": "DevOps", "level": "Avançado" },
-    { "name": "Payload CMS", "category": "CMS", "level": "Intermédio" },
-    { "name": "CI/CD (Coolify + GitHub Actions)", "category": "DevOps", "level": "Avançado" },
-    { "name": "Framer Motion", "category": "Animações / UI", "level": "Intermédio" },
-    { "name": "React Three Fiber", "category": "3D / WebGL", "level": "Intermédio" }
+    {
+      "name": "Next.js",
+      "category": "Frontend",
+      "level": "Avançado"
+    },
+    {
+      "name": "Supabase",
+      "category": "Backend / DB",
+      "level": "Avançado"
+    },
+    {
+      "name": "Flutter",
+      "category": "Mobile",
+      "level": "Intermédio"
+    },
+    {
+      "name": "Docker",
+      "category": "DevOps",
+      "level": "Avançado"
+    },
+    {
+      "name": "Payload CMS",
+      "category": "CMS",
+      "level": "Intermédio"
+    },
+    {
+      "name": "CI/CD (Coolify + GitHub Actions)",
+      "category": "DevOps",
+      "level": "Avançado"
+    },
+    {
+      "name": "Framer Motion",
+      "category": "Animações / UI",
+      "level": "Intermédio"
+    },
+    {
+      "name": "React Three Fiber",
+      "category": "3D / WebGL",
+      "level": "Intermédio"
+    }
   ],
   "series": [
     {
@@ -113,18 +178,42 @@
       "title": "Creative Systems",
       "description": "Coleção de projetos experimentais que exploram a intersecção entre arte generativa, UX e automação inteligente.",
       "year": 2024,
-      "works": ["artleo", "monagent"]
+      "works": [
+        "artleo",
+        "monagent"
+      ]
     }
   ],
   "artworks": [
     {
       "slug": "artleo",
       "title": "Art Leo Creative Spaces",
-      "media": ["/images/artleo-hero.jpg", "/images/artleo-3d.glb"],
+      "media": [
+        "/images/artleo-hero.svg",
+        "/images/artleo-3d.glb"
+      ],
       "year": 2025,
-      "materials": ["WebGL", "3D Animation", "Digital Sculpture"],
+      "materials": [
+        "WebGL",
+        "3D Animation",
+        "Digital Sculpture"
+      ],
       "description": "Experiência imersiva criada em Next.js e React Three Fiber para o artista Leonardo Silva, destacando arte interativa e ambiente 3D.",
       "url3d": "https://artleo.monynha.com"
+    },
+    {
+      "slug": "monagent",
+      "title": "Monagent Automation Lab",
+      "media": [
+        "/images/monagent-art.svg"
+      ],
+      "year": 2025,
+      "materials": [
+        "Python",
+        "AI Agents",
+        "Automação"
+      ],
+      "description": "Visual modular que traduz a arquitetura do framework Monagent em camadas de automação e inteligência colaborativa."
     }
   ],
   "thoughts": [
@@ -132,13 +221,23 @@
       "slug": "design-tecnologia-inclusiva",
       "title": "Design e Tecnologia Inclusiva",
       "excerpt": "A tecnologia é mais humana quando é acessível.",
-      "body": "Acredito que design e acessibilidade não são opostos, mas aliados. No ecossistema Monynha, cada interface nasce com empatia: contraste adequado, navegação por teclado e respeito ao prefers-reduced-motion fazem parte do nosso DNA digital."
+      "body": "## Desenhar com empatia\nAcredito que design e acessibilidade não são opostos, mas aliados. No ecossistema Monynha, cada interface nasce com empatia: contraste adequado, navegação por teclado e respeito ao `prefers-reduced-motion` fazem parte do nosso DNA digital.\n\n### Ferramentas inclusivas\n- Componentes com `focus-visible` consistente.\n- Internacionalização pensada para leitores de tela.\n- Conteúdo traduzido sem perder o contexto cultural.",
+      "date": "2025-02-05",
+      "tags": [
+        "acessibilidade",
+        "design"
+      ]
     },
     {
       "slug": "por-tras-da-monynha",
       "title": "Por trás da Monynha",
       "excerpt": "Mais do que software, é movimento.",
-      "body": "Monynha Softwares nasceu da vontade de unir diversidade e tecnologia em um só propósito: criar ferramentas que empoderem pessoas e transformem ideias em experiências digitais acessíveis, criativas e babadeiras 💅."
+      "body": "## Movimento Monynha\nMonynha Softwares nasceu da vontade de unir diversidade e tecnologia em um só propósito: criar ferramentas que empoderem pessoas e transformem ideias em experiências digitais acessíveis, criativas e babadeiras 💅.\n\n### Ritual de criação\n1. Escuta ativa com a comunidade.\n2. Prototipagem colaborativa.\n3. Entregas iterativas com feedback real.",
+      "date": "2025-01-12",
+      "tags": [
+        "comunidade",
+        "cultura"
+      ]
     }
   ],
   "contact": {
