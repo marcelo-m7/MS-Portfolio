@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
+  <title>Thumbnail abstrata do projeto Monagent</title>
+  <defs>
+    <linearGradient id="monagentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22d3ee" />
+      <stop offset="100%" stop-color="#7c3aed" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="32" fill="#020617" />
+  <rect x="32" y="32" width="576" height="296" rx="28" fill="rgba(34,211,238,0.18)" />
+  <path d="M160 240 C 200 140 300 220 360 150 C 420 90 500 150 520 220" fill="none" stroke="url(#monagentGradient)" stroke-width="16" stroke-linecap="round" stroke-dasharray="22 16" />
+  <circle cx="200" cy="150" r="68" fill="rgba(34,211,238,0.3)" />
+  <circle cx="420" cy="220" r="95" fill="rgba(124,58,237,0.25)" />
+  <text x="50%" y="58%" text-anchor="middle" fill="white" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="46" font-weight="600">
+    Monagent
+  </text>
+</svg>

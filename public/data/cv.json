@@ -20,7 +20,7 @@
       "summary": "Website institucional da Monynha Softwares — vitrine de produtos, valores e visão da marca.",
       "stack": ["Next.js", "TailwindCSS", "Payload CMS", "Supabase"],
       "url": "https://monynha.com",
-      "thumbnail": "/images/monynha-com.jpg",
+      "thumbnail": "/images/monynha-com.svg",
       "category": "Website",
       "year": 2024
     },
@@ -29,7 +29,7 @@
       "summary": "Blog técnico e central de documentação dos projetos Monynha. Plataforma voltada para desenvolvedores e estudantes.",
       "stack": ["Next.js", "Supabase", "CI/CD", "Markdown"],
       "url": "https://monynha.tech",
-      "thumbnail": "/images/monynha-tech.jpg",
+      "thumbnail": "/images/monynha-tech.svg",
       "category": "Plataforma",
       "year": 2025
     },
@@ -38,7 +38,7 @@
       "summary": "Faculdade Comunitária Digital — portal gratuito de ensino superior aberto e colaborativo, alimentado por currículos oficiais e conteúdo público.",
       "stack": ["Next.js", "Supabase", "Payload CMS"],
       "url": "https://facodi.pt",
-      "thumbnail": "/images/facodi.jpg",
+      "thumbnail": "/images/facodi.svg",
       "category": "Educação",
       "year": 2025
     },
@@ -47,7 +47,7 @@
       "summary": "Aplicativo de gestão para bares e restaurantes, desenvolvido em Flutter e Supabase.",
       "stack": ["Flutter", "Supabase", "PostgreSQL"],
       "url": "https://boteco.monynha.online",
-      "thumbnail": "/images/botecopro.jpg",
+      "thumbnail": "/images/botecopro.svg",
       "category": "App",
       "year": 2025
     },
@@ -56,7 +56,7 @@
       "summary": "Website 3D imersivo para o artista Leonardo Silva, explorando arte, animação e interação digital.",
       "stack": ["Next.js", "react-three-fiber", "Supabase"],
       "url": "https://artleo.monynha.com",
-      "thumbnail": "/images/artleo.jpg",
+      "thumbnail": "/images/artleo.svg",
       "category": "Portfólio",
       "year": 2025
     },
@@ -65,7 +65,7 @@
       "summary": "Framework modular em Python para criação de agentes de IA e integração com automações (n8n, APIs, ferramentas de dados).",
       "stack": ["Python", "FastAPI", "n8n", "Supabase"],
       "url": "https://github.com/Monynha-Softwares/Monagent",
-      "thumbnail": "/images/monagent.jpg",
+      "thumbnail": "/images/monagent.svg",
       "category": "IA",
       "year": 2025
     }
@@ -120,7 +120,7 @@
     {
       "slug": "artleo",
       "title": "Art Leo Creative Spaces",
-      "media": ["/images/artleo-hero.jpg", "/images/artleo-3d.glb"],
+      "media": ["/images/artleo-hero.svg", "/images/artleo-3d.svg"],
       "year": 2025,
       "materials": ["WebGL", "3D Animation", "Digital Sculpture"],
       "description": "Experiência imersiva criada em Next.js e React Three Fiber para o artista Leonardo Silva, destacando arte interativa e ambiente 3D.",
