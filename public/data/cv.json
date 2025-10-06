@@ -1,0 +1,151 @@
+{
+  "langDefault": "pt",
+  "profile": {
+    "name": "Marcelo Santos",
+    "headline": "Software Engineer & Founder @ Monynha Softwares",
+    "location": "Faro, Portugal",
+    "bio": "Engenheiro de software com foco em produtos digitais, automação e DevOps. Apaixonado por acessibilidade, open-source e design inclusivo. Fundador da Monynha Softwares — um laboratório criativo que une tecnologia, diversidade e arte digital.",
+    "avatar": "/avatar.jpg"
+  },
+  "links": {
+    "github": "https://github.com/marcelo-m7",
+    "org": "https://github.com/Monynha-Softwares",
+    "site": "https://monynha.com",
+    "linkedin": "https://www.linkedin.com/in/marcelo-m7",
+    "email": "mailto:geral@monynha.com"
+  },
+  "projects": [
+    {
+      "name": "Monynha.com",
+      "summary": "Website institucional da Monynha Softwares — vitrine de produtos, valores e visão da marca.",
+      "stack": ["Next.js", "TailwindCSS", "Payload CMS", "Supabase"],
+      "url": "https://monynha.com",
+      "thumbnail": "/images/monynha-com.jpg",
+      "category": "Website",
+      "year": 2024
+    },
+    {
+      "name": "Monynha Tech",
+      "summary": "Blog técnico e central de documentação dos projetos Monynha. Plataforma voltada para desenvolvedores e estudantes.",
+      "stack": ["Next.js", "Supabase", "CI/CD", "Markdown"],
+      "url": "https://monynha.tech",
+      "thumbnail": "/images/monynha-tech.jpg",
+      "category": "Plataforma",
+      "year": 2025
+    },
+    {
+      "name": "FACODI",
+      "summary": "Faculdade Comunitária Digital — portal gratuito de ensino superior aberto e colaborativo, alimentado por currículos oficiais e conteúdo público.",
+      "stack": ["Next.js", "Supabase", "Payload CMS"],
+      "url": "https://facodi.pt",
+      "thumbnail": "/images/facodi.jpg",
+      "category": "Educação",
+      "year": 2025
+    },
+    {
+      "name": "Boteco Pro",
+      "summary": "Aplicativo de gestão para bares e restaurantes, desenvolvido em Flutter e Supabase.",
+      "stack": ["Flutter", "Supabase", "PostgreSQL"],
+      "url": "https://boteco.monynha.online",
+      "thumbnail": "/images/botecopro.jpg",
+      "category": "App",
+      "year": 2025
+    },
+    {
+      "name": "Art Leo",
+      "summary": "Website 3D imersivo para o artista Leonardo Silva, explorando arte, animação e interação digital.",
+      "stack": ["Next.js", "react-three-fiber", "Supabase"],
+      "url": "https://artleo.monynha.com",
+      "thumbnail": "/images/artleo.jpg",
+      "category": "Portfólio",
+      "year": 2025
+    },
+    {
+      "name": "Monagent",
+      "summary": "Framework modular em Python para criação de agentes de IA e integração com automações (n8n, APIs, ferramentas de dados).",
+      "stack": ["Python", "FastAPI", "n8n", "Supabase"],
+      "url": "https://github.com/Monynha-Softwares/Monagent",
+      "thumbnail": "/images/monagent.jpg",
+      "category": "IA",
+      "year": 2025
+    }
+  ],
+  "experience": [
+    {
+      "role": "Founder & Software Engineer",
+      "org": "Monynha Softwares",
+      "start": "2022-01",
+      "end": null,
+      "location": "Faro, Portugal",
+      "highlights": [
+        "Criação e manutenção do ecossistema Monynha (sites, apps e automações).",
+        "Desenvolvimento full-stack com Next.js, Supabase, Flutter e Payload CMS.",
+        "Gestão de pipelines CI/CD (Coolify, GitHub Actions) e infraestrutura Docker.",
+        "Integração entre arte, tecnologia e IA aplicada a produtos digitais."
+      ]
+    },
+    {
+      "role": "Estudante de Engenharia de Software",
+      "org": "Universidade do Algarve (LESTI)",
+      "start": "2021-09",
+      "end": "2025-07",
+      "location": "Faro, Portugal",
+      "highlights": [
+        "Licenciatura em Engenharia de Software e Tecnologias de Informação.",
+        "Projetos práticos em IA, desenvolvimento web e visualização de informação.",
+        "Participação em iniciativas open-source e pesquisa aplicada."
+      ]
+    }
+  ],
+  "skills": [
+    { "name": "Next.js", "category": "Frontend", "level": "Avançado" },
+    { "name": "Supabase", "category": "Backend / DB", "level": "Avançado" },
+    { "name": "Flutter", "category": "Mobile", "level": "Intermédio" },
+    { "name": "Docker", "category": "DevOps", "level": "Avançado" },
+    { "name": "Payload CMS", "category": "CMS", "level": "Intermédio" },
+    { "name": "CI/CD (Coolify + GitHub Actions)", "category": "DevOps", "level": "Avançado" },
+    { "name": "Framer Motion", "category": "Animações / UI", "level": "Intermédio" },
+    { "name": "React Three Fiber", "category": "3D / WebGL", "level": "Intermédio" }
+  ],
+  "series": [
+    {
+      "slug": "creative-systems",
+      "title": "Creative Systems",
+      "description": "Coleção de projetos experimentais que exploram a intersecção entre arte generativa, UX e automação inteligente.",
+      "year": 2024,
+      "works": ["artleo", "monagent"]
+    }
+  ],
+  "artworks": [
+    {
+      "slug": "artleo",
+      "title": "Art Leo Creative Spaces",
+      "media": ["/images/artleo-hero.jpg", "/images/artleo-3d.glb"],
+      "year": 2025,
+      "materials": ["WebGL", "3D Animation", "Digital Sculpture"],
+      "description": "Experiência imersiva criada em Next.js e React Three Fiber para o artista Leonardo Silva, destacando arte interativa e ambiente 3D.",
+      "url3d": "https://artleo.monynha.com"
+    }
+  ],
+  "thoughts": [
+    {
+      "slug": "design-tecnologia-inclusiva",
+      "title": "Design e Tecnologia Inclusiva",
+      "excerpt": "A tecnologia é mais humana quando é acessível.",
+      "body": "Acredito que design e acessibilidade não são opostos, mas aliados. No ecossistema Monynha, cada interface nasce com empatia: contraste adequado, navegação por teclado e respeito ao prefers-reduced-motion fazem parte do nosso DNA digital."
+    },
+    {
+      "slug": "por-tras-da-monynha",
+      "title": "Por trás da Monynha",
+      "excerpt": "Mais do que software, é movimento.",
+      "body": "Monynha Softwares nasceu da vontade de unir diversidade e tecnologia em um só propósito: criar ferramentas que empoderem pessoas e transformem ideias em experiências digitais acessíveis, criativas e babadeiras 💅."
+    }
+  ],
+  "contact": {
+    "email": "geral@monynha.com",
+    "availability": "Disponível para colaborações e oportunidades criativas.",
+    "note": "Entre em contato para projetos, parcerias ou ideias fora da caixa!",
+    "successMessage": "Mensagem enviada com sucesso! Entrarei em contato em breve 🌈",
+    "errorMessage": "Ops! Algo deu errado. Tenta novamente mais tarde 💜"
+  }
+}
