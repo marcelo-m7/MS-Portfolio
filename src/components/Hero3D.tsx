@@ -39,7 +39,10 @@ const StaticIllustration = () => (
 export default function Hero3D() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  if (prefersReducedMotion || !HeroCanvas) {
+  const isHero3DEnabled =
+    import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
+
+  if (prefersReducedMotion || !isHero3DEnabled) {
     return <StaticIllustration />;
   }
 
