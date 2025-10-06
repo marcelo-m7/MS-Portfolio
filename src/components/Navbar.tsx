@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import cvData from '../../public/data/cv.json';
 
 export default function Navbar() {
@@ -12,6 +13,7 @@ export default function Navbar() {
     { href: '/', label: 'Home' },
     { href: '/portfolio', label: 'Portfolio' },
     { href: '/about', label: 'Sobre' },
+    { href: '/thoughts', label: 'Pensamentos' },
     { href: '/contact', label: 'Contato' },
   ];
 
@@ -66,6 +68,7 @@ export default function Navbar() {
               >
                 <Mail size={20} />
               </a>
+              <LanguageSwitcher />
             </div>
           </div>
 
@@ -126,6 +129,7 @@ export default function Navbar() {
                 >
                   <Mail size={20} />
                 </a>
+                <LanguageSwitcher />
               </div>
             </motion.div>
           )}
