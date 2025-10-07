@@ -3,6 +3,7 @@ import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const HeroCanvas = lazy(() => import('./HeroCanvas'));
 const FaultyTerminalBackground = lazy(() => import('./FaultyTerminal'));
+const GridDistortionBackground = lazy(() => import('./GridDistortion'));
 
 const StaticIllustration = () => (
   <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
@@ -47,10 +48,28 @@ export default function Hero3D() {
   const heroBackground = import.meta.env.VITE_HERO_BACKGROUND?.toLowerCase();
   const isHero3DEnabled =
     import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true' || heroBackground === '3d';
-  const shouldUseFaultyTerminal = heroBackground === 'faulty-terminal' || (!heroBackground && !isHero3DEnabled);
+  const shouldUseGridDistortion =
+    heroBackground === 'grid-distortion' || (!heroBackground && !isHero3DEnabled);
+  const shouldUseFaultyTerminal = heroBackground === 'faulty-terminal';
 
   if (prefersReducedMotion || heroBackground === 'static') {
     return <StaticIllustration />;
+  }
+
+  if (shouldUseGridDistortion) {
+    return (
+      <Suspense fallback={<StaticIllustration />}>
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <GridDistortionBackground
+            grid={18}
+            mouse={0.12}
+            strength={0.18}
+            relaxation={0.88}
+            imageSrc="/images/artleo-hero.svg"
+          />
+        </div>
+      </Suspense>
+    );
   }
 
   if (shouldUseFaultyTerminal) {
