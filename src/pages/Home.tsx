@@ -1,12 +1,15 @@
+import { Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Hero3D from '@/components/Hero3D';
-import cvData from '../../public/data/cv.json';
-import { Suspense } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Home() {
+  const { content } = useLanguage();
+  const { profile, projects, ui } = content;
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -14,7 +17,7 @@ export default function Home() {
         <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20" />}>
           <Hero3D />
         </Suspense>
-        
+
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -29,22 +32,18 @@ export default function Home() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
             >
               <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">{cvData.profile.location}</span>
+              <span className="text-sm font-medium">{profile.location}</span>
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-balance">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {cvData.profile.name}
+                {profile.name}
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium">
-              {cvData.profile.headline}
-            </p>
+            <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium">{profile.headline}</p>
 
-            <p className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto">
-              {cvData.profile.bio}
-            </p>
+            <p className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto">{profile.bio}</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
@@ -54,20 +53,18 @@ export default function Home() {
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
-                  Explorar Portfolio
+                  {ui.home.exploreCta}
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
-              
+
               <Button
                 asChild
                 variant="outline"
                 size="lg"
                 className="rounded-2xl text-lg px-8 py-6 border-2 hover:bg-card"
               >
-                <Link to="/contact">
-                  Entre em Contato
-                </Link>
+                <Link to="/contact">{ui.home.contactCta}</Link>
               </Button>
             </div>
           </motion.div>
@@ -101,17 +98,17 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Projetos em Destaque
+              {ui.home.featuredTitle}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Seleção dos melhores trabalhos do ecossistema Monynha
+              {ui.home.featuredSubtitle}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cvData.projects.slice(0, 6).map((project, index) => (
+            {projects.slice(0, 6).map((project, index) => (
               <motion.div
-                key={project.name}
+                key={project.key}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -129,18 +126,16 @@ export default function Home() {
                         <Code2 className="text-white" size={24} />
                       </div>
                       <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
-                        {project.category}
+                        {project.category.label}
                       </span>
                     </div>
-                    
+
                     <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
                       {project.name}
                     </h3>
-                    
-                    <p className="text-muted-foreground mb-4 text-sm">
-                      {project.summary}
-                    </p>
-                    
+
+                    <p className="text-muted-foreground mb-4 text-sm">{project.summary}</p>
+
                     <div className="flex flex-wrap gap-2">
                       {project.stack.slice(0, 3).map((tech) => (
                         <span
@@ -165,7 +160,7 @@ export default function Home() {
           >
             <Button asChild variant="outline" size="lg" className="rounded-2xl">
               <Link to="/portfolio">
-                Ver Todos os Projetos
+                {ui.home.viewAll}
                 <ArrowRight className="ml-2" />
               </Link>
             </Button>

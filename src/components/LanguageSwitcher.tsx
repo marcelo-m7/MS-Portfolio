@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useRef } from 'react';
 import { Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -6,47 +7,51 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useEffect, useState } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-const languages = [
-  { code: 'pt', name: 'Português', flag: '🇵🇹' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-];
+const srLabels: Record<string, string> = {
+  pt: 'Selecionar idioma',
+  en: 'Select language',
+  es: 'Seleccionar idioma',
+  fr: 'Choisir la langue',
+};
 
 export default function LanguageSwitcher() {
-  const [currentLang, setCurrentLang] = useState('pt');
+  const { language, setLanguage, availableLanguages } = useLanguage();
+  const autoDetectRef = useRef(false);
 
   useEffect(() => {
-    // Auto-detect browser language on mount
-    const browserLang = navigator.language.split('-')[0];
-    if (browserLang !== 'pt' && languages.some(l => l.code === browserLang)) {
-      setTimeout(() => setLanguage(browserLang), 1000);
+    if (autoDetectRef.current || typeof navigator === 'undefined') {
+      return;
     }
-  }, []);
 
-  const setLanguage = (lang: string) => {
-    setCurrentLang(lang);
-    if (typeof window !== 'undefined' && (window as any).setLanguage) {
-      (window as any).setLanguage(lang);
+    const browserLang = navigator.language.split('-')[0];
+    const match = availableLanguages.find((item) => item.code === browserLang);
+
+    if (match) {
+      autoDetectRef.current = true;
+      setLanguage(match.code);
+    } else {
+      autoDetectRef.current = true;
     }
-  };
+  }, [availableLanguages, setLanguage]);
+
+  const srLabel = useMemo(() => srLabels[language] ?? srLabels.en, [language]);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-xl">
           <Globe className="h-5 w-5" />
-          <span className="sr-only">Selecionar idioma</span>
+          <span className="sr-only">{srLabel}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="glass rounded-2xl">
-        {languages.map((lang) => (
+        {availableLanguages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => setLanguage(lang.code)}
-            className={`rounded-xl ${currentLang === lang.code ? 'bg-primary/20' : ''}`}
+            className={`rounded-xl ${language === lang.code ? 'bg-primary/20' : ''}`}
           >
             <span className="mr-2">{lang.flag}</span>
             {lang.name}

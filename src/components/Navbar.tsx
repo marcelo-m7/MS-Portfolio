@@ -3,18 +3,19 @@ import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import cvData from '../../public/data/cv.json';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { content } = useLanguage();
 
   const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
+    { href: '/', label: content.ui.nav.home },
+    { href: '/portfolio', label: content.ui.nav.portfolio },
+    { href: '/about', label: content.ui.nav.about },
+    { href: '/thoughts', label: content.ui.nav.thoughts },
+    { href: '/contact', label: content.ui.nav.contact },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -25,7 +26,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <Link to="/" className="text-xl font-display font-bold">
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {cvData.profile.name}
+              {content.profile.name}
             </span>
           </Link>
 
@@ -44,7 +45,7 @@ export default function Navbar() {
             ))}
             <div className="flex items-center gap-4 ml-4 border-l border-border pl-4">
               <a
-                href={cvData.links.github}
+                href={content.links.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-primary transition-colors"
@@ -53,7 +54,7 @@ export default function Navbar() {
                 <Github size={20} />
               </a>
               <a
-                href={cvData.links.linkedin}
+                href={content.links.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-secondary transition-colors"
@@ -62,9 +63,9 @@ export default function Navbar() {
                 <Linkedin size={20} />
               </a>
               <a
-                href={cvData.links.email}
+                href={content.links.email}
                 className="text-muted-foreground hover:text-accent transition-colors"
-                aria-label="Email"
+                aria-label={content.ui.contact.emailLabel}
               >
                 <Mail size={20} />
               </a>
@@ -105,7 +106,7 @@ export default function Navbar() {
               ))}
               <div className="flex items-center gap-4 mt-4 pt-4 border-t border-border">
                 <a
-                  href={cvData.links.github}
+                  href={content.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
@@ -114,7 +115,7 @@ export default function Navbar() {
                   <Github size={20} />
                 </a>
                 <a
-                  href={cvData.links.linkedin}
+                  href={content.links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-secondary transition-colors"
@@ -123,9 +124,9 @@ export default function Navbar() {
                   <Linkedin size={20} />
                 </a>
                 <a
-                  href={cvData.links.email}
+                  href={content.links.email}
                   className="text-muted-foreground hover:text-accent transition-colors"
-                  aria-label="Email"
+                  aria-label={content.ui.contact.emailLabel}
                 >
                   <Mail size={20} />
                 </a>
