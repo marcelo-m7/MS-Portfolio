@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const HeroCanvas = lazy(() => import('./HeroCanvas'));
+const FaultyTerminalBackground = lazy(() => import('./FaultyTerminal'));
 
 const StaticIllustration = () => (
   <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
@@ -43,11 +44,39 @@ const StaticIllustration = () => (
 export default function Hero3D() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  const heroBackground = import.meta.env.VITE_HERO_BACKGROUND?.toLowerCase();
   const isHero3DEnabled =
-    import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
+    import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true' || heroBackground === '3d';
+  const shouldUseFaultyTerminal = heroBackground === 'faulty-terminal' || (!heroBackground && !isHero3DEnabled);
 
-  if (prefersReducedMotion || !isHero3DEnabled) {
+  if (prefersReducedMotion || heroBackground === 'static') {
     return <StaticIllustration />;
+  }
+
+  if (shouldUseFaultyTerminal) {
+    return (
+      <Suspense fallback={<StaticIllustration />}>
+        <div className="pointer-events-none absolute inset-0 -z-10">
+          <FaultyTerminalBackground
+            scale={1.5}
+            gridMul={[2, 1]}
+            digitSize={1.2}
+            timeScale={1}
+            scanlineIntensity={1}
+            glitchAmount={1}
+            flickerAmount={0.9}
+            noiseAmp={1}
+            chromaticAberration={0.0015}
+            dither={0.6}
+            curvature={0.08}
+            tint="#a5f3fc"
+            mouseStrength={0.25}
+            pageLoadAnimation
+            brightness={1.05}
+          />
+        </div>
+      </Suspense>
+    );
   }
 
   return (
