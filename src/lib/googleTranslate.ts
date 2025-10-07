@@ -24,15 +24,13 @@ const STORAGE_KEY = 'monynha-lang';
 let pendingLanguage: SupportedLanguage | null = null;
 let comboObserver: MutationObserver | null = null;
 let hideObserver: MutationObserver | null = null;
+let currentLanguage: SupportedLanguage | null = null;
+let initialized = false;
 
 const isBrowser = () => typeof window !== 'undefined' && typeof document !== 'undefined';
 
-declare global {
-  interface Window {
-    setLanguage: (lang: SupportedLanguage) => void;
-    __afterGoogleTranslateInit?: () => void;
-  }
-}
+const isSupportedLanguage = (value: unknown): value is SupportedLanguage =>
+  typeof value === 'string' && SUPPORTED_LANGUAGES.includes(value as SupportedLanguage);
 
 const hideGoogleArtifacts = () => {
   if (!isBrowser()) return;
@@ -105,8 +103,9 @@ const ensureHideObserver = () => {
 };
 
 export const initializeGoogleTranslate = () => {
-  if (!isBrowser()) return;
+  if (!isBrowser() || initialized) return;
 
+  initialized = true;
   hideGoogleArtifacts();
   ensureHideObserver();
   ensureComboObserver();
@@ -121,9 +120,11 @@ export const initializeGoogleTranslate = () => {
 };
 
 export const setLanguage = (lang: SupportedLanguage) => {
-  if (!SUPPORTED_LANGUAGES.includes(lang)) return;
   if (!isBrowser()) return;
+  if (!SUPPORTED_LANGUAGES.includes(lang)) return;
+  if (currentLanguage === lang) return;
 
+  currentLanguage = lang;
   pendingLanguage = lang;
   localStorage.setItem(STORAGE_KEY, lang);
   setDocumentLanguage(lang);
@@ -138,8 +139,9 @@ export const setLanguage = (lang: SupportedLanguage) => {
 export const detectInitialLanguage = (): SupportedLanguage => {
   if (!isBrowser()) return 'pt';
 
-  const stored = localStorage.getItem(STORAGE_KEY) as SupportedLanguage | null;
-  if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (isSupportedLanguage(stored)) {
+    currentLanguage = stored;
     return stored;
   }
 
@@ -147,16 +149,14 @@ export const detectInitialLanguage = (): SupportedLanguage => {
     .split('-')[0]
     .toLowerCase() as SupportedLanguage;
 
-  if (SUPPORTED_LANGUAGES.includes(navigatorLang)) {
+  if (isSupportedLanguage(navigatorLang)) {
+    currentLanguage = navigatorLang;
     return navigatorLang;
   }
 
+  currentLanguage = 'pt';
   return 'pt';
 };
-
-if (isBrowser()) {
-  initializeGoogleTranslate();
-}
 
 export const cleanupGoogleTranslate = () => {
   if (comboObserver) {
@@ -166,5 +166,12 @@ export const cleanupGoogleTranslate = () => {
   if (hideObserver) {
     hideObserver.disconnect();
     hideObserver = null;
+  }
+  pendingLanguage = null;
+  currentLanguage = null;
+  initialized = false;
+  if (isBrowser()) {
+    window.setLanguage = undefined;
+    window.__afterGoogleTranslateInit = undefined;
   }
 };

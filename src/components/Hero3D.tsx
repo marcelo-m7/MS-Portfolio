@@ -40,21 +40,14 @@ export default function Hero3D() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const heroBackground = import.meta.env.VITE_HERO_BACKGROUND?.toLowerCase();
-  const isHero3DEnabled =
-    import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true' || heroBackground === '3d';
-  const shouldUseGridDistortion =
-    heroBackground === 'grid-distortion' || (!heroBackground && !isHero3DEnabled);
-  const shouldUseFaultyTerminal = heroBackground === 'faulty-terminal';
 
   if (prefersReducedMotion || heroBackground === 'static') {
     return <StaticIllustration />;
   }
 
-  const Canvas = HeroCanvas;
-
   return (
     <Suspense fallback={<StaticIllustration />}>
-      <Canvas />
+      {HeroCanvas ? <HeroCanvas /> : <StaticIllustration />}
     </Suspense>
   );
 }
