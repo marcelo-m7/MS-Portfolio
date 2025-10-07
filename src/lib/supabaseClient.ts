@@ -4,7 +4,9 @@ const supabaseUrl = import.meta.env.VITE_PUBLIC_SUPABASE_URL as string | undefin
 const supabaseAnonKey = import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY as string | undefined;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials are not defined. Email submissions will be disabled.');
+  if (import.meta.env.DEV) {
+    console.warn('Supabase credentials are not defined. Email submissions will be disabled.');
+  }
 }
 
 export const supabase = supabaseUrl && supabaseAnonKey

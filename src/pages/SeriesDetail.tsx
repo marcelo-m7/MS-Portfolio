@@ -134,7 +134,7 @@ export default function SeriesDetail() {
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {works.map((work, index) => {
               const card = (
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_35px_70px_-55px_hsl(var(--secondary)/0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_hsl(var(--primary)/0.6)]">
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_35px_70px_-55px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]">
                   {work.thumbnail && (
                     <div className="mb-4 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
                       <img
@@ -159,11 +159,12 @@ export default function SeriesDetail() {
                   <h2 className="mt-4 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
                     {work.title}
                   </h2>
-                  <p className="mt-3 text-sm text-muted-foreground/90">
-                    {work.description}
-                  </p>
+                  <p className="mt-3 text-sm text-muted-foreground/90">{work.description}</p>
                 </div>
               );
+
+              const commonClassName =
+                'group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 
               return (
                 <motion.div
@@ -173,10 +174,7 @@ export default function SeriesDetail() {
                   transition={{ delay: index * 0.08, duration: 0.5 }}
                 >
                   {work.isInternal ? (
-                    <Link
-                      to={work.href ?? '#'}
-                      className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
+                    <Link to={work.href ?? '#'} role="link" className={commonClassName}>
                       {card}
                     </Link>
                   ) : (
@@ -184,7 +182,7 @@ export default function SeriesDetail() {
                       href={work.href ?? '#'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      className={commonClassName}
                     >
                       {card}
                     </a>

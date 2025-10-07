@@ -8,15 +8,17 @@ import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
 import { supabase } from '@/lib/supabaseClient';
 
+const createInitialFormState = () => ({
+  name: '',
+  email: '',
+  company: '',
+  project: '',
+  message: '',
+});
+
 export default function Contact() {
   const prefersReducedMotion = useReducedMotion();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    project: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState(createInitialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,9 +44,11 @@ export default function Contact() {
       }
 
       toast.success(cvData.contact.successMessage);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData(createInitialFormState());
     } catch (error) {
-      console.error('Erro ao enviar mensagem de contato:', error);
+      if (import.meta.env.DEV) {
+        console.error('Erro ao enviar mensagem de contato:', error);
+      }
       toast.error(cvData.contact.errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -156,7 +160,9 @@ export default function Contact() {
                       id="name"
                       type="text"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, name: e.target.value }))
+                      }
                       required
                       className="rounded-xl"
                       placeholder="Seu nome"
@@ -170,7 +176,9 @@ export default function Contact() {
                       id="company"
                       type="text"
                       value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, company: e.target.value }))
+                      }
                       className="rounded-xl"
                       placeholder="Onde você trabalha"
                     />
@@ -186,7 +194,9 @@ export default function Contact() {
                       id="email"
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, email: e.target.value }))
+                      }
                       required
                       className="rounded-xl"
                       placeholder="seu@email.com"
@@ -200,7 +210,9 @@ export default function Contact() {
                       id="project"
                       type="text"
                       value={formData.project}
-                      onChange={(e) => setFormData({ ...formData, project: e.target.value })}
+                      onChange={(e) =>
+                        setFormData((prev) => ({ ...prev, project: e.target.value }))
+                      }
                       className="rounded-xl"
                       placeholder="Sobre o que vamos falar?"
                     />
@@ -214,7 +226,9 @@ export default function Contact() {
                   <Textarea
                     id="message"
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, message: e.target.value }))
+                    }
                     required
                     rows={6}
                     className="rounded-xl resize-none"
