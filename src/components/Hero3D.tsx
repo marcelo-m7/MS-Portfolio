@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 
 const HeroCanvas = lazy(() => import('./HeroCanvas'));
+const FaultyTerminalBackground = lazy(() => import('./FaultyTerminalBackground'));
 
 const StaticIllustration = () => (
   <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center">
@@ -43,16 +44,29 @@ const StaticIllustration = () => (
 export default function Hero3D() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const isHero3DEnabled =
-    import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
+  const isHero3DEnabled = import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
+  const isFaultyTerminalEnabled =
+    (import.meta.env.VITE_ENABLE_FAULTY_TERMINAL ?? 'true').toLowerCase() !== 'false';
 
-  if (prefersReducedMotion || !isHero3DEnabled) {
+  if (prefersReducedMotion) {
     return <StaticIllustration />;
   }
 
-  return (
-    <Suspense fallback={<StaticIllustration />}>
-      <HeroCanvas />
-    </Suspense>
-  );
+  if (isFaultyTerminalEnabled) {
+    return (
+      <Suspense fallback={<StaticIllustration />}>
+        <FaultyTerminalBackground />
+      </Suspense>
+    );
+  }
+
+  if (isHero3DEnabled) {
+    return (
+      <Suspense fallback={<StaticIllustration />}>
+        <HeroCanvas />
+      </Suspense>
+    );
+  }
+
+  return <StaticIllustration />;
 }
