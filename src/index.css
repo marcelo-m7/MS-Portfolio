@@ -103,3 +103,26 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Google Translate overrides */
+body > .skiptranslate,
+body > .skiptranslate iframe,
+.goog-te-banner-frame.skiptranslate,
+.goog-te-menu-frame.skiptranslate,
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+body > .skiptranslate,
+body > .skiptranslate *,
+.goog-te-menu-frame.skiptranslate,
+.VIpgJd-ZVi9od-ORHb-OEVmcd {
+  pointer-events: none !important;
+}
+
+html,
+body {
+  top: 0 !important;
+}
