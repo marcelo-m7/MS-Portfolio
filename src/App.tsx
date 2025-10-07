@@ -10,6 +10,7 @@ import {
   detectInitialLanguage,
   initializeGoogleTranslate,
   setLanguage,
+  cleanupGoogleTranslate,
 } from "./lib/googleTranslate";
 import type { SupportedLanguage } from "./lib/googleTranslate";
 
