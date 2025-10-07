@@ -24,7 +24,7 @@ export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
+    <nav className="notranslate fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-4 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.55)] backdrop-blur-xl">
         <Link
           to="/"
