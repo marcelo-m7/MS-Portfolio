@@ -47,7 +47,7 @@ export default function ThoughtDetail() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-3xl border border-border/60 bg-card/70 p-8 shadow-[0_45px_85px_-70px_rgba(124,58,237,0.85)] backdrop-blur-xl"
+          className="rounded-3xl border border-border/60 bg-card/70 p-8 shadow-[0_45px_85px_-70px_hsl(var(--primary)/0.85)] backdrop-blur-xl"
         >
           <Button
             asChild
@@ -101,6 +101,7 @@ export default function ThoughtDetail() {
                 alt={cvData.profile.name}
                 className="h-12 w-12 rounded-full object-cover"
                 loading="lazy"
+                decoding="async"
               />
               <div>
                 <p className="text-base font-semibold text-foreground">{cvData.profile.name}</p>

@@ -12,6 +12,13 @@ const HIDE_SELECTORS = [
 export const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'fr'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
+declare global {
+  interface Window {
+    setLanguage?: (lang: SupportedLanguage) => void;
+    __afterGoogleTranslateInit?: () => void;
+  }
+}
+
 const STORAGE_KEY = 'monynha-lang';
 
 let pendingLanguage: SupportedLanguage | null = null;
@@ -96,8 +103,8 @@ export const initializeGoogleTranslate = () => {
   hideGoogleArtifacts();
   ensureHideObserver();
   ensureComboObserver();
-  (window as any).setLanguage = setLanguage;
-  (window as any).__afterGoogleTranslateInit = () => {
+  window.setLanguage = setLanguage;
+  window.__afterGoogleTranslateInit = () => {
     hideGoogleArtifacts();
     ensureComboObserver();
     if (pendingLanguage) {

@@ -2,6 +2,8 @@ import { Suspense, useEffect, useRef, type MutableRefObject } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, MeshDistortMaterial } from '@react-three/drei';
 import { Mesh } from 'three';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useThemeColor } from '@/hooks/useThemeColor';
 
 const useVisibilityController = () => {
   const visibleRef = useRef(true);
@@ -18,12 +20,22 @@ const useVisibilityController = () => {
   return visibleRef;
 };
 
-const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
+const RibbonSculpture = ({
+  visibleRef,
+  prefersReducedMotion,
+  color,
+  emissive,
+}: {
+  visibleRef: MutableRefObject<boolean>;
+  prefersReducedMotion: boolean;
+  color: string | undefined;
+  emissive: string | undefined;
+}) => {
   const meshRef = useRef<Mesh>(null);
   const lastFrame = useRef(0);
 
   useFrame(({ clock }) => {
-    if (!meshRef.current || !visibleRef.current) return;
+    if (!meshRef.current || !visibleRef.current || prefersReducedMotion) return;
     const elapsed = clock.getElapsedTime();
     if (elapsed - lastFrame.current < 1 / 48) return;
     lastFrame.current = elapsed;
@@ -36,8 +48,8 @@ const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean>
     <mesh ref={meshRef} scale={1.8} position={[0, 0, 0]}>
       <torusKnotGeometry args={[0.85, 0.28, 200, 32, 2, 3]} />
       <MeshDistortMaterial
-        color="#a855f7"
-        emissive="#0ea5e9"
+        color={color}
+        emissive={emissive}
         emissiveIntensity={0.45}
         metalness={0.75}
         roughness={0.25}
@@ -50,6 +62,9 @@ const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean>
 
 const Art3DPreview = () => {
   const visibleRef = useVisibilityController();
+  const prefersReducedMotion = usePrefersReducedMotion();
+  const glowBlue = useThemeColor('--glow-blue');
+  const glowPurple = useThemeColor('--glow-purple');
 
   return (
     <Canvas
@@ -59,10 +74,21 @@ const Art3DPreview = () => {
     >
       <Suspense fallback={null}>
         <ambientLight intensity={0.6} />
-        <directionalLight position={[4, 6, 5]} intensity={1.2} color="#7c3aed" />
-        <pointLight position={[-4, -3, -4]} intensity={0.8} color="#22d3ee" />
-        <RibbonSculpture visibleRef={visibleRef} />
-        <OrbitControls enablePan={false} enableZoom enableDamping dampingFactor={0.08} />
+        <directionalLight position={[4, 6, 5]} intensity={1.2} color={glowPurple || undefined} />
+        <pointLight position={[-4, -3, -4]} intensity={0.8} color={glowBlue || undefined} />
+        <RibbonSculpture
+          visibleRef={visibleRef}
+          prefersReducedMotion={prefersReducedMotion}
+          color={glowPurple || undefined}
+          emissive={glowBlue || undefined}
+        />
+        <OrbitControls
+          enablePan={false}
+          enableZoom
+          enableDamping
+          dampingFactor={0.08}
+          enableRotate={!prefersReducedMotion}
+        />
       </Suspense>
     </Canvas>
   );

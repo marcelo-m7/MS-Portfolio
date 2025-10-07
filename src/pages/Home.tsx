@@ -1,9 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
-import Hero3D from '@/components/Hero3D';
 import cvData from '../../public/data/cv.json';
+
+const Hero3D = lazy(() => import('@/components/Hero3D'));
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
@@ -12,7 +14,9 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <Hero3D />
+        <Suspense fallback={null}>
+          <Hero3D />
+        </Suspense>
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
@@ -25,7 +29,7 @@ export default function Home() {
               initial={prefersReducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
               animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 shadow-[0_20px_35px_-25px_rgba(56,189,248,0.55)]"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 shadow-[0_20px_35px_-25px_hsl(var(--secondary)/0.55)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
               <span className="text-sm font-medium">{cvData.profile.location}</span>
@@ -49,7 +53,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full text-lg px-8 py-6 bg-gradient-to-r from-primary via-secondary to-accent shadow-[0_15px_45px_-20px_rgba(14,165,233,0.75)] transition-transform hover:-translate-y-0.5 focus-visible:ring-secondary"
+                className="rounded-full text-lg px-8 py-6 bg-gradient-to-r from-primary via-secondary to-accent shadow-[0_15px_45px_-20px_hsl(var(--secondary)/0.75)] transition-transform hover:-translate-y-0.5 focus-visible:ring-secondary"
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
@@ -82,7 +86,7 @@ export default function Home() {
               </div>
               <Link
                 to="/thoughts"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_rgba(56,189,248,0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_hsl(var(--secondary)/0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105"
               >
                 Ler os pensamentos recentes
                 <ArrowRight className="h-4 w-4" aria-hidden />
@@ -141,9 +145,9 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <div className="rounded-3xl border border-border/70 bg-card/60 p-6 shadow-[0_25px_45px_-35px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_18px_38px_-20px_rgba(124,58,237,0.5)]">
+                  <div className="rounded-3xl border border-border/70 bg-card/60 p-6 shadow-[0_25px_45px_-35px_hsl(var(--secondary)/0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_18px_38px_-20px_hsl(var(--primary)/0.5)]">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_hsl(var(--primary)/0.45)]">
                         <Code2 className="text-white" size={24} aria-hidden />
                       </div>
                       <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
@@ -220,8 +224,8 @@ export default function Home() {
                 to="/series/creative-systems"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_rgba(56,189,248,0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_hsl(var(--secondary)/0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_hsl(var(--primary)/0.6)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_hsl(var(--primary)/0.45)]">
                     <Layers aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
@@ -244,8 +248,8 @@ export default function Home() {
                 to="/art/artleo"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_rgba(124,58,237,0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(56,189,248,0.6)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_rgba(56,189,248,0.45)]">
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_hsl(var(--primary)/0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_hsl(var(--secondary)/0.6)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_hsl(var(--secondary)/0.45)]">
                     <Palette aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">

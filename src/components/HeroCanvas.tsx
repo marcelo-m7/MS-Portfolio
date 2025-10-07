@@ -3,6 +3,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { OrbitControls, MeshDistortMaterial } from '@react-three/drei';
 import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useThemeColor } from '@/hooks/useThemeColor';
 import { BufferGeometry, Float32BufferAttribute, Mesh, Points } from 'three';
 
 const useVisibilityController = () => {
@@ -20,7 +21,15 @@ const useVisibilityController = () => {
   return visibleRef;
 };
 
-const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
+const Particles = ({
+  visibleRef,
+  prefersReducedMotion,
+  color,
+}: {
+  visibleRef: MutableRefObject<boolean>;
+  prefersReducedMotion: boolean;
+  color: string | undefined;
+}) => {
   const pointsRef = useRef<Points>(null);
   const geometry = useMemo(() => {
     const count = 1200;
@@ -43,7 +52,7 @@ const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) =>
   const lastFrame = useRef(0);
 
   useFrame(({ clock }) => {
-    if (!visibleRef.current || !pointsRef.current) return;
+    if (!visibleRef.current || !pointsRef.current || prefersReducedMotion) return;
     const elapsed = clock.getElapsedTime();
     if (elapsed - lastFrame.current < 1 / 45) return;
     lastFrame.current = elapsed;
@@ -53,24 +62,27 @@ const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) =>
 
   return (
     <points ref={pointsRef} geometry={geometry}>
-      <pointsMaterial
-        attach="material"
-        color="#60a5fa"
-        size={0.035}
-        sizeAttenuation
-        transparent
-        opacity={0.55}
-      />
+      <pointsMaterial attach="material" color={color} size={0.035} sizeAttenuation transparent opacity={0.55} />
     </points>
   );
 };
 
-const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
+const Ribbon = ({
+  visibleRef,
+  prefersReducedMotion,
+  color,
+  emissive,
+}: {
+  visibleRef: MutableRefObject<boolean>;
+  prefersReducedMotion: boolean;
+  color: string | undefined;
+  emissive: string | undefined;
+}) => {
   const meshRef = useRef<Mesh>(null);
   const lastFrame = useRef(0);
 
   useFrame(({ clock }) => {
-    if (!visibleRef.current || !meshRef.current) return;
+    if (!visibleRef.current || !meshRef.current || prefersReducedMotion) return;
     const elapsed = clock.getElapsedTime();
     if (elapsed - lastFrame.current < 1 / 45) return;
     lastFrame.current = elapsed;
@@ -83,8 +95,8 @@ const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
     <mesh ref={meshRef} scale={1.65} position={[0, 0, 0]}>
       <torusKnotGeometry args={[0.9, 0.28, 120, 18, 2, 5]} />
       <MeshDistortMaterial
-        color="#a855f7"
-        emissive="#0ea5e9"
+        color={color}
+        emissive={emissive}
         emissiveIntensity={0.4}
         roughness={0.2}
         metalness={0.7}
@@ -98,6 +110,8 @@ const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
 export default function HeroCanvas() {
   const visibleRef = useVisibilityController();
   const prefersReducedMotion = usePrefersReducedMotion();
+  const glowBlue = useThemeColor('--glow-blue');
+  const glowPurple = useThemeColor('--glow-purple');
 
   return (
     <div className="pointer-events-none absolute inset-0 -z-10">
@@ -108,12 +122,26 @@ export default function HeroCanvas() {
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.6} />
-          <directionalLight position={[4, 5, 6]} intensity={1.1} color="#a855f7" />
-          <pointLight position={[-6, -4, -4]} intensity={0.8} color="#22d3ee" />
-          <Particles visibleRef={visibleRef} />
-          <Ribbon visibleRef={visibleRef} />
+          <directionalLight position={[4, 5, 6]} intensity={1.1} color={glowPurple || undefined} />
+          <pointLight position={[-6, -4, -4]} intensity={0.8} color={glowBlue || undefined} />
+          <Particles
+            visibleRef={visibleRef}
+            prefersReducedMotion={prefersReducedMotion}
+            color={glowBlue || undefined}
+          />
+          <Ribbon
+            visibleRef={visibleRef}
+            prefersReducedMotion={prefersReducedMotion}
+            color={glowPurple || undefined}
+            emissive={glowBlue || undefined}
+          />
           <EffectComposer disableNormalPass multisampling={0}>
-            <Bloom intensity={0.4} luminanceThreshold={0.3} luminanceSmoothing={0.9} radius={0.6} />
+            <Bloom
+              intensity={prefersReducedMotion ? 0.2 : 0.4}
+              luminanceThreshold={0.3}
+              luminanceSmoothing={0.9}
+              radius={0.6}
+            />
           </EffectComposer>
           <OrbitControls
             enableZoom={false}

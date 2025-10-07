@@ -1,105 +1,92 @@
-# Welcome to your Lovable project
+# Monynha Portfolio 3D
 
-## Project info
+Portfolio imersivo do ecossistema Monynha, construído com React, Vite e Tailwind para apresentar projetos, séries criativas e pensamentos sobre tecnologia e arte digital. O site suporta tradução dinâmica via Google Translate e experiências 3D otimizadas para quem prefere animações suaves.
 
-**URL**: https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7
+## Tecnologias principais
 
-## How can I edit this code?
+- [React 18](https://react.dev/)
+- [Vite](https://vitejs.dev/) + TypeScript
+- [Tailwind CSS](https://tailwindcss.com/) e tokens definidos em `src/index.css`
+- [shadcn/ui](https://ui.shadcn.com/) para componentes acessíveis
+- [Framer Motion](https://www.framer.com/motion/) para transições respeitando `prefers-reduced-motion`
+- [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) e [`@react-three/drei`](https://github.com/pmndrs/drei) para as cenas 3D
 
-There are several ways of editing your application.
+## Estrutura de pastas
 
-**Use Lovable**
+```
+├── public/
+│   └── data/cv.json        # Fonte única de conteúdo (perfil, projetos, séries, artes, pensamentos)
+├── src/
+│   ├── components/         # Componentes compartilhados (UI, 3D, navegação)
+│   ├── hooks/              # Hooks personalizados (p.ex. preferências de movimento, cores do tema)
+│   ├── lib/                # Utilidades (Google Translate, helpers de conteúdo)
+│   ├── pages/              # Páginas roteadas (Home, Portfolio, About, etc.)
+│   ├── index.css           # Design tokens (cores, fontes, gradientes e utilitários globais)
+│   └── main.tsx            # Bootstrap da aplicação
+```
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and start prompting.
+## Pré-requisitos
 
-Changes made via Lovable will be committed automatically to this repo.
+- Node.js 18 ou superior (recomendado via [nvm](https://github.com/nvm-sh/nvm))
+- npm 9+ ou [pnpm](https://pnpm.io/) 8+
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Instale as dependências com o gerenciador de sua preferência:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm install
+# ou
+pnpm install
 ```
 
-**Edit a file directly in GitHub**
+## Comandos úteis
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Comando            | Descrição |
+| ------------------ | --------- |
+| `npm run dev`      | Inicia o servidor de desenvolvimento em `http://localhost:5173` com recarregamento instantâneo. |
+| `npm run build`    | Gera o bundle otimizado para produção. Utiliza Vite + esbuild. |
+| `npm run preview`  | Sobe um servidor local para inspecionar o build produzido. |
+| `npm run lint`     | Executa o ESLint com as regras do projeto (alguns componentes shadcn exibem avisos conhecidos de Fast Refresh). |
 
-**Use GitHub Codespaces**
+> **Dica:** Utilize `npm run build` antes de publicar para garantir que o bundle inicial permaneça abaixo de 170 kB.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Qualidade e boas práticas
 
-## What technologies are used for this project?
+- Todas as cores e gradientes devem ser declarados em `src/index.css` como custom properties HSL.
+- Componentes 3D (`Hero3D`, `Art3DPreview`) são carregados sob demanda com `React.lazy` e respeitam `prefers-reduced-motion`.
+- Imagens utilizam `loading="lazy"` e `decoding="async"` por padrão para otimizar o carregamento.
+- Utilize `npm run lint` para identificar problemas antes de abrir um PR.
+- Para auditoria de performance e acessibilidade, execute o projeto (`npm run dev`) e avalie com o [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) buscando notas ≥ 90 em Performance, Accessibility e Best Practices.
 
-This project is built with:
+## Trabalhando com `cv.json`
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+O ficheiro `public/data/cv.json` centraliza todo o conteúdo exibido no site:
 
-## How can I deploy this project?
+- `profile`: dados pessoais, avatar e bio.
+- `projects`: lista de projetos com `name`, `summary`, `stack`, `url`, `category`, `year` e `thumbnail` (preferencialmente SVG 16:9).
+- `series`: coleções criativas que agregam trabalhos (`works`) por slug.
+- `artworks`: peças individuais com galerias (`media`), `url3d`, materiais e descrição.
+- `thoughts`: posts curtos utilizados nas páginas de Pensamentos.
 
-Simply open [Lovable](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and click on Share -> Publish.
+### Adicionando novos itens
 
-## Can I connect a custom domain to my Lovable project?
+1. Edite o array apropriado dentro de `cv.json` seguindo a estrutura existente.
+2. Salve thumbnails ou artes em `public/images/` (SVG otimizado). Garanta que cada SVG possua `<title>` para acessibilidade.
+3. Atualize os campos `slug` quando necessário — eles alimentam o roteamento dinâmico (`/thoughts/:slug`, `/series/:slug`, `/art/:slug`).
+4. Execute `npm run lint` e `npm run build` para validar o conteúdo novo.
 
-Yes, you can!
+## Fluxo de contribuição
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+1. Crie um branch descritivo: `git checkout -b feat/nova-secao`.
+2. Faça commits pequenos e claros.
+3. Execute `npm run lint` (e testes adicionais, se aplicável) antes do push.
+4. Abra um Pull Request descrevendo as mudanças, incluindo notas sobre acessibilidade, performance ou novos conteúdos no `cv.json`.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## Deploy
 
-## Internationalization & Google Translate
+O projeto pode ser publicado via [Lovable](https://lovable.dev/) (Share → Publish) ou hospedado manualmente em qualquer ambiente estático (Netlify, Vercel, Cloudflare Pages). Para deploy manual, utilize o output da pasta `dist/` gerado por `npm run build`.
 
-The multi-idioma experience is powered by the official Google Translate widget, fully hidden and configured at runtime.
+## Suporte a idiomas
 
-- The script is injected in `index.html` and initialised with `window.googleTranslateElementInit`.
-- `src/lib/googleTranslate.ts` exposes helpers:
-  - `initializeGoogleTranslate()` sets up MutationObservers that hide Google artefacts and ensures the `<body>` spacing stays untouched.
-  - `detectInitialLanguage()` checks `localStorage` (`monynha-lang`) and `navigator.language` to determine the preferred locale.
-  - `setLanguage(lang)` simulates the widget `<select>` (PT, EN, ES, FR) and dispatches the `monynha:languagechange` custom event.
-- `LanguageSwitcher` listens to that event and renders accessible pill buttons with focus-visible outlines.
+A tradução automática utiliza o widget oficial do Google Translate, inicializado em `index.html` e controlado pelos helpers em `src/lib/googleTranslate.ts`. O evento customizado `monynha:languagechange` mantém o `LanguageSwitcher` sincronizado com a seleção armazenada em `localStorage` (`monynha-lang`).
 
-To change the language programmatically you can simply call:
-
-```ts
-import { setLanguage } from '@/lib/googleTranslate';
-
-setLanguage('es');
-```
-
-The helpers automatically hide Google’s toolbar, banners and iframes so no additional CSS tweaks are required.
-
-## Adding new projects to `cv.json`
-
-Project cards, portfolio thumbnails and extra pages consume the single source of truth located at `public/data/cv.json`.
-
-1. Duplicate an existing entry inside the `projects` array and adjust the fields (`name`, `summary`, `stack`, `url`, `category`, `year`).
-2. Create a **vector** thumbnail (SVG only) under `public/images/`. Make sure to include a descriptive `<title>` element for accessibility and keep the canvas 16:9 (640x360 works well).
-3. Reference the SVG through the `thumbnail` property (e.g. `"thumbnail": "/images/novo-projeto.svg"`).
-4. Run `npm run build` to ensure the bundle stays under budget.
-
-Thoughts, artworks or series follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.
+Sinta-se à vontade para abrir issues ou PRs com melhorias de acessibilidade, performance ou novos conteúdos. 💜

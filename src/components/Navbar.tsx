@@ -25,12 +25,12 @@ export default function Navbar() {
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-4 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.55)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-4 py-3 shadow-[0_20px_45px_-25px_hsl(var(--secondary)/0.55)] backdrop-blur-xl">
         <Link
           to="/"
           className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(56,189,248,0.45)]">
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_hsl(var(--secondary)/0.45)]">
             M
           </span>
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -54,7 +54,7 @@ export default function Navbar() {
                         whileHover: {
                           y: -2,
                           boxShadow:
-                            '0 12px 24px -18px rgba(56,189,248,0.6), 0 0 12px rgba(124,58,237,0.45)',
+                            '0 12px 24px -18px hsl(var(--secondary)/0.6), 0 0 12px hsl(var(--primary)/0.45)',
                         },
                       }
                     : {})}

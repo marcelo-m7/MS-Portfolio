@@ -35,6 +35,8 @@ export default function About() {
                 src={cvData.profile.avatar}
                 alt={cvData.profile.name}
                 className="w-full h-full rounded-2xl object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             
