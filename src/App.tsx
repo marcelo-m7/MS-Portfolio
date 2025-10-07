@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { useEffect, lazy, Suspense } from "react";
 import {
+  cleanupGoogleTranslate,
   detectInitialLanguage,
   initializeGoogleTranslate,
   setLanguage,

@@ -24,23 +24,13 @@ const STORAGE_KEY = "monynha-lang";
 let pendingLanguage: SupportedLanguage | null = null;
 let comboObserver: MutationObserver | null = null;
 let hideObserver: MutationObserver | null = null;
-let hasInitialized = false;
+let currentLanguage: SupportedLanguage | null = null;
+let initialized = false;
 
 const isBrowser = () => typeof window !== "undefined" && typeof document !== "undefined";
 
-const isDevelopment = () => {
-  try {
-    return Boolean((import.meta as unknown as { env?: { DEV?: boolean } }).env?.DEV);
-  } catch (error) {
-    return false;
-  }
-};
-
-const warn = (message: string, error?: unknown) => {
-  if (isDevelopment()) {
-    console.warn(`[googleTranslate] ${message}`, error);
-  }
-};
+const isSupportedLanguage = (value: unknown): value is SupportedLanguage =>
+  typeof value === 'string' && SUPPORTED_LANGUAGES.includes(value as SupportedLanguage);
 
 const hideGoogleArtifacts = () => {
   if (!isBrowser()) return;
@@ -123,29 +113,10 @@ const ensureHideObserver = () => {
   }
 };
 
-const getStoredLanguage = (): SupportedLanguage | null => {
-  if (!isBrowser()) return null;
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return SUPPORTED_LANGUAGES.includes(stored as SupportedLanguage) ? (stored as SupportedLanguage) : null;
-  } catch (error) {
-    warn("Unable to access localStorage when reading language", error);
-    return null;
-  }
-};
-
-const setStoredLanguage = (lang: SupportedLanguage) => {
-  if (!isBrowser()) return;
-  try {
-    localStorage.setItem(STORAGE_KEY, lang);
-  } catch (error) {
-    warn("Unable to persist language in localStorage", error);
-  }
-};
-
 export const initializeGoogleTranslate = () => {
-  if (!isBrowser() || hasInitialized) return;
+  if (!isBrowser() || initialized) return;
 
+  initialized = true;
   hideGoogleArtifacts();
   ensureHideObserver();
   ensureComboObserver();
@@ -162,10 +133,11 @@ export const initializeGoogleTranslate = () => {
 };
 
 export const setLanguage = (lang: SupportedLanguage) => {
-  if (!SUPPORTED_LANGUAGES.includes(lang) || !isBrowser()) return;
+  if (!isBrowser()) return;
+  if (!SUPPORTED_LANGUAGES.includes(lang)) return;
+  if (currentLanguage === lang) return;
 
-  if (pendingLanguage === lang) return;
-
+  currentLanguage = lang;
   pendingLanguage = lang;
   setStoredLanguage(lang);
   setDocumentLanguage(lang);
@@ -180,8 +152,9 @@ export const setLanguage = (lang: SupportedLanguage) => {
 export const detectInitialLanguage = (): SupportedLanguage => {
   if (!isBrowser()) return "pt";
 
-  const stored = getStoredLanguage();
-  if (stored) {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (isSupportedLanguage(stored)) {
+    currentLanguage = stored;
     return stored;
   }
 
@@ -189,11 +162,13 @@ export const detectInitialLanguage = (): SupportedLanguage => {
     .split("-")[0]
     .toLowerCase() as SupportedLanguage;
 
-  if (SUPPORTED_LANGUAGES.includes(navigatorLang)) {
+  if (isSupportedLanguage(navigatorLang)) {
+    currentLanguage = navigatorLang;
     return navigatorLang;
   }
 
-  return "pt";
+  currentLanguage = 'pt';
+  return 'pt';
 };
 
 export const cleanupGoogleTranslate = () => {
@@ -205,5 +180,11 @@ export const cleanupGoogleTranslate = () => {
     hideObserver.disconnect();
     hideObserver = null;
   }
-  hasInitialized = false;
+  pendingLanguage = null;
+  currentLanguage = null;
+  initialized = false;
+  if (isBrowser()) {
+    window.setLanguage = undefined;
+    window.__afterGoogleTranslateInit = undefined;
+  }
 };
