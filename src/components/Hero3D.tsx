@@ -39,18 +39,15 @@ const StaticIllustration = () => (
 export default function Hero3D() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const isHero3DEnabled =
-    import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
+  const heroBackground = import.meta.env.VITE_HERO_BACKGROUND?.toLowerCase();
 
-  if (prefersReducedMotion || !isHero3DEnabled) {
+  if (prefersReducedMotion || heroBackground === 'static') {
     return <StaticIllustration />;
   }
 
-  const Canvas = HeroCanvas;
-
   return (
     <Suspense fallback={<StaticIllustration />}>
-      <Canvas />
+      {HeroCanvas ? <HeroCanvas /> : <StaticIllustration />}
     </Suspense>
   );
 }

@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import { useEffect, lazy, Suspense } from "react";
 import {
+  cleanupGoogleTranslate,
   detectInitialLanguage,
   initializeGoogleTranslate,
   setLanguage,
+  cleanupGoogleTranslate,
 } from "./lib/googleTranslate";
 import type { SupportedLanguage } from "./lib/googleTranslate";
 
@@ -38,7 +40,10 @@ const App = () => {
     };
 
     window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      cleanupGoogleTranslate();
+    };
   }, []);
 
   return (
