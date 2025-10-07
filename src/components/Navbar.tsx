@@ -46,7 +46,7 @@ export default function Navbar() {
                 <MotionLink
                   key={link.href}
                   to={link.href}
-                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  className={`relative overflow-hidden rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     active ? 'text-white' : 'text-muted-foreground'
                   }`}
                   {...(!shouldReduceMotion
@@ -59,13 +59,13 @@ export default function Navbar() {
                       }
                     : {})}
                 >
-                  {active && (
-                    <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80"
-                      transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-                    />
-                  )}
+                  <span
+                    aria-hidden
+                    translate="no"
+                    className={`pointer-events-none absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80 transition-all duration-200 ${
+                      active ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                    }`}
+                  />
                   {link.label}
                 </MotionLink>
               );
