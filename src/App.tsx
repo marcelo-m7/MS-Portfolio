@@ -4,23 +4,22 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect } from "react";
 import {
   detectInitialLanguage,
   initializeGoogleTranslate,
   setLanguage,
 } from "./lib/googleTranslate";
 import type { SupportedLanguage } from "./lib/googleTranslate";
-
-const Home = lazy(() => import("./pages/Home"));
-const Portfolio = lazy(() => import("./pages/Portfolio"));
-const About = lazy(() => import("./pages/About"));
-const Thoughts = lazy(() => import("./pages/Thoughts"));
-const ThoughtDetail = lazy(() => import("./pages/ThoughtDetail"));
-const SeriesDetail = lazy(() => import("./pages/SeriesDetail"));
-const ArtDetail = lazy(() => import("./pages/ArtDetail"));
-const Contact = lazy(() => import("./pages/Contact"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+import Home from "./pages/Home";
+import Portfolio from "./pages/Portfolio";
+import About from "./pages/About";
+import Thoughts from "./pages/Thoughts";
+import ThoughtDetail from "./pages/ThoughtDetail";
+import SeriesDetail from "./pages/SeriesDetail";
+import ArtDetail from "./pages/ArtDetail";
+import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -48,27 +47,17 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Navbar />
-          <Suspense
-            fallback={
-              <div className="flex min-h-[50vh] items-center justify-center">
-                <span className="animate-pulse text-sm text-muted-foreground">
-                  Carregando…
-                </span>
-              </div>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/thoughts" element={<Thoughts />} />
-              <Route path="/thoughts/:slug" element={<ThoughtDetail />} />
-              <Route path="/series/:slug" element={<SeriesDetail />} />
-              <Route path="/art/:slug" element={<ArtDetail />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/thoughts" element={<Thoughts />} />
+            <Route path="/thoughts/:slug" element={<ThoughtDetail />} />
+            <Route path="/series/:slug" element={<SeriesDetail />} />
+            <Route path="/art/:slug" element={<ArtDetail />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
