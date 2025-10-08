@@ -1,25 +1,78 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useCurrentLanguage } from '@/hooks/useCurrentLanguage';
+import type { SupportedLanguage } from '@/lib/googleTranslate';
 import cvData from '../../public/data/cv.json';
 
 const MotionLink = motion(Link);
 
+const NAV_ITEMS = [
+  { key: 'home', href: '/' },
+  { key: 'portfolio', href: '/portfolio' },
+  { key: 'about', href: '/about' },
+  { key: 'thoughts', href: '/thoughts' },
+  { key: 'contact', href: '/contact' },
+] as const;
+
+type NavKey = (typeof NAV_ITEMS)[number]['key'];
+
+const NAV_LABELS: Record<SupportedLanguage, Record<NavKey, string>> = {
+  pt: {
+    home: 'Início',
+    portfolio: 'Portfolio',
+    about: 'Sobre',
+    thoughts: 'Pensamentos',
+    contact: 'Contato',
+  },
+  en: {
+    home: 'Home',
+    portfolio: 'Portfolio',
+    about: 'About',
+    thoughts: 'Thoughts',
+    contact: 'Contact',
+  },
+  es: {
+    home: 'Inicio',
+    portfolio: 'Portafolio',
+    about: 'Sobre mí',
+    thoughts: 'Pensamientos',
+    contact: 'Contacto',
+  },
+  fr: {
+    home: 'Accueil',
+    portfolio: 'Portfolio',
+    about: 'À propos',
+    thoughts: 'Réflexions',
+    contact: 'Contact',
+  },
+};
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const language = useCurrentLanguage();
 
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
-  ];
+  const navLinks = useMemo(
+    () =>
+      NAV_ITEMS.map((item) => ({
+        href: item.href,
+        label: NAV_LABELS[language][item.key],
+      })),
+    [language],
+  );
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+
+    return (
+      location.pathname === path || location.pathname.startsWith(`${path}/`)
+    );
+  };
 
   const shouldReduceMotion = useReducedMotion();
 
@@ -46,8 +99,10 @@ export default function Navbar() {
                 <MotionLink
                   key={link.href}
                   to={link.href}
-                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                    active ? 'text-white' : 'text-muted-foreground'
+                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-[background,color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                    active
+                      ? 'bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80 text-white shadow-[0_12px_24px_-18px_rgba(56,189,248,0.6)]'
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                   {...(!shouldReduceMotion
                     ? {
@@ -56,16 +111,10 @@ export default function Navbar() {
                           boxShadow:
                             '0 12px 24px -18px hsl(var(--secondary)/0.6), 0 0 12px hsl(var(--primary)/0.45)',
                         },
+                        whileTap: { scale: 0.98 },
                       }
                     : {})}
                 >
-                  {active && (
-                    <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80"
-                      transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-                    />
-                  )}
                   {link.label}
                 </MotionLink>
               );
