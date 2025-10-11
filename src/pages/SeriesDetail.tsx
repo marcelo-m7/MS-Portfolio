@@ -106,6 +106,9 @@ export default function SeriesDetail() {
             asChild
             variant="ghost"
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
+            whileHover={prefersReducedMotion ? undefined : { x: -5 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
@@ -114,15 +117,25 @@ export default function SeriesDetail() {
           </Button>
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+            <motion.span
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
               <Layers className="h-4 w-4" aria-hidden />
               Série criativa
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+            </motion.span>
+            <motion.span
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
               {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
                 new Date(`${series.year}-01-01`),
               )}
-            </span>
+            </motion.span>
           </div>
 
           <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">

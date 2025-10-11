@@ -5,6 +5,7 @@ import {
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
 } from '@/lib/googleTranslate';
+import { motion, useReducedMotion } from 'framer-motion';
 
 const LANGUAGE_LABELS: Record<SupportedLanguage, string> = {
   pt: 'Português',
@@ -22,6 +23,7 @@ const LANGUAGE_SHORT: Record<SupportedLanguage, string> = {
 
 export default function LanguageSwitcher() {
   const [current, setCurrent] = useState<SupportedLanguage>('pt');
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     setCurrent(detectInitialLanguage());
@@ -51,7 +53,7 @@ export default function LanguageSwitcher() {
       {SUPPORTED_LANGUAGES.map((lang) => {
         const isActive = current === lang;
         return (
-          <button
+          <motion.button
             key={lang}
             type="button"
             onClick={() => handleSelect(lang)}
@@ -62,10 +64,13 @@ export default function LanguageSwitcher() {
             }`}
             aria-pressed={isActive}
             aria-label={LANGUAGE_LABELS[lang]}
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
             <span className="sr-only">{LANGUAGE_LABELS[lang]}</span>
             <span aria-hidden>{LANGUAGE_SHORT[lang]}</span>
-          </button>
+          </motion.button>
         );
       })}
     </div>

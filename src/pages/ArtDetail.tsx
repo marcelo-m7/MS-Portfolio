@@ -69,6 +69,9 @@ export default function ArtDetail() {
             asChild
             variant="ghost"
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
+            whileHover={prefersReducedMotion ? undefined : { x: -5 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
@@ -77,14 +80,24 @@ export default function ArtDetail() {
           </Button>
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+            <motion.span
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
               {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
                 new Date(`${artwork.year}-01-01`),
               )}
-            </span>
-            <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+            </motion.span>
+            <motion.span
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
               {artwork.materials.join(' • ')}
-            </span>
+            </motion.span>
           </div>
 
           <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
@@ -132,19 +145,25 @@ export default function ArtDetail() {
                 onClick={() => setIs3DOpen(true)}
                 className="inline-flex items-center gap-2 rounded-full"
                 disabled={!canRender3DPreview}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 <Orbit className="h-4 w-4" aria-hidden />
                 {canRender3DPreview ? 'Explorar experiência 3D' : 'Pré-visualização indisponível'}
               </Button>
-              <a
+              <motion.a
                 href={artwork.url3d}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 Abrir em nova aba
                 <ExternalLink className="h-4 w-4" aria-hidden />
-              </a>
+              </motion.a>
               {!canRender3DPreview && (
                 <p className="text-sm text-muted-foreground/80">
                   A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.

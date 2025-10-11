@@ -30,7 +30,13 @@ const NotFound = () => {
           O caminho <span className="font-mono text-primary">{location.pathname}</span> não existe. Volta à página inicial para continuar a explorar o universo Monynha.
         </p>
         <div className="mt-8 flex justify-center">
-          <Button asChild className="rounded-full">
+          <Button
+            asChild
+            className="rounded-full"
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          >
             <Link to="/">Voltar para o início</Link>
           </Button>
         </div>

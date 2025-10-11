@@ -23,13 +23,13 @@ const useVisibilityController = () => {
 const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
   const pointsRef = useRef<Points>(null);
   const geometry = useMemo(() => {
-    const count = 1200;
+    const count = 1500; // Increased particle count
     const positions = new Float32Array(count * 3);
 
     for (let i = 0; i < count * 3; i += 3) {
-      const radius = 2 + Math.random() * 2;
+      const radius = 2.5 + Math.random() * 2.5; // Slightly larger spread
       const angle = Math.random() * Math.PI * 2;
-      const y = (Math.random() - 0.5) * 2.5;
+      const y = (Math.random() - 0.5) * 3; // Wider vertical spread
       positions[i] = Math.cos(angle) * radius;
       positions[i + 1] = y;
       positions[i + 2] = Math.sin(angle) * radius;
@@ -47,19 +47,19 @@ const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) =>
     const elapsed = clock.getElapsedTime();
     if (elapsed - lastFrame.current < 1 / 45) return;
     lastFrame.current = elapsed;
-    pointsRef.current.rotation.y = elapsed * 0.06;
-    pointsRef.current.rotation.x = Math.sin(elapsed * 0.3) * 0.08;
+    pointsRef.current.rotation.y = elapsed * 0.07; // Slightly faster rotation
+    pointsRef.current.rotation.x = Math.sin(elapsed * 0.35) * 0.09; // More subtle x-axis wobble
   });
 
   return (
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
         attach="material"
-        color="#60a5fa"
-        size={0.035}
+        color="#60a5fa" // Tailwind blue-400
+        size={0.04} // Slightly larger particles
         sizeAttenuation
         transparent
-        opacity={0.55}
+        opacity={0.6} // Slightly more opaque
       />
     </points>
   );
@@ -83,13 +83,13 @@ const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
     <mesh ref={meshRef} scale={1.65} position={[0, 0, 0]}>
       <torusKnotGeometry args={[0.9, 0.28, 120, 18, 2, 5]} />
       <MeshDistortMaterial
-        color="#a855f7"
-        emissive="#0ea5e9"
-        emissiveIntensity={0.4}
+        color="#a855f7" // Tailwind purple-400
+        emissive="#0ea5e9" // Tailwind cyan-500
+        emissiveIntensity={0.5} // Increased emissive intensity
         roughness={0.2}
         metalness={0.7}
-        distort={0.38}
-        speed={1.1}
+        distort={0.4} // Slightly more distortion
+        speed={1.2} // Slightly faster distortion speed
       />
     </mesh>
   );
