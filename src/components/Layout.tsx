@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom'; // Import useLocation
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import LiquidEther from './LiquidEther';
@@ -6,14 +6,16 @@ import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 export default function Layout() {
   useScrollToTop();
-  const location = useLocation(); // Get the current location
+  // The useLocation hook is no longer needed here for the LiquidEther key,
+  // but it might be used elsewhere in the component or its children.
+  // const location = useLocation(); 
 
   return (
     <div className="relative flex flex-col min-h-screen">
       {/* LiquidEther Background */}
       <div className="fixed inset-0 w-full h-full -z-20">
         <LiquidEther
-          key={location.pathname} {/* Add key prop based on pathname */}
+          // Removed key={location.pathname} to prevent remounting and state reset on route changes
           colors={[ '#7C3AED', '#0EA5E9', '#EC4899' ]} // Using your theme's primary, secondary, accent colors
           mouseForce={20}
           cursorSize={100}
