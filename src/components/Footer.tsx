@@ -28,11 +28,11 @@ export default function Footer() {
   ];
 
   const navLinks = [
-    { href: '/', label: 'Home' },
+    { href: '/', label: 'Início' },
     { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'About' },
-    { href: '/thoughts', label: 'Thoughts' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/about', label: 'Sobre' },
+    { href: '/thoughts', label: 'Pensamentos' },
+    { href: '/contact', label: 'Contato' },
   ];
 
   return (
@@ -56,7 +56,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Monynha Softwares. All rights reserved.
+              &copy; {new Date().getFullYear()} Monynha Softwares. Todos os direitos reservados.
             </p>
           </div>
 

@@ -15,10 +15,10 @@ export default function About() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            About Me
+            Sobre Mim
           </h1>
           <p className="text-xl text-muted-foreground">
-            Discover my story and experience
+            Conheça a história e experiência
           </p>
         </motion.div>
 
@@ -65,7 +65,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Briefcase className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Experience</h2>
+            <h2 className="text-3xl font-display font-bold">Experiência</h2>
           </div>
           
           <div className="space-y-6">
@@ -92,7 +92,7 @@ export default function About() {
                     </p>
                   </div>
                   <div className="text-sm text-muted-foreground mt-2 md:mt-0">
-                    {new Date(exp.start).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - {exp.end ? new Date(exp.end).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Present'}
+                    {new Date(exp.start).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' })} - {exp.end ? new Date(exp.end).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' }) : 'Presente'}
                   </div>
                 </div>
                 
@@ -117,7 +117,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Award className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Skills</h2>
+            <h2 className="text-3xl font-display font-bold">Competências</h2>
           </div>
           
           <div className="grid md:grid-cols-2 gap-4">

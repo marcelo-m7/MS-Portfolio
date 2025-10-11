@@ -12,11 +12,11 @@ export default function Navbar() {
   const location = useLocation();
 
   const navLinks = [
-    { href: '/', label: 'Home' },
+    { href: '/', label: 'Início' },
     { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'About' }, // Changed label to English as per inspiration
-    { href: '/thoughts', label: 'Thoughts' }, // Changed label
-    { href: '/contact', label: 'Contact' }, // Changed label
+    { href: '/about', label: 'Sobre' },
+    { href: '/thoughts', label: 'Pensamentos' },
+    { href: '/contact', label: 'Contato' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

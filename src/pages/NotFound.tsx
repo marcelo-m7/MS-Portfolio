@@ -24,10 +24,10 @@ const NotFound = () => {
         role="alert"
         aria-live="assertive"
       >
-        <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Error 404</p>
-        <h1 className="mt-4 text-5xl font-display font-bold">Page Not Found</h1>
+        <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Erro 404</p>
+        <h1 className="mt-4 text-5xl font-display font-bold">Página não encontrada</h1>
         <p className="mt-4 text-base text-muted-foreground">
-          The path <span className="font-mono text-primary">{location.pathname}</span> does not exist. Return to the homepage to continue exploring the Monynha universe.
+          O caminho <span className="font-mono text-primary">{location.pathname}</span> não existe. Volte à página inicial para continuar a explorar o universo Monynha.
         </p>
         <div className="mt-8 flex justify-center">
           <Button
@@ -37,7 +37,7 @@ const NotFound = () => {
             whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
-            <Link to="/">Back to Home</Link>
+            <Link to="/">Voltar para o Início</Link>
           </Button>
         </div>
       </motion.div>

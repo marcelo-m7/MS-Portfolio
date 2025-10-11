@@ -37,7 +37,7 @@ const buildWorkCards = (): Record<string, WorkCard> => {
         href: `/art/${artwork.slug}`,
         isInternal: true,
         thumbnail: artwork.media?.[0],
-        badge: 'Digital Art', // Changed to English
+        badge: 'Arte Digital',
       };
       return acc;
     },
@@ -77,12 +77,12 @@ export default function SeriesDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Series Not Found</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">Série não encontrada</h1>
           <p className="mt-4 text-muted-foreground">
-            The collection you are looking for is not available. Go back to the portfolio and explore other creative experiences.
+            A coleção que procuras não está disponível. Volte ao portfolio e explore outras experiências criativas.
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">View Portfolio</Link>
+            <Link to="/portfolio">Ver Portfolio</Link>
           </Button>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function SeriesDetail() {
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Back to Portfolio
+              Voltar ao Portfolio
             </Link>
           </Button>
 
@@ -124,7 +124,7 @@ export default function SeriesDetail() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Layers className="h-4 w-4" aria-hidden />
-              Creative Series
+              Série Criativa
             </motion.span>
             <motion.span
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
@@ -155,7 +155,7 @@ export default function SeriesDetail() {
                     <div className="mb-4 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
                       <img
                         src={work.thumbnail}
-                        alt={`Art ${work.title}`}
+                        alt={`Arte ${work.title}`}
                         loading="lazy"
                         decoding="async"
                         width={640}
@@ -208,7 +208,7 @@ export default function SeriesDetail() {
             })}
             {works.length === 0 && (
               <div className="col-span-full rounded-[var(--radius)] border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
-                New works for this series will be added soon.
+                Novas obras para esta série serão adicionadas em breve.
               </div>
             )}
           </div>

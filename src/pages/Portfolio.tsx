@@ -5,16 +5,16 @@ import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 
 export default function Portfolio() {
-  const [filter, setFilter] = useState<string>('All'); // Changed to English
+  const [filter, setFilter] = useState<string>('Todos');
   const prefersReducedMotion = useReducedMotion();
 
   const categories = useMemo(
-    () => ['All', ...new Set(cvData.projects.map((p) => p.category))], // Changed to English
+    () => ['Todos', ...new Set(cvData.projects.map((p) => p.category))],
     []
   );
 
   const filteredProjects = useMemo(() => {
-    if (filter === 'All') return cvData.projects;
+    if (filter === 'Todos') return cvData.projects;
     return cvData.projects.filter((p) => p.category === filter);
   }, [filter]);
 
@@ -31,7 +31,7 @@ export default function Portfolio() {
             Portfolio
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Projects and works developed in the Monynha ecosystem
+            Projetos e trabalhos desenvolvidos no ecossistema Monynha
           </p>
         </motion.div>
 
@@ -133,7 +133,7 @@ export default function Portfolio() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      View Project
+                      Ver Projeto
                       <ExternalLink size={16} aria-hidden />
                     </a>
                   </div>
@@ -150,7 +150,7 @@ export default function Portfolio() {
             className="text-center py-12"
           >
             <p className="text-muted-foreground text-lg">
-              No projects found in this category.
+              Nenhum projeto encontrado nesta categoria.
             </p>
           </motion.div>
         )}

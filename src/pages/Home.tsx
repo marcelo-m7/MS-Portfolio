@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles } from 'lucide-react';
+import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Hero3D from '@/components/Hero3D';
@@ -53,7 +53,7 @@ export default function Home() {
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
-                  Explore Portfolio
+                  Explorar Portfolio
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
@@ -65,10 +65,33 @@ export default function Home() {
                 className="rounded-full text-lg px-8 py-6 border-2 border-border/80 bg-card/30 backdrop-blur-sm transition hover:border-primary/80 hover:text-primary"
               >
                 <Link to="/contact">
-                  Get in Touch
+                  Entre em Contato
                 </Link>
               </Button>
             </div>
+
+            <motion.div
+              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
+              animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
+            >
+              <motion.div
+                initial={prefersReducedMotion ? undefined : { scale: 0.95, opacity: 0 }}
+                animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
+              >
+                <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
+                <span>Nova rota: reflexões em tecnologia e arte</span>
+              </motion.div>
+              <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_rgba(56,189,248,0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105">
+                <Link to="/thoughts">
+                  Ler os pensamentos recentes
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </Button>
+            </motion.div>
           </motion.div>
         </div>
 
@@ -100,10 +123,10 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Featured Projects
+              Projetos em Destaque
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              A curated selection of recent projects blending artistry with technology
+              Seleção dos melhores trabalhos do ecossistema Monynha
             </p>
           </motion.div>
 
@@ -173,7 +196,7 @@ export default function Home() {
           >
             <Button asChild variant="outline" size="lg" className="rounded-full border-border/70">
               <Link to="/portfolio">
-                View All Projects
+                Ver Todos os Projetos
                 <ArrowRight className="ml-2" />
               </Link>
             </Button>
@@ -192,10 +215,10 @@ export default function Home() {
             className="mb-12 text-center"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Collections & Art
+              Coleções & Arte
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Immersive experiences and experimental series connecting technology, narrative, and digital art.
+              Experiências imersivas e séries experimentais que conectam tecnologia, narrativa e arte digital.
             </p>
           </motion.div>
 
@@ -212,13 +235,13 @@ export default function Home() {
               >
                 <div className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--secondary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--secondary)/0.3),_0_15px_30px_-15px_hsl(var(--accent)/0.2)]">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]">
-                    <Code2 aria-hidden className="h-6 w-6" />
+                    <Layers aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
                     Creative Systems
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground/90">
-                    A collection of works exploring applied AI, intelligent automation, and artistic interfaces connected to the Monynha laboratory.
+                    Coleção de trabalhos que explora IA aplicada, automação inteligente e interfaces artísticas conectadas ao laboratório Monynha.
                   </p>
                 </div>
               </Link>
@@ -236,13 +259,13 @@ export default function Home() {
               >
                 <div className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_rgba(56,189,248,0.2)]">
-                    <Code2 aria-hidden className="h-6 w-6" />
+                    <Palette aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
                     Art Leo Creative Spaces
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground/90">
-                    A 3D experience with interactive narratives and sound composition inspired by Leonardo Silva's creative spaces.
+                    Experiência 3D com narrativas interativas e composição sonora inspirada nos espaços criativos de Leonardo Silva.
                   </p>
                 </div>
               </Link>

@@ -47,7 +47,7 @@ export default function Contact() {
       setFormData(createInitialFormState());
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Error sending contact message:', error);
+        console.error('Erro ao enviar mensagem de contato:', error);
       }
       toast.error(cvData.contact.errorMessage);
     } finally {
@@ -65,7 +65,7 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Let's Connect
+            Vamos Conversar
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {cvData.contact.note}
@@ -82,7 +82,7 @@ export default function Contact() {
           >
             <div className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Contact Information
+                Informações de Contato
               </h2>
 
               <div className="space-y-6">
@@ -138,7 +138,7 @@ export default function Contact() {
             </div>
 
             <div className="glass rounded-[var(--radius)] p-8">
-              <h3 className="font-display font-bold mb-3">Availability</h3>
+              <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
               <p className="text-muted-foreground">
                 {cvData.contact.availability}
               </p>
@@ -153,14 +153,14 @@ export default function Contact() {
           >
             <form onSubmit={handleSubmit} className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Send a Message
+                Enviar Mensagem
               </h2>
 
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Name
+                      Nome
                     </label>
                     <Input
                       id="name"
@@ -171,12 +171,12 @@ export default function Contact() {
                       }
                       required
                       className="rounded-xl"
-                      placeholder="Your name"
+                      placeholder="Seu nome"
                     />
                   </div>
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Company <span className="text-muted-foreground">(optional)</span>
+                      Empresa <span className="text-muted-foreground">(opcional)</span>
                     </label>
                     <Input
                       id="company"
@@ -186,7 +186,7 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, company: e.target.value }))
                       }
                       className="rounded-xl"
-                      placeholder="Where you work"
+                      placeholder="Onde você trabalha"
                     />
                   </div>
                 </div>
@@ -205,12 +205,12 @@ export default function Contact() {
                       }
                       required
                       className="rounded-xl"
-                      placeholder="your@email.com"
+                      placeholder="seu@email.com"
                     />
                   </div>
                   <div>
                     <label htmlFor="project" className="block text-sm font-medium mb-2">
-                      Project <span className="text-muted-foreground">(optional)</span>
+                      Projeto <span className="text-muted-foreground">(opcional)</span>
                     </label>
                     <Input
                       id="project"
@@ -220,14 +220,14 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, project: e.target.value }))
                       }
                       className="rounded-xl"
-                      placeholder="What should we talk about?"
+                      placeholder="Sobre o que vamos falar?"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Message
+                    Mensagem
                   </label>
                   <Textarea
                     id="message"
@@ -238,7 +238,7 @@ export default function Contact() {
                     required
                     rows={6}
                     className="rounded-xl resize-none"
-                    placeholder="Write your message here..."
+                    placeholder="Escreva sua mensagem aqui..."
                   />
                 </div>
 
@@ -248,11 +248,11 @@ export default function Contact() {
                   className="w-full rounded-xl py-6 text-lg bg-primary hover:bg-primary/90"
                 >
                   {isSubmitting ? (
-                    'Sending...'
+                    'Enviando...'
                   ) : (
                     <>
                       <Send className="mr-2" size={20} />
-                      Send Message
+                      Enviar Mensagem
                     </>
                   )}
                 </Button>

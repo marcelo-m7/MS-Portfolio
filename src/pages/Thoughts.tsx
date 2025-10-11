@@ -29,18 +29,18 @@ export default function Thoughts() {
           >
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
-              Back to Home
+              Voltar para o Início
             </Link>
           </Button>
 
           <header className="mb-12 text-center">
             <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Thoughts
+                Pensamentos
               </span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Short reflections on technology, accessibility, and digital art straight from the Monynha lab.
+              Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.
             </p>
           </header>
 
@@ -98,7 +98,7 @@ export default function Thoughts() {
                       to={`/thoughts/${thought.slug}`}
                       className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/70 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      Read Full Thought
+                      Ler Reflexão Completa
                       <ArrowRight className="h-4 w-4" aria-hidden />
                     </Link>
                   </div>
@@ -110,10 +110,10 @@ export default function Thoughts() {
           <div className="mt-16 flex flex-col items-center gap-4 rounded-[var(--radius)] border border-border/60 bg-background/40 p-8 text-center shadow-[0_35px_70px_-60px_rgba(56,189,248,0.3)]">
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Monynha Softwares Journal</p>
             <p className="text-2xl font-display font-semibold text-foreground">
-              Ideas, creative processes, and behind-the-scenes of immersive experiences.
+              Ideias, processos criativos e bastidores das experiências imersivas.
             </p>
             <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-6 py-2 text-sm">
-              <Link to="/contact">Share a thought with me</Link>
+              <Link to="/contact">Partilhar um pensamento comigo</Link>
             </Button>
           </div>
         </motion.div>

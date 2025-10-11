@@ -21,12 +21,12 @@ export default function ThoughtDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Content Not Found</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">Conteúdo não encontrado</h1>
           <p className="mt-4 text-muted-foreground">
-            We couldn't find this thought. Go back to the thoughts collection and explore other ideas.
+            Não encontramos esta reflexão. Volte para a coleção de pensamentos e explore outras ideias.
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/thoughts">View all thoughts</Link>
+            <Link to="/thoughts">Ver todos os pensamentos</Link>
           </Button>
         </div>
       </div>
@@ -59,7 +59,7 @@ export default function ThoughtDetail() {
           >
             <Link to="/thoughts">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Back to Thoughts
+              Voltar para os Pensamentos
             </Link>
           </Button>
 
@@ -110,7 +110,7 @@ export default function ThoughtDetail() {
           </article>
 
           <footer className="mt-12 rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
-            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Written by</p>
+            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>
             <div className="mt-4 flex items-center gap-3">
               <img
                 src={cvData.profile.avatar}
