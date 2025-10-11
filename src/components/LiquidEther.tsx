@@ -24,6 +24,7 @@ export default function LiquidEther({
   autoRampDuration = 0.6
 }) {
   const mountRef = useRef(null);
+  const canvasContainerRef = useRef(null); // New ref for the canvas container
   const webglRef = useRef(null);
   const resizeObserverRef = useRef(null);
   const rafRef = useRef(null);
@@ -32,7 +33,7 @@ export default function LiquidEther({
   const resizeRafRef = useRef(null);
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    if (!mountRef.current || !canvasContainerRef.current) return; // Ensure canvasContainerRef is ready
 
     function makePaletteTexture(stops: string[]) {
       let arr;
@@ -552,7 +553,7 @@ export default function LiquidEther({
           this.material = new THREE.RawShaderMaterial(this.props.material);
           this.geometry = new THREE.PlaneGeometry(2.0, 2.0);
           this.plane = new THREE.Mesh(this.geometry, this.material);
-          this.scene.add(this.plane);
+          this.scene!.add(this.plane);
         }
       }
       update() {
@@ -764,8 +765,8 @@ export default function LiquidEther({
             fragmentShader: pressure_frag,
             uniforms: {
               boundarySpace: { value: simProps.boundarySpace },
-              pressure: { value: simProps.src_p.texture },
-              velocity: { value: simProps.src_v.texture },
+              src_p: { value: simProps.src_p.texture },
+              src_v: { value: simProps.src_v.texture },
               px: { value: simProps.cellScale },
               dt: { value: simProps.dt }
             }
@@ -775,8 +776,8 @@ export default function LiquidEther({
         this.init();
       }
       update({ vel, pressure }: { vel: THREE.WebGLRenderTarget; pressure: THREE.WebGLRenderTarget; }) {
-        this.uniforms.velocity.value = vel.texture;
-        this.uniforms.pressure.value = pressure.texture;
+        this.uniforms.src_v.value = vel.texture;
+        this.uniforms.src_p.value = pressure.texture;
         super.update();
       }
     }
@@ -1050,7 +1051,8 @@ export default function LiquidEther({
         this.running = false;
       }
       init() {
-        this.props.$wrapper.prepend(Common.renderer!.domElement);
+        // Append the renderer's DOM element to the dedicated canvas container
+        this.props.$canvasContainer.prepend(Common.renderer!.domElement);
         this.output = new Output();
       }
       resize() {
@@ -1087,7 +1089,8 @@ export default function LiquidEther({
           Mouse.dispose();
           if (Common.renderer) {
             const canvas = Common.renderer.domElement;
-            if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
+            // Ensure we remove from the correct parent
+            if (canvas && canvas.parentNode === this.props.$canvasContainer) this.props.$canvasContainer.removeChild(canvas);
             Common.renderer.dispose();
           }
         } catch (e) {
@@ -1097,11 +1100,15 @@ export default function LiquidEther({
     }
 
     const container = mountRef.current;
+    const canvasContainer = canvasContainerRef.current; // Get the new canvas container ref
+    if (!container || !canvasContainer) return; // Ensure both refs are available
+
     container.style.position = container.style.position || 'relative';
     container.style.overflow = container.style.overflow || 'hidden';
 
     const webgl = new WebGLManager({
-      $wrapper: container,
+      $wrapper: container, // Mouse events still on the main container
+      $canvasContainer: canvasContainer, // Pass the dedicated canvas container
       autoDemo,
       autoSpeed,
       autoIntensity,
@@ -1113,7 +1120,7 @@ export default function LiquidEther({
 
     const applyOptionsFromProps = () => {
       if (!webglRef.current) return;
-      const sim = webglRef.current.output?.simulation;
+      const sim = webgl.current.output?.simulation;
       if (!sim) return;
       const prevRes = sim.options.resolution;
       Object.assign(sim.options, {
@@ -1144,9 +1151,9 @@ export default function LiquidEther({
         isVisibleRef.current = isVisible;
         if (!webglRef.current) return;
         if (isVisible && !document.hidden) {
-          webglRef.current.start();
+          webgl.current.start();
         } else {
-          webglRef.current.pause();
+          webgl.current.pause();
         }
       },
       { threshold: [0, 0.01, 0.1] }
@@ -1159,7 +1166,7 @@ export default function LiquidEther({
       if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current);
       resizeRafRef.current = requestAnimationFrame(() => {
         if (!webglRef.current) return;
-        webglRef.current.resize();
+        webgl.current.resize();
       });
     });
     ro.observe(container);
@@ -1256,5 +1263,9 @@ export default function LiquidEther({
     autoRampDuration
   ]);
 
-  return <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style} />;
+  return (
+    <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style}>
+      <div ref={canvasContainerRef} className="absolute inset-0 w-full h-full" /> {/* Dedicated container for the canvas */}
+    </div>
+  );
 }
