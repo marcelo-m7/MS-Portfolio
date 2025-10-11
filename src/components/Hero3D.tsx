@@ -1,8 +1,11 @@
 import { lazy, Suspense } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import Prism from './Prism'; // Import the new Prism component
 
 const isHero3DFlagEnabled =
   import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
+const isPrismBackgroundEnabled =
+  import.meta.env.VITE_ENABLE_PRISM_BACKGROUND?.toLowerCase() === 'true';
 
 const HeroCanvas = isHero3DFlagEnabled ? lazy(() => import('./HeroCanvas')) : null;
 
@@ -39,15 +42,36 @@ const StaticIllustration = () => (
 export default function Hero3D() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  if (prefersReducedMotion || !isHero3DFlagEnabled) {
+  if (prefersReducedMotion) {
     return <StaticIllustration />;
   }
 
-  const Canvas = HeroCanvas;
+  if (isPrismBackgroundEnabled) {
+    return (
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <Prism
+          animationType="rotate"
+          timeScale={0.5}
+          height={3.5}
+          baseWidth={5.5}
+          scale={3.6}
+          hueShift={0}
+          colorFrequency={1}
+          noise={0.5}
+          glow={1}
+        />
+      </div>
+    );
+  }
 
-  return (
-    <Suspense fallback={<StaticIllustration />}>
-      <Canvas />
-    </Suspense>
-  );
+  if (isHero3DFlagEnabled) {
+    const Canvas = HeroCanvas;
+    return (
+      <Suspense fallback={<StaticIllustration />}>
+        <Canvas />
+      </Suspense>
+    );
+  }
+
+  return <StaticIllustration />;
 }
