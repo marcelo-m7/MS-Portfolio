@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import Hero3D from '@/components/Hero3D';
+// import Hero3D from '@/components/Hero3D'; // Removed Hero3D
 import cvData from '../../public/data/cv.json';
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden">
-        <Hero3D />
+        {/* <Hero3D /> Removed Hero3D */}
 
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
