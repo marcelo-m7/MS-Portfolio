@@ -2,7 +2,6 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-// import Hero3D from '@/components/Hero3D'; // Removed Hero3D
 import cvData from '../../public/data/cv.json';
 
 export default function Home() {
@@ -12,8 +11,6 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden">
-        {/* <Hero3D /> Removed Hero3D */}
-
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -25,23 +22,23 @@ export default function Home() {
               initial={prefersReducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
               animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-[0_20px_35px_-25px_rgba(56,189,248,0.2)]"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm text-muted-foreground shadow-[0_20px_35px_-25px_rgba(56,189,248,0.2)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">{cvData.profile.location}</span>
+              <span>{cvData.profile.location}</span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-balance">
+            <h1 className="text-5xl md:text-7xl font-display font-bold mt-6 mb-4 text-balance">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {cvData.profile.name}
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium">
+            <p className="text-xl md:text-2xl text-foreground mb-4 font-medium">
               {cvData.profile.headline}
             </p>
 
-            <p className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
               {cvData.profile.bio}
             </p>
 
@@ -49,7 +46,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full text-lg px-8 py-6 shadow-[0_15px_45px_-20px_rgba(14,165,233,0.4)]"
+                className="rounded-full text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary shadow-[0_15px_45px_-20px_rgba(124,58,237,0.4)] hover:brightness-110 transition-all"
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
@@ -74,7 +71,7 @@ export default function Home() {
               initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
               animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
+              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground"
             >
               <motion.div
                 initial={prefersReducedMotion ? undefined : { scale: 0.95, opacity: 0 }}
