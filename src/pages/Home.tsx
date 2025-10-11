@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Sparkles, Palette } from 'lucide-react'; // Changed icon for the main button
+import { ArrowRight, Sparkles, Palette, Layers } from 'lucide-react'; // Added Layers icon
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import cvData from '../../public/data/cv.json'; // Re-added cvData import
