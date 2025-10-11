@@ -82,7 +82,7 @@ export default function Portfolio() {
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 22 }}
               >
-                <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_35px_60px_-45px_rgba(124,58,237,0.8)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background">
+                <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.15)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.4),_0_15px_30px_-15px_hsl(var(--primary)/0.3)]">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
                     <motion.img
                       src={project.thumbnail}

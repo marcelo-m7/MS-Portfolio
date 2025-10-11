@@ -154,7 +154,7 @@ export default function Home() {
                   whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                   transition={{ type: 'spring', stiffness: 200, damping: 22 }}
                 >
-                  <div className="rounded-3xl border border-border/70 bg-card/60 p-6 shadow-[0_25px_45px_-35px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_18px_38px_-20px_rgba(124,58,237,0.5)]">
+                  <div className="rounded-3xl border border-border/70 bg-card/60 p-6 shadow-[0_15px_30px_-20px_hsl(var(--primary)/0.15)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_50px_-25px_hsl(var(--primary)/0.4),_0_10px_20px_-10px_hsl(var(--secondary)/0.3)]">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
                         <Code2 className="text-white" size={24} aria-hidden />
@@ -233,7 +233,7 @@ export default function Home() {
                 to="/series/creative-systems"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_rgba(56,189,248,0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]">
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--secondary)/0.15)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--secondary)/0.4),_0_15px_30px_-15px_hsl(var(--accent)/0.3)]">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
                     <Layers aria-hidden className="h-6 w-6" />
                   </div>
@@ -257,7 +257,7 @@ export default function Home() {
                 to="/art/artleo"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_30px_60px_-50px_rgba(124,58,237,0.7)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(56,189,248,0.6)]">
+                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.15)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--accent)/0.4),_0_15px_30px_-15px_hsl(var(--primary)/0.3)]">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_rgba(56,189,248,0.45)]">
                     <Palette aria-hidden className="h-6 w-6" />
                   </div>
