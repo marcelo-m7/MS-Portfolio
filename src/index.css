@@ -11,7 +11,7 @@ All colors MUST be HSL.
     --background: 220 10% 8%; /* Very dark gray, almost black */
     --foreground: 0 0% 98%; /* White for text */
 
-    --card: 220 10% 8%; /* Slightly lighter dark gray for card backgrounds */
+    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
     --card-foreground: 0 0% 98%;
 
     --popover: 220 10% 12%;
@@ -95,7 +95,7 @@ All colors MUST be HSL.
   }
 
   .glass {
-    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+    @apply bg-card border border-border/50; /* Removed /80 and backdrop-blur-xl */
   }
 
   .glow-purple {
