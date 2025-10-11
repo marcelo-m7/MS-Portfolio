@@ -1,8 +1,9 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Sparkles, Palette, Layers } from 'lucide-react'; // Added Layers icon
+import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import cvData from '../../public/data/cv.json'; // Re-added cvData import
+// import Hero3D from '@/components/Hero3D'; // Removed Hero3D
+import cvData from '../../public/data/cv.json';
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
@@ -11,6 +12,8 @@ export default function Home() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden">
+        {/* <Hero3D /> Removed Hero3D */}
+
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -22,35 +25,35 @@ export default function Home() {
               initial={prefersReducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
               animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm text-muted-foreground shadow-[0_20px_35px_-25px_rgba(56,189,248,0.2)]"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-[0_20px_35px_-25px_rgba(56,189,248,0.2)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
-              <span>Digital Artist & Creative Developer</span>
+              <span className="text-sm font-medium">{cvData.profile.location}</span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold mt-6 mb-4 text-balance">
+            <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-balance">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Leonardo Silva
+                {cvData.profile.name}
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-foreground mb-4 font-medium">
-              Crafting Visual Stories
+            <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium">
+              {cvData.profile.headline}
             </p>
 
-            <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-              Exploring the intersection of art, technology, and emotion through immersive 3D experiences and motion design.
+            <p className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto">
+              {cvData.profile.bio}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button
                 asChild
                 size="lg"
-                className="rounded-full text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary shadow-[0_15px_45px_-20px_rgba(124,58,237,0.4)] hover:brightness-110 transition-all"
+                className="rounded-full text-lg px-8 py-6 shadow-[0_15px_45px_-20px_rgba(14,165,233,0.4)]"
               >
                 <Link to="/portfolio">
-                  <Palette className="mr-2" /> {/* Changed icon */}
-                  Explore Portfolio
+                  <Code2 className="mr-2" />
+                  Explorar Portfolio
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
@@ -62,17 +65,16 @@ export default function Home() {
                 className="rounded-full text-lg px-8 py-6 border-2 border-border/80 bg-card/30 backdrop-blur-sm transition hover:border-primary/80 hover:text-primary"
               >
                 <Link to="/contact">
-                  Get in Touch
+                  Entre em Contato
                 </Link>
               </Button>
             </div>
 
-            {/* Removed the 'Nova rota' section as per the new design */}
-            {/* <motion.div
+            <motion.div
               initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
               animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
-              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground"
+              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
             >
               <motion.div
                 initial={prefersReducedMotion ? undefined : { scale: 0.95, opacity: 0 }}
@@ -89,7 +91,7 @@ export default function Home() {
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               </Button>
-            </motion.div> */}
+            </motion.div>
           </motion.div>
         </div>
 
@@ -155,7 +157,7 @@ export default function Home() {
                   <div className="rounded-[var(--radius)] border border-border/70 bg-card/60 p-6 shadow-[0_15px_30px_-20px_hsl(var(--primary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_50px_-25px_hsl(var(--primary)/0.3),_0_10px_20px_-10px_hsl(var(--secondary)/0.2)]">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]">
-                        <Palette className="text-white" size={24} aria-hidden /> {/* Changed icon */}
+                        <Code2 className="text-white" size={24} aria-hidden />
                       </div>
                       <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
                         {project.category}
