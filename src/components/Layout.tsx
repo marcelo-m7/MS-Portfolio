@@ -1,9 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import LiquidEther from './LiquidEther'; // Import LiquidEther
+import LiquidEther from './LiquidEther';
+import { useScrollToTop } from '@/hooks/useScrollToTop'; // Import the new hook
 
 export default function Layout() {
+  useScrollToTop(); // Use the hook here
+
   return (
     <div className="relative flex flex-col min-h-screen">
       {/* LiquidEther Background */}
@@ -16,6 +19,8 @@ export default function Layout() {
           viscous={30}
           iterationsViscous={32}
           iterationsPoisson={32}
+          dt={0.014}
+          BFECC={true}
           resolution={0.5}
           isBounce={false}
           autoDemo={true}
