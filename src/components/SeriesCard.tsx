@@ -22,12 +22,12 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4 }}
-      className="group h-full" {/* Added h-full here */}
+      className="group"
     >
-      <div className="rounded-[var(--radius)] border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)] h-full flex flex-col"> {/* Added h-full flex flex-col */}
+      <div className="rounded-[var(--radius)] border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
         <Link
           to={`/series/${series.slug}`}
-          className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background flex-1 flex flex-col" {/* Added flex-1 flex flex-col */}
+          className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           style={{ transformStyle: 'preserve-3d' }}
           whileHover={
             prefersReducedMotion
@@ -46,7 +46,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
             </div>
           </div>
 
-          <div className="p-6 flex flex-col gap-4 flex-1"> {/* Added flex-1 here */}
+          <div className="p-6 flex flex-col gap-4">
             <div className="flex items-start justify-between mb-3">
               <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors">
                 {series.title}
