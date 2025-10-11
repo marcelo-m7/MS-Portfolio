@@ -329,7 +329,7 @@ export default function LiquidEther({
           this.active = true;
           this.current.copy(this.mouse.coords);
           this.lastTime = now;
-          this.activationTime = now;
+          this.activationTime = 0; // Reset activation time when starting auto-demo
         }
         if (!this.active) return;
         this.mouse.isAutoActive = true;
@@ -690,7 +690,6 @@ export default function LiquidEther({
           }
           this.uniforms.velocity_new.value = fbo_in.texture;
           this.props.output = fbo_out;
-          this.uniforms.dt.value = dt;
           super.update();
         }
         return fbo_out;
@@ -1120,7 +1119,7 @@ export default function LiquidEther({
 
     const applyOptionsFromProps = () => {
       if (!webglRef.current) return;
-      const sim = webgl.current.output?.simulation;
+      const sim = webglRef.current.output?.simulation; // Corrected line
       if (!sim) return;
       const prevRes = sim.options.resolution;
       Object.assign(sim.options, {
