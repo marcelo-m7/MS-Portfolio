@@ -1,8 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
+import { ArrowRight, Sparkles, Palette } from 'lucide-react'; // Changed icon for the main button
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import cvData from '../../public/data/cv.json';
+// Removed cvData import as content will be hardcoded for this specific hero section
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
@@ -25,21 +25,21 @@ export default function Home() {
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 text-sm text-muted-foreground shadow-[0_20px_35px_-25px_rgba(56,189,248,0.2)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
-              <span>{cvData.profile.location}</span>
+              <span>Digital Artist & Creative Developer</span>
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-display font-bold mt-6 mb-4 text-balance">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {cvData.profile.name}
+                Leonardo Silva
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-foreground mb-4 font-medium">
-              {cvData.profile.headline}
+              Crafting Visual Stories
             </p>
 
             <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-              {cvData.profile.bio}
+              Exploring the intersection of art, technology, and emotion through immersive 3D experiences and motion design.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -49,8 +49,8 @@ export default function Home() {
                 className="rounded-full text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary shadow-[0_15px_45px_-20px_rgba(124,58,237,0.4)] hover:brightness-110 transition-all"
               >
                 <Link to="/portfolio">
-                  <Code2 className="mr-2" />
-                  Explorar Portfolio
+                  <Palette className="mr-2" /> {/* Changed icon */}
+                  Explore Portfolio
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
@@ -62,12 +62,13 @@ export default function Home() {
                 className="rounded-full text-lg px-8 py-6 border-2 border-border/80 bg-card/30 backdrop-blur-sm transition hover:border-primary/80 hover:text-primary"
               >
                 <Link to="/contact">
-                  Entre em Contato
+                  Get in Touch
                 </Link>
               </Button>
             </div>
 
-            <motion.div
+            {/* Removed the 'Nova rota' section as per the new design */}
+            {/* <motion.div
               initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
               animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
@@ -88,7 +89,7 @@ export default function Home() {
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               </Button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
         </div>
 
@@ -154,7 +155,7 @@ export default function Home() {
                   <div className="rounded-[var(--radius)] border border-border/70 bg-card/60 p-6 shadow-[0_15px_30px_-20px_hsl(var(--primary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_50px_-25px_hsl(var(--primary)/0.3),_0_10px_20px_-10px_hsl(var(--secondary)/0.2)]">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]">
-                        <Code2 className="text-white" size={24} aria-hidden />
+                        <Palette className="text-white" size={24} aria-hidden /> {/* Changed icon */}
                       </div>
                       <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
                         {project.category}
