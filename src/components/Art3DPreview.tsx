@@ -36,8 +36,8 @@ const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean>
     <mesh ref={meshRef} scale={1.8} position={[0, 0, 0]}>
       <torusKnotGeometry args={[0.85, 0.28, 200, 32, 2, 3]} />
       <MeshDistortMaterial
-        color="#A31F3B" // Mapped from --primary (deep red)
-        emissive="#CC4C66" // Mapped from --secondary (standard red)
+        color="#292966" // Mapped from --primary (deep indigo)
+        emissive="#2682D9" // Mapped from --secondary (vibrant sky blue)
         emissiveIntensity={0.65}
         metalness={0.8}
         roughness={0.2}
@@ -58,7 +58,7 @@ const DynamicLight = () => {
       lightRef.current.position.z = Math.sin(time * 0.9) * 4;
     }
   });
-  return <pointLight ref={lightRef} intensity={0.7} color="#732638" />; {/* Mapped from --accent (darker, muted red) */}
+  return <pointLight ref={lightRef} intensity={0.7} color="#9966CC" />; {/* Mapped from --accent (soft lavender) */}
 };
 
 export default function Art3DPreview() {
@@ -72,8 +72,8 @@ export default function Art3DPreview() {
     >
       <Suspense fallback={null}>
         <ambientLight intensity={0.6} />
-        <directionalLight position={[4, 6, 5]} intensity={1.2} color="#A31F3B" /> {/* Mapped from --primary */}
-        <pointLight position={[-4, -3, -4]} intensity={0.8} color="#CC4C66" /> {/* Mapped from --secondary */}
+        <directionalLight position={[4, 6, 5]} intensity={1.2} color="#292966" /> {/* Mapped from --primary */}
+        <pointLight position={[-4, -3, -4]} intensity={0.8} color="#2682D9" /> {/* Mapped from --secondary */}
         <DynamicLight />
         <RibbonSculpture visibleRef={visibleRef} />
         <OrbitControls enablePan={false} enableZoom enableDamping dampingFactor={0.08} />

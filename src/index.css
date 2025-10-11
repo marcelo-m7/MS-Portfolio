@@ -17,16 +17,16 @@ All colors MUST be HSL.
     --popover: 220 10% 12%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 350 70% 40%; /* Deep red */
+    --primary: 240 60% 40%; /* Deep Indigo */
     --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
 
-    --secondary: 350 60% 50%; /* Standard red */
+    --secondary: 210 70% 50%; /* Vibrant Sky Blue */
     --secondary-foreground: 0 0% 98%;
 
     --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
     --muted-foreground: 220 10% 70%; /* Light gray for muted text */
 
-    --accent: 350 50% 30%; /* Darker, muted red */
+    --accent: 270 40% 60%; /* Soft Lavender Purple */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 63% 31%; /* Keep vibrant red */
@@ -34,16 +34,16 @@ All colors MUST be HSL.
 
     --border: 220 10% 20%; /* Subtle dark gray border */
     --input: 220 10% 12%; /* Dark input background */
-    --ring: 350 70% 40%; /* Primary red for focus ring */
+    --ring: 210 70% 50%; /* Secondary blue for focus ring */
 
     --radius: 1.5rem; /* Increased border radius for softer, polished look */
 
     /* Custom tokens */
-    --hero-gradient-start: 350 70% 40%;
-    --hero-gradient-end: 350 60% 50%;
-    --glow-purple: 350 70% 40%;
-    --glow-blue: 350 60% 50%;
-    --glow-pink: 350 50% 30%;
+    --hero-gradient-start: 240 60% 40%;
+    --hero-gradient-end: 210 70% 50%;
+    --glow-purple: 240 60% 40%;
+    --glow-blue: 210 70% 50%;
+    --glow-pink: 270 40% 60%;
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
