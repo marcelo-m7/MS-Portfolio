@@ -19,8 +19,8 @@ export default function Portfolio() {
   }, [filter]);
 
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      <div className="container mx-auto px-6">
+    <div className="px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}

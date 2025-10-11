@@ -42,7 +42,7 @@ export default function ArtDetail() {
 
   if (!artwork) {
     return (
-      <div className="min-h-screen py-24 px-6">
+      <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
         <div className="container mx-auto max-w-3xl text-center">
           <h1 className="text-4xl font-display font-bold text-primary">Obra não encontrada</h1>
           <p className="mt-4 text-muted-foreground">
@@ -57,7 +57,7 @@ export default function ArtDetail() {
   }
 
   return (
-    <div className="min-h-screen py-24 px-6">
+    <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
       <div className="container mx-auto max-w-4xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
@@ -168,9 +168,9 @@ export default function ArtDetail() {
                 <p className="text-sm text-muted-foreground/80">
                   A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
                 </p>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </motion.div>
       </div>
 

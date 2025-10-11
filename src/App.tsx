@@ -2,7 +2,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import { useEffect, lazy, Suspense } from "react";
 import {
   detectInitialLanguage,
@@ -10,6 +9,7 @@ import {
   setLanguage,
 } from "./lib/googleTranslate";
 import type { SupportedLanguage } from "./lib/googleTranslate";
+import Layout from "./components/Layout"; // Import the new Layout component
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
@@ -45,7 +45,6 @@ const App = () => {
       <TooltipProvider>
         <Sonner />
         <BrowserRouter>
-          <Navbar />
           <Suspense
             fallback={
               <div className="flex min-h-[50vh] items-center justify-center">
@@ -56,15 +55,17 @@ const App = () => {
             }
           >
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/portfolio" element={<Portfolio />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/thoughts" element={<Thoughts />} />
-              <Route path="/thoughts/:slug" element={<ThoughtDetail />} />
-              <Route path="/series/:slug" element={<SeriesDetail />} />
-              <Route path="/art/:slug" element={<ArtDetail />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="/" element={<Layout />}> {/* Use Layout as the parent route */}
+                <Route index element={<Home />} />
+                <Route path="portfolio" element={<Portfolio />} />
+                <Route path="about" element={<About />} />
+                <Route path="thoughts" element={<Thoughts />} />
+                <Route path="thoughts/:slug" element={<ThoughtDetail />} />
+                <Route path="series/:slug" element={<SeriesDetail />} />
+                <Route path="art/:slug" element={<ArtDetail />} />
+                <Route path="contact" element={<Contact />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
             </Routes>
           </Suspense>
         </BrowserRouter>

@@ -15,7 +15,7 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-6 py-24">
+    <div className="flex items-center justify-center px-6 py-0"> {/* Removed min-h-screen, pt-24, pb-16 */}
       <motion.div
         initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
         animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}

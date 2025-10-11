@@ -75,7 +75,7 @@ export default function SeriesDetail() {
 
   if (!series) {
     return (
-      <div className="min-h-screen py-24 px-6">
+      <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
         <div className="container mx-auto max-w-3xl text-center">
           <h1 className="text-4xl font-display font-bold text-primary">Série não encontrada</h1>
           <p className="mt-4 text-muted-foreground">
@@ -94,7 +94,7 @@ export default function SeriesDetail() {
     .filter((card): card is WorkCard => Boolean(card));
 
   return (
-    <div className="min-h-screen py-24 px-6">
+    <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}

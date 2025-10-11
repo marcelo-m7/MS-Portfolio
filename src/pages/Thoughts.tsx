@@ -15,7 +15,7 @@ export default function Thoughts() {
   const locale = languageToLocale(language);
 
   return (
-    <div className="min-h-screen py-24 px-6">
+    <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}

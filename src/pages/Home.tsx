@@ -9,9 +9,9 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className="min-h-screen">
+    <div> {/* Removed min-h-screen */}
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden"> {/* Adjusted min-h to account for Navbar/Footer */}
         <Hero3D />
 
         <div className="container mx-auto px-6 relative z-10">
