@@ -11,10 +11,10 @@ All colors MUST be HSL.
     --background: 220 10% 8%; /* Very dark gray, almost black */
     --foreground: 0 0% 98%; /* White for text */
 
-    --card: 220 10% 10%; /* Slightly darker dark gray for card backgrounds */
+    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
     --card-foreground: 0 0% 98%;
 
-    --popover: 220 10% 10%;
+    --popover: 220 10% 12%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 263 70% 50%; /* Keep vibrant purple */
@@ -23,8 +23,8 @@ All colors MUST be HSL.
     --secondary: 199 89% 48%; /* Keep vibrant cyan */
     --secondary-foreground: 0 0% 98%;
 
-    --muted: 220 10% 15%; /* Darker medium dark gray for muted backgrounds */
-    --muted-foreground: 220 10% 75%; /* Slightly lighter gray for muted text */
+    --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
+    --muted-foreground: 220 10% 70%; /* Light gray for muted text */
 
     --accent: 330 81% 60%; /* Keep vibrant pink */
     --accent-foreground: 0 0% 98%;
@@ -32,8 +32,8 @@ All colors MUST be HSL.
     --destructive: 0 63% 31%; /* Keep vibrant red */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 220 10% 18%; /* Subtle dark gray border */
-    --input: 220 10% 10%; /* Dark input background */
+    --border: 220 10% 20%; /* Subtle dark gray border */
+    --input: 220 10% 12%; /* Dark input background */
     --ring: 263 70% 50%; /* Primary purple for focus ring */
 
     --radius: 1.5rem; /* Increased border radius for softer, polished look */
