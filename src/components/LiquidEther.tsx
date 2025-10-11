@@ -24,7 +24,6 @@ export default function LiquidEther({
   autoRampDuration = 0.6
 }) {
   const mountRef = useRef(null);
-  const canvasContainerRef = useRef(null); // New ref for the canvas container
   const webglRef = useRef(null);
   const resizeObserverRef = useRef(null);
   const rafRef = useRef(null);
@@ -33,7 +32,7 @@ export default function LiquidEther({
   const resizeRafRef = useRef(null);
 
   useEffect(() => {
-    if (!mountRef.current || !canvasContainerRef.current) return; // Ensure canvasContainerRef is ready
+    if (!mountRef.current) return;
 
     function makePaletteTexture(stops: string[]) {
       let arr;
@@ -101,13 +100,12 @@ export default function LiquidEther({
       init(container: HTMLElement) {
         this.container = container;
         this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-        // Initialize renderer first
+        this.resize();
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.autoClear = false;
         this.renderer.setClearColor(new THREE.Color(0x000000), 0);
         this.renderer.setPixelRatio(this.pixelRatio);
-        // Then resize
-        this.resize();
+        this.renderer.setSize(this.width, this.height);
         this.renderer.domElement.style.width = '100%';
         this.renderer.domElement.style.height = '100%';
         this.renderer.domElement.style.display = 'block';
@@ -330,7 +328,7 @@ export default function LiquidEther({
           this.active = true;
           this.current.copy(this.mouse.coords);
           this.lastTime = now;
-          this.activationTime = 0; // Reset activation time when starting auto-demo
+          this.activationTime = now;
         }
         if (!this.active) return;
         this.mouse.isAutoActive = true;
@@ -554,7 +552,7 @@ export default function LiquidEther({
           this.material = new THREE.RawShaderMaterial(this.props.material);
           this.geometry = new THREE.PlaneGeometry(2.0, 2.0);
           this.plane = new THREE.Mesh(this.geometry, this.material);
-          this.scene!.add(this.plane);
+          this.scene.add(this.plane);
         }
       }
       update() {
@@ -691,6 +689,7 @@ export default function LiquidEther({
           }
           this.uniforms.velocity_new.value = fbo_in.texture;
           this.props.output = fbo_out;
+          this.uniforms.dt.value = dt;
           super.update();
         }
         return fbo_out;
@@ -765,8 +764,8 @@ export default function LiquidEther({
             fragmentShader: pressure_frag,
             uniforms: {
               boundarySpace: { value: simProps.boundarySpace },
-              src_p: { value: simProps.src_p.texture },
-              src_v: { value: simProps.src_v.texture },
+              pressure: { value: simProps.src_p.texture },
+              velocity: { value: simProps.src_v.texture },
               px: { value: simProps.cellScale },
               dt: { value: simProps.dt }
             }
@@ -776,8 +775,8 @@ export default function LiquidEther({
         this.init();
       }
       update({ vel, pressure }: { vel: THREE.WebGLRenderTarget; pressure: THREE.WebGLRenderTarget; }) {
-        this.uniforms.src_v.value = vel.texture;
-        this.uniforms.src_p.value = pressure.texture;
+        this.uniforms.velocity.value = vel.texture;
+        this.uniforms.pressure.value = pressure.texture;
         super.update();
       }
     }
@@ -1051,8 +1050,7 @@ export default function LiquidEther({
         this.running = false;
       }
       init() {
-        // Append the renderer's DOM element to the dedicated canvas container
-        this.props.$canvasContainer.prepend(Common.renderer!.domElement);
+        this.props.$wrapper.prepend(Common.renderer!.domElement);
         this.output = new Output();
       }
       resize() {
@@ -1089,8 +1087,7 @@ export default function LiquidEther({
           Mouse.dispose();
           if (Common.renderer) {
             const canvas = Common.renderer.domElement;
-            // Ensure we remove from the correct parent
-            if (canvas && canvas.parentNode === this.props.$canvasContainer) this.props.$canvasContainer.removeChild(canvas);
+            if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
             Common.renderer.dispose();
           }
         } catch (e) {
@@ -1100,15 +1097,11 @@ export default function LiquidEther({
     }
 
     const container = mountRef.current;
-    const canvasContainer = canvasContainerRef.current; // Get the new canvas container ref
-    if (!container || !canvasContainer) return; // Ensure both refs are available
-
     container.style.position = container.style.position || 'relative';
     container.style.overflow = container.style.overflow || 'hidden';
 
     const webgl = new WebGLManager({
-      $wrapper: container, // Mouse events still on the main container
-      $canvasContainer: canvasContainer, // Pass the dedicated canvas container
+      $wrapper: container,
       autoDemo,
       autoSpeed,
       autoIntensity,
@@ -1151,9 +1144,9 @@ export default function LiquidEther({
         isVisibleRef.current = isVisible;
         if (!webglRef.current) return;
         if (isVisible && !document.hidden) {
-          webgl.current.start();
+          webglRef.current.start();
         } else {
-          webgl.current.pause();
+          webglRef.current.pause();
         }
       },
       { threshold: [0, 0.01, 0.1] }
@@ -1166,7 +1159,7 @@ export default function LiquidEther({
       if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current);
       resizeRafRef.current = requestAnimationFrame(() => {
         if (!webglRef.current) return;
-        webgl.current.resize();
+        webglRef.current.resize();
       });
     });
     ro.observe(container);
@@ -1263,9 +1256,5 @@ export default function LiquidEther({
     autoRampDuration
   ]);
 
-  return (
-    <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style}>
-      <div ref={canvasContainerRef} className="absolute inset-0 w-full h-full" /> {/* Dedicated container for the canvas */}
-    </div>
-  );
+  return <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style} />;
 }

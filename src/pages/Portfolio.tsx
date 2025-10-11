@@ -61,14 +61,14 @@ export default function Portfolio() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12"
+          className="flex flex-wrap gap-3 justify-center mb-12"
         >
           {categories.map((category) => (
             <Button
               key={category}
               variant={filter === category ? 'default' : 'outline'}
               onClick={() => setFilter(category)}
-              className={`rounded-full border-border/70 px-3 py-1.5 text-sm transition ${
+              className={`rounded-full border-border/70 transition ${
                 filter === category
                   ? 'bg-gradient-to-r from-primary via-secondary to-accent text-white'
                   : 'hover:border-primary/60 hover:text-primary'
