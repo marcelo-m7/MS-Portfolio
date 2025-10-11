@@ -103,6 +103,8 @@ export default function ArtDetail() {
                 initial={prefersReducedMotion ? undefined : { opacity: 0, y: 16 }}
                 animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
+                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
               >
                 <img
                   src={media}

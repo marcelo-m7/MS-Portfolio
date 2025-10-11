@@ -86,9 +86,11 @@ export default function Contact() {
               </h2>
 
               <div className="space-y-6">
-                <a
+                <motion.a
                   href={cvData.links.email}
                   className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Mail className="text-primary" />
@@ -97,13 +99,15 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground/60">Email</p>
                     <p className="font-medium">{cvData.contact.email}</p>
                   </div>
-                </a>
+                </motion.a>
 
-                <a
+                <motion.a
                   href={cvData.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Github className="text-primary" />
@@ -112,13 +116,15 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground/60">GitHub</p>
                     <p className="font-medium">@marcelo-m7</p>
                   </div>
-                </a>
+                </motion.a>
 
-                <a
+                <motion.a
                   href={cvData.links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
                     <Linkedin className="text-secondary" />
@@ -127,7 +133,7 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground/60">LinkedIn</p>
                     <p className="font-medium">Marcelo Santos</p>
                   </div>
-                </a>
+                </motion.a>
               </div>
             </div>
 

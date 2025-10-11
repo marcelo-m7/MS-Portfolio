@@ -77,6 +77,7 @@ export default function About() {
                 }
                 animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+                whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 className="glass rounded-2xl p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
@@ -128,6 +129,7 @@ export default function About() {
                 }
                 animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
+                whileHover={prefersReducedMotion ? undefined : { y: -3, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
                 className="glass rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition-shadow"
               >
                 <div>

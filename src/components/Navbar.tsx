@@ -26,9 +26,12 @@ export default function Navbar() {
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-4 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.55)] backdrop-blur-xl">
-        <Link
+        <MotionLink
           to="/"
           className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(124,58,237,0.6)' }}
+          whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(56,189,248,0.45)]">
             M
@@ -36,7 +39,7 @@ export default function Navbar() {
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {cvData.profile.name}
           </span>
-        </Link>
+        </MotionLink>
 
         <div className="hidden flex-1 items-center justify-end gap-6 md:flex">
           <div className="flex items-center gap-2 rounded-full border border-border/60 bg-background/40 p-1">
@@ -73,31 +76,40 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3 pl-4">
-            <a
+            <motion.a
               href={cvData.links.github}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full p-2 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="GitHub"
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Github size={18} />
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href={cvData.links.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full p-2 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="LinkedIn"
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Linkedin size={18} />
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href={cvData.links.email}
               className="rounded-full p-2 text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               aria-label="Email"
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Mail size={18} />
-            </a>
+            </motion.a>
             <LanguageSwitcher />
           </div>
         </div>

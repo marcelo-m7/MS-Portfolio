@@ -59,6 +59,7 @@ export default function Thoughts() {
                   initial={prefersReducedMotion ? undefined : { opacity: 0, y: 30 }}
                   animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.45 }}
+                  whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                   className="group flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-8 shadow-[0_35px_65px_-55px_rgba(124,58,237,0.75)] backdrop-blur-xl"
                 >
                   <div className="mb-6 flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -111,7 +112,7 @@ export default function Thoughts() {
             <p className="text-2xl font-display font-semibold text-foreground">
               Ideias, processos criativos e bastidores das experiências imersivas.
             </p>
-            <Button asChild className="rounded-full bg-gradient-to-r from-primary via-secondary to-accent px-6 py-2 text-sm">
+            <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-6 py-2 text-sm">
               <Link to="/contact">Partilhar um pensamento comigo</Link>
             </Button>
           </div>

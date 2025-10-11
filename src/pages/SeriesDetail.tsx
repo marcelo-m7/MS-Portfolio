@@ -134,7 +134,10 @@ export default function SeriesDetail() {
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {works.map((work, index) => {
               const card = (
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_35px_70px_-55px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]">
+                <motion.div
+                  className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_35px_70px_-55px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]"
+                  whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
+                >
                   {work.thumbnail && (
                     <div className="mb-4 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
                       <img
@@ -160,7 +163,7 @@ export default function SeriesDetail() {
                     {work.title}
                   </h2>
                   <p className="mt-3 text-sm text-muted-foreground/90">{work.description}</p>
-                </div>
+                </motion.div>
               );
 
               const commonClassName =
