@@ -59,7 +59,7 @@ export default function LanguageSwitcher() {
             onClick={() => handleSelect(lang)}
             className={`relative rounded-full px-3 py-1.5 text-xs font-semibold transition-[transform,box-shadow,background-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
               isActive
-                ? 'bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80 text-white shadow-[0_0_12px_rgba(124,58,237,0.2)]'
+                ? 'bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80 text-white shadow-[0_0_12px_rgba(var(--primary-hsl)/0.2)]'
                 : 'text-muted-foreground hover:text-foreground hover:bg-card/80'
             }`}
             aria-pressed={isActive}

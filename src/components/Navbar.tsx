@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, LogIn } from 'lucide-react'; // Changed icons
+import { Menu, X, LogIn } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -25,15 +25,15 @@ export default function Navbar() {
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.2)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl">
         <MotionLink
           to="/"
           className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(124,58,237,0.3)' }}
+          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(var(--primary-hsl)/0.3)' }}
           whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-lg text-white shadow-[0_0_12px_rgba(56,189,248,0.2)]">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-lg text-white shadow-[0_0_12px_rgba(var(--secondary-hsl)/0.2)]">
             M
           </span>
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -57,7 +57,7 @@ export default function Navbar() {
                         whileHover: {
                           y: -2,
                           boxShadow:
-                            '0 12px 24px -18px rgba(56,189,248,0.3), 0 0 12px rgba(124,58,237,0.2)',
+                            '0 12px 24px -18px rgba(var(--secondary-hsl)/0.3), 0 0 12px rgba(var(--primary-hsl)/0.2)',
                         },
                       }
                     : {})}
@@ -78,7 +78,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3 pl-4">
             <LanguageSwitcher />
             <motion.button
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(124,58,237,0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
               whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -124,7 +124,7 @@ export default function Navbar() {
             <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-4">
               <LanguageSwitcher />
               <motion.button
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(124,58,237,0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}

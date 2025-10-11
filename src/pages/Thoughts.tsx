@@ -60,7 +60,7 @@ export default function Thoughts() {
                   animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.45 }}
                   whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
-                  className="group flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-8 shadow-[0_35px_65px_-55px_rgba(124,58,237,0.3)] backdrop-blur-xl"
+                  className="group flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-8 shadow-[0_35px_65px_-55px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
                 >
                   <div className="mb-6 flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
@@ -107,7 +107,7 @@ export default function Thoughts() {
             })}
           </div>
 
-          <div className="mt-16 flex flex-col items-center gap-4 rounded-[var(--radius)] border border-border/60 bg-background/40 p-8 text-center shadow-[0_35px_70px_-60px_rgba(56,189,248,0.3)]">
+          <div className="mt-16 flex flex-col items-center gap-4 rounded-[var(--radius)] border border-border/60 bg-background/40 p-8 text-center shadow-[0_35px_70px_-60px_rgba(var(--secondary-hsl)/0.3)]">
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Monynha Softwares Journal</p>
             <p className="text-2xl font-display font-semibold text-foreground">
               Ideias, processos criativos e bastidores das experiências imersivas.
