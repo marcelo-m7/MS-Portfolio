@@ -22,9 +22,9 @@ const StaticIllustration = () => (
       <title id="hero-visual-title">Forma abstrata representando criatividade digital</title>
       <defs>
         <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="hsla(263, 70%, 50%, 0.55)" />
-          <stop offset="50%" stopColor="hsla(199, 89%, 48%, 0.35)" />
-          <stop offset="100%" stopColor="hsla(330, 81%, 60%, 0.45)" />
+          <stop offset="0%" stopColor="hsla(350, 70%, 40%, 0.55)" />
+          <stop offset="50%" stopColor="hsla(350, 60%, 50%, 0.35)" />
+          <stop offset="100%" stopColor="hsla(350, 50%, 30%, 0.45)" />
         </linearGradient>
       </defs>
       <path
@@ -32,9 +32,9 @@ const StaticIllustration = () => (
         fill="url(#heroGradient)"
         opacity="0.65"
       />
-      <circle cx="120" cy="110" r="40" fill="hsla(199, 89%, 48%, 0.4)" />
-      <circle cx="340" cy="220" r="60" fill="hsla(330, 81%, 60%, 0.35)" />
-      <circle cx="250" cy="160" r="90" stroke="hsla(263, 70%, 50%, 0.45)" strokeWidth="6" fill="none" />
+      <circle cx="120" cy="110" r="40" fill="hsla(350, 60%, 50%, 0.4)" />
+      <circle cx="340" cy="220" r="60" fill="hsla(350, 50%, 30%, 0.35)" />
+      <circle cx="250" cy="160" r="90" stroke="hsla(350, 70%, 40%, 0.45)" strokeWidth="6" fill="none" />
     </svg>
   </div>
 );
