@@ -101,12 +101,13 @@ export default function LiquidEther({
       init(container: HTMLElement) {
         this.container = container;
         this.pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-        this.resize();
+        // Initialize renderer first
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.autoClear = false;
         this.renderer.setClearColor(new THREE.Color(0x000000), 0);
         this.renderer.setPixelRatio(this.pixelRatio);
-        this.renderer.setSize(this.width, this.height);
+        // Then resize
+        this.resize();
         this.renderer.domElement.style.width = '100%';
         this.renderer.domElement.style.height = '100%';
         this.renderer.domElement.style.display = 'block';
@@ -1119,7 +1120,7 @@ export default function LiquidEther({
 
     const applyOptionsFromProps = () => {
       if (!webglRef.current) return;
-      const sim = webglRef.current.output?.simulation; // Corrected line
+      const sim = webglRef.current.output?.simulation;
       if (!sim) return;
       const prevRes = sim.options.resolution;
       Object.assign(sim.options, {
