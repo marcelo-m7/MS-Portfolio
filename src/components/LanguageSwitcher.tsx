@@ -5,8 +5,7 @@ import {
   SUPPORTED_LANGUAGES,
   type SupportedLanguage,
 } from '@/lib/googleTranslate';
-import { useReducedMotion } from 'framer-motion';
-import { MotionDiv } from './MotionDiv'; // Import MotionDiv
+import { motion, useReducedMotion } from 'framer-motion';
 
 const LANGUAGE_LABELS: Record<SupportedLanguage, string> = {
   pt: 'Português',
@@ -54,27 +53,24 @@ export default function LanguageSwitcher() {
       {SUPPORTED_LANGUAGES.map((lang) => {
         const isActive = current === lang;
         return (
-          <MotionDiv
+          <motion.button
             key={lang}
-            as="button"
             type="button"
             onClick={() => handleSelect(lang)}
-            className={`relative rounded-full px-3 py-1.5 text-xs font-semibold transition-[transform,box-shadow,background-color] ${
+            className={`relative rounded-full px-3 py-1.5 text-xs font-semibold transition-[transform,box-shadow,background-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
               isActive
                 ? 'bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80 text-white shadow-[0_0_12px_rgba(var(--primary-hsl)/0.2)]'
                 : 'text-muted-foreground hover:text-foreground hover:bg-card/80'
             }`}
             aria-pressed={isActive}
             aria-label={LANGUAGE_LABELS[lang]}
-            whileHoverScale={prefersReducedMotion ? 1 : 1.05}
-            whileTapScale={prefersReducedMotion ? 1 : 0.95}
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            initial={false} // No initial animation for these buttons
-            animate={{}} // No explicit animate for these buttons
           >
             <span className="sr-only">{LANGUAGE_LABELS[lang]}</span>
             <span aria-hidden>{LANGUAGE_SHORT[lang]}</span>
-          </MotionDiv>
+          </motion.button>
         );
       })}
     </div>

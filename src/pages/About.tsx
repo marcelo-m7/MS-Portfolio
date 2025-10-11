@@ -1,7 +1,6 @@
-import { useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { MapPin, Briefcase, Award } from 'lucide-react';
 import cvData from '../../public/data/cv.json';
-import { MotionDiv } from '@/components/MotionDiv'; // Import MotionDiv
 
 export default function About() {
   const prefersReducedMotion = useReducedMotion();
@@ -9,10 +8,10 @@ export default function About() {
   return (
     <div className="px-6">
       <div className="container mx-auto max-w-5xl">
-        <MotionDiv
-          delay={0}
-          duration={0.6}
-          yOffset={20}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
@@ -21,13 +20,13 @@ export default function About() {
           <p className="text-xl text-muted-foreground">
             Conheça a história e experiência
           </p>
-        </MotionDiv>
+        </motion.div>
 
         {/* Profile Section */}
-        <MotionDiv
-          delay={0.2}
-          duration={0.6}
-          yOffset={20}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
           className="glass rounded-[var(--radius)] p-8 md:p-12 mb-12"
         >
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
@@ -55,13 +54,13 @@ export default function About() {
               </p>
             </div>
           </div>
-        </MotionDiv>
+        </motion.div>
 
         {/* Experience Section */}
-        <MotionDiv
-          delay={0.4}
-          duration={0.6}
-          yOffset={20}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-6">
@@ -71,12 +70,14 @@ export default function About() {
           
           <div className="space-y-6">
             {cvData.experience.map((exp, index) => (
-              <MotionDiv
+              <motion.div
                 key={index}
-                delay={0.5 + index * 0.1}
-                duration={0.5}
-                xOffset={-20}
-                whileHover={{ y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
+                initial={
+                  prefersReducedMotion ? undefined : { opacity: 0, x: -20 }
+                }
+                animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
+                whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 className="glass rounded-[var(--radius)] p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
@@ -103,16 +104,16 @@ export default function About() {
                     </li>
                   ))}
                 </ul>
-              </MotionDiv>
+              </motion.div>
             ))}
           </div>
-        </MotionDiv>
+        </motion.div>
 
         {/* Skills Section */}
-        <MotionDiv
-          delay={0.6}
-          duration={0.6}
-          yOffset={20}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
         >
           <div className="flex items-center gap-3 mb-6">
             <Award className="text-primary" size={28} />
@@ -121,12 +122,14 @@ export default function About() {
           
           <div className="grid md:grid-cols-2 gap-4">
             {cvData.skills.map((skill, index) => (
-              <MotionDiv
+              <motion.div
                 key={skill.name}
-                delay={0.7 + index * 0.05}
-                duration={0.3}
-                scaleFrom={0.9}
-                whileHover={{ y: -3, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
+                initial={
+                  prefersReducedMotion ? undefined : { opacity: 0, scale: 0.9 }
+                }
+                animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
+                whileHover={prefersReducedMotion ? undefined : { y: -3, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
                 className="glass rounded-[var(--radius)] p-4 flex items-center justify-between hover:shadow-md transition-shadow"
               >
                 <div>
@@ -136,10 +139,10 @@ export default function About() {
                 <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary font-medium">
                   {skill.level}
                 </span>
-              </MotionDiv>
+              </motion.div>
             ))}
           </div>
-        </MotionDiv>
+        </motion.div>
       </div>
     </div>
   );

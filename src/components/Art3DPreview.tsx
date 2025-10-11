@@ -1,10 +1,24 @@
-import { Suspense, useRef } from 'react';
+import { Suspense, useEffect, useRef, type MutableRefObject } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, MeshDistortMaterial } from '@react-three/drei';
-import { useVisibilityController } from '@/hooks/useVisibilityController'; // Updated import
 import { Mesh } from 'three';
 
-const RibbonSculpture = ({ visibleRef }: { visibleRef: React.MutableRefObject<boolean> }) => {
+const useVisibilityController = () => {
+  const visibleRef = useRef(true);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      visibleRef.current = !document.hidden;
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, []);
+
+  return visibleRef;
+};
+
+const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
   const meshRef = useRef<Mesh>(null);
   const lastFrame = useRef(0);
 

@@ -1,9 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { MotionDiv } from '@/components/MotionDiv'; // Import MotionDiv
-import { AnimatedLink } from '@/components/AnimatedLink'; // Import AnimatedLink
 
 const NotFound = () => {
   const location = useLocation();
@@ -18,10 +16,10 @@ const NotFound = () => {
 
   return (
     <div className="flex items-center justify-center px-6 py-0">
-      <MotionDiv
-        delay={0}
-        duration={0.6}
-        yOffset={20}
+      <motion.div
+        initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+        animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
         className="w-full max-w-xl rounded-[var(--radius)] border border-border/60 bg-card/70 p-10 text-center shadow-[0_45px_85px_-70px_rgba(var(--secondary-hsl)/0.3)] backdrop-blur-xl"
         role="alert"
         aria-live="assertive"
@@ -32,17 +30,17 @@ const NotFound = () => {
           O caminho <span className="font-mono text-primary">{location.pathname}</span> não existe. Volte à página inicial para continuar a explorar o universo Monynha.
         </p>
         <div className="mt-8 flex justify-center">
-          <AnimatedLink
-            as={Link}
-            to="/"
+          <Button
+            asChild
             className="rounded-full"
-            hoverScale={1.02}
-            tapScale={0.98}
+            whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
-            Voltar para o Início
-          </AnimatedLink>
+            <Link to="/">Voltar para o Início</Link>
+          </Button>
         </div>
-      </MotionDiv>
+      </motion.div>
     </div>
   );
 };

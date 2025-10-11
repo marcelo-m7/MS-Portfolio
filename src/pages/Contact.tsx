@@ -1,4 +1,4 @@
-import { useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Github, Linkedin, Send } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -7,9 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
 import { supabase } from '@/lib/supabaseClient';
-import { MotionDiv } from '@/components/MotionDiv'; // Import MotionDiv
-import { AnimatedLink } from '@/components/AnimatedLink'; // Import AnimatedLink
-import { AnimatedButton } from '@/components/AnimatedButton'; // Import AnimatedButton
 
 const createInitialFormState = () => ({
   name: '',
@@ -61,10 +58,10 @@ export default function Contact() {
   return (
     <div className="px-6">
       <div className="container mx-auto max-w-5xl">
-        <MotionDiv
-          delay={0}
-          duration={0.6}
-          yOffset={20}
+        <motion.div
+          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
@@ -73,14 +70,14 @@ export default function Contact() {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {cvData.contact.note}
           </p>
-        </MotionDiv>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Info */}
-          <MotionDiv
-            delay={0.2}
-            duration={0.6}
-            xOffset={-20}
+          <motion.div
+            initial={prefersReducedMotion ? undefined : { opacity: 0, x: -20 }}
+            animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
             className="space-y-8"
           >
             <div className="glass rounded-[var(--radius)] p-8">
@@ -89,13 +86,11 @@ export default function Contact() {
               </h2>
 
               <div className="space-y-6">
-                <AnimatedLink
-                  as="a"
+                <motion.a
                   href={cvData.links.email}
-                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary group"
-                  whileHover={{ x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
-                  hoverScale={1}
-                  tapScale={0.98}
+                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Mail className="text-primary" />
@@ -104,17 +99,15 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground/60">Email</p>
                     <p className="font-medium">{cvData.contact.email}</p>
                   </div>
-                </AnimatedLink>
+                </motion.a>
 
-                <AnimatedLink
-                  as="a"
+                <motion.a
                   href={cvData.links.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary group"
-                  whileHover={{ x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
-                  hoverScale={1}
-                  tapScale={0.98}
+                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                     <Github className="text-primary" />
@@ -123,17 +116,15 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground/60">GitHub</p>
                     <p className="font-medium">@marcelo-m7</p>
                   </div>
-                </AnimatedLink>
+                </motion.a>
 
-                <AnimatedLink
-                  as="a"
+                <motion.a
                   href={cvData.links.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-secondary group"
-                  whileHover={{ x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
-                  hoverScale={1}
-                  tapScale={0.98}
+                  className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
+                  whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
                   <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
                     <Linkedin className="text-secondary" />
@@ -142,7 +133,7 @@ export default function Contact() {
                     <p className="text-sm text-muted-foreground/60">LinkedIn</p>
                     <p className="font-medium">Marcelo Santos</p>
                   </div>
-                </AnimatedLink>
+                </motion.a>
               </div>
             </div>
 
@@ -152,13 +143,13 @@ export default function Contact() {
                 {cvData.contact.availability}
               </p>
             </div>
-          </MotionDiv>
+          </motion.div>
 
           {/* Contact Form */}
-          <MotionDiv
-            delay={0.4}
-            duration={0.6}
-            xOffset={20}
+          <motion.div
+            initial={prefersReducedMotion ? undefined : { opacity: 0, x: 20 }}
+            animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
           >
             <form onSubmit={handleSubmit} className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
@@ -251,12 +242,10 @@ export default function Contact() {
                   />
                 </div>
 
-                <AnimatedButton
+                <Button
                   type="submit"
                   disabled={isSubmitting}
                   className="w-full rounded-xl py-6 text-lg bg-primary hover:bg-primary/90"
-                  hoverScale={1.02}
-                  tapScale={0.98}
                 >
                   {isSubmitting ? (
                     'Enviando...'
@@ -266,10 +255,10 @@ export default function Contact() {
                       Enviar Mensagem
                     </>
                   )}
-                </AnimatedButton>
+                </Button>
               </div>
             </form>
-          </MotionDiv>
+          </motion.div>
         </div>
       </div>
     </div>
