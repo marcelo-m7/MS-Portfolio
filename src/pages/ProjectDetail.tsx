@@ -58,7 +58,7 @@ export default function ProjectDetail() {
           variants={containerVariants}
           initial={prefersReducedMotion ? undefined : 'hidden'}
           animate={prefersReducedMotion ? undefined : 'visible'}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/70 p-10 shadow-[0_45px_90px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
+          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
         >
           <motion.div variants={itemVariants}>
             <Button

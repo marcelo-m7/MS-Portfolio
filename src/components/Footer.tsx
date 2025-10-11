@@ -36,7 +36,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-card/70 backdrop-blur-xl border-t border-border/60 py-12 px-6">
+    <footer className="bg-card/80 backdrop-blur-xl border-t border-border/60 py-12 px-6">
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo and Copyright */}

@@ -95,7 +95,7 @@ All colors MUST be HSL.
   }
 
   .glass {
-    @apply bg-card/50 backdrop-blur-xl border border-border/50;
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
   }
 
   .glow-purple {

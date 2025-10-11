@@ -39,7 +39,7 @@ export default function Navbar() {
         initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
         animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 15, delay: 0.1 }}
-        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl"
+        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/80 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl"
       >
         <MotionLink
           to="/"
