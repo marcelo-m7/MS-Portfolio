@@ -38,17 +38,30 @@ const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean>
       <MeshDistortMaterial
         color="#a855f7"
         emissive="#0ea5e9"
-        emissiveIntensity={0.45}
-        metalness={0.75}
-        roughness={0.25}
-        distort={0.4}
-        speed={1}
+        emissiveIntensity={0.65}
+        metalness={0.8}
+        roughness={0.2}
+        distort={0.55}
+        speed={1.5}
       />
     </mesh>
   );
 };
 
-const Art3DPreview = () => {
+const DynamicLight = () => {
+  const lightRef = useRef<any>(null);
+  useFrame(({ clock }) => {
+    if (lightRef.current) {
+      const time = clock.getElapsedTime();
+      lightRef.current.position.x = Math.sin(time * 0.7) * 3;
+      lightRef.current.position.y = Math.cos(time * 0.5) * 2;
+      lightRef.current.position.z = Math.sin(time * 0.9) * 4;
+    }
+  });
+  return <pointLight ref={lightRef} intensity={0.7} color="#ec4899" />;
+};
+
+export default function Art3DPreview() {
   const visibleRef = useVisibilityController();
 
   return (
@@ -61,11 +74,10 @@ const Art3DPreview = () => {
         <ambientLight intensity={0.6} />
         <directionalLight position={[4, 6, 5]} intensity={1.2} color="#7c3aed" />
         <pointLight position={[-4, -3, -4]} intensity={0.8} color="#22d3ee" />
+        <DynamicLight />
         <RibbonSculpture visibleRef={visibleRef} />
         <OrbitControls enablePan={false} enableZoom enableDamping dampingFactor={0.08} />
       </Suspense>
     </Canvas>
   );
-};
-
-export default Art3DPreview;
+}

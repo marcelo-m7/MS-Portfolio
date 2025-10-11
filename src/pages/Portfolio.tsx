@@ -68,7 +68,11 @@ export default function Portfolio() {
               transition={{ delay: index * 0.08, duration: 0.4 }}
               className="group"
             >
-              <motion.div
+              <motion.a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 style={{ transformStyle: 'preserve-3d' }}
                 whileHover={
                   prefersReducedMotion
@@ -77,18 +81,19 @@ export default function Portfolio() {
                 }
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-                className="focus-within:ring-offset-background"
               >
                 <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_35px_60px_-45px_rgba(124,58,237,0.8)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
-                    <img
+                    <motion.img
                       src={project.thumbnail}
                       width={640}
                       height={360}
                       loading="lazy"
                       decoding="async"
                       alt={`${project.name} – ${project.category}`}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
                     />
                     <div className="absolute top-4 right-4">
                       <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs font-medium">
@@ -133,7 +138,7 @@ export default function Portfolio() {
                     </a>
                   </div>
                 </div>
-              </motion.div>
+              </motion.a>
             </motion.div>
           ))}
         </div>

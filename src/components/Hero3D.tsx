@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
-import Prism from './Prism'; // Import the new Prism component
+import Prism from './Prism';
 
 const isHero3DFlagEnabled =
   import.meta.env.VITE_ENABLE_HERO_3D?.toLowerCase() === 'true';
@@ -50,15 +50,18 @@ export default function Hero3D() {
     return (
       <div className="pointer-events-none absolute inset-0 -z-10">
         <Prism
-          animationType="rotate"
-          timeScale={0.5}
+          animationType={prefersReducedMotion ? '3drotate' : 'hover'}
+          timeScale={prefersReducedMotion ? 0.2 : 0.5}
           height={3.5}
           baseWidth={5.5}
           scale={3.6}
           hueShift={0}
-          colorFrequency={1}
-          noise={0.5}
-          glow={1}
+          colorFrequency={1.5}
+          noise={0.6}
+          glow={1.5}
+          bloom={1.5}
+          hoverStrength={prefersReducedMotion ? 0 : 2.5}
+          inertia={0.08}
         />
       </div>
     );

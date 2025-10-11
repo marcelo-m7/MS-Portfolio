@@ -76,17 +76,21 @@ export default function Home() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
             >
-              <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2">
+              <motion.div
+                initial={prefersReducedMotion ? undefined : { scale: 0.95, opacity: 0 }}
+                animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
+              >
                 <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
                 <span>Nova rota: reflexões em tecnologia e arte</span>
-              </div>
-              <Link
-                to="/thoughts"
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_rgba(56,189,248,0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105"
-              >
-                Ler os pensamentos recentes
-                <ArrowRight className="h-4 w-4" aria-hidden />
-              </Link>
+              </motion.div>
+              <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_rgba(56,189,248,0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105">
+                <Link to="/thoughts">
+                  Ler os pensamentos recentes
+                  <ArrowRight className="h-4 w-4" aria-hidden />
+                </Link>
+              </Button>
             </motion.div>
           </motion.div>
         </div>
@@ -134,12 +138,21 @@ export default function Home() {
                 whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="group"
               >
-                <a
+                <motion.a
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  style={{ transformStyle: 'preserve-3d' }}
+                  whileHover={
+                    prefersReducedMotion
+                      ? undefined
+                      : { rotateX: -6, rotateY: 6, translateZ: 12 }
+                  }
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 22 }}
                 >
                   <div className="rounded-3xl border border-border/70 bg-card/60 p-6 shadow-[0_25px_45px_-35px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_18px_38px_-20px_rgba(124,58,237,0.5)]">
                     <div className="flex items-start justify-between mb-4">
@@ -170,7 +183,7 @@ export default function Home() {
                       ))}
                     </div>
                   </div>
-                </a>
+                </motion.a>
               </motion.div>
             ))}
           </div>
