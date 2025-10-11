@@ -3,6 +3,7 @@ import { Menu, X, LogIn } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import cvData from '../../public/data/cv.json';
 
 const MotionLink = motion(Link);
@@ -10,6 +11,7 @@ const MotionLink = motion(Link);
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
 
   const navLinks = [
     { href: '/', label: 'Início' },
@@ -21,11 +23,24 @@ export default function Navbar() {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const shouldReduceMotion = useReducedMotion();
+  const menuVariants = {
+    hidden: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
+  const mobileMenuVariants = {
+    hidden: { opacity: 0, y: '-100vh', transition: { duration: 0.4, ease: 'easeOut' } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+  };
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl">
+      <motion.div
+        initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
+        animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 120, damping: 15, delay: 0.1 }}
+        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl"
+      >
         <MotionLink
           to="/"
           className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -33,16 +48,19 @@ export default function Navbar() {
           whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-lg text-white shadow-[0_0_12px_rgba(var(--secondary-hsl)/0.2)]">
-            M
-          </span>
+          <MonynhaLogo size={28} className="text-primary" /> {/* Use the new logo */}
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {cvData.profile.name.split(' ')[0]}
           </span>
         </MotionLink>
 
         <div className="hidden flex-1 items-center justify-end gap-6 md:flex">
-          <div className="flex items-center gap-2 rounded-full border border-border/60 bg-background/40 p-1">
+          <motion.div
+            variants={menuVariants}
+            initial={shouldReduceMotion ? undefined : 'hidden'}
+            animate={shouldReduceMotion ? undefined : 'visible'}
+            className="flex items-center gap-2 rounded-full border border-border/60 bg-background/40 p-1"
+          >
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
@@ -73,7 +91,7 @@ export default function Navbar() {
                 </MotionLink>
               );
             })}
-          </div>
+          </motion.div>
 
           <div className="flex items-center gap-3 pl-4">
             <LanguageSwitcher />
@@ -97,23 +115,32 @@ export default function Navbar() {
         >
           {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="mx-auto mt-3 max-w-6xl rounded-3xl border border-border/60 bg-card/80 p-4 backdrop-blur-xl md:hidden"
+            initial={shouldReduceMotion ? undefined : 'hidden'}
+            animate={shouldReduceMotion ? undefined : 'visible'}
+            exit={shouldReduceMotion ? undefined : 'hidden'}
+            variants={mobileMenuVariants}
+            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-6 bg-background/95 backdrop-blur-xl md:hidden"
           >
-            <div className="flex flex-col gap-2">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-label="Fechar menu"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="flex flex-col items-center gap-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`rounded-2xl px-4 py-3 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  className={`rounded-full px-6 py-3 text-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     isActive(link.href) ? 'bg-gradient-to-r from-primary/60 via-secondary/50 to-accent/50 text-white' : 'text-muted-foreground hover:bg-card'
                   }`}
                 >
@@ -121,15 +148,15 @@ export default function Navbar() {
                 </Link>
               ))}
             </div>
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-4">
+            <div className="mt-8 flex flex-col items-center gap-4">
               <LanguageSwitcher />
               <motion.button
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-6 py-3 text-lg font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
                 whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
-                <LogIn size={16} />
+                <LogIn size={20} />
                 Login
               </motion.button>
             </div>

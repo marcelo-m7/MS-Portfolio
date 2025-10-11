@@ -1,51 +1,73 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
+import { ArrowRight, Code2, Sparkles, PenSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-// import Hero3D from '@/components/Hero3D'; // Removed Hero3D
 import cvData from '../../public/data/cv.json';
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden">
-        {/* <Hero3D /> Removed Hero3D */}
-
+      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden py-16">
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-            animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            variants={containerVariants}
+            initial={prefersReducedMotion ? undefined : 'hidden'}
+            animate={prefersReducedMotion ? undefined : 'visible'}
             className="max-w-4xl mx-auto text-center"
           >
             <motion.div
-              initial={prefersReducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
-              animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              variants={itemVariants}
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-[0_20px_35px_-25px_rgba(var(--secondary-hsl)/0.2)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
               <span className="text-sm font-medium">{cvData.profile.location}</span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-balance">
+            <motion.h1
+              variants={itemVariants}
+              className="text-5xl md:text-7xl font-display font-bold mb-6 mt-6 text-balance"
+            >
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {cvData.profile.name}
               </span>
-            </h1>
+            </motion.h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium">
+            <motion.p
+              variants={itemVariants}
+              className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium"
+            >
               {cvData.profile.headline}
-            </p>
+            </motion.p>
 
-            <p className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto">
+            <motion.p
+              variants={itemVariants}
+              className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto"
+            >
               {cvData.profile.bio}
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <motion.div
+              variants={itemVariants}
+              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            >
               <Button
                 asChild
                 size="lg"
@@ -68,18 +90,14 @@ export default function Home() {
                   Entre em Contato
                 </Link>
               </Button>
-            </div>
+            </motion.div>
 
             <motion.div
-              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
-              animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
+              variants={itemVariants}
               className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
             >
               <motion.div
-                initial={prefersReducedMotion ? undefined : { scale: 0.95, opacity: 0 }}
-                animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
+                variants={itemVariants}
                 className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
               >
                 <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
