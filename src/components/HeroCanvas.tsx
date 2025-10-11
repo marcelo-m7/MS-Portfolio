@@ -55,7 +55,7 @@ const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) =>
     <points ref={pointsRef} geometry={geometry}>
       <pointsMaterial
         attach="material"
-        color="#EF4444" // Changed to red-500
+        color="#CC4C66" // Mapped from --secondary
         size={0.04} // Slightly larger particles
         sizeAttenuation
         transparent
@@ -83,8 +83,8 @@ const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
     <mesh ref={meshRef} scale={1.65} position={[0, 0, 0]}>
       <torusKnotGeometry args={[0.9, 0.28, 120, 18, 2, 5]} />
       <MeshDistortMaterial
-        color="#DC2626" // Changed to red-600
-        emissive="#EF4444" // Changed to red-500
+        color="#A31F3B" // Mapped from --primary
+        emissive="#CC4C66" // Mapped from --secondary
         emissiveIntensity={0.5} // Increased emissive intensity
         roughness={0.2}
         metalness={0.7}
@@ -108,8 +108,8 @@ export default function HeroCanvas() {
       >
         <Suspense fallback={null}>
           <ambientLight intensity={0.6} />
-          <directionalLight position={[4, 5, 6]} intensity={1.1} color="#DC2626" /> {/* Changed to red-600 */}
-          <pointLight position={[-6, -4, -4]} intensity={0.8} color="#B91C1C" /> {/* Changed to red-700 */}
+          <directionalLight position={[4, 5, 6]} intensity={1.1} color="#A31F3B" /> {/* Mapped from --primary */}
+          <pointLight position={[-6, -4, -4]} intensity={0.8} color="#732638" /> {/* Mapped from --accent */}
           <Particles visibleRef={visibleRef} />
           <Ribbon visibleRef={visibleRef} />
           <EffectComposer disableNormalPass multisampling={0}>

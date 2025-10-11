@@ -115,7 +115,7 @@ export default function ArtDetail() {
                 className="group relative overflow-hidden rounded-2xl border border-border/60 bg-card/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 initial={prefersReducedMotion ? undefined : { opacity: 0, y: 16 }}
                 animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
               >
@@ -126,7 +126,7 @@ export default function ArtDetail() {
                   decoding="async"
                   width={640}
                   height={360}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 flex items-end justify-end bg-gradient-to-t from-background/70 via-background/20 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground">
