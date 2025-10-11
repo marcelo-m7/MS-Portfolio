@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import cvData from '../../public/data/cv.json';
@@ -9,6 +9,8 @@ import {
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 import { calculateReadingTime } from '@/lib/content';
+import { MotionDiv } from '@/components/MotionDiv'; // Import MotionDiv
+import { AnimatedLink } from '@/components/AnimatedLink'; // Import AnimatedLink
 
 export default function ThoughtDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -25,9 +27,9 @@ export default function ThoughtDetail() {
           <p className="mt-4 text-muted-foreground">
             Não encontramos esta reflexão. Volte para a coleção de pensamentos e explore outras ideias.
           </p>
-          <Button asChild className="mt-8 rounded-full">
-            <Link to="/thoughts">Ver todos os pensamentos</Link>
-          </Button>
+          <AnimatedLink as={Link} to="/thoughts" className="mt-8 rounded-full">
+            Ver todos os pensamentos
+          </AnimatedLink>
         </div>
       </div>
     );
@@ -43,45 +45,48 @@ export default function ThoughtDetail() {
   return (
     <div className="py-0 px-6">
       <div className="container mx-auto max-w-3xl">
-        <motion.div
-          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
-          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+        <MotionDiv
+          delay={0}
+          duration={0.6}
+          yOffset={24}
           className="rounded-[var(--radius)] border border-border/60 bg-card/70 p-8 shadow-[0_45px_85px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
         >
-          <Button
-            asChild
+          <AnimatedLink
+            as={Link}
+            to="/thoughts"
             variant="ghost"
             className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
-            whileHover={prefersReducedMotion ? undefined : { x: -5 }}
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            hoverScale={1}
+            tapScale={0.98}
+            whileHover={{ x: -5 }}
           >
-            <Link to="/thoughts">
-              <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar para os Pensamentos
-            </Link>
-          </Button>
+            <ArrowLeft className="h-4 w-4" aria-hidden />
+            Voltar para os Pensamentos
+          </AnimatedLink>
 
-          <div className="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            <motion.span
+          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground uppercase tracking-wide">
+            <MotionDiv
+              as="span"
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              whileHoverScale={1.05}
+              whileTapScale={0.95}
+              initial={false}
+              animate={{}}
             >
               <Calendar className="h-3 w-3" aria-hidden />
               {formattedDate}
-            </motion.span>
-            <motion.span
+            </MotionDiv>
+            <MotionDiv
+              as="span"
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              whileHoverScale={1.05}
+              whileTapScale={0.95}
+              initial={false}
+              animate={{}}
             >
               <BookOpen className="h-3 w-3" aria-hidden />
               {readingTime} min
-            </motion.span>
+            </MotionDiv>
           </div>
 
           <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
@@ -92,16 +97,18 @@ export default function ThoughtDetail() {
 
           <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
             {thought.tags.map((tag) => (
-              <motion.span
+              <MotionDiv
                 key={`${thought.slug}-${tag}`}
+                as="span"
                 className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                whileHoverScale={1.05}
+                whileTapScale={0.95}
+                initial={false}
+                animate={{}}
               >
                 <Tag className="h-3 w-3" aria-hidden />
                 {tag}
-              </motion.span>
+              </MotionDiv>
             ))}
           </div>
 
@@ -124,7 +131,7 @@ export default function ThoughtDetail() {
               </div>
             </div>
           </footer>
-        </motion.div>
+        </MotionDiv>
       </div>
     </div>
   );

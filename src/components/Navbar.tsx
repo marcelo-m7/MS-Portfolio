@@ -1,15 +1,17 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, LogIn } from 'lucide-react';
 import { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, useReducedMotion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import cvData from '../../public/data/cv.json';
-
-const MotionLink = motion(Link);
+import { AnimatedLink } from './AnimatedLink'; // Import AnimatedLink
+import { AnimatedButton } from './AnimatedButton'; // Import AnimatedButton
+import { MotionDiv } from './MotionDiv'; // Import MotionDiv
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
 
   const navLinks = [
     { href: '/', label: 'Início' },
@@ -21,17 +23,13 @@ export default function Navbar() {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl">
-        <MotionLink
+        <AnimatedLink
           to="/"
-          className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(var(--primary-hsl)/0.3)' }}
-          whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors"
+          hoverShadow="0 0 15px rgba(var(--primary-hsl)/0.3)"
         >
           <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-lg text-white shadow-[0_0_12px_rgba(var(--secondary-hsl)/0.2)]">
             M
@@ -39,53 +37,53 @@ export default function Navbar() {
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {cvData.profile.name.split(' ')[0]}
           </span>
-        </MotionLink>
+        </AnimatedLink>
 
         <div className="hidden flex-1 items-center justify-end gap-6 md:flex">
           <div className="flex items-center gap-2 rounded-full border border-border/60 bg-background/40 p-1">
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
-                <MotionLink
+                <AnimatedLink
                   key={link.href}
                   to={link.href}
-                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     active ? 'text-white' : 'text-muted-foreground hover:text-foreground'
                   }`}
-                  {...(!shouldReduceMotion
-                    ? {
-                        whileHover: {
-                          y: -2,
-                          boxShadow:
-                            '0 12px 24px -18px rgba(var(--secondary-hsl)/0.3), 0 0 12px rgba(var(--primary-hsl)/0.2)',
-                        },
-                      }
-                    : {})}
+                  hoverScale={shouldReduceMotion ? 1 : 1} // No scale on hover for nav items, only shadow/y-offset
+                  hoverShadow={
+                    shouldReduceMotion
+                      ? undefined
+                      : '0 12px 24px -18px rgba(var(--secondary-hsl)/0.3), 0 0 12px rgba(var(--primary-hsl)/0.2)'
+                  }
+                  yOffset={shouldReduceMotion ? 0 : -2}
+                  transitionDuration={0.2}
                 >
                   {active && (
-                    <motion.span
+                    <MotionDiv
                       layoutId="nav-pill"
                       className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80"
                       transition={{ type: 'spring', stiffness: 260, damping: 30 }}
+                      initial={false} // Important for layoutId animations
+                      animate={{ opacity: 1 }}
                     />
                   )}
                   {link.label}
-                </MotionLink>
+                </AnimatedLink>
               );
             })}
           </div>
 
           <div className="flex items-center gap-3 pl-4">
             <LanguageSwitcher />
-            <motion.button
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            <AnimatedButton
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform"
+              hoverScale={1.02}
+              tapScale={0.98}
             >
               <LogIn size={16} />
               Login
-            </motion.button>
+            </AnimatedButton>
           </div>
         </div>
 
@@ -101,11 +99,12 @@ export default function Navbar() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             className="mx-auto mt-3 max-w-6xl rounded-3xl border border-border/60 bg-card/80 p-4 backdrop-blur-xl md:hidden"
+            transition={{ type: 'tween', duration: 0.3 }}
           >
             <div className="flex flex-col gap-2">
               {navLinks.map((link) => (
@@ -123,17 +122,16 @@ export default function Navbar() {
             </div>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-4">
               <LanguageSwitcher />
-              <motion.button
-                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
-                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              <AnimatedButton
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform"
+                hoverScale={1.02}
+                tapScale={0.98}
               >
                 <LogIn size={16} />
                 Login
-              </motion.button>
+              </AnimatedButton>
             </div>
-          </motion.div>
+          </MotionDiv>
         )}
       </AnimatePresence>
     </nav>

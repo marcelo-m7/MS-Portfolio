@@ -1,8 +1,11 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { MotionDiv } from '@/components/MotionDiv'; // Import MotionDiv
+import { AnimatedLink } from '@/components/AnimatedLink'; // Import AnimatedLink
+import { AnimatedButton } from '@/components/AnimatedButton'; // Import AnimatedButton
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
@@ -21,10 +24,10 @@ export default function Portfolio() {
   return (
     <div className="px-6">
       <div className="container mx-auto max-w-6xl">
-        <motion.div
-          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+        <MotionDiv
+          delay={0}
+          duration={0.6}
+          yOffset={20}
           className="text-center mb-12"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
@@ -33,17 +36,17 @@ export default function Portfolio() {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Projetos e trabalhos desenvolvidos no ecossistema Monynha
           </p>
-        </motion.div>
+        </MotionDiv>
 
         {/* Filters */}
-        <motion.div
-          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
-          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
+        <MotionDiv
+          delay={0.2}
+          duration={0.5}
+          yOffset={10}
           className="flex flex-wrap gap-3 justify-center mb-12"
         >
           {categories.map((category) => (
-            <Button
+            <AnimatedButton
               key={category}
               variant={filter === category ? 'default' : 'outline'}
               onClick={() => setFilter(category)}
@@ -52,39 +55,40 @@ export default function Portfolio() {
                   ? 'bg-gradient-to-r from-primary via-secondary to-accent text-white'
                   : 'hover:border-primary/60 hover:text-primary'
               }`}
+              hoverScale={1.02}
+              tapScale={0.98}
             >
               {category}
-            </Button>
+            </AnimatedButton>
           ))}
-        </motion.div>
+        </MotionDiv>
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project, index) => (
-            <motion.div
+            <MotionDiv
               key={project.name}
-              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
-              animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.08, duration: 0.4 }}
+              delay={index * 0.08}
+              duration={0.4}
+              yOffset={24}
               className="group"
             >
-              <motion.a
+              <AnimatedLink
+                as="a"
                 href={project.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="block"
                 style={{ transformStyle: 'preserve-3d' }}
-                whileHover={
-                  prefersReducedMotion
-                    ? undefined
-                    : { rotateX: -6, rotateY: 6, translateZ: 12 }
-                }
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+                whileHover={{ rotateX: -6, rotateY: 6, translateZ: 12 }}
+                tapScale={0.99}
+                transitionStiffness={200}
+                transitionDamping={22}
               >
                 <div className="rounded-[var(--radius)] border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
-                    <motion.img
+                    <MotionDiv
+                      as="img"
                       src={project.thumbnail}
                       width={640}
                       height={360}
@@ -92,8 +96,10 @@ export default function Portfolio() {
                       decoding="async"
                       alt={`${project.name} – ${project.category}`}
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
+                      whileHoverScale={prefersReducedMotion ? 1 : 1.05}
+                      transitionDuration={0.3}
+                      initial={false}
+                      animate={{}}
                     />
                     <div className="absolute top-4 right-4">
                       <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs font-medium">
@@ -127,24 +133,27 @@ export default function Portfolio() {
                       ))}
                     </div>
 
-                    <a
+                    <AnimatedLink
+                      as="a"
                       href={project.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium"
+                      hoverScale={1.02}
+                      tapScale={0.98}
                     >
                       Ver Projeto
                       <ExternalLink size={16} aria-hidden />
-                    </a>
+                    </AnimatedLink>
                   </div>
                 </div>
-              </motion.a>
-            </motion.div>
+              </AnimatedLink>
+            </MotionDiv>
           ))}
         </div>
 
         {filteredProjects.length === 0 && (
-          <motion.div
+          <MotionDiv
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="text-center py-12"
@@ -152,7 +161,7 @@ export default function Portfolio() {
             <p className="text-muted-foreground text-lg">
               Nenhum projeto encontrado nesta categoria.
             </p>
-          </motion.div>
+          </MotionDiv>
         )}
       </div>
     </div>

@@ -1,26 +1,12 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import { OrbitControls, MeshDistortMaterial } from '@react-three/drei';
-import { Suspense, useEffect, useMemo, useRef, type MutableRefObject } from 'react';
+import { Suspense, useMemo, useRef } from 'react';
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
+import { useVisibilityController } from '@/hooks/useVisibilityController'; // Updated import
 import { BufferGeometry, Float32BufferAttribute, Mesh, Points } from 'three';
 
-const useVisibilityController = () => {
-  const visibleRef = useRef(true);
-
-  useEffect(() => {
-    const handleVisibility = () => {
-      visibleRef.current = !document.hidden;
-    };
-
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => document.removeEventListener('visibilitychange', handleVisibility);
-  }, []);
-
-  return visibleRef;
-};
-
-const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
+const Particles = ({ visibleRef }: { visibleRef: React.MutableRefObject<boolean> }) => {
   const pointsRef = useRef<Points>(null);
   const geometry = useMemo(() => {
     const count = 1500; // Increased particle count
@@ -65,7 +51,7 @@ const Particles = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) =>
   );
 };
 
-const Ribbon = ({ visibleRef }: { visibleRef: MutableRefObject<boolean> }) => {
+const Ribbon = ({ visibleRef }: { visibleRef: React.MutableRefObject<boolean> }) => {
   const meshRef = useRef<Mesh>(null);
   const lastFrame = useRef(0);
 
