@@ -19,6 +19,7 @@
       "slug": "monynha-com",
       "name": "Monynha.com",
       "summary": "Website institucional da Monynha Softwares — vitrine de produtos, valores e visão da marca.",
+      "fullDescription": "O Monynha.com é o portal oficial da Monynha Softwares, projetado para ser uma vitrine dinâmica e interativa dos nossos produtos, valores e visão. Construído com Next.js para performance e SEO, TailwindCSS para um design responsivo e moderno, e integrado com Payload CMS para gestão de conteúdo flexível e Supabase para o backend, este website reflete a nossa paixão por tecnologia, diversidade e arte digital. Apresenta uma experiência de utilizador fluida, com animações subtis e um foco em acessibilidade, garantindo que a nossa mensagem alcance todos os públicos.",
       "stack": ["Next.js", "TailwindCSS", "Payload CMS", "Supabase"],
       "url": "https://monynha.com",
       "thumbnail": "/images/monynha-com.svg",

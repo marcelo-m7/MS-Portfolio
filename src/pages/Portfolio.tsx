@@ -3,6 +3,7 @@ import { ExternalLink } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom'; // Import Link
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
@@ -68,21 +69,19 @@ export default function Portfolio() {
               transition={{ delay: index * 0.08, duration: 0.4 }}
               className="group"
             >
-              <motion.a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                style={{ transformStyle: 'preserve-3d' }}
-                whileHover={
-                  prefersReducedMotion
-                    ? undefined
-                    : { rotateX: -6, rotateY: 6, translateZ: 12 }
-                }
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-              >
-                <div className="rounded-[var(--radius)] border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
+              <div className="rounded-[var(--radius)] border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
+                <Link
+                  to={`/portfolio/${project.slug}`} // Link to the new ProjectDetail page
+                  className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  style={{ transformStyle: 'preserve-3d' }}
+                  whileHover={
+                    prefersReducedMotion
+                      ? undefined
+                      : { rotateX: -6, rotateY: 6, translateZ: 12 }
+                  }
+                  whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+                  transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+                >
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
                     <motion.img
                       src={project.thumbnail}
@@ -126,19 +125,20 @@ export default function Portfolio() {
                         </span>
                       ))}
                     </div>
-
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
-                      Ver Projeto
-                      <ExternalLink size={16} aria-hidden />
-                    </a>
                   </div>
+                </Link>
+                <div className="p-6 pt-0">
+                  <a
+                    href={project.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    Ver Projeto Online
+                    <ExternalLink size={16} aria-hidden />
+                  </a>
                 </div>
-              </motion.a>
+              </div>
             </motion.div>
           ))}
         </div>

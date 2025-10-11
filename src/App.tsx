@@ -13,6 +13,7 @@ import Layout from "./components/Layout"; // Import the new Layout component
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail")); // Import ProjectDetail
 const About = lazy(() => import("./pages/About"));
 const Thoughts = lazy(() => import("./pages/Thoughts"));
 const ThoughtDetail = lazy(() => import("./pages/ThoughtDetail"));
@@ -58,6 +59,7 @@ const App = () => {
               <Route path="/" element={<Layout />}> {/* Use Layout as the parent route */}
                 <Route index element={<Home />} />
                 <Route path="portfolio" element={<Portfolio />} />
+                <Route path="portfolio/:slug" element={<ProjectDetail />} /> {/* New route for project details */}
                 <Route path="about" element={<About />} />
                 <Route path="thoughts" element={<Thoughts />} />
                 <Route path="thoughts/:slug" element={<ThoughtDetail />} />
