@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
+import { ArrowRight, Code2, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Hero3D from '@/components/Hero3D';
@@ -9,9 +9,9 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div> {/* Removed min-h-screen */}
+    <div>
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden"> {/* Adjusted min-h to account for Navbar/Footer */}
+      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden">
         <Hero3D />
 
         <div className="container mx-auto px-6 relative z-10">
@@ -25,7 +25,7 @@ export default function Home() {
               initial={prefersReducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
               animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 shadow-[0_20px_35px_-25px_rgba(56,189,248,0.55)]"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-[0_20px_35px_-25px_rgba(56,189,248,0.2)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
               <span className="text-sm font-medium">{cvData.profile.location}</span>
@@ -49,11 +49,11 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full text-lg px-8 py-6 bg-gradient-to-r from-primary via-secondary to-accent shadow-[0_15px_45px_-20px_rgba(14,165,233,0.75)] transition-transform hover:-translate-y-0.5 focus-visible:ring-secondary"
+                className="rounded-full text-lg px-8 py-6 shadow-[0_15px_45px_-20px_rgba(14,165,233,0.4)]"
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
-                  Explorar Portfolio
+                  Explore Portfolio
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
@@ -65,33 +65,10 @@ export default function Home() {
                 className="rounded-full text-lg px-8 py-6 border-2 border-border/80 bg-card/30 backdrop-blur-sm transition hover:border-primary/80 hover:text-primary"
               >
                 <Link to="/contact">
-                  Entre em Contato
+                  Get in Touch
                 </Link>
               </Button>
             </div>
-
-            <motion.div
-              initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
-              animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
-            >
-              <motion.div
-                initial={prefersReducedMotion ? undefined : { scale: 0.95, opacity: 0 }}
-                animate={prefersReducedMotion ? undefined : { scale: 1, opacity: 1 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
-                className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
-              >
-                <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
-                <span>Nova rota: reflexões em tecnologia e arte</span>
-              </motion.div>
-              <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_rgba(56,189,248,0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105">
-                <Link to="/thoughts">
-                  Ler os pensamentos recentes
-                  <ArrowRight className="h-4 w-4" aria-hidden />
-                </Link>
-              </Button>
-            </motion.div>
           </motion.div>
         </div>
 
@@ -123,10 +100,10 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Projetos em Destaque
+              Featured Projects
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Seleção dos melhores trabalhos do ecossistema Monynha
+              A curated selection of recent projects blending artistry with technology
             </p>
           </motion.div>
 
@@ -154,9 +131,9 @@ export default function Home() {
                   whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                   transition={{ type: 'spring', stiffness: 200, damping: 22 }}
                 >
-                  <div className="rounded-3xl border border-border/70 bg-card/60 p-6 shadow-[0_15px_30px_-20px_hsl(var(--primary)/0.15)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_50px_-25px_hsl(var(--primary)/0.4),_0_10px_20px_-10px_hsl(var(--secondary)/0.3)]">
+                  <div className="rounded-[var(--radius)] border border-border/70 bg-card/60 p-6 shadow-[0_15px_30px_-20px_hsl(var(--primary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_50px_-25px_hsl(var(--primary)/0.3),_0_10px_20px_-10px_hsl(var(--secondary)/0.2)]">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]">
                         <Code2 className="text-white" size={24} aria-hidden />
                       </div>
                       <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
@@ -196,7 +173,7 @@ export default function Home() {
           >
             <Button asChild variant="outline" size="lg" className="rounded-full border-border/70">
               <Link to="/portfolio">
-                Ver Todos os Projetos
+                View All Projects
                 <ArrowRight className="ml-2" />
               </Link>
             </Button>
@@ -215,10 +192,10 @@ export default function Home() {
             className="mb-12 text-center"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Coleções & Arte
+              Collections & Art
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Experiências imersivas e séries experimentais que conectam tecnologia, narrativa e arte digital.
+              Immersive experiences and experimental series connecting technology, narrative, and digital art.
             </p>
           </motion.div>
 
@@ -233,15 +210,15 @@ export default function Home() {
                 to="/series/creative-systems"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--secondary)/0.15)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--secondary)/0.4),_0_15px_30px_-15px_hsl(var(--accent)/0.3)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_rgba(124,58,237,0.45)]">
-                    <Layers aria-hidden className="h-6 w-6" />
+                <div className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--secondary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--secondary)/0.3),_0_15px_30px_-15px_hsl(var(--accent)/0.2)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_rgba(124,58,237,0.2)]">
+                    <Code2 aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
                     Creative Systems
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground/90">
-                    Coleção de trabalhos que explora IA aplicada, automação inteligente e interfaces artísticas conectadas ao laboratório Monynha.
+                    A collection of works exploring applied AI, intelligent automation, and artistic interfaces connected to the Monynha laboratory.
                   </p>
                 </div>
               </Link>
@@ -257,15 +234,15 @@ export default function Home() {
                 to="/art/artleo"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.15)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--accent)/0.4),_0_15px_30px_-15px_hsl(var(--primary)/0.3)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_rgba(56,189,248,0.45)]">
-                    <Palette aria-hidden className="h-6 w-6" />
+                <div className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_rgba(56,189,248,0.2)]">
+                    <Code2 aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
                     Art Leo Creative Spaces
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground/90">
-                    Experiência 3D com narrativas interativas e composição sonora inspirada nos espaços criativos de Leonardo Silva.
+                    A 3D experience with interactive narratives and sound composition inspired by Leonardo Silva's creative spaces.
                   </p>
                 </div>
               </Link>

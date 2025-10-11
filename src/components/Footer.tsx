@@ -30,9 +30,9 @@ export default function Footer() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
+    { href: '/about', label: 'About' },
+    { href: '/thoughts', label: 'Thoughts' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -44,19 +44,19 @@ export default function Footer() {
             <Link
               to="/"
               className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(124,58,237,0.6)' }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(124,58,237,0.3)' }}
               whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(56,189,248,0.45)]">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(56,189,248,0.2)]">
                 M
               </span>
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {cvData.profile.name}
+                {cvData.profile.name.split(' ')[0]}
               </span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Monynha Softwares. Todos os direitos reservados.
+              &copy; {new Date().getFullYear()} Monynha Softwares. All rights reserved.
             </p>
           </div>
 

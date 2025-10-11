@@ -5,21 +5,21 @@ import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 
 export default function Portfolio() {
-  const [filter, setFilter] = useState<string>('Todos');
+  const [filter, setFilter] = useState<string>('All'); // Changed to English
   const prefersReducedMotion = useReducedMotion();
 
   const categories = useMemo(
-    () => ['Todos', ...new Set(cvData.projects.map((p) => p.category))],
+    () => ['All', ...new Set(cvData.projects.map((p) => p.category))], // Changed to English
     []
   );
 
   const filteredProjects = useMemo(() => {
-    if (filter === 'Todos') return cvData.projects;
+    if (filter === 'All') return cvData.projects;
     return cvData.projects.filter((p) => p.category === filter);
   }, [filter]);
 
   return (
-    <div className="px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+    <div className="px-6">
       <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -31,7 +31,7 @@ export default function Portfolio() {
             Portfolio
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Projetos e trabalhos desenvolvidos no ecossistema Monynha
+            Projects and works developed in the Monynha ecosystem
           </p>
         </motion.div>
 
@@ -82,7 +82,7 @@ export default function Portfolio() {
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                 transition={{ type: 'spring', stiffness: 200, damping: 22 }}
               >
-                <div className="rounded-3xl border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.15)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.4),_0_15px_30px_-15px_hsl(var(--primary)/0.3)]">
+                <div className="rounded-[var(--radius)] border border-border/70 bg-card/70 backdrop-blur-xl overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
                   <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
                     <motion.img
                       src={project.thumbnail}
@@ -133,7 +133,7 @@ export default function Portfolio() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      Ver Projeto
+                      View Project
                       <ExternalLink size={16} aria-hidden />
                     </a>
                   </div>
@@ -150,7 +150,7 @@ export default function Portfolio() {
             className="text-center py-12"
           >
             <p className="text-muted-foreground text-lg">
-              Nenhum projeto encontrado nesta categoria.
+              No projects found in this category.
             </p>
           </motion.div>
         )}

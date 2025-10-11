@@ -8,35 +8,35 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Very light gray/off-white */
-    --foreground: 224 71% 10%; /* Dark charcoal for text */
+    --background: 220 10% 8%; /* Very dark gray, almost black */
+    --foreground: 0 0% 98%; /* White for text */
 
-    --card: 0 0% 100%; /* Pure white for card backgrounds */
-    --card-foreground: 224 71% 10%;
+    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 10%;
+    --popover: 220 10% 12%;
+    --popover-foreground: 0 0% 98%;
 
     --primary: 263 70% 50%; /* Keep vibrant purple */
-    --primary-foreground: 0 0% 100%; /* White for text on primary buttons */
+    --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
 
     --secondary: 199 89% 48%; /* Keep vibrant cyan */
-    --secondary-foreground: 0 0% 100%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 210 40% 96%; /* Light gray for muted backgrounds */
-    --muted-foreground: 215 20% 45%; /* Medium gray for muted text */
+    --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
+    --muted-foreground: 220 10% 70%; /* Light gray for muted text */
 
     --accent: 330 81% 60%; /* Keep vibrant pink */
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 63% 31%; /* Keep vibrant red */
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 210 40% 90%; /* Light gray border */
-    --input: 0 0% 100%; /* White input background */
+    --border: 220 10% 20%; /* Subtle dark gray border */
+    --input: 220 10% 12%; /* Dark input background */
     --ring: 263 70% 50%; /* Primary purple for focus ring */
 
-    --radius: 1rem;
+    --radius: 1.5rem; /* Increased border radius for softer, polished look */
 
     /* Custom tokens */
     --hero-gradient-start: 263 70% 50%;

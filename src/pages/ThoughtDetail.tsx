@@ -19,14 +19,14 @@ export default function ThoughtDetail() {
 
   if (!thought) {
     return (
-      <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+      <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Conteúdo não encontrado</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">Content Not Found</h1>
           <p className="mt-4 text-muted-foreground">
-            Não encontramos esta reflexão. Volta para a coleção de pensamentos e explora outras ideias.
+            We couldn't find this thought. Go back to the thoughts collection and explore other ideas.
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/thoughts">Ver todos os pensamentos</Link>
+            <Link to="/thoughts">View all thoughts</Link>
           </Button>
         </div>
       </div>
@@ -41,13 +41,13 @@ export default function ThoughtDetail() {
   const readingTime = calculateReadingTime(thought.body);
 
   return (
-    <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+    <div className="py-0 px-6">
       <div className="container mx-auto max-w-3xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-3xl border border-border/60 bg-card/70 p-8 shadow-[0_45px_85px_-70px_rgba(124,58,237,0.85)] backdrop-blur-xl"
+          className="rounded-[var(--radius)] border border-border/60 bg-card/70 p-8 shadow-[0_45px_85px_-70px_rgba(124,58,237,0.3)] backdrop-blur-xl"
         >
           <Button
             asChild
@@ -59,7 +59,7 @@ export default function ThoughtDetail() {
           >
             <Link to="/thoughts">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar para os pensamentos
+              Back to Thoughts
             </Link>
           </Button>
 
@@ -109,8 +109,8 @@ export default function ThoughtDetail() {
             <ReactMarkdown>{thought.body}</ReactMarkdown>
           </article>
 
-          <footer className="mt-12 rounded-2xl border border-border/60 bg-background/60 p-6">
-            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>
+          <footer className="mt-12 rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
+            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Written by</p>
             <div className="mt-4 flex items-center gap-3">
               <img
                 src={cvData.profile.avatar}

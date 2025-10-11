@@ -47,7 +47,7 @@ export default function Contact() {
       setFormData(createInitialFormState());
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Erro ao enviar mensagem de contato:', error);
+        console.error('Error sending contact message:', error);
       }
       toast.error(cvData.contact.errorMessage);
     } finally {
@@ -56,7 +56,7 @@ export default function Contact() {
   };
 
   return (
-    <div className="px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+    <div className="px-6">
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -65,7 +65,7 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Vamos Conversar
+            Let's Connect
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {cvData.contact.note}
@@ -80,9 +80,9 @@ export default function Contact() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="space-y-8"
           >
-            <div className="glass rounded-2xl p-8">
+            <div className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Informações de Contato
+                Contact Information
               </h2>
 
               <div className="space-y-6">
@@ -137,8 +137,8 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="glass rounded-2xl p-8">
-              <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
+            <div className="glass rounded-[var(--radius)] p-8">
+              <h3 className="font-display font-bold mb-3">Availability</h3>
               <p className="text-muted-foreground">
                 {cvData.contact.availability}
               </p>
@@ -151,16 +151,16 @@ export default function Contact() {
             animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <form onSubmit={handleSubmit} className="glass rounded-2xl p-8">
+            <form onSubmit={handleSubmit} className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Enviar Mensagem
+                Send a Message
               </h2>
 
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Nome
+                      Name
                     </label>
                     <Input
                       id="name"
@@ -171,12 +171,12 @@ export default function Contact() {
                       }
                       required
                       className="rounded-xl"
-                      placeholder="Seu nome"
+                      placeholder="Your name"
                     />
                   </div>
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Empresa <span className="text-muted-foreground">(opcional)</span>
+                      Company <span className="text-muted-foreground">(optional)</span>
                     </label>
                     <Input
                       id="company"
@@ -186,7 +186,7 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, company: e.target.value }))
                       }
                       className="rounded-xl"
-                      placeholder="Onde você trabalha"
+                      placeholder="Where you work"
                     />
                   </div>
                 </div>
@@ -205,12 +205,12 @@ export default function Contact() {
                       }
                       required
                       className="rounded-xl"
-                      placeholder="seu@email.com"
+                      placeholder="your@email.com"
                     />
                   </div>
                   <div>
                     <label htmlFor="project" className="block text-sm font-medium mb-2">
-                      Projeto <span className="text-muted-foreground">(opcional)</span>
+                      Project <span className="text-muted-foreground">(optional)</span>
                     </label>
                     <Input
                       id="project"
@@ -220,14 +220,14 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, project: e.target.value }))
                       }
                       className="rounded-xl"
-                      placeholder="Sobre o que vamos falar?"
+                      placeholder="What should we talk about?"
                     />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Mensagem
+                    Message
                   </label>
                   <Textarea
                     id="message"
@@ -238,7 +238,7 @@ export default function Contact() {
                     required
                     rows={6}
                     className="rounded-xl resize-none"
-                    placeholder="Escreva sua mensagem aqui..."
+                    placeholder="Write your message here..."
                   />
                 </div>
 
@@ -248,11 +248,11 @@ export default function Contact() {
                   className="w-full rounded-xl py-6 text-lg bg-primary hover:bg-primary/90"
                 >
                   {isSubmitting ? (
-                    'Enviando...'
+                    'Sending...'
                   ) : (
                     <>
                       <Send className="mr-2" size={20} />
-                      Enviar Mensagem
+                      Send Message
                     </>
                   )}
                 </Button>

@@ -6,7 +6,7 @@ export default function About() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className="px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+    <div className="px-6">
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -15,10 +15,10 @@ export default function About() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Sobre Mim
+            About Me
           </h1>
           <p className="text-xl text-muted-foreground">
-            Conheça a história e experiência
+            Discover my story and experience
           </p>
         </motion.div>
 
@@ -27,14 +27,14 @@ export default function About() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="glass rounded-2xl p-8 md:p-12 mb-12"
+          className="glass rounded-[var(--radius)] p-8 md:p-12 mb-12"
         >
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-primary via-secondary to-accent p-1 shrink-0">
+            <div className="w-32 h-32 rounded-[var(--radius)] bg-gradient-to-br from-primary via-secondary to-accent p-1 shrink-0">
               <img
                 src={cvData.profile.avatar}
                 alt={cvData.profile.name}
-                className="w-full h-full rounded-2xl object-cover"
+                className="w-full h-full rounded-[calc(var(--radius)-0.25rem)] object-cover"
               />
             </div>
             
@@ -65,7 +65,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Briefcase className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Experiência</h2>
+            <h2 className="text-3xl font-display font-bold">Experience</h2>
           </div>
           
           <div className="space-y-6">
@@ -78,7 +78,7 @@ export default function About() {
                 animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                 whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
-                className="glass rounded-2xl p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
+                className="glass rounded-[var(--radius)] p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                   <div>
@@ -92,7 +92,7 @@ export default function About() {
                     </p>
                   </div>
                   <div className="text-sm text-muted-foreground mt-2 md:mt-0">
-                    {new Date(exp.start).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' })} - {exp.end ? new Date(exp.end).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' }) : 'Presente'}
+                    {new Date(exp.start).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - {exp.end ? new Date(exp.end).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'Present'}
                   </div>
                 </div>
                 
@@ -117,7 +117,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Award className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Competências</h2>
+            <h2 className="text-3xl font-display font-bold">Skills</h2>
           </div>
           
           <div className="grid md:grid-cols-2 gap-4">
@@ -130,7 +130,7 @@ export default function About() {
                 animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
                 whileHover={prefersReducedMotion ? undefined : { y: -3, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
-                className="glass rounded-2xl p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+                className="glass rounded-[var(--radius)] p-4 flex items-center justify-between hover:shadow-md transition-shadow"
               >
                 <div>
                   <h4 className="font-semibold mb-1">{skill.name}</h4>

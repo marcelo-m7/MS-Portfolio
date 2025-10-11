@@ -61,8 +61,8 @@ export default {
       },
       borderRadius: {
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) - 0.5rem)", // Adjusted for new lg
+        sm: "calc(var(--radius) - 1rem)", // Adjusted for new lg
       },
       fontFamily: {
         display: ["Space Grotesk", "system-ui", "sans-serif"],

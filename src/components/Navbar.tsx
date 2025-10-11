@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, LogIn } from 'lucide-react'; // Changed icons
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -14,9 +14,9 @@ export default function Navbar() {
   const navLinks = [
     { href: '/', label: 'Home' },
     { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
+    { href: '/about', label: 'About' }, // Changed label to English as per inspiration
+    { href: '/thoughts', label: 'Thoughts' }, // Changed label
+    { href: '/contact', label: 'Contact' }, // Changed label
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -25,19 +25,19 @@ export default function Navbar() {
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
-      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-4 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.55)] backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/70 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(56,189,248,0.2)] backdrop-blur-xl">
         <MotionLink
           to="/"
           className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(124,58,237,0.6)' }}
+          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(124,58,237,0.3)' }}
           whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(56,189,248,0.45)]">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-lg text-white shadow-[0_0_12px_rgba(56,189,248,0.2)]">
             M
           </span>
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            {cvData.profile.name}
+            {cvData.profile.name.split(' ')[0]}
           </span>
         </MotionLink>
 
@@ -50,14 +50,14 @@ export default function Navbar() {
                   key={link.href}
                   to={link.href}
                   className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                    active ? 'text-white' : 'text-muted-foreground'
+                    active ? 'text-white' : 'text-muted-foreground hover:text-foreground'
                   }`}
                   {...(!shouldReduceMotion
                     ? {
                         whileHover: {
                           y: -2,
                           boxShadow:
-                            '0 12px 24px -18px rgba(56,189,248,0.6), 0 0 12px rgba(124,58,237,0.45)',
+                            '0 12px 24px -18px rgba(56,189,248,0.3), 0 0 12px rgba(124,58,237,0.2)',
                         },
                       }
                     : {})}
@@ -76,41 +76,16 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3 pl-4">
-            <motion.a
-              href={cvData.links.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              aria-label="GitHub"
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <Github size={18} />
-            </motion.a>
-            <motion.a
-              href={cvData.links.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              aria-label="LinkedIn"
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <Linkedin size={18} />
-            </motion.a>
-            <motion.a
-              href={cvData.links.email}
-              className="rounded-full p-2 text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              aria-label="Email"
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.1 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.9 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <Mail size={18} />
-            </motion.a>
             <LanguageSwitcher />
+            <motion.button
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(124,58,237,0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <LogIn size={16} />
+              Login
+            </motion.button>
           </div>
         </div>
 
@@ -138,7 +113,7 @@ export default function Navbar() {
                   key={link.href}
                   to={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`rounded-2xl px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  className={`rounded-2xl px-4 py-3 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     isActive(link.href) ? 'bg-gradient-to-r from-primary/60 via-secondary/50 to-accent/50 text-white' : 'text-muted-foreground hover:bg-card'
                   }`}
                 >
@@ -147,34 +122,16 @@ export default function Navbar() {
               ))}
             </div>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border/60 pt-4">
-              <div className="flex items-center gap-3">
-                <a
-                  href={cvData.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full p-2 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  aria-label="GitHub"
-                >
-                  <Github size={18} />
-                </a>
-                <a
-                  href={cvData.links.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full p-2 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin size={18} />
-                </a>
-                <a
-                  href={cvData.links.email}
-                  className="rounded-full p-2 text-muted-foreground transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  aria-label="Email"
-                >
-                  <Mail size={18} />
-                </a>
-              </div>
               <LanguageSwitcher />
+              <motion.button
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(124,58,237,0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
+                whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
+                <LogIn size={16} />
+                Login
+              </motion.button>
             </div>
           </motion.div>
         )}

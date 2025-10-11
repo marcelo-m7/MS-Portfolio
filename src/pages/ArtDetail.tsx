@@ -42,14 +42,14 @@ export default function ArtDetail() {
 
   if (!artwork) {
     return (
-      <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+      <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Obra não encontrada</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">Artwork Not Found</h1>
           <p className="mt-4 text-muted-foreground">
-            Esta peça artística não existe ou foi movida. Volta ao portfolio para conhecer outras experiências digitais.
+            This art piece does not exist or has been moved. Go back to the portfolio to discover other digital experiences.
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver portfolio</Link>
+            <Link to="/portfolio">View Portfolio</Link>
           </Button>
         </div>
       </div>
@@ -57,13 +57,13 @@ export default function ArtDetail() {
   }
 
   return (
-    <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+    <div className="py-0 px-6">
       <div className="container mx-auto max-w-4xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-3xl border border-border/60 bg-card/70 p-10 shadow-[0_45px_90px_-70px_rgba(124,58,237,0.8)] backdrop-blur-xl"
+          className="rounded-[var(--radius)] border border-border/60 bg-card/70 p-10 shadow-[0_45px_90px_-70px_rgba(124,58,237,0.3)] backdrop-blur-xl"
         >
           <Button
             asChild
@@ -75,7 +75,7 @@ export default function ArtDetail() {
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar ao portfolio
+              Back to Portfolio
             </Link>
           </Button>
 
@@ -131,7 +131,7 @@ export default function ArtDetail() {
                 <div className="pointer-events-none absolute inset-0 flex items-end justify-end bg-gradient-to-t from-background/70 via-background/20 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground">
                     <Maximize2 className="h-3 w-3" aria-hidden />
-                    Expandir
+                    Expand
                   </span>
                 </div>
               </motion.button>
@@ -150,7 +150,7 @@ export default function ArtDetail() {
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 <Orbit className="h-4 w-4" aria-hidden />
-                {canRender3DPreview ? 'Explorar experiência 3D' : 'Pré-visualização indisponível'}
+                {canRender3DPreview ? 'Explore 3D Experience' : 'Preview Unavailable'}
               </Button>
               <motion.a
                 href={artwork.url3d}
@@ -161,16 +161,16 @@ export default function ArtDetail() {
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
-                Abrir em nova aba
+                Open in New Tab
                 <ExternalLink className="h-4 w-4" aria-hidden />
               </motion.a>
               {!canRender3DPreview && (
                 <p className="text-sm text-muted-foreground/80">
-                  A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
+                  Interactive visualization is disabled in this build. Set VITE_ENABLE_ART_3D="true" to enable.
                 </p>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </motion.div>
       </div>
 
@@ -178,12 +178,12 @@ export default function ArtDetail() {
         <DialogContent className="max-w-4xl border border-border/60 bg-card/90 backdrop-blur-xl">
           <DialogHeader>
             <DialogTitle>{artwork.title}</DialogTitle>
-            <DialogDescription>Visualização ampliada da obra.</DialogDescription>
+            <DialogDescription>Enlarged view of the artwork.</DialogDescription>
           </DialogHeader>
           {typeof activeMedia === 'string' && (
             <img
               src={activeMedia}
-              alt={`${artwork.title} em detalhe`}
+              alt={`${artwork.title} in detail`}
               className="h-auto w-full rounded-2xl"
               loading="lazy"
             />
@@ -195,9 +195,9 @@ export default function ArtDetail() {
         <Dialog open={is3DOpen} onOpenChange={setIs3DOpen}>
           <DialogContent className="max-w-5xl border border-border/60 bg-card/90 backdrop-blur-xl">
             <DialogHeader>
-              <DialogTitle>Exploração 3D</DialogTitle>
+              <DialogTitle>3D Exploration</DialogTitle>
               <DialogDescription>
-                Cena interativa da experiência Art Leo com controlo de órbita.
+                Interactive scene of the Art Leo experience with orbit control.
               </DialogDescription>
             </DialogHeader>
             <div className="h-[420px] w-full overflow-hidden rounded-2xl bg-background/80">
@@ -205,7 +205,7 @@ export default function ArtDetail() {
                 <Suspense
                   fallback={
                     <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                      Carregando visualização 3D…
+                      Loading 3D visualization…
                     </div>
                   }
                 >
@@ -213,7 +213,7 @@ export default function ArtDetail() {
                     <div className="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground">
                       <Orbit className="h-6 w-6" aria-hidden />
                       <p className="max-w-sm text-center text-sm">
-                        A visualização 3D está desativada porque a preferência do sistema indica movimento reduzido.
+                        3D visualization is disabled because system preference indicates reduced motion.
                       </p>
                     </div>
                   ) : (
@@ -224,7 +224,7 @@ export default function ArtDetail() {
                 <div className="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground">
                   <Orbit className="h-6 w-6" aria-hidden />
                   <p className="max-w-sm text-center text-sm">
-                    Esta build foi gerada sem os assets 3D locais. Abra o link externo para visualizar a cena.
+                    This build was generated without local 3D assets. Open the external link to view the scene.
                   </p>
                 </div>
               )}

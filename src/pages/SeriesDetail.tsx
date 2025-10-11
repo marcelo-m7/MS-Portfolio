@@ -37,7 +37,7 @@ const buildWorkCards = (): Record<string, WorkCard> => {
         href: `/art/${artwork.slug}`,
         isInternal: true,
         thumbnail: artwork.media?.[0],
-        badge: 'Arte digital',
+        badge: 'Digital Art', // Changed to English
       };
       return acc;
     },
@@ -75,14 +75,14 @@ export default function SeriesDetail() {
 
   if (!series) {
     return (
-      <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+      <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Série não encontrada</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">Series Not Found</h1>
           <p className="mt-4 text-muted-foreground">
-            A coleção que procuras não está disponível. Volta ao portfolio e explora outras experiências criativas.
+            The collection you are looking for is not available. Go back to the portfolio and explore other creative experiences.
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver portfolio</Link>
+            <Link to="/portfolio">View Portfolio</Link>
           </Button>
         </div>
       </div>
@@ -94,13 +94,13 @@ export default function SeriesDetail() {
     .filter((card): card is WorkCard => Boolean(card));
 
   return (
-    <div className="py-0 px-6"> {/* Removed min-h-screen, pt-24, pb-16 */}
+    <div className="py-0 px-6">
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-3xl border border-border/60 bg-card/70 p-10 shadow-[0_45px_85px_-70px_rgba(124,58,237,0.75)] backdrop-blur-xl"
+          className="rounded-[var(--radius)] border border-border/60 bg-card/70 p-10 shadow-[0_45px_85px_-70px_rgba(124,58,237,0.3)] backdrop-blur-xl"
         >
           <Button
             asChild
@@ -112,7 +112,7 @@ export default function SeriesDetail() {
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar ao portfolio
+              Back to Portfolio
             </Link>
           </Button>
 
@@ -124,7 +124,7 @@ export default function SeriesDetail() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Layers className="h-4 w-4" aria-hidden />
-              Série criativa
+              Creative Series
             </motion.span>
             <motion.span
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
@@ -148,14 +148,14 @@ export default function SeriesDetail() {
             {works.map((work, index) => {
               const card = (
                 <motion.div
-                  className="flex h-full flex-col rounded-3xl border border-border/70 bg-card/70 p-6 shadow-[0_35px_70px_-55px_rgba(56,189,248,0.65)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.6)]"
+                  className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_35px_70px_-55px_rgba(56,189,248,0.3)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(124,58,237,0.3)]"
                   whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 >
                   {work.thumbnail && (
                     <div className="mb-4 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
                       <img
                         src={work.thumbnail}
-                        alt={`Arte ${work.title}`}
+                        alt={`Art ${work.title}`}
                         loading="lazy"
                         decoding="async"
                         width={640}
@@ -207,8 +207,8 @@ export default function SeriesDetail() {
               );
             })}
             {works.length === 0 && (
-              <div className="col-span-full rounded-3xl border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
-                Novas obras desta série serão adicionadas em breve.
+              <div className="col-span-full rounded-[var(--radius)] border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
+                New works for this series will be added soon.
               </div>
             )}
           </div>
