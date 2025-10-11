@@ -1,17 +1,19 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom'; // Import useLocation
 import Navbar from './Navbar';
 import Footer from './Footer';
 import LiquidEther from './LiquidEther';
-import { useScrollToTop } from '@/hooks/useScrollToTop'; // Import the new hook
+import { useScrollToTop } from '@/hooks/useScrollToTop';
 
 export default function Layout() {
-  useScrollToTop(); // Use the hook here
+  useScrollToTop();
+  const location = useLocation(); // Get the current location
 
   return (
     <div className="relative flex flex-col min-h-screen">
       {/* LiquidEther Background */}
       <div className="fixed inset-0 w-full h-full -z-20">
         <LiquidEther
+          key={location.pathname} {/* Add key prop based on pathname */}
           colors={[ '#7C3AED', '#0EA5E9', '#EC4899' ]} // Using your theme's primary, secondary, accent colors
           mouseForce={20}
           cursorSize={100}
@@ -33,8 +35,8 @@ export default function Layout() {
       </div>
       
       <Navbar />
-      <main className="flex-grow pt-24 pb-16 relative z-0"> {/* Added padding for Navbar and Footer */}
-        <Outlet /> {/* This is where child routes will render */}
+      <main className="flex-grow pt-24 pb-16 relative z-0">
+        <Outlet />
       </main>
       <Footer />
     </div>
