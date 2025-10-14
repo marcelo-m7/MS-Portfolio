@@ -16,6 +16,8 @@ import {
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 
+const MotionButton = motion(Button);
+
 const isArtPreview3DEnabled =
   import.meta.env.VITE_ENABLE_ART_3D?.toLowerCase() === 'true';
 
@@ -65,7 +67,7 @@ export default function ArtDetail() {
           transition={{ duration: 0.6 }}
           className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
         >
-          <Button
+          <MotionButton
             asChild
             variant="ghost"
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
@@ -77,7 +79,7 @@ export default function ArtDetail() {
               <ArrowLeft className="h-4 w-4" aria-hidden />
               Voltar ao Portfolio
             </Link>
-          </Button>
+          </MotionButton>
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <motion.span
@@ -142,7 +144,7 @@ export default function ArtDetail() {
 
           {artwork.url3d && (
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <Button
+              <MotionButton
                 type="button"
                 onClick={() => setIs3DOpen(true)}
                 className="inline-flex items-center gap-2 rounded-full"
@@ -153,7 +155,7 @@ export default function ArtDetail() {
               >
                 <Orbit className="h-4 w-4" aria-hidden />
                 {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
-              </Button>
+              </MotionButton>
               <motion.a
                 href={artwork.url3d}
                 target="_blank"

@@ -8,6 +8,8 @@ import {
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 
+const MotionButton = motion(Button);
+
 type WorkCard = {
   slug: string;
   title: string;
@@ -102,7 +104,7 @@ export default function SeriesDetail() {
           transition={{ duration: 0.6 }}
           className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_85px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
         >
-          <Button
+          <MotionButton
             asChild
             variant="ghost"
             className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
@@ -114,7 +116,7 @@ export default function SeriesDetail() {
               <ArrowLeft className="h-4 w-4" aria-hidden />
               Voltar ao Portfolio
             </Link>
-          </Button>
+          </MotionButton>
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <motion.span
