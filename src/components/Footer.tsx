@@ -3,6 +3,8 @@ import { Github, Linkedin, Mail } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import cvData from '../../public/data/cv.json';
 
+const MotionLink = motion(Link);
+
 export default function Footer() {
   const prefersReducedMotion = useReducedMotion();
 
@@ -41,7 +43,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo and Copyright */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <Link
+            <MotionLink
               to="/"
               className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               whileHover={prefersReducedMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(var(--primary-hsl)/0.3)' }}
@@ -54,7 +56,7 @@ export default function Footer() {
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 {cvData.profile.name.split(' ')[0]}
               </span>
-            </Link>
+            </MotionLink>
             <p className="mt-4 text-sm text-muted-foreground">
               &copy; {new Date().getFullYear()} Monynha Softwares. Todos os direitos reservados.
             </p>
