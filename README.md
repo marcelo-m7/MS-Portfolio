@@ -72,26 +72,19 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
 
-## Internationalization & Google Translate
+## Language handling
 
-The multi-idioma experience is powered by the official Google Translate widget, fully hidden and configured at runtime.
+The portfolio content is authored in Portuguese. The helper located at `src/lib/language.ts` keeps the `<html lang>` attribute in sync with the visitor preference stored in `localStorage` (`monynha-lang`) and broadcasts updates through the `monynha:languagechange` custom event. The `useCurrentLanguage` hook consumes that event so pages can reactively adjust locale-sensitive elements such as date formatting.
 
-- The script is injected in `index.html` and initialised with `window.googleTranslateElementInit`.
-- `src/lib/googleTranslate.ts` exposes helpers:
-  - `initializeGoogleTranslate()` sets up MutationObservers that hide Google artefacts and ensures the `<body>` spacing stays untouched.
-  - `detectInitialLanguage()` checks `localStorage` (`monynha-lang`) and `navigator.language` to determine the preferred locale.
-  - `setLanguage(lang)` simulates the widget `<select>` (PT, EN, ES, FR) and dispatches the `monynha:languagechange` custom event.
-- `LanguageSwitcher` listens to that event and renders accessible pill buttons with focus-visible outlines.
+When introducing new locales, extend the `SUPPORTED_LANGUAGES` tuple inside `src/lib/language.ts` and provide translated copy for the pages and JSON datasets under `public/data/`.
 
-To change the language programmatically you can simply call:
+To change the language programmatically you can call:
 
 ```ts
-import { setLanguage } from '@/lib/googleTranslate';
+import { setLanguage } from '@/lib/language';
 
-setLanguage('es');
+setLanguage('pt');
 ```
-
-The helpers automatically hide Google’s toolbar, banners and iframes so no additional CSS tweaks are required.
 
 ## Adding new projects to `cv.json`
 

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import {
   detectInitialLanguage,
+  getLanguageEventName,
   type SupportedLanguage,
-} from '@/lib/googleTranslate';
+} from '@/lib/language';
 
-const LANGUAGE_EVENT = 'monynha:languagechange';
+const LANGUAGE_EVENT = getLanguageEventName();
 
 export const useCurrentLanguage = () => {
   const [language, setLanguage] = useState<SupportedLanguage>(
