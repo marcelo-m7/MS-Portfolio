@@ -17,6 +17,7 @@ import {
 } from '@/hooks/useCurrentLanguage';
 
 const MotionButton = motion(Button);
+const MotionImg = motion.img;
 
 const isArtPreview3DEnabled =
   import.meta.env.VITE_ENABLE_ART_3D?.toLowerCase() === 'true';
@@ -121,7 +122,7 @@ export default function ArtDetail() {
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
               >
-                <img
+                <MotionImg
                   src={media}
                   alt={`${artwork.title} — visual ${index + 1}`}
                   loading="lazy"
