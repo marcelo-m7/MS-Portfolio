@@ -15,7 +15,6 @@ This document outlines the core technologies and specific library usage guidelin
 *   **Lucide React:** A comprehensive icon library providing a wide range of vector icons.
 *   **Tanstack Query:** Used for managing server state, data fetching, caching, and synchronization.
 *   **Sonner:** A modern toast library for displaying user notifications.
-*   **Google Translate Widget:** Integrated for internationalization, with custom helper functions to manage its behavior.
 
 ## Library Usage Guidelines
 
@@ -31,4 +30,4 @@ To maintain a consistent and efficient codebase, please adhere to the following 
 *   **Notifications:** Use `sonner` for all user feedback notifications (success messages, error alerts, loading indicators).
 *   **Markdown Rendering:** When displaying markdown content, use `react-markdown`.
 *   **Backend Interactions:** All interactions with the backend (database, authentication, serverless functions) should go through the `supabase` client as configured in `src/lib/supabaseClient.ts`.
-*   **Internationalization:** The Google Translate widget is already integrated. Use the `setLanguage` and `useCurrentLanguage` helpers from `src/lib/googleTranslate.ts` and `src/hooks/useCurrentLanguage.ts` respectively to manage language changes. Do not attempt to re-implement translation logic.
+*   **Internationalization:** The content is authored in Portuguese. Use the `useCurrentLanguage` hook from `src/hooks/useCurrentLanguage.ts` when you need to format locale-aware metadata (dates, numbers, etc.), but avoid introducing external translation widgets.

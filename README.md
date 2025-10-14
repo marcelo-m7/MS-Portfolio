@@ -72,26 +72,9 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
 
-## Internationalization & Google Translate
+## Internationalization
 
-The multi-idioma experience is powered by the official Google Translate widget, fully hidden and configured at runtime.
-
-- The script is injected in `index.html` and initialised with `window.googleTranslateElementInit`.
-- `src/lib/googleTranslate.ts` exposes helpers:
-  - `initializeGoogleTranslate()` sets up MutationObservers that hide Google artefacts and ensures the `<body>` spacing stays untouched.
-  - `detectInitialLanguage()` checks `localStorage` (`monynha-lang`) and `navigator.language` to determine the preferred locale.
-  - `setLanguage(lang)` simulates the widget `<select>` (PT, EN, ES, FR) and dispatches the `monynha:languagechange` custom event.
-- `LanguageSwitcher` listens to that event and renders accessible pill buttons with focus-visible outlines.
-
-To change the language programmatically you can simply call:
-
-```ts
-import { setLanguage } from '@/lib/googleTranslate';
-
-setLanguage('es');
-```
-
-The helpers automatically hide Google’s toolbar, banners and iframes so no additional CSS tweaks are required.
+The website content is authored in Portuguese. Browser locale preferences are only used to format metadata such as dates and numbers—no automatic translation service is embedded in the project. This keeps the experience consistent and avoids any unexpected scripts from third parties.
 
 ## Adding new projects to `cv.json`
 

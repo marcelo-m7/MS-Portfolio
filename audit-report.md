@@ -3,7 +3,7 @@
 ## Código e Organização
 - Remoção do módulo `src/lib/supabase.ts`, que estava obsoleto e não era referenciado no aplicativo.
 - Tipagens aprimoradas nos componentes de UI (`command` e `textarea`) para eliminar interfaces vazias e evitar uso de `any`.
-- Ajuste do utilitário de tradução (`src/lib/googleTranslate.ts`) para expor tipos globais seguros e remover coerções `any`.
+- Remoção da integração com Google Translate para eliminar dependências externas e simplificar a manutenção.
 
 ## Experiência do Usuário & Visual
 - Hero estático atualizado com gradações em HSL, alinhando os visuais aos tons oficiais (#7C3AED, #0EA5E9, #EC4899).

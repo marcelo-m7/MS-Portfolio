@@ -1,26 +1,36 @@
 import { useEffect, useState } from 'react';
-import {
-  detectInitialLanguage,
-  type SupportedLanguage,
-} from '@/lib/googleTranslate';
 
-const LANGUAGE_EVENT = 'monynha:languagechange';
+const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'fr'] as const;
+type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+
+const detectBrowserLanguage = (): SupportedLanguage => {
+  if (typeof navigator === 'undefined') {
+    return 'pt';
+  }
+
+  const primary = (navigator.language || navigator.languages?.[0] || 'pt')
+    .split('-')[0]
+    .toLowerCase();
+
+  if (SUPPORTED_LANGUAGES.includes(primary as SupportedLanguage)) {
+    return primary as SupportedLanguage;
+  }
+
+  return 'pt';
+};
 
 export const useCurrentLanguage = () => {
-  const [language, setLanguage] = useState<SupportedLanguage>(
-    detectInitialLanguage(),
-  );
+  const [language, setLanguage] = useState<SupportedLanguage>(() => detectBrowserLanguage());
 
   useEffect(() => {
-    const handle = (event: Event) => {
-      const detail = (event as CustomEvent<SupportedLanguage>).detail;
-      if (detail) {
-        setLanguage(detail);
-      }
+    if (typeof window === 'undefined') return;
+
+    const handleLanguageChange = () => {
+      setLanguage(detectBrowserLanguage());
     };
 
-    window.addEventListener(LANGUAGE_EVENT, handle);
-    return () => window.removeEventListener(LANGUAGE_EVENT, handle);
+    window.addEventListener('languagechange', handleLanguageChange);
+    return () => window.removeEventListener('languagechange', handleLanguageChange);
   }, []);
 
   return language;
