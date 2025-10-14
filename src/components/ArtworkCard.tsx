@@ -3,6 +3,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
 
+const MotionLink = motion(Link);
+
 interface ArtworkCardProps {
   artwork: {
     slug: string;
@@ -27,7 +29,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
       className="group"
     >
       <div className="rounded-[var(--radius)] border border-border/70 bg-card overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
-        <Link
+        <MotionLink
           to={`/art/${artwork.slug}`}
           className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           style={{ transformStyle: 'preserve-3d' }}
@@ -83,7 +85,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
               ))}
             </div>
           </div>
-        </Link>
+        </MotionLink>
         {artwork.url3d && (
           <div className="p-6 pt-0">
             <a
