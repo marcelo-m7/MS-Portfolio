@@ -5,10 +5,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
 import {
   detectInitialLanguage,
-  initializeGoogleTranslate,
+  getStorageKey,
   setLanguage,
-} from "./lib/googleTranslate";
-import type { SupportedLanguage } from "./lib/googleTranslate";
+  SUPPORTED_LANGUAGES,
+} from "./lib/language";
+import type { SupportedLanguage } from "./lib/language";
 import Layout from "./components/Layout"; // Import the new Layout component
 
 const Home = lazy(() => import("./pages/Home"));
@@ -26,14 +27,18 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    initializeGoogleTranslate();
     const initialLang = detectInitialLanguage();
     setLanguage(initialLang);
 
+    const storageKey = getStorageKey();
+    const supportedLanguages = SUPPORTED_LANGUAGES as readonly string[];
+
     const handleStorage = (event: StorageEvent) => {
-      if (event.key === "monynha-lang" && event.newValue) {
-        const nextLang = event.newValue as SupportedLanguage;
-        setLanguage(nextLang);
+      if (event.key === storageKey && event.newValue) {
+        const normalized = event.newValue.toLowerCase();
+        if (supportedLanguages.includes(normalized)) {
+          setLanguage(normalized as SupportedLanguage);
+        }
       }
     };
 

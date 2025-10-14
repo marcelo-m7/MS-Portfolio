@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import cvData from '../../public/data/cv.json';
 
@@ -93,9 +92,6 @@ export default function Navbar() {
             })}
           </motion.div>
 
-          <div className="flex items-center gap-3 pl-4">
-            <LanguageSwitcher />
-          </div>
         </div>
 
         <button
@@ -138,9 +134,6 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-            </div>
-            <div className="mt-8 flex flex-col items-center gap-4">
-              <LanguageSwitcher />
             </div>
           </motion.div>
         )}
