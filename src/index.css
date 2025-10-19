@@ -2,52 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 220 10% 8%; /* Very dark gray, almost black */
-    --foreground: 0 0% 98%; /* White for text */
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
 
-    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 220 10% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 240 60% 40%; /* Deep Indigo */
-    --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 70% 50%; /* Vibrant Sky Blue */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
-    --muted-foreground: 220 10% 70%; /* Light gray for muted text */
+    --muted: 210 20% 94%;
+    --muted-foreground: 222 15% 35%;
 
-    --accent: 270 40% 60%; /* Soft Lavender Purple */
-    --accent-foreground: 0 0% 98%;
+    --accent: 330 81% 60%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 31%; /* Keep vibrant red */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 355 78% 56%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 10% 20%; /* Subtle dark gray border */
-    --input: 220 10% 12%; /* Dark input background */
-    --ring: 210 70% 50%; /* Secondary blue for focus ring */
+    --border: 215 30% 86%;
+    --input: 210 20% 92%;
+    --ring: 199 89% 48%;
 
-    --radius: 1.5rem; /* Increased border radius for softer, polished look */
+    --radius: 1.5rem;
 
     /* Custom tokens */
-    --hero-gradient-start: 240 60% 40%;
-    --hero-gradient-end: 210 70% 50%;
-    --glow-purple: 240 60% 40%;
-    --glow-blue: 210 70% 50%;
-    --glow-pink: 270 40% 60%;
-    
-    /* Animations */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --hero-gradient-start: 262 83% 58%;
+    --hero-gradient-end: 199 89% 48%;
+    --glow-purple: 262 83% 58%;
+    --glow-blue: 199 89% 48%;
+    --glow-pink: 330 81% 60%;
+
+    /* Sidebar tokens */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 94%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 215 30% 86%;
+    --sidebar-ring: 199 89% 48%;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 222 19% 18%;
+    --muted-foreground: 210 14% 70%;
+
+    --accent: 330 81% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 355 78% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 15% 18%;
+    --input: 222 19% 14%;
+    --ring: 199 89% 48%;
+
+    --radius: 1.5rem;
+
+    /* Custom tokens */
+    --hero-gradient-start: 262 83% 58%;
+    --hero-gradient-end: 199 89% 48%;
+    --glow-purple: 262 83% 58%;
+    --glow-blue: 199 89% 48%;
+    --glow-pink: 330 81% 60%;
+
+    /* Sidebar tokens */
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 262 83% 58%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 19% 18%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 222 19% 18%;
+    --sidebar-ring: 199 89% 48%;
   }
 }
 
@@ -57,12 +112,12 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
   :focus-visible {
-    outline: 2px solid hsl(var(--secondary));
+    outline: 2px solid hsl(var(--ring));
     outline-offset: 4px;
     border-radius: calc(var(--radius) / 1.5);
   }
@@ -95,7 +150,7 @@ All colors MUST be HSL.
   }
 
   .glass {
-    @apply bg-card border border-border/50; /* Removed /80 and backdrop-blur-xl */
+    @apply bg-card border border-border/50;
   }
 
   .glow-purple {

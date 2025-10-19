@@ -49,7 +49,7 @@ export default function ThoughtDetail() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-8 shadow-[0_45px_85px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
+          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-8 shadow-[0_45px_85px_-70px_hsl(var(--primary)_/_0.3)] backdrop-blur-xl"
         >
           <MotionButton
             asChild

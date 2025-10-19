@@ -38,12 +38,14 @@ export default function Navbar() {
         initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
         animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 15, delay: 0.1 }}
-        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/80 px-6 py-3 shadow-[0_20px_45px_-25px_rgba(var(--primary-hsl)/0.2)] backdrop-blur-xl"
+        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/80 px-6 py-3 shadow-[0_20px_45px_-25px_hsl(var(--primary)_/_0.2)] backdrop-blur-xl"
       >
         <MotionLink
           to="/"
           className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          whileHover={shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(var(--primary-hsl)/0.3)' }}
+          whileHover={
+            shouldReduceMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px hsl(var(--primary) / 0.3)' }
+          }
           whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
@@ -74,7 +76,7 @@ export default function Navbar() {
                         whileHover: {
                           y: -2,
                           boxShadow:
-                            '0 12px 24px -18px rgba(var(--secondary-hsl)/0.3), 0 0 12px rgba(var(--primary-hsl)/0.2)',
+                            '0 12px 24px -18px hsl(var(--secondary) / 0.3), 0 0 12px hsl(var(--primary) / 0.2)',
                         },
                       }
                     : {})}
