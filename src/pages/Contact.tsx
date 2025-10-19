@@ -16,10 +16,49 @@ const createInitialFormState = () => ({
   message: '',
 });
 
+type LeadPayload = {
+  name: string;
+  email: string;
+  company: string | null;
+  project: string | null;
+  message: string;
+};
+
 export default function Contact() {
   const prefersReducedMotion = useReducedMotion();
   const [formData, setFormData] = useState(createInitialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const sendFallbackEmail = async (payload: LeadPayload) => {
+    if (!supabase) {
+      throw new Error('Supabase client is not configured for email fallback.');
+    }
+
+    const fallbackMessage = [
+      `Nome: ${payload.name}`,
+      `Email: ${payload.email}`,
+      payload.company ? `Empresa: ${payload.company}` : null,
+      payload.project ? `Projeto: ${payload.project}` : null,
+      '',
+      `Mensagem:`,
+      payload.message,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    const { error } = await supabase.functions.invoke('send-contact-email', {
+      body: {
+        name: payload.name,
+        email: payload.email,
+        message: fallbackMessage,
+        to: 'marcelo@monynha.com',
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,14 +69,35 @@ export default function Contact() {
         throw new Error('Supabase client is not configured.');
       }
 
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          to: 'marcelo@monynha.com',
-        },
-      });
+      const trimmedData = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        company: formData.company.trim(),
+        project: formData.project.trim(),
+        message: formData.message.trim(),
+      };
+
+      const payload: LeadPayload = {
+        name: trimmedData.name,
+        email: trimmedData.email,
+        company: trimmedData.company || null,
+        project: trimmedData.project || null,
+        message: trimmedData.message,
+      };
+
+      const { error } = await supabase
+        .from('leads')
+        .insert([
+          {
+            name: payload.name,
+            email: payload.email,
+            company: payload.company,
+            project: payload.project,
+            message: payload.message,
+          },
+        ])
+        .select()
+        .single();
 
       if (error) {
         throw error;
@@ -47,9 +107,35 @@ export default function Contact() {
       setFormData(createInitialFormState());
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Erro ao enviar mensagem de contato:', error);
+        console.error('Erro ao salvar lead no Supabase:', error);
       }
-      toast.error(cvData.contact.errorMessage);
+
+      try {
+        const trimmedData = {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          company: formData.company.trim(),
+          project: formData.project.trim(),
+          message: formData.message.trim(),
+        };
+
+        const fallbackPayload: LeadPayload = {
+          name: trimmedData.name,
+          email: trimmedData.email,
+          company: trimmedData.company || null,
+          project: trimmedData.project || null,
+          message: trimmedData.message,
+        };
+
+        await sendFallbackEmail(fallbackPayload);
+        toast.success(cvData.contact.successMessage);
+        setFormData(createInitialFormState());
+      } catch (fallbackError) {
+        if (import.meta.env.DEV) {
+          console.error('Erro ao enviar email de fallback:', fallbackError);
+        }
+        toast.error(cvData.contact.errorMessage);
+      }
     } finally {
       setIsSubmitting(false);
     }
