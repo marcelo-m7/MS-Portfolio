@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef, type MutableRefObject } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, MeshDistortMaterial } from '@react-three/drei';
-import { Mesh } from 'three';
+import { Mesh, PointLight } from 'three';
 
 const useVisibilityController = () => {
   const visibleRef = useRef(true);
@@ -49,7 +49,7 @@ const RibbonSculpture = ({ visibleRef }: { visibleRef: MutableRefObject<boolean>
 };
 
 const DynamicLight = () => {
-  const lightRef = useRef<any>(null);
+  const lightRef = useRef<PointLight | null>(null);
   useFrame(({ clock }) => {
     if (lightRef.current) {
       const time = clock.getElapsedTime();
