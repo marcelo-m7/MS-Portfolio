@@ -36,6 +36,18 @@ npm i
 npm run dev
 ```
 
+## Package management
+
+This repository standardises on **npm** as the single package manager. In all environments (local development, CI, and Nixpacks deployments) use the following commands:
+
+- Install dependencies: `npm install`
+- Start the development server: `npm run dev`
+- Create a production build: `npm run build`
+- Preview the production bundle locally: `npm run preview`
+- Run the test suite: `npm test -- --run`
+
+Only the `package-lock.json` file should be committed—please avoid adding lockfiles from other package managers.
+
 **Edit a file directly in GitHub**
 
 - Navigate to the desired file(s).

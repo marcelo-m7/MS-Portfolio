@@ -1,0 +1,127 @@
+import type {
+  FunctionsError,
+  PostgrestError,
+  SupabaseClient,
+} from '@supabase/supabase-js';
+import { supabase } from './supabaseClient';
+
+export interface ContactFormData {
+  name: string;
+  email: string;
+  company?: string;
+  project?: string;
+  message: string;
+}
+
+export type ContactSubmissionResult =
+  | { status: 'stored'; leadId?: string }
+  | { status: 'fallback'; leadId?: string };
+
+const CONTACT_TABLE = 'leads';
+const CONTACT_FALLBACK_FUNCTION = 'send-contact-email';
+const FALLBACK_EMAIL = 'marcelo@monynha.com';
+
+interface FallbackResponse {
+  data: unknown;
+  error: FunctionsError | null;
+}
+
+const buildFallbackPayload = (payload: ContactFormData) => ({
+  to: FALLBACK_EMAIL,
+  subject: 'Novo contato via Monynha Portfolio',
+  message: [
+    `Nome: ${payload.name}`,
+    `Email: ${payload.email}`,
+    payload.company ? `Empresa: ${payload.company}` : null,
+    payload.project ? `Projeto: ${payload.project}` : null,
+    '',
+    payload.message,
+  ]
+    .filter(Boolean)
+    .join('\n'),
+});
+
+export class ContactSubmissionError extends Error {
+  constructor(message: string, public cause?: unknown) {
+    super(message);
+    this.name = 'ContactSubmissionError';
+  }
+}
+
+const assertSupabaseClient = (client?: SupabaseClient) => {
+  const resolved = client ?? supabase;
+
+  if (!resolved) {
+    throw new ContactSubmissionError('Supabase client is not configured.');
+  }
+
+  return resolved;
+};
+
+const sendFallbackEmail = async (
+  payload: ContactFormData,
+  client: SupabaseClient,
+): Promise<FallbackResponse> => {
+  const { data, error } = await client.functions.invoke(CONTACT_FALLBACK_FUNCTION, {
+    body: buildFallbackPayload(payload),
+  });
+
+  return { data, error };
+};
+
+const persistLead = async (payload: ContactFormData, client: SupabaseClient) => {
+  const { data, error } = await client
+    .from(CONTACT_TABLE)
+    .insert([
+      {
+        name: payload.name,
+        email: payload.email,
+        company: payload.company ?? null,
+        project: payload.project ?? null,
+        message: payload.message,
+      },
+    ])
+    .select();
+
+  return { data, error };
+};
+
+export const submitContact = async (
+  payload: ContactFormData,
+  options?: { client?: SupabaseClient },
+): Promise<ContactSubmissionResult> => {
+  const client = assertSupabaseClient(options?.client);
+  const { data, error } = await persistLead(payload, client);
+
+  if (!error) {
+    const leadId = Array.isArray(data) && data.length > 0 ? data[0]?.id : undefined;
+    return { status: 'stored', leadId };
+  }
+
+  if (import.meta.env.DEV) {
+    console.error('Failed to persist lead to Supabase:', error);
+  }
+
+  const fallback = await sendFallbackEmail(payload, client);
+
+  if (fallback.error) {
+    if (import.meta.env.DEV) {
+      console.error('Fallback email dispatch failed:', fallback.error);
+    }
+
+    throw new ContactSubmissionError('Não foi possível enviar sua mensagem.', {
+      persistError: error,
+      fallbackError: fallback.error,
+    });
+  }
+
+  const leadId = Array.isArray(data) && data.length > 0 ? data[0]?.id : undefined;
+  return { status: 'fallback', leadId };
+};
+
+export const __internal = {
+  buildFallbackPayload,
+  sendFallbackEmail,
+  persistLead,
+  assertSupabaseClient,
+};
