@@ -27,15 +27,17 @@ export default function About() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          className="glass rounded-[var(--radius)] p-8 md:p-12 mb-12"
+          className="glass mb-12 p-8 md:p-12"
         >
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <div className="w-32 h-32 rounded-[var(--radius)] bg-gradient-to-br from-primary via-secondary to-accent p-1 shrink-0">
-              <img
-                src={cvData.profile.avatar}
-                alt={cvData.profile.name}
-                className="w-full h-full rounded-[calc(var(--radius)-0.25rem)] object-cover"
-              />
+            <div className="relative h-32 w-32 shrink-0 rounded-2xl bg-gradient-to-br from-primary via-secondary to-accent p-1 shadow-md">
+              <div className="h-full w-full overflow-hidden rounded-[1.25rem]">
+                <img
+                  src={cvData.profile.avatar}
+                  alt={cvData.profile.name}
+                  className="h-full w-full object-cover"
+                />
+              </div>
             </div>
             
             <div className="flex-1 text-center md:text-left">
@@ -78,7 +80,7 @@ export default function About() {
                 animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.5 }}
                 whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
-                className="glass rounded-[var(--radius)] p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
+                className="glass p-6 hover:shadow-lg hover:shadow-primary/10 transition-all"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4">
                   <div>
@@ -130,7 +132,7 @@ export default function About() {
                 animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
                 transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
                 whileHover={prefersReducedMotion ? undefined : { y: -3, boxShadow: '0 8px 16px rgba(0,0,0,0.15)' }}
-                className="glass rounded-[var(--radius)] p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+                className="glass flex items-center justify-between p-4 transition-shadow hover:shadow-lg"
               >
                 <div>
                   <h4 className="font-semibold mb-1">{skill.name}</h4>

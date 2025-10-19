@@ -143,9 +143,9 @@ export default function Portfolio() {
               key={category}
               variant={filter === category ? 'default' : 'outline'}
               onClick={() => setFilter(category)}
-              className={`rounded-full border-border/70 transition ${
+              className={`border-border/70 transition ${
                 filter === category
-                  ? 'bg-gradient-to-r from-primary via-secondary to-accent text-white'
+                  ? 'bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground'
                   : 'hover:border-primary/60 hover:text-primary'
               }`}
             >

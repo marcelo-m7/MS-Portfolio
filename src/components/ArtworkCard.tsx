@@ -28,7 +28,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
       transition={{ delay: index * 0.08, duration: 0.4 }}
       className="group"
     >
-      <div className="rounded-[var(--radius)] border border-border/70 bg-card overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
+      <div className="rounded-2xl border border-border/70 bg-card/90 overflow-hidden shadow-md transition-shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-lg">
         <MotionLink
           to={`/art/${artwork.slug}`}
           className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -41,7 +41,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
           whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
           transition={{ type: 'spring', stiffness: 200, damping: 22 }}
         >
-          <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
+          <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20">
             <motion.img
               src={artwork.media?.[0]}
               width={640}
@@ -78,7 +78,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
               {artwork.materials.map((material: string) => (
                 <span
                   key={material}
-                  className="text-xs px-2 py-1 rounded-md bg-muted/60 text-foreground/80"
+                  className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
                 >
                   {material}
                 </span>

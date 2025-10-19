@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import cvData from '../../public/data/cv.json';
+import { ThemeToggle } from './ThemeToggle';
 
 const MotionLink = motion(Link);
 
@@ -38,7 +39,7 @@ export default function Navbar() {
         initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
         animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 15, delay: 0.1 }}
-        className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-border/60 bg-card/80 px-6 py-3 shadow-[0_20px_45px_-25px_hsl(var(--primary)/0.2)] backdrop-blur-xl"
+        className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-border/60 bg-card/85 px-6 py-3 shadow-md backdrop-blur-xl"
       >
         <MotionLink
           to="/"
@@ -55,12 +56,12 @@ export default function Navbar() {
           </span>
         </MotionLink>
 
-        <div className="hidden flex-1 items-center justify-end gap-6 md:flex">
+        <div className="hidden flex-1 items-center justify-end gap-4 md:flex">
           <motion.div
             variants={menuVariants}
             initial={shouldReduceMotion ? undefined : 'hidden'}
             animate={shouldReduceMotion ? undefined : 'visible'}
-            className="flex items-center gap-2 rounded-full border border-border/60 bg-background/40 p-1"
+            className="flex items-center gap-2 rounded-full border border-border/60 bg-background/60 p-1 shadow-inner"
           >
             {navLinks.map((link) => {
               const active = isActive(link.href);
@@ -69,14 +70,12 @@ export default function Navbar() {
                   key={link.href}
                   to={link.href}
                   className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                    active ? 'text-white' : 'text-muted-foreground hover:text-foreground'
+                    active ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
                   }`}
                   {...(!shouldReduceMotion
                     ? {
                         whileHover: {
                           y: -2,
-                          boxShadow:
-                            '0 12px 24px -18px hsl(var(--secondary) / 0.3), 0 0 12px hsl(var(--primary) / 0.2)',
                         },
                       }
                     : {})}
@@ -84,7 +83,7 @@ export default function Navbar() {
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary/90 via-secondary/80 to-accent/80"
+                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-primary via-secondary to-accent"
                       transition={{ type: 'spring', stiffness: 260, damping: 30 }}
                     />
                   )}
@@ -93,7 +92,7 @@ export default function Navbar() {
               );
             })}
           </motion.div>
-
+          <ThemeToggle />
         </div>
 
         <button
@@ -136,6 +135,7 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <ThemeToggle className="mt-2" />
             </div>
           </motion.div>
         )}

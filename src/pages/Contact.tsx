@@ -80,7 +80,7 @@ export default function Contact() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="space-y-8"
           >
-            <div className="glass rounded-[var(--radius)] p-8">
+            <div className="glass p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
                 Informações de Contato
               </h2>
@@ -92,7 +92,7 @@ export default function Contact() {
                   whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 transition-colors group-hover:bg-primary/20">
                     <Mail className="text-primary" />
                   </div>
                   <div>
@@ -109,7 +109,7 @@ export default function Contact() {
                   whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 transition-colors group-hover:bg-primary/20">
                     <Github className="text-primary" />
                   </div>
                   <div>
@@ -126,7 +126,7 @@ export default function Contact() {
                   whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center group-hover:bg-secondary/20 transition-colors">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/10 transition-colors group-hover:bg-secondary/20">
                     <Linkedin className="text-secondary" />
                   </div>
                   <div>
@@ -137,7 +137,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="glass rounded-[var(--radius)] p-8">
+            <div className="glass p-8">
               <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
               <p className="text-muted-foreground">
                 {cvData.contact.availability}
@@ -151,7 +151,7 @@ export default function Contact() {
             animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <form onSubmit={handleSubmit} className="glass rounded-[var(--radius)] p-8">
+            <form onSubmit={handleSubmit} className="glass p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
                 Enviar Mensagem
               </h2>
@@ -170,7 +170,7 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, name: e.target.value }))
                       }
                       required
-                      className="rounded-xl"
+                      className="rounded-2xl"
                       placeholder="Seu nome"
                     />
                   </div>
@@ -185,7 +185,7 @@ export default function Contact() {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, company: e.target.value }))
                       }
-                      className="rounded-xl"
+                      className="rounded-2xl"
                       placeholder="Onde você trabalha"
                     />
                   </div>
@@ -204,7 +204,7 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, email: e.target.value }))
                       }
                       required
-                      className="rounded-xl"
+                      className="rounded-2xl"
                       placeholder="seu@email.com"
                     />
                   </div>
@@ -219,7 +219,7 @@ export default function Contact() {
                       onChange={(e) =>
                         setFormData((prev) => ({ ...prev, project: e.target.value }))
                       }
-                      className="rounded-xl"
+                      className="rounded-2xl"
                       placeholder="Sobre o que vamos falar?"
                     />
                   </div>
@@ -237,7 +237,7 @@ export default function Contact() {
                     }
                     required
                     rows={6}
-                    className="rounded-xl resize-none"
+                    className="rounded-2xl resize-none"
                     placeholder="Escreva sua mensagem aqui..."
                   />
                 </div>
@@ -245,7 +245,7 @@ export default function Contact() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full rounded-xl py-6 text-lg bg-primary hover:bg-primary/90"
+                  className="w-full rounded-2xl bg-primary py-6 text-lg hover:bg-primary/90"
                 >
                   {isSubmitting ? (
                     'Enviando...'
