@@ -1,10 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
 import SeriesCard from '@/components/SeriesCard';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 type CVProject = {
   slug: string;
@@ -45,7 +46,9 @@ type PortfolioEntry =
   | (CVSeries & { type: 'series' });
 
 export default function Portfolio() {
-  const [filter, setFilter] = useState<string>('Todos');
+  const { t } = useTranslations();
+  const cvData = useCvData();
+  const [filter, setFilter] = useState<string>('all');
   const prefersReducedMotion = useReducedMotion();
   const projects = cvData.projects as CVProject[];
   const artworks = cvData.artworks as CVArtwork[];
@@ -55,7 +58,8 @@ export default function Portfolio() {
     if (typeof document === 'undefined') return;
 
     const previousTitle = document.title;
-    document.title = 'Portfólio · Monynha Softwares';
+    const pageTitle = `${t('Portfolio.title')} · Monynha Softwares`;
+    document.title = pageTitle;
 
     const descriptionSelector = 'meta[name="description"]';
     const existingMeta = document.querySelector<HTMLMetaElement>(
@@ -72,7 +76,7 @@ export default function Portfolio() {
 
     meta.setAttribute(
       'content',
-      'Portfólio oficial da Monynha Softwares com produtos digitais, iniciativas de IA, infraestrutura e experiências criativas.',
+      t('Portfolio.metaDescription'),
     );
 
     return () => {
@@ -83,28 +87,37 @@ export default function Portfolio() {
         meta.setAttribute('content', previousDescription);
       }
     };
-  }, []);
+  }, [t]);
+
+  const dynamicCategories = useMemo(
+    () => Array.from(new Set(projects.map((p) => p.category))).map((category) => ({
+      key: `category:${category}`,
+      label: category,
+    })),
+    [projects],
+  );
 
   const categories = useMemo(
     () => [
-      'Todos',
-      ...new Set(projects.map((p) => p.category)),
-      'Arte Digital',
-      'Série Criativa',
+      { key: 'all', label: t('Portfolio.filters.all') },
+      ...dynamicCategories,
+      { key: 'artwork', label: t('Portfolio.filters.digitalArt') },
+      { key: 'series', label: t('Portfolio.filters.creativeSeries') },
     ],
-    [projects],
+    [dynamicCategories, t],
   );
 
   const filteredItems = useMemo<PortfolioEntry[]>(() => {
     let items: Array<CVProject | CVArtwork | CVSeries> = [];
-    if (filter === 'Todos') {
+    if (filter === 'all') {
       items = [...projects, ...artworks, ...seriesEntries];
-    } else if (filter === 'Arte Digital') {
+    } else if (filter === 'artwork') {
       items = artworks;
-    } else if (filter === 'Série Criativa') {
+    } else if (filter === 'series') {
       items = seriesEntries;
-    } else {
-      items = projects.filter((p) => p.category === filter);
+    } else if (filter.startsWith('category:')) {
+      const category = filter.replace('category:', '');
+      items = projects.filter((p) => p.category === category);
     }
 
     return items.map((item) => {
@@ -124,10 +137,10 @@ export default function Portfolio() {
           className="text-center mb-12"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Portfolio
+            {t('Portfolio.title')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Projetos, arte digital e séries criativas do ecossistema Monynha
+            {t('Portfolio.subtitle')}
           </p>
         </motion.div>
 
@@ -140,16 +153,16 @@ export default function Portfolio() {
         >
           {categories.map((category) => (
             <Button
-              key={category}
-              variant={filter === category ? 'default' : 'outline'}
-              onClick={() => setFilter(category)}
+              key={category.key}
+              variant={filter === category.key ? 'default' : 'outline'}
+              onClick={() => setFilter(category.key)}
               className={`rounded-full border-border/70 transition ${
-                filter === category
+                filter === category.key
                   ? 'bg-gradient-to-r from-primary via-secondary to-accent text-white'
                   : 'hover:border-primary/60 hover:text-primary'
               }`}
             >
-              {category}
+              {category.label}
             </Button>
           ))}
         </motion.div>
@@ -177,7 +190,7 @@ export default function Portfolio() {
             className="text-center py-12"
           >
             <p className="text-muted-foreground text-lg">
-              Nenhum item encontrado nesta categoria.
+              {t('Portfolio.empty')}
             </p>
           </motion.div>
         )}

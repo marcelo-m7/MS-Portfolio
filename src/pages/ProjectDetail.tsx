@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -26,6 +25,8 @@ import {
   getStatusBadgeClasses,
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 const MotionButton = motion(Button);
 
@@ -34,6 +35,8 @@ export default function ProjectDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const { t } = useTranslations();
+  const cvData = useCvData();
   const project = cvData.projects.find((item) => item.slug === slug);
 
   const containerVariants = {
@@ -55,7 +58,7 @@ export default function ProjectDetail() {
     if (typeof document === 'undefined' || !project) return;
 
     const previousTitle = document.title;
-    document.title = `${project.name} · Portfólio Monynha Softwares`;
+    document.title = `${project.name} · ${t('Portfolio.title')} Monynha Softwares`;
 
     const descriptionSelector = 'meta[name="description"]';
     const existingMeta = document.querySelector<HTMLMetaElement>(
@@ -84,18 +87,18 @@ export default function ProjectDetail() {
         meta.setAttribute('content', previousDescription);
       }
     };
-  }, [project]);
+  }, [project, t]);
 
   if (!project) {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Projeto não encontrado</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">{t('ProjectDetail.notFound.title')}</h1>
           <p className="mt-4 text-muted-foreground">
-            Este projeto não existe ou foi movido. Volte ao portfolio para descobrir outros trabalhos.
+            {t('ProjectDetail.notFound.description')}
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver Portfolio</Link>
+            <Link to="/portfolio">{t('ProjectDetail.notFound.cta')}</Link>
           </Button>
         </div>
       </div>
@@ -128,7 +131,7 @@ export default function ProjectDetail() {
             >
               <Link to="/portfolio">
                 <ArrowLeft className="h-4 w-4" aria-hidden />
-                Voltar ao Portfolio
+                {t('ProjectDetail.back')}
               </Link>
             </MotionButton>
           </motion.div>
@@ -179,7 +182,7 @@ export default function ProjectDetail() {
             >
               <img
                 src={project.thumbnail}
-                alt={`Thumbnail do projeto ${project.name}`}
+                alt={t('ProjectCard.alt.thumbnail', { name: project.name })}
                 loading="lazy"
                 decoding="async"
                 width={1280}
@@ -201,29 +204,29 @@ export default function ProjectDetail() {
 
           {/* Project Metadata */}
           <motion.section variants={itemVariants} className="mt-10 space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground/90">
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
-                <Globe className="h-4 w-4 text-secondary" aria-hidden />
-                <span>{project.domain ?? 'Domínio reservado'}</span>
-              </div>
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
-                <Shield className="h-4 w-4 text-primary" aria-hidden />
-                <span>{project.visibility ?? 'Visibilidade não definida'}</span>
-              </div>
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
-                <GitBranch className="h-4 w-4 text-emerald-300" aria-hidden />
-                <span>{project.status ?? 'Estado em revisão'}</span>
-              </div>
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
-                <Layers className="h-4 w-4 text-primary" aria-hidden />
-                <span>{project.category}</span>
+          <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground/90">
+            <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <Globe className="h-4 w-4 text-secondary" aria-hidden />
+              <span>{project.domain ?? t('ProjectDetail.metadata.domainFallback')}</span>
+            </div>
+            <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <Shield className="h-4 w-4 text-primary" aria-hidden />
+              <span>{project.visibility ?? t('ProjectDetail.metadata.visibilityFallback')}</span>
+            </div>
+            <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <GitBranch className="h-4 w-4 text-emerald-300" aria-hidden />
+              <span>{project.status ?? t('ProjectDetail.metadata.statusFallback')}</span>
+            </div>
+            <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <Layers className="h-4 w-4 text-primary" aria-hidden />
+              <span>{project.category}</span>
               </div>
             </div>
 
             <Separator className="bg-border/70" />
 
             <div>
-              <h2 className="text-2xl font-display font-bold mb-4">Tecnologias Utilizadas</h2>
+              <h2 className="text-2xl font-display font-bold mb-4">{t('ProjectDetail.techTitle')}</h2>
               <div className="flex flex-wrap gap-2">
                 {project.stack.map((tech) => (
                   <span
@@ -247,11 +250,11 @@ export default function ProjectDetail() {
                   href={project.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Abrir repositório ${project.name} no GitHub`}
+                  aria-label={t('ProjectCard.aria.openRepository', { name: project.name })}
                   className="inline-flex items-center gap-2"
                 >
                   <Github className="h-4 w-4" aria-hidden />
-                  Ver Repositório
+                  {t('ProjectCard.actions.viewRepository')}
                 </a>
               </Button>
               {liveLink && (
@@ -264,11 +267,11 @@ export default function ProjectDetail() {
                     href={liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Visitar domínio de ${project.name}`}
+                    aria-label={t('ProjectCard.aria.openLive', { name: project.name })}
                     className="inline-flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" aria-hidden />
-                    Acessar Online
+                    {t('ProjectCard.actions.openLive')}
                   </a>
                 </Button>
               )}

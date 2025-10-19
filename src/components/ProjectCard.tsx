@@ -18,6 +18,7 @@ import {
   getStatusBadgeClasses,
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
+import { useTranslations } from '@/hooks/useTranslations';
 
 const MotionCard = motion(Card);
 
@@ -42,6 +43,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const prefersReducedMotion = useReducedMotion();
   const liveLink = project.url ?? undefined;
+  const { t } = useTranslations();
 
   return (
     <MotionCard
@@ -58,7 +60,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           height={360}
           loading="lazy"
           decoding="async"
-          alt={`Thumbnail do projeto ${project.name}`}
+          alt={t('ProjectCard.alt.thumbnail', { name: project.name })}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
         />
@@ -77,7 +79,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           <div className="flex-1">
             <Link
               to={`/portfolio/${project.slug}`}
-              aria-label={`Abrir detalhes do projeto ${project.name}`}
+              aria-label={t('ProjectCard.aria.openDetails', { name: project.name })}
               className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <CardTitle className="font-display text-2xl font-semibold transition-colors group-hover:text-primary">
@@ -126,7 +128,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground/80">
           <span className="inline-flex items-center gap-2">
             <Globe className="h-4 w-4 text-secondary" aria-hidden />
-            {project.domain ?? 'Domínio interno'}
+            {project.domain ?? t('ProjectCard.domainFallback')}
           </span>
           <span className="inline-flex items-center gap-2">
             <Layers className="h-4 w-4 text-primary" aria-hidden />
@@ -147,23 +149,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       </CardContent>
 
       <CardFooter className="mt-auto flex flex-wrap items-center gap-3 border-t border-border/60 bg-background/50">
-        <Button
-          variant="outline"
-          size="sm"
-          asChild
-          className="rounded-full border-border/70 text-xs font-semibold"
-        >
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Acessar repositório ${project.name} no GitHub`}
-            className="inline-flex items-center gap-2"
+          <Button
+            variant="outline"
+            size="sm"
+            asChild
+            className="rounded-full border-border/70 text-xs font-semibold"
           >
-            <Github className="h-4 w-4" aria-hidden />
-            Ver Repositório
-          </a>
-        </Button>
+            <a
+              href={project.repoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t('ProjectCard.aria.openRepository', { name: project.name })}
+              className="inline-flex items-center gap-2"
+            >
+              <Github className="h-4 w-4" aria-hidden />
+              {t('ProjectCard.actions.viewRepository')}
+            </a>
+          </Button>
 
         {liveLink && (
           <Button
@@ -176,11 +178,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
               href={liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Visitar domínio de ${project.name}`}
+              aria-label={t('ProjectCard.aria.openLive', { name: project.name })}
               className="inline-flex items-center gap-2"
             >
               <ExternalLink className="h-4 w-4" aria-hidden />
-              Acessar Online
+              {t('ProjectCard.actions.openLive')}
             </a>
           </Button>
         )}

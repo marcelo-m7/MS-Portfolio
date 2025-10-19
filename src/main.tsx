@@ -10,10 +10,11 @@ import {
   subscribeLanguageChange,
 } from "./lib/language";
 import "./index.css";
+import { useTranslations } from "./hooks/useTranslations";
 
 const messageLoaders: Record<SupportedLanguage, () => Promise<Messages>> = {
-  en: () => import("./i18n/messages/en").then((module) => module.default),
-  pt: () => import("./i18n/messages/pt").then((module) => module.default),
+  en: () => import("./i18n/messages/en.json").then((module) => module.default),
+  pt: () => import("./i18n/messages/pt.json").then((module) => module.default),
 };
 
 const loadMessages = async (locale: SupportedLanguage): Promise<Messages> => {
@@ -42,7 +43,10 @@ const loadMessages = async (locale: SupportedLanguage): Promise<Messages> => {
   }
 };
 
-export const LoadingTranslations = () => <div>Loading translations...</div>;
+export const LoadingTranslations = () => {
+  const { t } = useTranslations();
+  return <div>{t("App.loadingTranslations")}</div>;
+};
 
 export const Bootstrap = () => {
   const [locale, setLocale] = useState<SupportedLanguage>(() => detectInitialLanguage());

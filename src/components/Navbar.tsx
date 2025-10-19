@@ -3,7 +3,8 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
-import cvData from '../../public/data/cv.json';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 const MotionLink = motion(Link);
 
@@ -11,13 +12,15 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+  const { t } = useTranslations();
+  const cvData = useCvData();
 
   const navLinks = [
-    { href: '/', label: 'Início' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
+    { href: '/', label: t('Navbar.links.home') },
+    { href: '/portfolio', label: t('Navbar.links.portfolio') },
+    { href: '/about', label: t('Navbar.links.about') },
+    { href: '/thoughts', label: t('Navbar.links.thoughts') },
+    { href: '/contact', label: t('Navbar.links.contact') },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -99,7 +102,7 @@ export default function Navbar() {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background md:hidden"
-          aria-label="Abrir menu"
+          aria-label={t('Navbar.aria.openMenu')}
           aria-expanded={isOpen}
         >
           {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -118,7 +121,7 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(false)}
               className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              aria-label="Fechar menu"
+              aria-label={t('Navbar.aria.closeMenu')}
             >
               <X size={20} />
             </button>

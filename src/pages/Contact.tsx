@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import cvData from '../../public/data/cv.json';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 import { supabase } from '@/lib/supabaseClient';
 
 const createInitialFormState = () => ({
@@ -18,6 +19,8 @@ const createInitialFormState = () => ({
 
 export default function Contact() {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
+  const cvData = useCvData();
   const [formData, setFormData] = useState(createInitialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -65,7 +68,7 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Vamos Conversar
+            {t('Contact.title')}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {cvData.contact.note}
@@ -82,7 +85,7 @@ export default function Contact() {
           >
             <div className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Informações de Contato
+                {t('Contact.info.title')}
               </h2>
 
               <div className="space-y-6">
@@ -96,7 +99,7 @@ export default function Contact() {
                     <Mail className="text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground/60">Email</p>
+                    <p className="text-sm text-muted-foreground/60">{t('Contact.info.labels.email')}</p>
                     <p className="font-medium">{cvData.contact.email}</p>
                   </div>
                 </motion.a>
@@ -113,7 +116,7 @@ export default function Contact() {
                     <Github className="text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground/60">GitHub</p>
+                    <p className="text-sm text-muted-foreground/60">{t('Contact.info.labels.github')}</p>
                     <p className="font-medium">@marcelo-m7</p>
                   </div>
                 </motion.a>
@@ -130,7 +133,7 @@ export default function Contact() {
                     <Linkedin className="text-secondary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground/60">LinkedIn</p>
+                    <p className="text-sm text-muted-foreground/60">{t('Contact.info.labels.linkedin')}</p>
                     <p className="font-medium">Marcelo Santos</p>
                   </div>
                 </motion.a>
@@ -138,7 +141,7 @@ export default function Contact() {
             </div>
 
             <div className="glass rounded-[var(--radius)] p-8">
-              <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
+              <h3 className="font-display font-bold mb-3">{t('Contact.availability.title')}</h3>
               <p className="text-muted-foreground">
                 {cvData.contact.availability}
               </p>
@@ -153,14 +156,14 @@ export default function Contact() {
           >
             <form onSubmit={handleSubmit} className="glass rounded-[var(--radius)] p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Enviar Mensagem
+                {t('Contact.form.title')}
               </h2>
 
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Nome
+                      {t('Contact.form.name.label')}
                     </label>
                     <Input
                       id="name"
@@ -171,12 +174,13 @@ export default function Contact() {
                       }
                       required
                       className="rounded-xl"
-                      placeholder="Seu nome"
+                      placeholder={t('Contact.form.name.placeholder')}
                     />
                   </div>
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Empresa <span className="text-muted-foreground">(opcional)</span>
+                      {t('Contact.form.company.label')}{' '}
+                      <span className="text-muted-foreground">{t('Contact.form.company.optional')}</span>
                     </label>
                     <Input
                       id="company"
@@ -186,7 +190,7 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, company: e.target.value }))
                       }
                       className="rounded-xl"
-                      placeholder="Onde você trabalha"
+                      placeholder={t('Contact.form.company.placeholder')}
                     />
                   </div>
                 </div>
@@ -194,7 +198,7 @@ export default function Contact() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email
+                      {t('Contact.form.email.label')}
                     </label>
                     <Input
                       id="email"
@@ -205,12 +209,13 @@ export default function Contact() {
                       }
                       required
                       className="rounded-xl"
-                      placeholder="seu@email.com"
+                      placeholder={t('Contact.form.email.placeholder')}
                     />
                   </div>
                   <div>
                     <label htmlFor="project" className="block text-sm font-medium mb-2">
-                      Projeto <span className="text-muted-foreground">(opcional)</span>
+                      {t('Contact.form.project.label')}{' '}
+                      <span className="text-muted-foreground">{t('Contact.form.project.optional')}</span>
                     </label>
                     <Input
                       id="project"
@@ -220,14 +225,14 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, project: e.target.value }))
                       }
                       className="rounded-xl"
-                      placeholder="Sobre o que vamos falar?"
+                      placeholder={t('Contact.form.project.placeholder')}
                     />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Mensagem
+                    {t('Contact.form.message.label')}
                   </label>
                   <Textarea
                     id="message"
@@ -238,7 +243,7 @@ export default function Contact() {
                     required
                     rows={6}
                     className="rounded-xl resize-none"
-                    placeholder="Escreva sua mensagem aqui..."
+                    placeholder={t('Contact.form.message.placeholder')}
                   />
                 </div>
 
@@ -248,11 +253,11 @@ export default function Contact() {
                   className="w-full rounded-xl py-6 text-lg bg-primary hover:bg-primary/90"
                 >
                   {isSubmitting ? (
-                    'Enviando...'
+                    t('Contact.form.submitting')
                   ) : (
                     <>
                       <Send className="mr-2" size={20} />
-                      Enviar Mensagem
+                      {t('Contact.form.submit')}
                     </>
                   )}
                 </Button>

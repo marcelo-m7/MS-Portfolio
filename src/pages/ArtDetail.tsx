@@ -2,7 +2,6 @@ import { useState, Suspense, lazy } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Maximize2, Orbit } from 'lucide-react';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,6 +14,8 @@ import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 const MotionButton = motion(Button);
 const MotionImg = motion.img;
@@ -31,6 +32,8 @@ export default function ArtDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const { t } = useTranslations();
+  const cvData = useCvData();
   const artwork = cvData.artworks.find((item) => item.slug === slug);
   const [isMediaOpen, setIsMediaOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState<string | null>(null);
@@ -47,12 +50,10 @@ export default function ArtDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Obra não encontrada</h1>
-          <p className="mt-4 text-muted-foreground">
-            Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais.
-          </p>
+          <h1 className="text-4xl font-display font-bold text-primary">{t('ArtDetail.notFound.title')}</h1>
+          <p className="mt-4 text-muted-foreground">{t('ArtDetail.notFound.description')}</p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver Portfolio</Link>
+            <Link to="/portfolio">{t('ArtDetail.notFound.cta')}</Link>
           </Button>
         </div>
       </div>
@@ -78,7 +79,7 @@ export default function ArtDetail() {
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar ao Portfolio
+              {t('ArtDetail.back')}
             </Link>
           </MotionButton>
 
@@ -124,7 +125,7 @@ export default function ArtDetail() {
               >
                 <MotionImg
                   src={media}
-                  alt={`${artwork.title} — visual ${index + 1}`}
+                  alt={t('ArtDetail.media.thumbnailAlt', { title: artwork.title, index: index + 1 })}
                   loading="lazy"
                   decoding="async"
                   width={640}
@@ -136,7 +137,7 @@ export default function ArtDetail() {
                 <div className="pointer-events-none absolute inset-0 flex items-end justify-end bg-gradient-to-t from-background/70 via-background/20 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground">
                     <Maximize2 className="h-3 w-3" aria-hidden />
-                    Expandir
+                    {t('ArtDetail.media.expand')}
                   </span>
                 </div>
               </motion.button>
@@ -155,7 +156,9 @@ export default function ArtDetail() {
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
                 <Orbit className="h-4 w-4" aria-hidden />
-                {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
+                {canRender3DPreview
+                  ? t('ArtDetail.preview.open')
+                  : t('ArtDetail.preview.unavailable')}
               </MotionButton>
               <motion.a
                 href={artwork.url3d}
@@ -166,12 +169,12 @@ export default function ArtDetail() {
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
-                Abrir em Nova Aba
+                {t('ArtDetail.preview.openExternal')}
                 <ExternalLink className="h-4 w-4" aria-hidden />
               </motion.a>
               {!canRender3DPreview && (
                 <p className="text-sm text-muted-foreground/80">
-                  A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
+                  {t('ArtDetail.preview.disabledNotice')}
                 </p>
               )}
             </div>
@@ -183,12 +186,12 @@ export default function ArtDetail() {
         <DialogContent className="max-w-4xl border border-border/60 bg-card/90 backdrop-blur-xl">
           <DialogHeader>
             <DialogTitle>{artwork.title}</DialogTitle>
-            <DialogDescription>Visualização ampliada da obra.</DialogDescription>
+            <DialogDescription>{t('ArtDetail.dialog.mediaDescription')}</DialogDescription>
           </DialogHeader>
           {typeof activeMedia === 'string' && (
             <img
               src={activeMedia}
-              alt={`${artwork.title} em detalhe`}
+              alt={t('ArtDetail.dialog.mediaAlt', { title: artwork.title })}
               className="h-auto w-full rounded-2xl"
               loading="lazy"
             />
@@ -200,9 +203,9 @@ export default function ArtDetail() {
         <Dialog open={is3DOpen} onOpenChange={setIs3DOpen}>
           <DialogContent className="max-w-5xl border border-border/60 bg-card/90 backdrop-blur-xl">
             <DialogHeader>
-              <DialogTitle>Exploração 3D</DialogTitle>
+              <DialogTitle>{t('ArtDetail.preview.modalTitle')}</DialogTitle>
               <DialogDescription>
-                Cena interativa da experiência Art Leo com controlo de órbita.
+                {t('ArtDetail.preview.modalDescription')}
               </DialogDescription>
             </DialogHeader>
             <div className="h-[420px] w-full overflow-hidden rounded-2xl bg-background/80">
@@ -210,7 +213,7 @@ export default function ArtDetail() {
                 <Suspense
                   fallback={
                     <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                      Carregando visualização 3D…
+                      {t('ArtDetail.preview.loading')}
                     </div>
                   }
                 >
@@ -218,7 +221,7 @@ export default function ArtDetail() {
                     <div className="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground">
                       <Orbit className="h-6 w-6" aria-hidden />
                       <p className="max-w-sm text-center text-sm">
-                        A visualização 3D está desativada porque a preferência do sistema indica movimento reduzido.
+                        {t('ArtDetail.preview.reducedMotion')}
                       </p>
                     </div>
                   ) : (
@@ -229,7 +232,7 @@ export default function ArtDetail() {
                 <div className="flex h-full flex-col items-center justify-center gap-4 text-muted-foreground">
                   <Orbit className="h-6 w-6" aria-hidden />
                   <p className="max-w-sm text-center text-sm">
-                    Esta build foi gerada sem os assets 3D locais. Abra o link externo para visualizar a cena.
+                    {t('ArtDetail.preview.missingAssets')}
                   </p>
                 </div>
               )}

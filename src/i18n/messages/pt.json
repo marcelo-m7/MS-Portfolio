@@ -1,0 +1,233 @@
+{
+  "App": {
+    "loading": "Carregando…",
+    "loadingTranslations": "Carregando traduções…"
+  },
+  "Navbar": {
+    "links": {
+      "home": "Início",
+      "portfolio": "Portfolio",
+      "about": "Sobre",
+      "thoughts": "Pensamentos",
+      "contact": "Contato"
+    },
+    "aria": {
+      "openMenu": "Abrir menu",
+      "closeMenu": "Fechar menu"
+    }
+  },
+  "Footer": {
+    "copy": "© {{year}} Monynha Softwares. Todos os direitos reservados."
+  },
+  "Common": {
+    "actions": {
+      "backToHome": "Voltar para o Início",
+      "backToPortfolio": "Voltar ao Portfolio",
+      "viewPortfolio": "Ver Portfolio",
+      "viewAllThoughts": "Ver todos os pensamentos",
+      "shareThought": "Partilhar um pensamento comigo",
+      "contact": "Entre em Contato",
+      "viewProjects": "Ver Todos os Projetos"
+    },
+    "labels": {
+      "tags": "Etiquetas desta reflexão",
+      "journal": "Monynha Softwares Journal"
+    },
+    "status": {
+      "present": "Presente"
+    }
+  },
+  "Home": {
+    "hero": {
+      "blogBadge": "Nova rota: reflexões em tecnologia e arte",
+      "primaryCta": "Explorar Portfólio",
+      "secondaryCta": "Entre em Contato",
+      "blogCta": "Ler os pensamentos recentes"
+    },
+    "projects": {
+      "title": "Projetos em Destaque",
+      "subtitle": "Seleção dos melhores trabalhos do ecossistema Monynha",
+      "openExternal": "Abrir {{name}} em nova aba"
+    },
+    "collections": {
+      "title": "Coleções & Arte",
+      "subtitle": "Experiências imersivas e séries experimentais que conectam tecnologia, narrativa e arte digital.",
+      "series": {
+        "title": "Creative Systems",
+        "description": "Coleção de trabalhos que explora IA aplicada, automação inteligente e interfaces artísticas conectadas ao laboratório Monynha."
+      },
+      "art": {
+        "title": "Art Leo Creative Spaces",
+        "description": "Experiência 3D com narrativas interativas e composição sonora inspirada nos espaços criativos de Leonardo Silva."
+      }
+    }
+  },
+  "Portfolio": {
+    "title": "Portfolio",
+    "subtitle": "Projetos, arte digital e séries criativas do ecossistema Monynha",
+    "metaDescription": "Portfólio oficial da Monynha Softwares com produtos digitais, iniciativas de IA, infraestrutura e experiências criativas.",
+    "filters": {
+      "all": "Todos",
+      "digitalArt": "Arte Digital",
+      "creativeSeries": "Série Criativa"
+    },
+    "empty": "Nenhum item encontrado nesta categoria."
+  },
+  "ProjectCard": {
+    "alt": {
+      "thumbnail": "Miniatura do projeto {{name}}"
+    },
+    "aria": {
+      "openDetails": "Abrir detalhes do projeto {{name}}",
+      "openRepository": "Acessar repositório {{name}} no GitHub",
+      "openLive": "Visitar domínio de {{name}}"
+    },
+    "actions": {
+      "viewRepository": "Ver Repositório",
+      "openLive": "Acessar Online"
+    },
+    "domainFallback": "Domínio interno"
+  },
+  "ArtworkCard": {
+    "category": "Arte Digital",
+    "view3D": "Ver Experiência 3D",
+    "alt": {
+      "thumbnail": "{{title}} – Arte Digital"
+    }
+  },
+  "SeriesCard": {
+    "category": "Série Criativa",
+    "workCount": "{{count}} obras",
+    "viewCollection": "Ver Coleção Completa"
+  },
+  "About": {
+    "title": "Sobre Mim",
+    "subtitle": "Conheça a história e experiência",
+    "experience": {
+      "title": "Experiência",
+      "present": "Presente"
+    },
+    "skills": {
+      "title": "Competências"
+    }
+  },
+  "Contact": {
+    "title": "Vamos Conversar",
+    "info": {
+      "title": "Informações de Contato",
+      "labels": {
+        "email": "Email",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+      }
+    },
+    "availability": {
+      "title": "Disponibilidade"
+    },
+    "form": {
+      "title": "Enviar Mensagem",
+      "name": {
+        "label": "Nome",
+        "placeholder": "Seu nome"
+      },
+      "company": {
+        "label": "Empresa",
+        "optional": "(opcional)",
+        "placeholder": "Onde você trabalha"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "seu@email.com"
+      },
+      "project": {
+        "label": "Projeto",
+        "optional": "(opcional)",
+        "placeholder": "Sobre o que vamos falar?"
+      },
+      "message": {
+        "label": "Mensagem",
+        "placeholder": "Escreva sua mensagem aqui..."
+      },
+      "submitting": "Enviando...",
+      "submit": "Enviar Mensagem"
+    }
+  },
+  "Thoughts": {
+    "back": "Voltar para o Início",
+    "title": "Pensamentos",
+    "subtitle": "Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.",
+    "readMore": "Ler Reflexão Completa",
+    "footer": {
+      "title": "Ideias, processos criativos e bastidores das experiências imersivas."
+    }
+  },
+  "ThoughtDetail": {
+    "back": "Voltar para os Pensamentos",
+    "notFound": {
+      "title": "Conteúdo não encontrado",
+      "description": "Não encontramos esta reflexão. Volte para a coleção de pensamentos e explore outras ideias.",
+      "cta": "Ver todos os pensamentos"
+    },
+    "author": {
+      "label": "Escrito por"
+    }
+  },
+  "ProjectDetail": {
+    "notFound": {
+      "title": "Projeto não encontrado",
+      "description": "Este projeto não existe ou foi movido. Volte ao portfolio para descobrir outros trabalhos.",
+      "cta": "Ver Portfolio"
+    },
+    "back": "Voltar ao Portfolio",
+    "metadata": {
+      "domainFallback": "Domínio reservado",
+      "visibilityFallback": "Visibilidade não definida",
+      "statusFallback": "Estado em revisão"
+    },
+    "techTitle": "Tecnologias Utilizadas"
+  },
+  "ArtDetail": {
+    "notFound": {
+      "title": "Obra não encontrada",
+      "description": "Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais.",
+      "cta": "Ver Portfolio"
+    },
+    "back": "Voltar ao Portfolio",
+    "media": {
+      "expand": "Expandir",
+      "thumbnailAlt": "{{title}} — visual {{index}}"
+    },
+    "preview": {
+      "open": "Explorar Experiência 3D",
+      "unavailable": "Pré-visualização Indisponível",
+      "openExternal": "Abrir em Nova Aba",
+      "disabledNotice": "A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D=\"true\" para ativar.",
+      "modalTitle": "Exploração 3D",
+      "modalDescription": "Cena interativa da experiência Art Leo com controlo de órbita.",
+      "loading": "Carregando visualização 3D…",
+      "reducedMotion": "A visualização 3D está desativada porque a preferência do sistema indica movimento reduzido.",
+      "missingAssets": "Esta build foi gerada sem os assets 3D locais. Abra o link externo para visualizar a cena."
+    },
+    "dialog": {
+      "mediaDescription": "Visualização ampliada da obra.",
+      "mediaAlt": "{{title}} em detalhe"
+    }
+  },
+  "SeriesDetail": {
+    "notFound": {
+      "title": "Série não encontrada",
+      "description": "A coleção que procuras não está disponível. Volte ao portfolio e explore outras experiências criativas.",
+      "cta": "Ver Portfolio"
+    },
+    "back": "Voltar ao Portfolio",
+    "category": "Série Criativa",
+    "empty": "Novas obras para esta série serão adicionadas em breve.",
+    "workThumbnail": "Arte {{title}}"
+  },
+  "NotFound": {
+    "badge": "Erro 404",
+    "title": "Página não encontrada",
+    "message": "O caminho {{path}} não existe. Volte à página inicial para continuar a explorar o universo Monynha.",
+    "cta": "Voltar para o Início"
+  }
+}

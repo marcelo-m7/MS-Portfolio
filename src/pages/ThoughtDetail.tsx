@@ -2,13 +2,14 @@ import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 import { calculateReadingTime } from '@/lib/content';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 const MotionButton = motion(Button);
 
@@ -17,18 +18,20 @@ export default function ThoughtDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const { t } = useTranslations();
+  const cvData = useCvData();
   const thought = cvData.thoughts.find((item) => item.slug === slug);
 
   if (!thought) {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Conteúdo não encontrado</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">{t('ThoughtDetail.notFound.title')}</h1>
           <p className="mt-4 text-muted-foreground">
-            Não encontramos esta reflexão. Volte para a coleção de pensamentos e explore outras ideias.
+            {t('ThoughtDetail.notFound.description')}
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/thoughts">Ver todos os pensamentos</Link>
+            <Link to="/thoughts">{t('ThoughtDetail.notFound.cta')}</Link>
           </Button>
         </div>
       </div>
@@ -61,7 +64,7 @@ export default function ThoughtDetail() {
           >
             <Link to="/thoughts">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar para os Pensamentos
+              {t('ThoughtDetail.back')}
             </Link>
           </MotionButton>
 
@@ -92,7 +95,7 @@ export default function ThoughtDetail() {
 
           <p className="mt-4 text-lg text-muted-foreground/90">{thought.excerpt}</p>
 
-          <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
+          <div className="mt-6 flex flex-wrap gap-2" aria-label={t('Common.labels.tags')}>
             {thought.tags.map((tag) => (
               <motion.span
                 key={`${thought.slug}-${tag}`}
@@ -112,7 +115,7 @@ export default function ThoughtDetail() {
           </article>
 
           <footer className="mt-12 rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
-            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>
+            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">{t('ThoughtDetail.author.label')}</p>
             <div className="mt-4 flex items-center gap-3">
               <img
                 src={cvData.profile.avatar}
