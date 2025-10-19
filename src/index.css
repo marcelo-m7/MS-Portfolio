@@ -8,49 +8,86 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 10% 8%; /* Very dark gray, almost black */
-    --foreground: 0 0% 98%; /* White for text */
+    --background: 216 33% 96%;
+    --foreground: 222 47% 11%;
 
-    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --popover: 220 10% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 240 60% 40%; /* Deep Indigo */
-    --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
-    --primary-hsl: 240 60% 40%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hsl: 243 75% 59%;
 
-    --secondary: 210 70% 50%; /* Vibrant Sky Blue */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hsl: 210 70% 50%;
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hsl: 199 89% 48%;
 
-    --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
-    --muted-foreground: 220 10% 70%; /* Light gray for muted text */
+    --muted: 216 33% 90%;
+    --muted-foreground: 222 27% 32%;
 
-    --accent: 270 40% 60%; /* Soft Lavender Purple */
-    --accent-foreground: 0 0% 98%;
-    --accent-hsl: 270 40% 60%;
+    --accent: 281 66% 60%;
+    --accent-foreground: 210 40% 98%;
+    --accent-hsl: 281 66% 60%;
 
-    --destructive: 0 63% 31%; /* Keep vibrant red */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 10% 20%; /* Subtle dark gray border */
-    --input: 220 10% 12%; /* Dark input background */
-    --ring: 210 70% 50%; /* Secondary blue for focus ring */
+    --border: 214 32% 86%;
+    --input: 216 33% 94%;
+    --ring: 199 89% 48%;
 
-    --radius: 1.5rem; /* Increased border radius for softer, polished look */
+    --radius: 1.5rem;
 
-    /* Custom tokens */
-    --hero-gradient-start: 240 60% 40%;
-    --hero-gradient-end: 210 70% 50%;
-    --glow-purple: 240 60% 40%;
-    --glow-blue: 210 70% 50%;
-    --glow-pink: 270 40% 60%;
-    
-    /* Animations */
+    --hero-gradient-start: 243 75% 59%;
+    --hero-gradient-end: 199 89% 48%;
+    --glow-purple: 243 75% 59%;
+    --glow-blue: 199 89% 48%;
+    --glow-pink: 281 66% 60%;
+
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 45% 12%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 45% 10%;
+    --popover-foreground: 210 40% 96%;
+
+    --primary: 244 63% 68%;
+    --primary-foreground: 222 100% 98%;
+    --primary-hsl: 244 63% 68%;
+
+    --secondary: 199 89% 60%;
+    --secondary-foreground: 222 100% 98%;
+    --secondary-hsl: 199 89% 60%;
+
+    --muted: 223 23% 20%;
+    --muted-foreground: 218 14% 72%;
+
+    --accent: 281 66% 68%;
+    --accent-foreground: 222 100% 98%;
+    --accent-hsl: 281 66% 68%;
+
+    --destructive: 0 84% 63%;
+    --destructive-foreground: 222 100% 98%;
+
+    --border: 224 22% 26%;
+    --input: 224 22% 20%;
+    --ring: 199 89% 60%;
+
+    --hero-gradient-start: 244 63% 68%;
+    --hero-gradient-end: 199 89% 60%;
+    --glow-purple: 244 63% 68%;
+    --glow-blue: 199 89% 60%;
+    --glow-pink: 281 66% 68%;
   }
 }
 
@@ -60,8 +97,22 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground antialiased;
     font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight;
+  }
+
+  code,
+  pre {
+    @apply font-mono;
   }
 
   :focus-visible {
@@ -98,7 +149,7 @@ All colors MUST be HSL.
   }
 
   .glass {
-    @apply bg-card border border-border/50; /* Removed /80 and backdrop-blur-xl */
+    @apply rounded-2xl border border-border/50 bg-card shadow-md;
   }
 
   .glow-purple {

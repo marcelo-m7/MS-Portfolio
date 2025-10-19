@@ -26,7 +26,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
       transition={{ delay: index * 0.08, duration: 0.4 }}
       className="group"
     >
-      <div className="rounded-[var(--radius)] border border-border/70 bg-card overflow-hidden shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-[0_35px_60px_-45px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
+      <div className="rounded-2xl border border-border/70 bg-card/90 overflow-hidden shadow-md transition-shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-lg">
         <MotionLink
           to={`/series/${series.slug}`}
           className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -39,7 +39,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
           whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
           transition={{ type: 'spring', stiffness: 200, damping: 22 }}
         >
-          <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25 flex items-center justify-center">
+          <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 flex items-center justify-center">
             <Layers className="h-24 w-24 text-white/50" aria-hidden />
             <div className="absolute top-4 right-4">
               <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs font-medium">
@@ -64,7 +64,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
 
             <div className="flex flex-wrap gap-2">
               {series.works.length > 0 && (
-                <span className="text-xs px-2 py-1 rounded-md bg-muted/60 text-foreground/80">
+                <span className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80">
                   {series.works.length} obras
                 </span>
               )}
