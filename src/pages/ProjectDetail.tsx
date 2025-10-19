@@ -115,7 +115,7 @@ export default function ProjectDetail() {
           variants={containerVariants}
           initial={prefersReducedMotion ? undefined : 'hidden'}
           animate={prefersReducedMotion ? undefined : 'visible'}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
+          className="rounded-2xl border border-border/60 bg-card/80 p-10 shadow-lg backdrop-blur-xl"
         >
           <motion.div variants={itemVariants}>
             <MotionButton
@@ -202,19 +202,19 @@ export default function ProjectDetail() {
           {/* Project Metadata */}
           <motion.section variants={itemVariants} className="mt-10 space-y-6">
             <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground/90">
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <div className="flex items-center gap-2 rounded-2xl border border-border/60 bg-background/60 px-4 py-3">
                 <Globe className="h-4 w-4 text-secondary" aria-hidden />
                 <span>{project.domain ?? 'Domínio reservado'}</span>
               </div>
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <div className="flex items-center gap-2 rounded-2xl border border-border/60 bg-background/60 px-4 py-3">
                 <Shield className="h-4 w-4 text-primary" aria-hidden />
                 <span>{project.visibility ?? 'Visibilidade não definida'}</span>
               </div>
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <div className="flex items-center gap-2 rounded-2xl border border-border/60 bg-background/60 px-4 py-3">
                 <GitBranch className="h-4 w-4 text-emerald-300" aria-hidden />
                 <span>{project.status ?? 'Estado em revisão'}</span>
               </div>
-              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+              <div className="flex items-center gap-2 rounded-2xl border border-border/60 bg-background/60 px-4 py-3">
                 <Layers className="h-4 w-4 text-primary" aria-hidden />
                 <span>{project.category}</span>
               </div>

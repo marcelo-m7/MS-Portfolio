@@ -1,26 +1,44 @@
-# Monynha Portfolio Code Audit Report
+# Auditoria Visual — Marcelo Portigolio
 
-## Código e Organização
-- Remoção do módulo `src/lib/supabase.ts`, que estava obsoleto e não era referenciado no aplicativo.
-- Tipagens aprimoradas nos componentes de UI (`command` e `textarea`) para eliminar interfaces vazias e evitar uso de `any`.
-- Remoção da dependência do Google Translate com a introdução do helper local (`src/lib/language.ts`) para sincronizar o atributo `lang` e eventos de idioma de forma tipada.
+## Sumário
+- Erros encontrados
+  - Paleta só oferecia o modo escuro e os tokens usavam valores inconsistentes com a identidade visual.
+  - Cartões e botões tinham `border-radius` e sombras fora do padrão (`rounded-2xl`, `shadow-md`).
+  - Conteúdos próximos da barra fixa ficavam ocultos e havia contrastes insuficientes no modo claro inexistente.
+- Correções aplicadas
+  - Definição completa dos tokens claros/escuros, normalização das utilitárias (`glass`) e script de detecção de tema.
+  - Ajuste das variantes do `Button`, `Card` e dos cartões principais para usar `rounded-2xl` + `shadow-md/hover:shadow-lg`.
+  - Revisão de seções (Home, Thought/Series/Project detail) com novos espaçamentos e bordas padronizadas.
+- Prints de antes/depois
+  - Hero (modo claro ausente) → Hero com tema claro.
+  - Grade de projetos encoberta pela navbar → grade com espaçamento.
+  - Layout mobile sem tokens de luz → layout mobile coerente.
 
-## Experiência do Usuário & Visual
-- Hero estático atualizado com gradações em HSL, alinhando os visuais aos tons oficiais (#7C3AED, #0EA5E9, #EC4899).
-- Tailwind configurado com famílias `Inter`, `Space Grotesk` e agora `JetBrains Mono`, garantindo consistência tipográfica.
-- Fonte JetBrains carregada no `index.html` para seções de código e detalhes técnicos.
-- Cartões de séries harmonizados (`SeriesDetail`) com semântica de links clara para rotas internas e externas.
-- Pré-visualização 3D das artes agora respeita uma flag `VITE_ENABLE_ART_3D`, evitando carregar bibliotecas pesadas quando o recurso estiver desativado.
+## Prints e Descrições
 
-## Formulários e Integrações
-- Formulário de contato passa a reutilizar um estado inicial imutável e atualizações funcionais de estado, evitando condições de corrida.
-- Logs de Supabase agora aparecem apenas em ambiente de desenvolvimento, mantendo o console limpo em produção.
-- Tratamento de erros no formulário de contato mantém registro apenas em modo desenvolvimento.
+### Tema Claro ausente
+- **Antes:** hero apenas em modo escuro, impossibilitando contraste adequado no tema claro.
+  ![Hero antes](browser:/invocations/hlbjqkxc/artifacts/artifacts/desktop-light.png)
+- **Depois:** tokens claros definidos e script de detecção automática habilitando o modo claro consistente.
+  ![Hero depois](browser:/invocations/siphvrlo/artifacts/artifacts/after-desktop-light.png)
+- **Ajuste:** novos valores HSL no `:root`/`.dark`, tipografia `font-sans` global e utilitário `glass` com `rounded-2xl` + `shadow-md`.
 
-## Acessibilidade e Performance
-- Links de cartões no portfólio usam componentes adequados (`Link` ou `<a>`) com foco visível, melhorando navegação por teclado.
-- Imagens de cards continuam com `loading="lazy"` e atributos alt descritivos.
+### Navegação encobrindo a lista de projetos
+- **Antes:** o heading "Projetos em Destaque" ficava sob a navbar fixa e os cards não seguiam o raio/sombra padrão.
+  ![Projetos antes](browser:/invocations/yggzwzet/artifacts/artifacts/desktop-light-mid.png)
+- **Depois:** seções com `pt-32`/`pt-12`, cartões `rounded-2xl` e sombras padronizadas.
+  ![Projetos depois](browser:/invocations/sejnlmfh/artifacts/artifacts/after-desktop-light-projects.png)
+- **Ajuste:** revisão de `Home.tsx`, `ProjectCard.tsx` e utilitário `glass` para harmonizar tokens.
 
-## Validações
-- `npm run lint` executado para garantir que não há erros de lint.
-- `npm run build` executado para validar o empacotamento de produção e monitorar o tamanho dos bundles.
+### Layout mobile sem tokens de luz
+- **Antes:** versão mobile herdava apenas o modo escuro, com botões e cards usando sombras customizadas.
+  ![Mobile antes](browser:/invocations/yhybubag/artifacts/artifacts/mobile-light.png)
+- **Depois:** tema claro aplicado com botões `rounded-2xl` e cards consistentes.
+  ![Mobile depois](browser:/invocations/grwpgmiv/artifacts/artifacts/after-mobile-light.png)
+- **Ajuste:** atualização de `button.tsx`, `card.tsx` e cartões específicos para reforçar tokens globais.
+
+## Checklist de Conformidade
+✅ Paleta e tokens  
+✅ Tipografia  
+✅ Acessibilidade  
+✅ Layout responsivo

@@ -80,7 +80,7 @@ export default function Contact() {
             transition={{ delay: 0.2, duration: 0.6 }}
             className="space-y-8"
           >
-            <div className="glass rounded-[var(--radius)] p-8">
+            <div className="glass p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
                 Informações de Contato
               </h2>
@@ -137,7 +137,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="glass rounded-[var(--radius)] p-8">
+            <div className="glass p-8">
               <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
               <p className="text-muted-foreground">
                 {cvData.contact.availability}
@@ -151,7 +151,7 @@ export default function Contact() {
             animate={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
-            <form onSubmit={handleSubmit} className="glass rounded-[var(--radius)] p-8">
+            <form onSubmit={handleSubmit} className="glass p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
                 Enviar Mensagem
               </h2>

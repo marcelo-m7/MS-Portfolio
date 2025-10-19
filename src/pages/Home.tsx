@@ -35,7 +35,7 @@ export default function Home() {
           >
             <motion.div
               variants={itemVariants}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-[0_20px_35px_-25px_hsl(var(--secondary)/0.2)]"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-md"
             >
               <Sparkles className="w-4 h-4 text-accent" />
               <span className="text-sm font-medium">{cvData.profile.location}</span>
@@ -71,7 +71,7 @@ export default function Home() {
               <Button
                 asChild
                 size="lg"
-                className="rounded-full text-lg px-8 py-6 shadow-[0_15px_45px_-20px_hsl(var(--secondary)/0.4)]"
+                className="rounded-full px-8 py-6"
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
@@ -103,7 +103,7 @@ export default function Home() {
                 <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
                 <span>Nova rota: reflexões em tecnologia e arte</span>
               </motion.div>
-              <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_hsl(var(--secondary)/0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105">
+              <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105">
                 <Link to="/thoughts">
                   Ler os pensamentos recentes
                   <ArrowRight className="h-4 w-4" aria-hidden />
@@ -131,7 +131,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      <section className="py-24 px-6">
+      <section className="px-6 pb-24 pt-32">
         <div className="container mx-auto">
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -176,9 +176,9 @@ export default function Home() {
                   whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
                   transition={{ type: 'spring', stiffness: 200, damping: 22 }}
                 >
-                  <div className="rounded-[var(--radius)] border border-border/70 bg-card/60 p-6 shadow-[0_15px_30px_-20px_hsl(var(--primary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_50px_-25px_hsl(var(--primary)/0.3),_0_10px_20px_-10px_hsl(var(--secondary)/0.2)]">
+                  <div className="rounded-2xl border border-border/60 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl">
                     <div className="flex items-start justify-between mb-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-[0_0_20px_hsl(var(--primary)/0.2)]">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
                         <Code2 className="text-white" size={24} aria-hidden />
                       </div>
                       <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
@@ -228,7 +228,7 @@ export default function Home() {
       </section>
 
       {/* Collections & Art */}
-      <section className="pb-24 px-6">
+      <section className="px-6 pb-24 pt-12">
         <div className="container mx-auto">
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -256,8 +256,8 @@ export default function Home() {
                 to="/series/creative-systems"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--secondary)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--secondary)/0.3),_0_15px_30px_-15px_hsl(var(--accent)/0.2)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-[0_0_20px_hsl(var(--primary)/0.2)]">
+                <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 hover:shadow-lg">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-secondary via-primary to-accent text-white shadow-md">
                     <Layers aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
@@ -280,8 +280,8 @@ export default function Home() {
                 to="/art/artleo"
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
-                <div className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/70 p-6 shadow-[0_20px_40px_-30px_hsl(var(--accent)/0.1)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_30px_60px_-40px_hsl(var(--accent)/0.3),_0_15px_30px_-15px_hsl(var(--primary)/0.2)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-[0_0_20px_hsl(var(--secondary)/0.2)]">
+                <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-xl">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary via-secondary to-accent text-white shadow-md">
                     <Palette aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">

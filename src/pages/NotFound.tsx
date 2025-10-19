@@ -20,7 +20,7 @@ const NotFound = () => {
         initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
         animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-xl rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 text-center shadow-[0_45px_85px_-70px_hsl(var(--secondary)/0.3)] backdrop-blur-xl"
+        className="w-full max-w-xl rounded-2xl border border-border/60 bg-card/80 p-10 text-center shadow-lg backdrop-blur-xl"
         role="alert"
         aria-live="assertive"
       >

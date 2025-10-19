@@ -8,49 +8,90 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 220 10% 8%; /* Very dark gray, almost black */
-    --foreground: 0 0% 98%; /* White for text */
+    color-scheme: light;
+    --background: 220 35% 97%;
+    --foreground: 224 71% 4%;
 
-    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
 
-    --popover: 220 10% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
 
-    --primary: 240 60% 40%; /* Deep Indigo */
-    --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
-    --primary-hsl: 240 60% 40%;
+    --primary: 240 62% 45%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hsl: 240 62% 45%;
 
-    --secondary: 210 70% 50%; /* Vibrant Sky Blue */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 210 70% 50%;
+    --secondary-foreground: 0 0% 100%;
     --secondary-hsl: 210 70% 50%;
 
-    --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
-    --muted-foreground: 220 10% 70%; /* Light gray for muted text */
+    --muted: 220 20% 92%;
+    --muted-foreground: 220 12% 40%;
 
-    --accent: 270 40% 60%; /* Soft Lavender Purple */
-    --accent-foreground: 0 0% 98%;
-    --accent-hsl: 270 40% 60%;
+    --accent: 270 45% 55%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hsl: 270 45% 55%;
 
-    --destructive: 0 63% 31%; /* Keep vibrant red */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 63% 35%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 220 10% 20%; /* Subtle dark gray border */
-    --input: 220 10% 12%; /* Dark input background */
-    --ring: 210 70% 50%; /* Secondary blue for focus ring */
+    --border: 220 18% 88%;
+    --input: 220 18% 88%;
+    --ring: 210 70% 50%;
 
-    --radius: 1.5rem; /* Increased border radius for softer, polished look */
+    --radius: 1rem;
 
     /* Custom tokens */
-    --hero-gradient-start: 240 60% 40%;
+    --hero-gradient-start: 240 62% 45%;
     --hero-gradient-end: 210 70% 50%;
-    --glow-purple: 240 60% 40%;
+    --glow-purple: 240 62% 45%;
     --glow-blue: 210 70% 50%;
-    --glow-pink: 270 40% 60%;
-    
+    --glow-pink: 270 45% 55%;
+
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: 220 12% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 12% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 12% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 240 62% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hsl: 240 62% 55%;
+
+    --secondary: 210 80% 60%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hsl: 210 80% 60%;
+
+    --muted: 220 14% 22%;
+    --muted-foreground: 220 12% 70%;
+
+    --accent: 270 55% 65%;
+    --accent-foreground: 0 0% 100%;
+    --accent-hsl: 270 55% 65%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 14% 20%;
+    --input: 220 12% 14%;
+    --ring: 210 80% 60%;
+
+    --hero-gradient-start: 240 62% 55%;
+    --hero-gradient-end: 210 80% 60%;
+    --glow-purple: 240 62% 55%;
+    --glow-blue: 210 80% 60%;
+    --glow-pink: 270 55% 65%;
   }
 }
 
@@ -60,7 +101,7 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
 
@@ -98,7 +139,7 @@ All colors MUST be HSL.
   }
 
   .glass {
-    @apply bg-card border border-border/50; /* Removed /80 and backdrop-blur-xl */
+    @apply rounded-2xl border border-border/60 bg-card/80 shadow-md backdrop-blur-xl;
   }
 
   .glow-purple {

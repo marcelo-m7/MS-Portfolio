@@ -102,7 +102,7 @@ export default function SeriesDetail() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_85px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
+          className="rounded-2xl border border-border/60 bg-card/80 p-10 shadow-lg backdrop-blur-xl"
         >
           <MotionButton
             asChild
@@ -150,7 +150,7 @@ export default function SeriesDetail() {
             {works.map((work, index) => {
               const card = (
                 <motion.div
-                  className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/80 p-6 shadow-[0_35px_70px_-55px_hsl(var(--secondary)/0.3)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_hsl(var(--primary)/0.3)]"
+                  className="flex h-full flex-col rounded-2xl border border-border/60 bg-card/80 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg"
                   whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 >
                   {work.thumbnail && (
@@ -209,7 +209,7 @@ export default function SeriesDetail() {
               );
             })}
             {works.length === 0 && (
-              <div className="col-span-full rounded-[var(--radius)] border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
+              <div className="col-span-full rounded-2xl border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
                 Novas obras para esta série serão adicionadas em breve.
               </div>
             )}

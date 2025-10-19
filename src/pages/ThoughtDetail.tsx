@@ -49,7 +49,7 @@ export default function ThoughtDetail() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-8 shadow-[0_45px_85px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
+          className="rounded-2xl border border-border/60 bg-card/80 p-8 shadow-lg backdrop-blur-xl"
         >
           <MotionButton
             asChild
@@ -111,7 +111,7 @@ export default function ThoughtDetail() {
             <ReactMarkdown>{thought.body}</ReactMarkdown>
           </article>
 
-          <footer className="mt-12 rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
+          <footer className="mt-12 rounded-2xl border border-border/60 bg-background/60 p-6 shadow-md">
             <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>
             <div className="mt-4 flex items-center gap-3">
               <img

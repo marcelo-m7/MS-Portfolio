@@ -23,6 +23,25 @@
     <meta name="twitter:title" content="Marcelo Santos - Portfolio" />
     <meta name="twitter:description" content="Software Engineer & Founder @ Monynha Softwares" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <script>
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+      const applyTheme = (isDark) => {
+        document.documentElement.classList.toggle('dark', isDark);
+        document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+        document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+        window.dispatchEvent(new Event('themechange'));
+      };
+
+      applyTheme(mediaQuery.matches);
+
+      const handleChange = (event) => applyTheme(event.matches);
+      if (typeof mediaQuery.addEventListener === 'function') {
+        mediaQuery.addEventListener('change', handleChange);
+      } else if (typeof mediaQuery.addListener === 'function') {
+        mediaQuery.addListener(handleChange);
+      }
+    </script>
   </head>
 
   <body>
