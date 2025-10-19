@@ -49,7 +49,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.45 }}
-      className="group h-full overflow-hidden border-border/70 bg-card/80 shadow-[0_22px_48px_-32px_rgba(124,58,237,0.35)] backdrop-blur"
+      className="group h-full overflow-hidden border-border/70 bg-card/80 shadow-[0_22px_48px_-32px_hsl(var(--primary)_/_0.35)] backdrop-blur"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
         <motion.img
