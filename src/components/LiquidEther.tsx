@@ -2,6 +2,46 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import './LiquidEther.css';
 
+const COLOR_FALLBACK = '#ffffff';
+
+function createColorResolverElement(): HTMLSpanElement | null {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return null;
+  }
+  const body = document.body;
+  if (!body) return null;
+
+  const element = document.createElement('span');
+  element.style.position = 'absolute';
+  element.style.left = '-9999px';
+  element.style.top = '-9999px';
+  element.style.width = '0';
+  element.style.height = '0';
+  element.style.opacity = '0';
+  element.style.pointerEvents = 'none';
+  element.style.visibility = 'hidden';
+  body.appendChild(element);
+  return element;
+}
+
+function resolveColorStops(stops: string[], resolver: HTMLSpanElement | null): string[] {
+  if (!Array.isArray(stops) || stops.length === 0) return [];
+  if (!resolver) {
+    return stops.map(color => color || COLOR_FALLBACK);
+  }
+
+  return stops.map(color => {
+    if (!color) return COLOR_FALLBACK;
+    resolver.style.color = '';
+    resolver.style.color = color;
+    const computed = getComputedStyle(resolver).color;
+    if (computed && computed !== 'rgba(0, 0, 0, 0)') {
+      return computed;
+    }
+    return color || COLOR_FALLBACK;
+  });
+}
+
 export default function LiquidEther({
   mouseForce = 20,
   cursorSize = 100,
@@ -13,7 +53,7 @@ export default function LiquidEther({
   BFECC = true,
   resolution = 0.5,
   isBounce = false,
-  colors = ['#292966', '#2682D9', '#9966CC'], // Updated to deep indigo, vibrant sky blue, soft lavender
+  colors = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))'],
   style = {},
   className = '',
   autoDemo = true,
@@ -33,6 +73,8 @@ export default function LiquidEther({
 
   useEffect(() => {
     if (!mountRef.current) return;
+
+    const colorResolver = createColorResolverElement();
 
     function makePaletteTexture(stops: string[]) {
       let arr;
@@ -64,7 +106,7 @@ export default function LiquidEther({
       return tex;
     }
 
-    const paletteTex = makePaletteTexture(colors);
+    const paletteTex = makePaletteTexture(resolveColorStops(colors, colorResolver));
     const bgVec4 = new THREE.Vector4(0, 0, 0, 0); // always transparent
 
     class CommonClass {
@@ -1293,6 +1335,9 @@ export default function LiquidEther({
         webglRef.current.dispose();
       }
       webglRef.current = null;
+      if (colorResolver && colorResolver.parentNode) {
+        colorResolver.parentNode.removeChild(colorResolver);
+      }
     };
   }, [
     BFECC,
