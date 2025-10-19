@@ -46,11 +46,15 @@ export default function Footer() {
             <MotionLink
               to="/"
               className="flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05, boxShadow: '0 0 15px rgba(var(--primary-hsl)/0.3)' }}
+              whileHover={
+                prefersReducedMotion
+                  ? undefined
+                  : { scale: 1.05, boxShadow: '0 0 15px hsl(var(--primary) / 0.3)' }
+              }
               whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_rgba(var(--secondary-hsl)/0.2)]">
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-display text-base text-white shadow-[0_0_12px_hsl(var(--secondary)/0.2)]">
                 M
               </span>
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">

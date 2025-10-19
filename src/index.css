@@ -19,15 +19,18 @@ All colors MUST be HSL.
 
     --primary: 240 60% 40%; /* Deep Indigo */
     --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
+    --primary-hsl: 240 60% 40%;
 
     --secondary: 210 70% 50%; /* Vibrant Sky Blue */
     --secondary-foreground: 0 0% 98%;
+    --secondary-hsl: 210 70% 50%;
 
     --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
     --muted-foreground: 220 10% 70%; /* Light gray for muted text */
 
     --accent: 270 40% 60%; /* Soft Lavender Purple */
     --accent-foreground: 0 0% 98%;
+    --accent-hsl: 270 40% 60%;
 
     --destructive: 0 63% 31%; /* Keep vibrant red */
     --destructive-foreground: 0 0% 98%;
