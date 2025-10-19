@@ -78,6 +78,11 @@ The portfolio content is authored in Portuguese. The helper located at `src/lib/
 
 When introducing new locales, extend the `SUPPORTED_LANGUAGES` tuple inside `src/lib/language.ts` and provide translated copy for the pages and JSON datasets under `public/data/`.
 
+### Internationalization roadmap
+
+- The project runs on Vite and React Router—see the [technical issue record](docs/technical-issue-nextjs.md) that formalizes the lack of Next.js support given the current stack defined in `package.json` and `src/App.tsx`.
+- Stakeholders agreed to adopt [`react-i18next`](https://react.i18next.com/) instead of migrating to Next.js. The [internationalization specification](docs/i18n-spec.md) outlines the dependencies to add, how to integrate them with `src/main.tsx`, `src/App.tsx`, and `src/lib/language.ts`, and the expected impacts on existing routes.
+
 To change the language programmatically you can call:
 
 ```ts
