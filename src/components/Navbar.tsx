@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import cvData from '../../public/data/cv.json';
+import { ThemeToggle } from './ThemeToggle';
 
 const MotionLink = motion(Link);
 
@@ -94,6 +95,8 @@ export default function Navbar() {
             })}
           </motion.div>
 
+          <ThemeToggle />
+
         </div>
 
         <button
@@ -136,6 +139,8 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
+              <ThemeToggle />
             </div>
           </motion.div>
         )}

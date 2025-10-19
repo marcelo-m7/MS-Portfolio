@@ -1,26 +1,71 @@
-# Monynha Portfolio Code Audit Report
+# Auditoria Visual — Marcelo Portigolio
 
-## Código e Organização
-- Remoção do módulo `src/lib/supabase.ts`, que estava obsoleto e não era referenciado no aplicativo.
-- Tipagens aprimoradas nos componentes de UI (`command` e `textarea`) para eliminar interfaces vazias e evitar uso de `any`.
-- Remoção da dependência do Google Translate com a introdução do helper local (`src/lib/language.ts`) para sincronizar o atributo `lang` e eventos de idioma de forma tipada.
+## Sumário
 
-## Experiência do Usuário & Visual
-- Hero estático atualizado com gradações em HSL, alinhando os visuais aos tons oficiais (#7C3AED, #0EA5E9, #EC4899).
-- Tailwind configurado com famílias `Inter`, `Space Grotesk` e agora `JetBrains Mono`, garantindo consistência tipográfica.
-- Fonte JetBrains carregada no `index.html` para seções de código e detalhes técnicos.
-- Cartões de séries harmonizados (`SeriesDetail`) com semântica de links clara para rotas internas e externas.
-- Pré-visualização 3D das artes agora respeita uma flag `VITE_ENABLE_ART_3D`, evitando carregar bibliotecas pesadas quando o recurso estiver desativado.
+### Erros encontrados
+- Modo claro inexistente: todos os layouts herdavam os tokens escuros, produzindo baixo contraste e falta de paridade cromática com a identidade oficial (Home, Portfolio, About, Contact).
+- Componentes shadcn/ui sem padronização: botões, cards e campos de formulário estavam com `rounded-md`/`shadow-sm`, fugindo do guideline `rounded-2xl` + `shadow-md` e variando bordas e preenchimentos entre páginas.
 
-## Formulários e Integrações
-- Formulário de contato passa a reutilizar um estado inicial imutável e atualizações funcionais de estado, evitando condições de corrida.
-- Logs de Supabase agora aparecem apenas em ambiente de desenvolvimento, mantendo o console limpo em produção.
-- Tratamento de erros no formulário de contato mantém registro apenas em modo desenvolvimento.
+### Correções aplicadas
+- Recriado o sistema de tokens com paletas light/dark em HSL, incluindo tipografia, foco visível e utilitário `glass` com sombra consistente, além de prover `ThemeProvider` + `ThemeToggle` para alternância acessível.
+- Normalizados Button, Card, Input e Textarea para `rounded-2xl` + `shadow-md`, assegurando alinhamento com o design system em formulários, cards do portfólio e CTA.
 
-## Acessibilidade e Performance
-- Links de cartões no portfólio usam componentes adequados (`Link` ou `<a>`) com foco visível, melhorando navegação por teclado.
-- Imagens de cards continuam com `loading="lazy"` e atributos alt descritivos.
+### Prints de antes/depois
+- Home (desktop light/dark)
+- Portfolio (desktop + mobile light/dark)
+- About (desktop light/dark)
+- Contact (desktop light/dark)
 
-## Validações
-- `npm run lint` executado para garantir que não há erros de lint.
-- `npm run build` executado para validar o empacotamento de produção e monitorar o tamanho dos bundles.
+## Prints e Descrições
+
+### Home — estado anterior
+![Home antes (desktop light)](browser:/invocations/gyzzmyad/artifacts/artifacts/home-desktop-light.png)
+![Home antes (desktop dark)](browser:/invocations/gyzzmyad/artifacts/artifacts/home-desktop-dark.png)
+- **Problema:** o modo claro replicava o mesmo fundo escuro, removendo contraste e sinalizações de foco; botões apresentavam sombras discrepantes e não respeitavam a padronização de raio.
+- **Correção sugerida:** definir paleta clara dedicada, ajustar foco, consolidar tokens globais e padronizar componentes.
+
+### Home — após correções
+![Home depois (desktop light)](browser:/invocations/ehitjnep/artifacts/artifacts/home-desktop-light-after.png)
+![Home depois (desktop dark)](browser:/invocations/ehitjnep/artifacts/artifacts/home-desktop-dark-after.png)
+- **Resultado:** modo claro com fundo #F5F8FF equivalente à identidade, contraste reforçado nas chamadas e foco azul consistente; toggle de tema visível no navbar com botões `rounded-2xl`.
+
+### Portfolio — estado anterior
+![Portfolio antes (desktop light)](browser:/invocations/fjjgshmh/artifacts/artifacts/portfolio-desktop-light.png)
+![Portfolio antes (desktop dark)](browser:/invocations/fjjgshmh/artifacts/artifacts/portfolio-desktop-dark.png)
+![Portfolio antes (mobile light)](browser:/invocations/fjjgshmh/artifacts/artifacts/portfolio-mobile-light.png)
+![Portfolio antes (mobile dark)](browser:/invocations/fjjgshmh/artifacts/artifacts/portfolio-mobile-dark.png)
+- **Problema:** cartões herdavam `rounded-[var(--radius)]` e sombras customizadas conflitantes com o guideline; chips de filtro no modo claro ficavam sem contraste perceptível.
+- **Correção sugerida:** usar tokens globais para cards, ajustar sombras/bordas, garantir contraste nos filtros em ambos os temas.
+
+### Portfolio — após correções
+![Portfolio depois (desktop light)](browser:/invocations/ehitjnep/artifacts/artifacts/portfolio-desktop-light-after.png)
+![Portfolio depois (desktop dark)](browser:/invocations/ehitjnep/artifacts/artifacts/portfolio-desktop-dark-after.png)
+![Portfolio depois (mobile light)](browser:/invocations/ehitjnep/artifacts/artifacts/portfolio-mobile-light-after.png)
+![Portfolio depois (mobile dark)](browser:/invocations/ehitjnep/artifacts/artifacts/portfolio-mobile-dark-after.png)
+- **Resultado:** cartões com `rounded-2xl`, sombras moderadas e contraste alinhado; filtros exibem estados ativos legíveis em ambos os temas.
+
+### About — estado anterior
+![About antes (desktop)](browser:/invocations/fjjgshmh/artifacts/artifacts/about-desktop-light.png)
+- **Problema:** ausência de modo claro e cards com vidragem sem sombra padrão, comprometendo hierarquia visual.
+- **Correção sugerida:** aplicar tokens claros e padronizar `glass` para reproduzir sombra média.
+
+### About — após correções
+![About depois (desktop light)](browser:/invocations/ehitjnep/artifacts/artifacts/about-desktop-light-after.png)
+![About depois (desktop dark)](browser:/invocations/ehitjnep/artifacts/artifacts/about-desktop-dark-after.png)
+- **Resultado:** cards com vidro translúcido consistente, contraste entre títulos e fundos e preservação do guideline de raio.
+
+### Contact — estado anterior
+![Contact antes (desktop)](browser:/invocations/fjjgshmh/artifacts/artifacts/contact-desktop-light.png)
+- **Problema:** formulário sem variação de tema, inputs com cantos retos (`rounded-md`) e sombras inconsistentes.
+- **Correção sugerida:** padronizar componentes de formulário com `rounded-2xl` + `shadow-md` e atualizar tokens.
+
+### Contact — após correções
+![Contact depois (desktop light)](browser:/invocations/ehitjnep/artifacts/artifacts/contact-desktop-light-after.png)
+![Contact depois (desktop dark)](browser:/invocations/ehitjnep/artifacts/artifacts/contact-desktop-dark-after.png)
+- **Resultado:** campos com raio suave, sombra uniforme e contraste adequado no modo claro/escuro.
+
+## Checklist de Conformidade
+✅ Paleta e tokens
+✅ Tipografia
+✅ Acessibilidade
+✅ Layout responsivo

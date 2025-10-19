@@ -2,55 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL. */
 
 @layer base {
   :root {
-    --background: 220 10% 8%; /* Very dark gray, almost black */
-    --foreground: 0 0% 98%; /* White for text */
+    color-scheme: light;
 
-    --card: 220 10% 12%; /* Slightly lighter dark gray for card backgrounds */
-    --card-foreground: 0 0% 98%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
 
-    --popover: 220 10% 12%;
-    --popover-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
 
-    --primary: 240 60% 40%; /* Deep Indigo */
-    --primary-foreground: 0 0% 98%; /* White for text on primary buttons */
-    --primary-hsl: 240 60% 40%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
 
-    --secondary: 210 70% 50%; /* Vibrant Sky Blue */
-    --secondary-foreground: 0 0% 98%;
-    --secondary-hsl: 210 70% 50%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 210 40% 98%;
+    --primary-hsl: 262 83% 58%;
 
-    --muted: 220 10% 25%; /* Medium dark gray for muted backgrounds */
-    --muted-foreground: 220 10% 70%; /* Light gray for muted text */
+    --secondary: 199 89% 48%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-hsl: 199 89% 48%;
 
-    --accent: 270 40% 60%; /* Soft Lavender Purple */
-    --accent-foreground: 0 0% 98%;
-    --accent-hsl: 270 40% 60%;
+    --muted: 216 31% 91%;
+    --muted-foreground: 222 30% 45%;
 
-    --destructive: 0 63% 31%; /* Keep vibrant red */
-    --destructive-foreground: 0 0% 98%;
+    --accent: 330 81% 60%;
+    --accent-foreground: 210 40% 98%;
+    --accent-hsl: 330 81% 60%;
 
-    --border: 220 10% 20%; /* Subtle dark gray border */
-    --input: 220 10% 12%; /* Dark input background */
-    --ring: 210 70% 50%; /* Secondary blue for focus ring */
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 1.5rem; /* Increased border radius for softer, polished look */
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 199 89% 48%;
 
-    /* Custom tokens */
-    --hero-gradient-start: 240 60% 40%;
-    --hero-gradient-end: 210 70% 50%;
-    --glow-purple: 240 60% 40%;
-    --glow-blue: 210 70% 50%;
-    --glow-pink: 270 40% 60%;
-    
-    /* Animations */
+    --surface-elevated: 210 40% 96%;
+    --radius: 1rem;
+
+    --hero-gradient-start: 262 83% 58%;
+    --hero-gradient-end: 199 89% 48%;
+    --glow-purple: 262 83% 58%;
+    --glow-blue: 199 89% 48%;
+    --glow-pink: 330 81% 60%;
+
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --background: 222 47% 8%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 12%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    --muted: 222 25% 20%;
+    --muted-foreground: 215 20% 75%;
+
+    --accent: 330 81% 60%;
+    --accent-foreground: 210 40% 98%;
+
+    --border: 222 20% 24%;
+    --input: 222 20% 18%;
+    --ring: 199 89% 58%;
+
+    --surface-elevated: 222 30% 14%;
   }
 }
 
@@ -60,25 +85,25 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: 'rlig' 1, 'calt' 1;
+    @apply bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
   }
 
   :focus-visible {
-    outline: 2px solid hsl(var(--secondary));
+    outline: 2px solid hsl(var(--ring));
     outline-offset: 4px;
     border-radius: calc(var(--radius) / 1.5);
   }
 
   /* Ensure OGL canvas doesn't interfere with layout */
   canvas[data-ogl] {
-    display: block;
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Important to allow interaction with elements above it */
+    pointer-events: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -98,7 +123,12 @@ All colors MUST be HSL.
   }
 
   .glass {
-    @apply bg-card border border-border/50; /* Removed /80 and backdrop-blur-xl */
+    @apply border border-border/60 bg-card/80 shadow-md backdrop-blur-xl;
+  }
+
+  .surface-elevated {
+    background-color: hsl(var(--surface-elevated) / 0.9);
+    box-shadow: 0 24px 48px -32px hsl(var(--primary) / 0.25);
   }
 
   .glow-purple {
