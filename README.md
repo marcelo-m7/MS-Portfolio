@@ -8,6 +8,16 @@
 
 There are several ways of editing your application.
 
+## Package manager
+
+This project standardizes on **npm** for dependency management to keep parity between local development and the Nixpacks-based VPS deployment.
+
+- Install dependencies: `npm ci` (or `npm install` for the initial lockfile generation).
+- Build the production bundle: `npm run build`.
+- Run the local development server: `npm run dev`.
+- Preview the production bundle locally: `npm run preview`.
+- Execute the test suite: `npm test`.
+
 **Use Lovable**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and start prompting.
