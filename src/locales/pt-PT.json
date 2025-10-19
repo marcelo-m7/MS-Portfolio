@@ -1,0 +1,66 @@
+{
+  "languageSwitcher": {
+    "ariaLabel": "Alterar idioma para {locale}",
+    "label": "Idiomas"
+  },
+  "fallback": {
+    "badge": "Auto-fallback",
+    "description": "{count, plural, one {1 chave sem tradução. A versão em Português está a ser usada.} other {{count} chaves sem tradução. A versão em Português está a ser usada.}}"
+  },
+  "home": {
+    "eyebrow": "Monynha Softwares · {location}",
+    "title": "Olá, sou {name}",
+    "subtitle": "{headline}",
+    "bio": "Construo produtos digitais inclusivos, com foco em impacto humano, acessibilidade e narrativas que unem tecnologia, cultura e arte.",
+    "ctaPrimary": "Explorar portfólio",
+    "ctaSecondary": "Entrar em contacto",
+    "ctaSection": {
+      "title": "Vamos criar a próxima grande história?",
+      "description": "Do discovery à manutenção, ajudo equipas a desenhar experiências memoráveis, com estratégias de internacionalização e acessibilidade desde o dia zero.",
+      "button": "Marcar uma conversa"
+    }
+  },
+  "stats": {
+    "experience": {
+      "label": "Experiência",
+      "value": "+12 anos a lançar produtos e liderar equipas multidisciplinares"
+    },
+    "clients": {
+      "label": "Projetos",
+      "value": "Aplicações, plataformas e experiências imersivas"
+    },
+    "investment": {
+      "label": "Valor em produtos",
+      "value": "Mais de {date} a gerar valor e confiança para clientes globais"
+    }
+  },
+  "portfolio": {
+    "title": "Portfólio",
+    "description": "Seleção de plataformas, produtos e experiências criadas com a Monynha Softwares.",
+    "visit": "Visitar projeto"
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "Escolha o canal que preferir e vamos conversar sobre tecnologia, arte e inovação.",
+    "email": {
+      "title": "Email",
+      "description": "Resposta em menos de 24h com roadmap inicial e próximos passos.",
+      "cta": "Enviar email"
+    },
+    "chat": {
+      "title": "Conversas rápidas",
+      "description": "Disponível para mentorias, podcasts e convites para conferências.",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    },
+    "collab": {
+      "title": "Colaborações criativas",
+      "description": "Aberto a residências artísticas, consultorias em i18n e co-criação de narrativas digitais inclusivas."
+    }
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "Não conseguimos encontrar o conteúdo que procurava. Talvez tenha sido movido ou ainda esteja a ganhar forma.",
+    "cta": "Voltar à página inicial"
+  }
+}

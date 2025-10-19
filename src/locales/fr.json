@@ -1,0 +1,66 @@
+{
+  "languageSwitcher": {
+    "ariaLabel": "Changer la langue vers {locale}",
+    "label": "Langues"
+  },
+  "fallback": {
+    "badge": "Auto-fallback",
+    "description": "{count, plural, one {Contenu portugais utilisé pour 1 clé manquante.} other {Contenu portugais utilisé pour {count} clés manquantes.}}"
+  },
+  "home": {
+    "eyebrow": "Monynha Softwares · {location}",
+    "title": "Bonjour, je suis {name}",
+    "subtitle": "{headline}",
+    "bio": "Je conçois des produits inclusifs qui relient technologie, culture et art.",
+    "ctaPrimary": "Explorer le portfolio",
+    "ctaSecondary": "Entrer en contact",
+    "ctaSection": {
+      "title": "Prêt·e pour une nouvelle histoire?",
+      "description": "J'accompagne les équipes pour lancer des expériences accessibles et prêtes pour l'international.",
+      "button": "Planifier un échange"
+    }
+  },
+  "stats": {
+    "experience": {
+      "label": "Expérience",
+      "value": "12+ ans à lancer des produits et à diriger des équipes multidisciplinaires"
+    },
+    "clients": {
+      "label": "Projets",
+      "value": "Applications, plateformes et expériences immersives"
+    },
+    "investment": {
+      "label": "Valeur créée",
+      "value": "Une confiance construite pour des clients mondiaux depuis {date}"
+    }
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "description": "Sélection de projets et d'expérimentations signées Monynha Softwares.",
+    "visit": "Voir le projet"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Choisissez votre canal préféré et discutons.",
+    "email": {
+      "title": "E-mail",
+      "description": "Réponse en moins de 24h avec une première feuille de route.",
+      "cta": "Envoyer un e-mail"
+    },
+    "chat": {
+      "title": "Discussions rapides",
+      "description": "Disponible pour mentorat, podcasts et conférences.",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    },
+    "collab": {
+      "title": "Collaborations créatives",
+      "description": "Ouvert aux résidences artistiques, au conseil i18n et au storytelling inclusif."
+    }
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "Impossible de trouver ce contenu. La page a peut-être changé ou est encore en cours de création.",
+    "cta": "Retour à l'accueil"
+  }
+}

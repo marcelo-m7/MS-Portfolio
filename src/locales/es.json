@@ -1,0 +1,66 @@
+{
+  "languageSwitcher": {
+    "ariaLabel": "Cambiar idioma a {locale}",
+    "label": "Idiomas"
+  },
+  "fallback": {
+    "badge": "Auto-fallback",
+    "description": "{count, plural, one {Usando el contenido en portugués para 1 clave faltante.} other {Usando el contenido en portugués para {count} claves faltantes.}}"
+  },
+  "home": {
+    "eyebrow": "Monynha Softwares · {location}",
+    "title": "Hola, soy {name}",
+    "subtitle": "{headline}",
+    "bio": "Creo productos digitales inclusivos con enfoque en impacto humano, accesibilidad y narrativa.",
+    "ctaPrimary": "Explorar portafolio",
+    "ctaSecondary": "Ponerse en contacto",
+    "ctaSection": {
+      "title": "¿Creamos la próxima gran historia?",
+      "description": "Acompaño a equipos para lanzar experiencias globales y accesibles desde el día uno.",
+      "button": "Agendar reunión"
+    }
+  },
+  "stats": {
+    "experience": {
+      "label": "Experiencia",
+      "value": "Más de 12 años lanzando productos y guiando equipos creativos"
+    },
+    "clients": {
+      "label": "Proyectos",
+      "value": "Aplicaciones, plataformas y experiencias inmersivas"
+    },
+    "investment": {
+      "label": "Valor generado",
+      "value": "Construyendo confianza para clientes globales desde {date}"
+    }
+  },
+  "portfolio": {
+    "title": "Portafolio",
+    "description": "Selección de proyectos y experimentos de Monynha Softwares.",
+    "visit": "Ver proyecto"
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "Elige tu canal favorito y conversemos.",
+    "email": {
+      "title": "Correo",
+      "description": "Respuesta en menos de 24h con los próximos pasos.",
+      "cta": "Enviar correo"
+    },
+    "chat": {
+      "title": "Charlas rápidas",
+      "description": "Disponible para mentorías, podcasts y conferencias.",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    },
+    "collab": {
+      "title": "Colaboraciones creativas",
+      "description": "Abierto a residencias, consultorías i18n y storytelling inclusivo."
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "No encontramos lo que buscabas. Puede que la página haya cambiado o siga en construcción.",
+    "cta": "Volver al inicio"
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "languageSwitcher": {
+    "ariaLabel": "Switch language to {locale}",
+    "label": "Languages"
+  },
+  "fallback": {
+    "badge": "Auto-fallback",
+    "description": "{count, plural, one {Using the Portuguese copy for 1 missing key.} other {Using the Portuguese copy for {count} missing keys.}}"
+  },
+  "home": {
+    "eyebrow": "Monynha Softwares · {location}",
+    "title": "Hi, I'm {name}",
+    "subtitle": "{headline}",
+    "ctaPrimary": "Explore portfolio",
+    "ctaSecondary": "Get in touch",
+    "ctaSection": {
+      "title": "Ready to craft the next big story?",
+      "description": "From strategy to launch, I help teams ship inclusive, international-ready experiences.",
+      "button": "Book a call"
+    }
+  },
+  "stats": {
+    "experience": {
+      "label": "Experience",
+      "value": "12+ years launching products and leading creative squads"
+    },
+    "clients": {
+      "label": "Projects",
+      "value": "Apps, platforms and immersive experiments"
+    },
+    "investment": {
+      "label": "Product value",
+      "value": "Building trust for global partners since {date}"
+    }
+  },
+  "portfolio": {
+    "title": "Portfolio",
+    "description": "A curated selection of Monynha Softwares experiments and products.",
+    "visit": "Open project"
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Pick your favourite channel and let's collaborate.",
+    "email": {
+      "title": "Email",
+      "description": "Replies within 24h with an initial roadmap and next steps.",
+      "cta": "Send email"
+    },
+    "chat": {
+      "title": "Quick chats",
+      "description": "Available for mentoring, podcasts and conference talks.",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    },
+    "collab": {
+      "title": "Creative collaborations",
+      "description": "Open to residencies, i18n consulting and inclusive storytelling sprints."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "We couldn't find what you were looking for. The page may have moved or is still in progress.",
+    "cta": "Back to homepage"
+  }
+}
