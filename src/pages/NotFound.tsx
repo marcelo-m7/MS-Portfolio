@@ -2,10 +2,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/hooks/useTranslations';
 
 const NotFound = () => {
   const location = useLocation();
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
 
   useEffect(() => {
     console.error(
@@ -24,10 +26,10 @@ const NotFound = () => {
         role="alert"
         aria-live="assertive"
       >
-        <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Erro 404</p>
-        <h1 className="mt-4 text-5xl font-display font-bold">Página não encontrada</h1>
+        <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">{t('NotFound.badge')}</p>
+        <h1 className="mt-4 text-5xl font-display font-bold">{t('NotFound.title')}</h1>
         <p className="mt-4 text-base text-muted-foreground">
-          O caminho <span className="font-mono text-primary">{location.pathname}</span> não existe. Volte à página inicial para continuar a explorar o universo Monynha.
+          {t('NotFound.message', { path: location.pathname })}
         </p>
         <div className="mt-8 flex justify-center">
           <Button
@@ -37,7 +39,7 @@ const NotFound = () => {
             whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
-            <Link to="/">Voltar para o Início</Link>
+            <Link to="/">{t('NotFound.cta')}</Link>
           </Button>
         </div>
       </motion.div>

@@ -11,6 +11,7 @@ import {
 } from "./lib/language";
 import type { SupportedLanguage } from "./lib/language";
 import Layout from "./components/Layout"; // Import the new Layout component
+import { useTranslations } from "./hooks/useTranslations";
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
@@ -26,6 +27,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const queryClient = new QueryClient();
 
 const App = () => {
+  const { t } = useTranslations();
+
   useEffect(() => {
     const initialLang = detectInitialLanguage();
     setLanguage(initialLang);
@@ -55,7 +58,7 @@ const App = () => {
             fallback={
               <div className="flex min-h-[50vh] items-center justify-center">
                 <span className="animate-pulse text-sm text-muted-foreground">
-                  Carregando…
+                  {t("App.loading")}
                 </span>
               </div>
             }

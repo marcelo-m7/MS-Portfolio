@@ -4,6 +4,7 @@ import { ExternalLink, Layers } from 'lucide-react';
 import React from 'react';
 
 const MotionLink = motion(Link);
+import { useTranslations } from '@/hooks/useTranslations';
 
 interface SeriesCardProps {
   series: {
@@ -18,6 +19,7 @@ interface SeriesCardProps {
 
 const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
 
   return (
     <motion.div
@@ -54,7 +56,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
                 {series.title}
               </h3>
               <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground whitespace-nowrap ml-2">
-                Série Criativa
+                {t('SeriesCard.category')}
               </span>
             </div>
 
@@ -65,7 +67,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
             <div className="flex flex-wrap gap-2">
               {series.works.length > 0 && (
                 <span className="text-xs px-2 py-1 rounded-md bg-muted/60 text-foreground/80">
-                  {series.works.length} obras
+                  {t('SeriesCard.workCount', { count: series.works.length })}
                 </span>
               )}
             </div>
@@ -76,7 +78,7 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
             to={`/series/${series.slug}`}
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            Ver Coleção Completa
+            {t('SeriesCard.viewCollection')}
             <ExternalLink size={16} aria-hidden />
           </Link>
         </div>

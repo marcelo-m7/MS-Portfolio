@@ -2,17 +2,20 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import cvData from '../../public/data/cv.json';
 import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 import { calculateReadingTime } from '@/lib/content';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 export default function Thoughts() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const { t } = useTranslations();
+  const cvData = useCvData();
 
   return (
     <div className="py-0 px-6">
@@ -29,18 +32,18 @@ export default function Thoughts() {
           >
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
-              Voltar para o Início
+              {t('Thoughts.back')}
             </Link>
           </Button>
 
           <header className="mb-12 text-center">
             <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Pensamentos
+                {t('Thoughts.title')}
               </span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.
+              {t('Thoughts.subtitle')}
             </p>
           </header>
 
@@ -81,7 +84,7 @@ export default function Thoughts() {
                     {thought.excerpt}
                   </p>
 
-                  <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
+                  <div className="mt-6 flex flex-wrap gap-2" aria-label={t('Common.labels.tags')}>
                     {thought.tags.map((tag) => (
                       <span
                         key={`${thought.slug}-${tag}`}
@@ -98,7 +101,7 @@ export default function Thoughts() {
                       to={`/thoughts/${thought.slug}`}
                       className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-foreground transition hover:border-primary/70 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      Ler Reflexão Completa
+                      {t('Thoughts.readMore')}
                       <ArrowRight className="h-4 w-4" aria-hidden />
                     </Link>
                   </div>
@@ -108,12 +111,12 @@ export default function Thoughts() {
           </div>
 
           <div className="mt-16 flex flex-col items-center gap-4 rounded-[var(--radius)] border border-border/60 bg-background/40 p-8 text-center shadow-[0_35px_70px_-60px_hsl(var(--secondary)/0.3)]">
-            <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Monynha Softwares Journal</p>
+            <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">{t('Common.labels.journal')}</p>
             <p className="text-2xl font-display font-semibold text-foreground">
-              Ideias, processos criativos e bastidores das experiências imersivas.
+              {t('Thoughts.footer.title')}
             </p>
             <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-6 py-2 text-sm">
-              <Link to="/contact">Partilhar um pensamento comigo</Link>
+              <Link to="/contact">{t('Common.actions.shareThought')}</Link>
             </Button>
           </div>
         </motion.div>

@@ -1,9 +1,15 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { MapPin, Briefcase, Award } from 'lucide-react';
-import cvData from '../../public/data/cv.json';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
+import { languageToLocale, useCurrentLanguage } from '@/hooks/useCurrentLanguage';
 
 export default function About() {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
+  const cvData = useCvData();
+  const language = useCurrentLanguage();
+  const locale = languageToLocale(language);
 
   return (
     <div className="px-6">
@@ -15,10 +21,10 @@ export default function About() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Sobre Mim
+            {t('About.title')}
           </h1>
           <p className="text-xl text-muted-foreground">
-            Conheça a história e experiência
+            {t('About.subtitle')}
           </p>
         </motion.div>
 
@@ -65,7 +71,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Briefcase className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Experiência</h2>
+            <h2 className="text-3xl font-display font-bold">{t('About.experience.title')}</h2>
           </div>
           
           <div className="space-y-6">
@@ -92,7 +98,10 @@ export default function About() {
                     </p>
                   </div>
                   <div className="text-sm text-muted-foreground mt-2 md:mt-0">
-                    {new Date(exp.start).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' })} - {exp.end ? new Date(exp.end).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' }) : 'Presente'}
+                    {new Date(exp.start).toLocaleDateString(locale, { month: 'short', year: 'numeric' })} -
+                    {exp.end
+                      ? new Date(exp.end).toLocaleDateString(locale, { month: 'short', year: 'numeric' })
+                      : t('About.experience.present')}
                   </div>
                 </div>
                 
@@ -117,7 +126,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Award className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Competências</h2>
+            <h2 className="text-3xl font-display font-bold">{t('About.skills.title')}</h2>
           </div>
           
           <div className="grid md:grid-cols-2 gap-4">

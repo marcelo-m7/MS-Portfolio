@@ -2,10 +2,13 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import cvData from '../../public/data/cv.json';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
+  const cvData = useCvData();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -75,7 +78,7 @@ export default function Home() {
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
-                  Explorar Portfolio
+                  {t('Home.hero.primaryCta')}
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
@@ -87,7 +90,7 @@ export default function Home() {
                 className="rounded-full text-lg px-8 py-6 border-2 border-border/80 bg-card/30 backdrop-blur-sm transition hover:border-primary/80 hover:text-primary"
               >
                 <Link to="/contact">
-                  Entre em Contato
+                  {t('Home.hero.secondaryCta')}
                 </Link>
               </Button>
             </motion.div>
@@ -101,11 +104,11 @@ export default function Home() {
                 className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
               >
                 <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
-                <span>Nova rota: reflexões em tecnologia e arte</span>
+                <span>{t('Home.hero.blogBadge')}</span>
               </motion.div>
               <Button asChild className="rounded-full bg-gradient-to-r from-secondary/70 to-primary/70 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_30px_-24px_hsl(var(--secondary)/0.75)] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background hover:brightness-105">
                 <Link to="/thoughts">
-                  Ler os pensamentos recentes
+                  {t('Home.hero.blogCta')}
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
               </Button>
@@ -141,10 +144,10 @@ export default function Home() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Projetos em Destaque
+              {t('Home.projects.title')}
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Seleção dos melhores trabalhos do ecossistema Monynha
+              {t('Home.projects.subtitle')}
             </p>
           </motion.div>
 
@@ -165,7 +168,7 @@ export default function Home() {
                     href={linkTarget}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Abrir ${project.name} em nova aba`}
+                    aria-label={t('Home.projects.openExternal', { name: project.name })}
                     className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     style={{ transformStyle: 'preserve-3d' }}
                     whileHover={
@@ -219,7 +222,7 @@ export default function Home() {
           >
             <Button asChild variant="outline" size="lg" className="rounded-full border-border/70">
               <Link to="/portfolio">
-                Ver Todos os Projetos
+                {t('Common.actions.viewProjects')}
                 <ArrowRight className="ml-2" />
               </Link>
             </Button>
@@ -238,10 +241,10 @@ export default function Home() {
             className="mb-12 text-center"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              Coleções & Arte
+              {t('Home.collections.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Experiências imersivas e séries experimentais que conectam tecnologia, narrativa e arte digital.
+              {t('Home.collections.subtitle')}
             </p>
           </motion.div>
 
@@ -261,10 +264,10 @@ export default function Home() {
                     <Layers aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
-                    Creative Systems
+                    {t('Home.collections.series.title')}
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground/90">
-                    Coleção de trabalhos que explora IA aplicada, automação inteligente e interfaces artísticas conectadas ao laboratório Monynha.
+                    {t('Home.collections.series.description')}
                   </p>
                 </div>
               </Link>
@@ -285,10 +288,10 @@ export default function Home() {
                     <Palette aria-hidden className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-2xl font-display font-semibold text-foreground transition-colors group-hover:text-primary">
-                    Art Leo Creative Spaces
+                    {t('Home.collections.art.title')}
                   </h3>
                   <p className="mt-3 text-sm text-muted-foreground/90">
-                    Experiência 3D com narrativas interativas e composição sonora inspirada nos espaços criativos de Leonardo Silva.
+                    {t('Home.collections.art.description')}
                   </p>
                 </div>
               </Link>

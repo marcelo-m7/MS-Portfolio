@@ -4,6 +4,7 @@ import { ExternalLink } from 'lucide-react';
 import React from 'react';
 
 const MotionLink = motion(Link);
+import { useTranslations } from '@/hooks/useTranslations';
 
 interface ArtworkCardProps {
   artwork: {
@@ -20,6 +21,7 @@ interface ArtworkCardProps {
 
 const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
 
   return (
     <motion.div
@@ -48,7 +50,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
               height={360}
               loading="lazy"
               decoding="async"
-              alt={`${artwork.title} – Arte Digital`}
+              alt={t('ArtworkCard.alt.thumbnail', { title: artwork.title })}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
               transition={{ duration: 0.3 }}
@@ -66,7 +68,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
                 {artwork.title}
               </h3>
               <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground whitespace-nowrap ml-2">
-                Arte Digital
+                {t('ArtworkCard.category')}
               </span>
             </div>
 
@@ -94,7 +96,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              Ver Experiência 3D
+              {t('ArtworkCard.view3D')}
               <ExternalLink size={16} aria-hidden />
             </a>
           </div>

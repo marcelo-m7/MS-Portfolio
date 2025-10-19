@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
-import cvData from '../../public/data/cv.json';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData } from '@/hooks/useCvData';
 
 const MotionLink = motion(Link);
 
 export default function Footer() {
   const prefersReducedMotion = useReducedMotion();
+  const { t } = useTranslations();
+  const cvData = useCvData();
 
   const socialLinks = [
     {
@@ -30,11 +33,11 @@ export default function Footer() {
   ];
 
   const navLinks = [
-    { href: '/', label: 'Início' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
+    { href: '/', label: t('Navbar.links.home') },
+    { href: '/portfolio', label: t('Navbar.links.portfolio') },
+    { href: '/about', label: t('Navbar.links.about') },
+    { href: '/thoughts', label: t('Navbar.links.thoughts') },
+    { href: '/contact', label: t('Navbar.links.contact') },
   ];
 
   return (
@@ -62,7 +65,7 @@ export default function Footer() {
               </span>
             </MotionLink>
             <p className="mt-4 text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Monynha Softwares. Todos os direitos reservados.
+              {t('Footer.copy', { year: new Date().getFullYear() })}
             </p>
           </div>
 

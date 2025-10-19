@@ -1,12 +1,14 @@
+import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Layers, ExternalLink } from 'lucide-react';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useCvData, type CvData } from '@/hooks/useCvData';
 
 const MotionButton = motion(Button);
 
@@ -29,8 +31,8 @@ const slugify = (value: string) =>
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 
-const buildWorkCards = (): Record<string, WorkCard> => {
-  const artworkMap = cvData.artworks.reduce<Record<string, WorkCard>>(
+const buildWorkCards = (data: CvData): Record<string, WorkCard> => {
+  const artworkMap = data.artworks.reduce<Record<string, WorkCard>>(
     (acc, artwork) => {
       acc[artwork.slug] = {
         slug: artwork.slug,
@@ -46,7 +48,7 @@ const buildWorkCards = (): Record<string, WorkCard> => {
     {},
   );
 
-  const projectMap = cvData.projects.reduce<Record<string, WorkCard>>(
+  const projectMap = data.projects.reduce<Record<string, WorkCard>>(
     (acc, project) => {
       const key = project.slug || slugify(project.name);
       acc[key] = {
@@ -66,25 +68,24 @@ const buildWorkCards = (): Record<string, WorkCard> => {
   return { ...projectMap, ...artworkMap };
 };
 
-const WORK_CARDS = buildWorkCards();
-
 export default function SeriesDetail() {
   const { slug } = useParams<{ slug: string }>();
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const { t } = useTranslations();
+  const cvData = useCvData();
+  const workCards = useMemo(() => buildWorkCards(cvData), [cvData]);
   const series = cvData.series.find((entry) => entry.slug === slug);
 
   if (!series) {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Série não encontrada</h1>
-          <p className="mt-4 text-muted-foreground">
-            A coleção que procuras não está disponível. Volte ao portfolio e explore outras experiências criativas.
-          </p>
+          <h1 className="text-4xl font-display font-bold text-primary">{t('SeriesDetail.notFound.title')}</h1>
+          <p className="mt-4 text-muted-foreground">{t('SeriesDetail.notFound.description')}</p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver Portfolio</Link>
+            <Link to="/portfolio">{t('SeriesDetail.notFound.cta')}</Link>
           </Button>
         </div>
       </div>
@@ -92,7 +93,7 @@ export default function SeriesDetail() {
   }
 
   const works: WorkCard[] = series.works
-    .map((workSlug) => WORK_CARDS[workSlug] || WORK_CARDS[slugify(workSlug)])
+    .map((workSlug) => workCards[workSlug] || workCards[slugify(workSlug)])
     .filter((card): card is WorkCard => Boolean(card));
 
   return (
@@ -114,7 +115,7 @@ export default function SeriesDetail() {
           >
             <Link to="/portfolio">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar ao Portfolio
+              {t('SeriesDetail.back')}
             </Link>
           </MotionButton>
 
@@ -126,7 +127,7 @@ export default function SeriesDetail() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <Layers className="h-4 w-4" aria-hidden />
-              Série Criativa
+              {t('SeriesDetail.category')}
             </motion.span>
             <motion.span
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
@@ -157,7 +158,7 @@ export default function SeriesDetail() {
                     <div className="mb-4 overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20">
                       <img
                         src={work.thumbnail}
-                        alt={`Arte ${work.title}`}
+                        alt={t('SeriesDetail.workThumbnail', { title: work.title })}
                         loading="lazy"
                         decoding="async"
                         width={640}
@@ -210,7 +211,7 @@ export default function SeriesDetail() {
             })}
             {works.length === 0 && (
               <div className="col-span-full rounded-[var(--radius)] border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
-                Novas obras para esta série serão adicionadas em breve.
+                {t('SeriesDetail.empty')}
               </div>
             )}
           </div>
