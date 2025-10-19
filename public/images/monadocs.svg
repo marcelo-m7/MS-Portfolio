@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
+  <title>Miniatura do template MonaDocs com cartões sobrepostos</title>
+  <defs>
+    <linearGradient id="monadocsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="32" fill="#020617" />
+  <rect x="40" y="40" width="560" height="280" rx="28" fill="rgba(12,17,33,0.9)" stroke="rgba(148,163,184,0.35)" stroke-width="1.5" />
+  <g opacity="0.85">
+    <rect x="110" y="110" width="200" height="140" rx="20" fill="url(#monadocsGradient)" />
+    <rect x="200" y="160" width="260" height="120" rx="18" fill="rgba(148,163,184,0.12)" stroke="rgba(14,165,233,0.6)" stroke-width="2" />
+    <rect x="340" y="90" width="180" height="110" rx="18" fill="rgba(124,58,237,0.25)" />
+  </g>
+  <path d="M170 190 H 460" stroke="rgba(241,245,249,0.55)" stroke-width="10" stroke-linecap="round" />
+  <path d="M170 220 H 390" stroke="rgba(241,245,249,0.4)" stroke-width="8" stroke-linecap="round" />
+  <circle cx="170" cy="150" r="14" fill="#38bdf8" />
+  <circle cx="210" cy="150" r="14" fill="#7C3AED" opacity="0.9" />
+  <circle cx="250" cy="150" r="14" fill="#EC4899" opacity="0.8" />
+  <text x="50%" y="86%" text-anchor="middle" fill="#e2e8f0" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="40" font-weight="600">
+    MonaDocs
+  </text>
+</svg>

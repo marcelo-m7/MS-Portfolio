@@ -16,64 +16,193 @@
   },
   "projects": [
     {
-      "slug": "monynha-com",
-      "name": "Monynha.com",
-      "summary": "Website institucional da Monynha Softwares — vitrine de produtos, valores e visão da marca.",
-      "fullDescription": "O Monynha.com é o portal oficial da Monynha Softwares, projetado para ser uma vitrine dinâmica e interativa dos nossos produtos, valores e visão. Construído com Next.js para performance e SEO, TailwindCSS para um design responsivo e moderno, e integrado com Payload CMS para gestão de conteúdo flexível e Supabase para o backend, este website reflete a nossa paixão por tecnologia, diversidade e arte digital. Apresenta uma experiência de utilizador fluida, com animações subtis e um foco em acessibilidade, garantindo que a nossa mensagem alcance todos os públicos.",
-      "stack": ["Next.js", "TailwindCSS", "Payload CMS", "Supabase"],
+      "slug": "botecopro",
+      "name": "BotecoPro",
+      "summary": "Sistema de gestão para bares e restaurantes com IA integrada para otimizar operações e melhorar a eficiência do negócio.",
+      "fullDescription": "BotecoPro centraliza operações de bares e restaurantes com automação de pedidos, gestão de estoque e dashboards em tempo real. A camada de IA recomenda ações preventivas, reduz desperdícios e empodera equipas a oferecer experiências consistentes em cada serviço.",
+      "stack": [
+        "Supabase",
+        "Flutter",
+        "React"
+      ],
       "url": "https://monynha.com",
-      "thumbnail": "/images/monynha-com.svg",
-      "category": "Website",
-      "year": 2024
-    },
-    {
-      "slug": "monynha-tech",
-      "name": "Monynha Tech",
-      "summary": "Blog técnico e central de documentação dos projetos Monynha. Plataforma voltada para desenvolvedores e estudantes.",
-      "stack": ["Next.js", "Supabase", "CI/CD", "Markdown"],
-      "url": "https://monynha.tech",
-      "thumbnail": "/images/monynha-tech.svg",
-      "category": "Plataforma",
+      "domain": "monynha.com",
+      "repoUrl": "https://github.com/Monynha-Softwares/BotecoPro",
+      "thumbnail": "/images/botecopro.svg",
+      "category": "Soluções Empresariais",
+      "status": "Desenvolvimento",
+      "visibility": "Interna",
       "year": 2025
     },
     {
       "slug": "facodi",
       "name": "FACODI",
-      "summary": "Faculdade Comunitária Digital — portal gratuito de ensino superior aberto e colaborativo, alimentado por currículos oficiais e conteúdo público.",
-      "stack": ["Next.js", "Supabase", "Payload CMS"],
+      "summary": "Faculdade Comunitária Digital — plataforma de educação comunitária aberta e gratuita, com foco em inclusão social.",
+      "fullDescription": "FACODI democratiza o acesso a cursos superiores por meio de trilhas interativas, conteúdos revisados por especialistas e ferramentas de apoio comunitário. A plataforma prioriza acessibilidade, conectividade de baixa largura de banda e governança colaborativa.",
+      "stack": [
+        "Next.js",
+        "Supabase",
+        "Payload CMS"
+      ],
       "url": "https://facodi.pt",
+      "domain": "facodi.pt",
+      "repoUrl": "https://github.com/Monynha-Softwares/facodi.pt",
       "thumbnail": "/images/facodi.svg",
       "category": "Educação",
+      "status": "Produção",
+      "visibility": "Pública",
       "year": 2025
     },
     {
-      "slug": "boteco-pro",
-      "name": "Boteco Pro",
-      "summary": "Aplicativo de gestão para bares e restaurantes, desenvolvido em Flutter e Supabase.",
-      "stack": ["Flutter", "Supabase", "PostgreSQL"],
-      "url": "https://boteco.monynha.online",
-      "thumbnail": "/images/botecopro.svg",
-      "category": "App",
+      "slug": "monynhatech",
+      "name": "MonynhaTech",
+      "summary": "Blog técnico e centro de documentação multilíngue da empresa.",
+      "fullDescription": "MonynhaTech concentra notas técnicas, tutoriais e a visão de arquitetura dos produtos Monynha. A curadoria em múltiplos idiomas garante que equipas globais acompanhem decisões, padrões de design e integrações com a stack oficial.",
+      "stack": [
+        "Next.js",
+        "Payload CMS",
+        "Internacionalização"
+      ],
+      "url": "https://monynha.tech",
+      "domain": "monynha.tech",
+      "repoUrl": "https://github.com/Monynha-Softwares/MonynhaTech",
+      "thumbnail": "/images/monynha-tech.svg",
+      "category": "Documentação",
+      "status": "MVP",
+      "visibility": "Interna",
       "year": 2025
     },
     {
-      "slug": "art-leo",
+      "slug": "artleo",
       "name": "Art Leo",
-      "summary": "Website 3D imersivo para o artista Leonardo Silva, explorando arte, animação e interação digital.",
-      "stack": ["Next.js", "react-three-fiber", "Supabase"],
+      "summary": "Portfólio artístico e espaço de demonstrações criativas.",
+      "fullDescription": "Art Leo apresenta narrativas digitais, esculturas 3D e experiências interativas desenvolvidas com React Three Fiber. O projeto celebra artistas LGBTQIAP+ e mantém performance otimizada para dispositivos móveis e realidade aumentada.",
+      "stack": [
+        "Next.js",
+        "React Three Fiber",
+        "Supabase"
+      ],
       "url": "https://artleo.monynha.com",
+      "domain": "artleo.monynha.com",
+      "repoUrl": "https://github.com/Monynha-Softwares/artleo-creative-spaces",
       "thumbnail": "/images/artleo.svg",
-      "category": "Portfólio",
+      "category": "Arte Digital",
+      "status": "Produção",
+      "visibility": "Pública",
       "year": 2025
     },
     {
-      "slug": "monagent",
-      "name": "Monagent",
-      "summary": "Framework modular em Python para criação de agentes de IA e integração com automações (n8n, APIs, ferramentas de dados).",
-      "stack": ["Python", "FastAPI", "n8n", "Supabase"],
-      "url": "https://github.com/Monynha-Softwares/Monagent",
-      "thumbnail": "/images/monagent.svg",
+      "slug": "assistina",
+      "name": "AssisTina",
+      "summary": "Assistente virtual por IA para atendimento e automação de processos.",
+      "fullDescription": "AssisTina combina modelos de linguagem, fluxos de automação e integrações omnicanal para responder clientes com rapidez e empatia. A solução aprende com feedback humano e mantém trilhas auditáveis para governança responsável de IA.",
+      "stack": [
+        "LLMs",
+        "WhatsApp API",
+        "Dashboards"
+      ],
+      "url": null,
+      "domain": null,
+      "repoUrl": "https://github.com/Monynha-Softwares/AssisTina",
+      "thumbnail": "/images/assistina.svg",
+      "category": "IA Conversacional",
+      "status": "Desenvolvimento",
+      "visibility": "Interna",
+      "year": 2025
+    },
+    {
+      "slug": "monadocs",
+      "name": "MonaDocs",
+      "summary": "Template de documentação técnica para portais e produtos Monynha.",
+      "fullDescription": "MonaDocs oferece uma base estática elegante para portais de documentação com suporte a Markdown avançado, componentes shadcn/ui e integração contínua com o design system Monynha.",
+      "stack": [
+        "Static Site",
+        "Markdown",
+        "Design System"
+      ],
+      "url": "https://docs.monynha.com",
+      "domain": "docs.monynha.com",
+      "repoUrl": "https://github.com/Monynha-Softwares/MonaDocs",
+      "thumbnail": "/images/monadocs.svg",
+      "category": "Documentação",
+      "status": "Produção",
+      "visibility": "Pública",
+      "year": 2024
+    },
+    {
+      "slug": "monynha-com",
+      "name": "Monynha.com (Institucional)",
+      "summary": "Site institucional da Monynha Softwares com branding e informações corporativas.",
+      "fullDescription": "O site institucional consolida manifesto, propostas de valor e canais de contacto da Monynha Softwares. A arquitetura prioriza performance, acessibilidade AA e narrativa alinhada ao dossiê institucional.",
+      "stack": [
+        "Next.js",
+        "Tailwind CSS",
+        "Design System Monynha"
+      ],
+      "url": "https://monynha.com",
+      "domain": "monynha.com",
+      "repoUrl": "https://github.com/Monynha-Softwares/Monynha-com",
+      "thumbnail": "/images/monynha-com.svg",
+      "category": "Institucional",
+      "status": "Produção",
+      "visibility": "Pública",
+      "year": 2024
+    },
+    {
+      "slug": "infra-hub",
+      "name": "Infra Hub (Monynha Online)",
+      "summary": "Hub central da infraestrutura Monynha Online, baseado em Coolify.",
+      "fullDescription": "Infra Hub orquestra pipelines, monitorização e deploys automatizados com Coolify e contêineres isolados. A camada de observabilidade garante estabilidade para experiências públicas e privadas do ecossistema Monynha.",
+      "stack": [
+        "Coolify",
+        "Containers",
+        "Observability"
+      ],
+      "url": "https://monynha.online",
+      "domain": "monynha.online",
+      "repoUrl": "https://github.com/Monynha-Softwares/MonynhaOnline-Default-Page",
+      "thumbnail": "/images/infra-hub.svg",
+      "category": "Infraestrutura",
+      "status": "MVP",
+      "visibility": "Interna",
+      "year": 2024
+    },
+    {
+      "slug": "open-webui",
+      "name": "Open WebUI",
+      "summary": "Instância Open WebUI para IA local e web.",
+      "fullDescription": "A instância Open WebUI da Monynha facilita experimentação segura com modelos locais e serviços hospedados. O ambiente é integrado ao Infra Hub e segue políticas de privacidade para treino e teste de agentes.",
+      "stack": [
+        "Open WebUI",
+        "LLMs",
+        "Docker"
+      ],
+      "url": "https://ai.monynha.com",
+      "domain": "ai.monynha.com",
+      "repoUrl": "https://github.com/open-webui/open-webui",
+      "thumbnail": "/images/open-webui.svg",
       "category": "IA",
+      "status": "Desenvolvimento",
+      "visibility": "Pública",
+      "year": 2025
+    },
+    {
+      "slug": "marcelo-portfolio",
+      "name": "Marcelo Portfolio",
+      "summary": "Portfólio pessoal e site profissional de Marcelo M7.",
+      "fullDescription": "O portfólio de Marcelo apresenta projetos, manifestos e estudos autorais dentro da linguagem visual Monynha. É construído como laboratório vivo para novas interações, acessibilidade avançada e componentes do design system interno.",
+      "stack": [
+        "Vite",
+        "React",
+        "shadcn/ui"
+      ],
+      "url": "https://marcelo.monynha.com",
+      "domain": "marcelo.monynha.com",
+      "repoUrl": "https://github.com/Monynha-Softwares/MS-Portfolio",
+      "thumbnail": "/images/marcelo-portfolio.svg",
+      "category": "Portfólio",
+      "status": "Produção",
+      "visibility": "Pública",
       "year": 2025
     }
   ],
@@ -105,14 +234,46 @@
     }
   ],
   "skills": [
-    { "name": "Next.js", "category": "Frontend", "level": "Avançado" },
-    { "name": "Supabase", "category": "Backend / DB", "level": "Avançado" },
-    { "name": "Flutter", "category": "Mobile", "level": "Intermédio" },
-    { "name": "Docker", "category": "DevOps", "level": "Avançado" },
-    { "name": "Payload CMS", "category": "CMS", "level": "Intermédio" },
-    { "name": "CI/CD (Coolify + GitHub Actions)", "category": "DevOps", "level": "Avançado" },
-    { "name": "Framer Motion", "category": "Animações / UI", "level": "Intermédio" },
-    { "name": "React Three Fiber", "category": "3D / WebGL", "level": "Intermédio" }
+    {
+      "name": "Next.js",
+      "category": "Frontend",
+      "level": "Avançado"
+    },
+    {
+      "name": "Supabase",
+      "category": "Backend / DB",
+      "level": "Avançado"
+    },
+    {
+      "name": "Flutter",
+      "category": "Mobile",
+      "level": "Intermédio"
+    },
+    {
+      "name": "Docker",
+      "category": "DevOps",
+      "level": "Avançado"
+    },
+    {
+      "name": "Payload CMS",
+      "category": "CMS",
+      "level": "Intermédio"
+    },
+    {
+      "name": "CI/CD (Coolify + GitHub Actions)",
+      "category": "DevOps",
+      "level": "Avançado"
+    },
+    {
+      "name": "Framer Motion",
+      "category": "Animações / UI",
+      "level": "Intermédio"
+    },
+    {
+      "name": "React Three Fiber",
+      "category": "3D / WebGL",
+      "level": "Intermédio"
+    }
   ],
   "series": [
     {
@@ -120,16 +281,26 @@
       "title": "Creative Systems",
       "description": "Coleção de projetos experimentais que exploram a intersecção entre arte generativa, UX e automação inteligente.",
       "year": 2024,
-      "works": ["artleo", "monagent"]
+      "works": [
+        "artleo",
+        "monagent"
+      ]
     }
   ],
   "artworks": [
     {
       "slug": "artleo",
       "title": "Art Leo Creative Spaces",
-      "media": ["/images/artleo-hero.svg", "/images/artleo-3d.svg"],
+      "media": [
+        "/images/artleo-hero.svg",
+        "/images/artleo-3d.svg"
+      ],
       "year": 2025,
-      "materials": ["WebGL", "3D Animation", "Digital Sculpture"],
+      "materials": [
+        "WebGL",
+        "3D Animation",
+        "Digital Sculpture"
+      ],
       "description": "Experiência imersiva criada em Next.js e React Three Fiber para o artista Leonardo Silva, destacando arte interativa e ambiente 3D.",
       "url3d": "https://artleo.monynha.com"
     }
@@ -138,7 +309,11 @@
     {
       "slug": "design-tecnologia-inclusiva",
       "date": "2025-01-17",
-      "tags": ["Acessibilidade", "Design", "Experiência do utilizador"],
+      "tags": [
+        "Acessibilidade",
+        "Design",
+        "Experiência do utilizador"
+      ],
       "title": "Design e Tecnologia Inclusiva",
       "excerpt": "A tecnologia é mais humana quando é acessível.",
       "body": "Acredito que design e acessibilidade não são opostos, mas aliados. No ecossistema Monynha, cada interface nasce com empatia: contraste adequado, navegação por teclado e respeito ao prefers-reduced-motion fazem parte do nosso DNA digital."
@@ -146,7 +321,11 @@
     {
       "slug": "por-tras-da-monynha",
       "date": "2025-02-02",
-      "tags": ["Cultura", "Comunidade", "Empreendedorismo"],
+      "tags": [
+        "Cultura",
+        "Comunidade",
+        "Empreendedorismo"
+      ],
       "title": "Por trás da Monynha",
       "excerpt": "Mais do que software, é movimento.",
       "body": "Monynha Softwares nasceu da vontade de unir diversidade e tecnologia em um só propósito: criar ferramentas que empoderem pessoas e transformem ideias em experiências digitais acessíveis, criativas e babadeiras 💅."

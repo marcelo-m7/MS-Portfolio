@@ -1,43 +1,118 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
 import SeriesCard from '@/components/SeriesCard';
 
+type CVProject = {
+  slug: string;
+  name: string;
+  summary: string;
+  stack: string[];
+  url?: string | null;
+  domain?: string | null;
+  repoUrl: string;
+  thumbnail: string;
+  category: string;
+  status?: string;
+  visibility?: string;
+  year: number;
+  fullDescription?: string;
+};
+
+type CVArtwork = {
+  slug: string;
+  title: string;
+  description: string;
+  media: string[];
+  materials: string[];
+  year: number;
+};
+
+type CVSeries = {
+  slug: string;
+  title: string;
+  description: string;
+  works: string[];
+  year: number;
+};
+
+type PortfolioEntry =
+  | (CVProject & { type: 'project' })
+  | (CVArtwork & { type: 'artwork' })
+  | (CVSeries & { type: 'series' });
+
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
   const prefersReducedMotion = useReducedMotion();
+  const projects = cvData.projects as CVProject[];
+  const artworks = cvData.artworks as CVArtwork[];
+  const seriesEntries = cvData.series as CVSeries[];
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    const previousTitle = document.title;
+    document.title = 'Portfólio · Monynha Softwares';
+
+    const descriptionSelector = 'meta[name="description"]';
+    const existingMeta = document.querySelector<HTMLMetaElement>(
+      descriptionSelector,
+    );
+    const createdMeta = !existingMeta;
+    const meta = existingMeta ?? document.createElement('meta');
+    const previousDescription = meta.getAttribute('content') ?? '';
+
+    if (!existingMeta) {
+      meta.name = 'description';
+      document.head.appendChild(meta);
+    }
+
+    meta.setAttribute(
+      'content',
+      'Portfólio oficial da Monynha Softwares com produtos digitais, iniciativas de IA, infraestrutura e experiências criativas.',
+    );
+
+    return () => {
+      document.title = previousTitle;
+      if (createdMeta && meta.parentNode) {
+        meta.parentNode.removeChild(meta);
+      } else {
+        meta.setAttribute('content', previousDescription);
+      }
+    };
+  }, []);
 
   const categories = useMemo(
     () => [
       'Todos',
-      ...new Set(cvData.projects.map((p) => p.category)),
+      ...new Set(projects.map((p) => p.category)),
       'Arte Digital',
       'Série Criativa',
     ],
-    [],
+    [projects],
   );
 
-  const filteredItems = useMemo(() => {
-    let items: any[] = [];
+  const filteredItems = useMemo<PortfolioEntry[]>(() => {
+    let items: Array<CVProject | CVArtwork | CVSeries> = [];
     if (filter === 'Todos') {
-      items = [...cvData.projects, ...cvData.artworks, ...cvData.series];
+      items = [...projects, ...artworks, ...seriesEntries];
     } else if (filter === 'Arte Digital') {
-      items = cvData.artworks;
+      items = artworks;
     } else if (filter === 'Série Criativa') {
-      items = cvData.series;
+      items = seriesEntries;
     } else {
-      items = cvData.projects.filter((p) => p.category === filter);
+      items = projects.filter((p) => p.category === filter);
     }
 
     return items.map((item) => {
-      if ('materials' in item) return { ...item, type: 'artwork' };
-      if ('works' in item) return { ...item, type: 'series' };
-      return { ...item, type: 'project' };
+      if ('materials' in item) return { ...item, type: 'artwork' } as PortfolioEntry;
+      if ('works' in item) return { ...item, type: 'series' } as PortfolioEntry;
+      return { ...item, type: 'project' } as PortfolioEntry;
     });
-  }, [filter]);
+  }, [artworks, filter, projects, seriesEntries]);
 
   return (
     <div className="px-6">

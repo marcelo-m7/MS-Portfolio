@@ -53,7 +53,7 @@ const buildWorkCards = (): Record<string, WorkCard> => {
         slug: key,
         title: project.name,
         description: project.summary,
-        href: project.url,
+        href: project.url ?? project.repoUrl,
         isInternal: false,
         thumbnail: project.thumbnail,
         badge: project.category,
