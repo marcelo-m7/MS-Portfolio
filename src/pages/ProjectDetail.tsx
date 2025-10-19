@@ -1,13 +1,31 @@
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Calendar, Code2, Layers } from 'lucide-react';
+import {
+  ArrowLeft,
+  ExternalLink,
+  Calendar,
+  Code2,
+  Layers,
+  Github,
+  Globe,
+  Shield,
+  GitBranch,
+} from 'lucide-react';
+import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
+import { cn } from '@/lib/utils';
+import {
+  getStatusBadgeClasses,
+  getVisibilityBadgeClasses,
+} from '@/lib/projectStyles';
 
 const MotionButton = motion(Button);
 
@@ -33,6 +51,41 @@ export default function ProjectDetail() {
     visible: { opacity: 1, y: 0 },
   };
 
+  useEffect(() => {
+    if (typeof document === 'undefined' || !project) return;
+
+    const previousTitle = document.title;
+    document.title = `${project.name} · Portfólio Monynha Softwares`;
+
+    const descriptionSelector = 'meta[name="description"]';
+    const existingMeta = document.querySelector<HTMLMetaElement>(
+      descriptionSelector,
+    );
+    const createdMeta = !existingMeta;
+    const meta =
+      existingMeta ?? document.createElement('meta');
+    const previousDescription = meta.getAttribute('content') ?? '';
+
+    if (!existingMeta) {
+      meta.name = 'description';
+      document.head.appendChild(meta);
+    }
+
+    meta.setAttribute(
+      'content',
+      `${project.name} – ${project.summary}`,
+    );
+
+    return () => {
+      document.title = previousTitle;
+      if (createdMeta && meta.parentNode) {
+        meta.parentNode.removeChild(meta);
+      } else {
+        meta.setAttribute('content', previousDescription);
+      }
+    };
+  }, [project]);
+
   if (!project) {
     return (
       <div className="py-0 px-6">
@@ -49,9 +102,11 @@ export default function ProjectDetail() {
     );
   }
 
-  const formattedYear = new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
-    new Date(`${project.year}-01-01`),
-  );
+  const formattedYear = new Intl.DateTimeFormat(locale, {
+    year: 'numeric',
+  }).format(new Date(`${project.year}-01-01`));
+
+  const liveLink = project.url ?? undefined;
 
   return (
     <div className="px-6">
@@ -79,16 +134,36 @@ export default function ProjectDetail() {
           </motion.div>
 
           {/* Overview Section */}
-          <motion.section variants={itemVariants} className="mb-10">
-            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mb-4">
-              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+          <motion.section variants={itemVariants} className="mb-10 space-y-4">
+            <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-sm font-medium normal-case">
                 <Calendar className="h-4 w-4" aria-hidden />
                 {formattedYear}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-sm font-medium normal-case">
                 <Layers className="h-4 w-4" aria-hidden />
                 {project.category}
               </span>
+              {project.status && (
+                <Badge
+                  className={cn(
+                    'text-[0.65rem] uppercase tracking-wide',
+                    getStatusBadgeClasses(project.status),
+                  )}
+                >
+                  {project.status}
+                </Badge>
+              )}
+              {project.visibility && (
+                <Badge
+                  className={cn(
+                    'text-[0.65rem] uppercase tracking-wide',
+                    getVisibilityBadgeClasses(project.visibility),
+                  )}
+                >
+                  {project.visibility}
+                </Badge>
+              )}
             </div>
             <h1 className="text-4xl font-display font-semibold text-foreground">
               {project.name}
@@ -124,37 +199,80 @@ export default function ProjectDetail() {
             </motion.article>
           )}
 
-          {/* Technologies Used Section */}
-          <motion.section variants={itemVariants} className="mt-10">
-            <h2 className="text-2xl font-display font-bold mb-4">Tecnologias Utilizadas</h2>
-            <div className="flex flex-wrap gap-2">
-              {project.stack.map((tech) => (
-                <span
-                  key={tech}
-                  className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
-                >
-                  <Code2 className="h-3 w-3" aria-hidden />
-                  {tech}
-                </span>
-              ))}
+          {/* Project Metadata */}
+          <motion.section variants={itemVariants} className="mt-10 space-y-6">
+            <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground/90">
+              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+                <Globe className="h-4 w-4 text-secondary" aria-hidden />
+                <span>{project.domain ?? 'Domínio reservado'}</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+                <Shield className="h-4 w-4 text-primary" aria-hidden />
+                <span>{project.visibility ?? 'Visibilidade não definida'}</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+                <GitBranch className="h-4 w-4 text-emerald-300" aria-hidden />
+                <span>{project.status ?? 'Estado em revisão'}</span>
+              </div>
+              <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
+                <Layers className="h-4 w-4 text-primary" aria-hidden />
+                <span>{project.category}</span>
+              </div>
             </div>
-          </motion.section>
 
-          {/* Live Project Section */}
-          <motion.section variants={itemVariants} className="mt-10">
-            <h2 className="text-2xl font-display font-bold mb-4">Ver Projeto Online</h2>
-            <motion.a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-primary to-secondary px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_20px_-10px_rgba(var(--primary-hsl)/0.4)] transition-transform hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              Acessar Projeto
-              <ExternalLink className="h-4 w-4" aria-hidden />
-            </motion.a>
+            <Separator className="bg-border/70" />
+
+            <div>
+              <h2 className="text-2xl font-display font-bold mb-4">Tecnologias Utilizadas</h2>
+              <div className="flex flex-wrap gap-2">
+                {project.stack.map((tech) => (
+                  <span
+                    key={tech}
+                    className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
+                  >
+                    <Code2 className="h-3 w-3" aria-hidden />
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3 pt-2">
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full border-border/70"
+              >
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Abrir repositório ${project.name} no GitHub`}
+                  className="inline-flex items-center gap-2"
+                >
+                  <Github className="h-4 w-4" aria-hidden />
+                  Ver Repositório
+                </a>
+              </Button>
+              {liveLink && (
+                <Button
+                  asChild
+                  variant="secondary"
+                  className="rounded-full border border-secondary/40"
+                >
+                  <a
+                    href={liveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visitar domínio de ${project.name}`}
+                    className="inline-flex items-center gap-2"
+                  >
+                    <ExternalLink className="h-4 w-4" aria-hidden />
+                    Acessar Online
+                  </a>
+                </Button>
+              )}
+            </div>
           </motion.section>
         </motion.div>
       </div>

@@ -149,24 +149,28 @@ export default function Home() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cvData.projects.slice(0, 6).map((project, index) => (
-              <motion.div
-                key={project.name}
-                initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-                whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="group"
-              >
-                <motion.a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  style={{ transformStyle: 'preserve-3d' }}
-                  whileHover={
-                    prefersReducedMotion
-                      ? undefined
+            {cvData.projects.slice(0, 6).map((project, index) => {
+              const linkTarget = project.url ?? project.repoUrl;
+
+              return (
+                <motion.div
+                  key={project.name}
+                  initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="group"
+                >
+                  <motion.a
+                    href={linkTarget}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Abrir ${project.name} em nova aba`}
+                    className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    style={{ transformStyle: 'preserve-3d' }}
+                    whileHover={
+                      prefersReducedMotion
+                        ? undefined
                       : { rotateX: -6, rotateY: 6, translateZ: 12 }
                   }
                   whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
@@ -201,9 +205,10 @@ export default function Home() {
                       ))}
                     </div>
                   </div>
-                </motion.a>
-              </motion.div>
-            ))}
+                  </motion.a>
+                </motion.div>
+              );
+            })}
           </div>
 
           <motion.div

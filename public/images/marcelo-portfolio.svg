@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
+  <title>Miniatura do portfólio de Marcelo com layout modular</title>
+  <defs>
+    <linearGradient id="marceloGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#0EA5E9" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" rx="32" fill="#020617" />
+  <rect x="48" y="52" width="544" height="256" rx="26" fill="rgba(15,23,42,0.92)" stroke="rgba(124,58,237,0.4)" stroke-width="2" />
+  <g opacity="0.9">
+    <rect x="96" y="96" width="180" height="200" rx="20" fill="url(#marceloGradient)" />
+    <rect x="300" y="96" width="220" height="90" rx="18" fill="rgba(14,165,233,0.35)" />
+    <rect x="300" y="208" width="220" height="40" rx="14" fill="rgba(124,58,237,0.35)" />
+    <rect x="300" y="260" width="220" height="24" rx="12" fill="rgba(148,163,184,0.3)" />
+  </g>
+  <text x="186" y="176" text-anchor="middle" fill="#fdf4ff" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="32" font-weight="600">
+    Marcelo
+  </text>
+  <text x="186" y="216" text-anchor="middle" fill="#e0f2fe" font-family="'Inter', sans-serif" font-size="20" font-weight="500">
+    Portfolio
+  </text>
+  <text x="50%" y="87%" text-anchor="middle" fill="#cbd5f5" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="38" font-weight="600">
+    marcelo.monynha.com
+  </text>
+</svg>
