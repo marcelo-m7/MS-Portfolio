@@ -49,7 +49,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.45 }}
-      className="group h-full overflow-hidden border-border/70 bg-card/80 shadow-[0_22px_48px_-32px_hsl(var(--primary)_/_0.35)] backdrop-blur"
+      className="group h-full overflow-hidden border-border/70 bg-card/90 shadow-md backdrop-blur"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
         <motion.img
@@ -138,7 +138,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           {project.stack.map((tech) => (
             <span
               key={tech}
-              className="rounded-md border border-border/60 bg-background/60 px-2 py-1 text-[0.7rem] font-medium text-foreground/85"
+              className="rounded-xl border border-border/60 bg-background/70 px-3 py-1 text-[0.7rem] font-medium text-foreground/85"
             >
               {tech}
             </span>
@@ -151,7 +151,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           variant="outline"
           size="sm"
           asChild
-          className="rounded-full border-border/70 text-xs font-semibold"
+          className="border-border/70 text-xs font-semibold"
         >
           <a
             href={project.repoUrl}
@@ -170,7 +170,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             variant="secondary"
             size="sm"
             asChild
-            className="rounded-full border border-secondary/40 text-xs font-semibold"
+            className="border border-secondary/40 text-xs font-semibold"
           >
             <a
               href={liveLink}

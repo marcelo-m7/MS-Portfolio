@@ -1,26 +1,41 @@
-# Monynha Portfolio Code Audit Report
+# Auditoria Visual — Marcelo Portigolio
 
-## Código e Organização
-- Remoção do módulo `src/lib/supabase.ts`, que estava obsoleto e não era referenciado no aplicativo.
-- Tipagens aprimoradas nos componentes de UI (`command` e `textarea`) para eliminar interfaces vazias e evitar uso de `any`.
-- Remoção da dependência do Google Translate com a introdução do helper local (`src/lib/language.ts`) para sincronizar o atributo `lang` e eventos de idioma de forma tipada.
+## Sumário
+- Erros encontrados
+- Correções aplicadas
+- Prints de antes/depois
+- Checklist de Conformidade
 
-## Experiência do Usuário & Visual
-- Hero estático atualizado com gradações em HSL, alinhando os visuais aos tons oficiais (#7C3AED, #0EA5E9, #EC4899).
-- Tailwind configurado com famílias `Inter`, `Space Grotesk` e agora `JetBrains Mono`, garantindo consistência tipográfica.
-- Fonte JetBrains carregada no `index.html` para seções de código e detalhes técnicos.
-- Cartões de séries harmonizados (`SeriesDetail`) com semântica de links clara para rotas internas e externas.
-- Pré-visualização 3D das artes agora respeita uma flag `VITE_ENABLE_ART_3D`, evitando carregar bibliotecas pesadas quando o recurso estiver desativado.
+## Erros encontrados
+- Ausência de tema claro: tokens HSL estavam definidos apenas para um modo escuro, impossibilitando a alternância e deixando o botão de acessibilidade ausente na navegação.
+- Componentes shadcn/ui (Buttons, Cards) com `rounded-md`/`rounded-full` e sombras exageradas, destoando da identidade visual especificada (`rounded-2xl`, `shadow-md`).
+- Utilitário `glass` e cartões secundários usando bordas inconsistentes e sombras profundas, gerando contraste insuficiente em superfícies claras.
 
-## Formulários e Integrações
-- Formulário de contato passa a reutilizar um estado inicial imutável e atualizações funcionais de estado, evitando condições de corrida.
-- Logs de Supabase agora aparecem apenas em ambiente de desenvolvimento, mantendo o console limpo em produção.
-- Tratamento de erros no formulário de contato mantém registro apenas em modo desenvolvimento.
+## Correções aplicadas
+- Implementado `ThemeProvider` (next-themes) e toggle acessível no Navbar, além de tokens HSL completos para modo claro/escuro com fontes base normalizadas (`font-sans`, `font-display`).
+- Atualizados componentes shadcn (Buttons, Cards) para `rounded-2xl` + `shadow-md` por padrão e normalizados botões/link cards para remover `rounded-full` customizado.
+- Refatorado utilitário `glass` e superfícies principais (Home, Portfolio, About, Contact, Thoughts) para usar `rounded-2xl`, sombras suaves e chips/pílulas com contrastes dentro da paleta.
 
-## Acessibilidade e Performance
-- Links de cartões no portfólio usam componentes adequados (`Link` ou `<a>`) com foco visível, melhorando navegação por teclado.
-- Imagens de cards continuam com `loading="lazy"` e atributos alt descritivos.
+## Prints e Descrições
 
-## Validações
-- `npm run lint` executado para garantir que não há erros de lint.
-- `npm run build` executado para validar o empacotamento de produção e monitorar o tamanho dos bundles.
+### Home – tema claro indisponível (antes)
+Sem alternância de tema, a paleta permanecia escura e não atendia à diretriz de acessibilidade para tema claro.
+![Home desktop sem tema claro (antes)](browser:/invocations/hffbbdfy/artifacts/artifacts/home-desktop-light-before.png)
+
+### Home – tema claro implementado (depois)
+Toggle visível no Navbar, tokens claros com contraste adequado entre texto e fundo.
+![Home desktop tema claro (depois)](browser:/invocations/zqstetrv/artifacts/artifacts/home-desktop-light-after.png)
+
+### Home – mobile dark (antes)
+Botões arredondados excessivamente e sem consistência de sombras.
+![Home mobile dark (antes)](browser:/invocations/hffbbdfy/artifacts/artifacts/home-mobile-dark-before.png)
+
+### Home – mobile dark revisado (depois)
+Botões `rounded-2xl` com `shadow-md` e toggle funcional.
+![Home mobile dark (depois)](browser:/invocations/zqstetrv/artifacts/artifacts/home-mobile-dark-after.png)
+
+## Checklist de Conformidade
+✅ Paleta e tokens
+✅ Tipografia
+✅ Acessibilidade
+✅ Layout responsivo
