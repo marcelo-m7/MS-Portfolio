@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
-import { supabase } from '@/lib/supabaseClient';
+import { submitContact } from '@/lib/contactService';
 
 const createInitialFormState = () => ({
   name: '',
@@ -26,28 +26,26 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      if (!supabase) {
-        throw new Error('Supabase client is not configured.');
-      }
-
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-          to: 'marcelo@monynha.com',
-        },
+      const result = await submitContact({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        company: formData.company.trim() || undefined,
+        project: formData.project.trim() || undefined,
+        message: formData.message.trim(),
       });
 
-      if (error) {
-        throw error;
+      toast.success(cvData.contact.successMessage);
+
+      if (result.status === 'fallback') {
+        toast.info(
+          'Não foi possível salvar no Supabase, mas enviamos seus dados por e-mail.',
+        );
       }
 
-      toast.success(cvData.contact.successMessage);
       setFormData(createInitialFormState());
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Erro ao enviar mensagem de contato:', error);
+        console.error('Erro ao processar mensagem de contato:', error);
       }
       toast.error(cvData.contact.errorMessage);
     } finally {
