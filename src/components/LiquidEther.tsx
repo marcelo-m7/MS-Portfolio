@@ -42,6 +42,81 @@ function resolveColorStops(stops: string[], resolver: HTMLSpanElement | null): s
   });
 }
 
+function buildPaletteTexture(stops: string[]) {
+  let arr: string[];
+  if (Array.isArray(stops) && stops.length > 0) {
+    if (stops.length === 1) {
+      arr = [stops[0], stops[0]];
+    } else {
+      arr = stops;
+    }
+  } else {
+    arr = ['#ffffff', '#ffffff'];
+  }
+  const w = arr.length;
+  const data = new Uint8Array(w * 4);
+  for (let i = 0; i < w; i++) {
+    const c = new THREE.Color(arr[i]);
+    data[i * 4 + 0] = Math.round(c.r * 255);
+    data[i * 4 + 1] = Math.round(c.g * 255);
+    data[i * 4 + 2] = Math.round(c.b * 255);
+    data[i * 4 + 3] = 255;
+  }
+  const tex = new THREE.DataTexture(data, w, 1, THREE.RGBAFormat);
+  tex.magFilter = THREE.LinearFilter;
+  tex.minFilter = THREE.LinearFilter;
+  tex.wrapS = THREE.ClampToEdgeWrapping;
+  tex.wrapT = THREE.ClampToEdgeWrapping;
+  tex.generateMipmaps = false;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+type LiquidEtherSimulationOptions = {
+  mouse_force: number;
+  cursor_size: number;
+  isViscous: boolean;
+  viscous: number;
+  iterations_viscous: number;
+  iterations_poisson: number;
+  dt: number;
+  BFECC: boolean;
+  resolution: number;
+  isBounce: boolean;
+};
+
+type LiquidEtherSimulation = {
+  options: LiquidEtherSimulationOptions;
+  resize: () => void;
+};
+
+type LiquidEtherOutput = {
+  simulation?: LiquidEtherSimulation;
+  output: {
+    material: THREE.RawShaderMaterial;
+  };
+};
+
+type LiquidEtherAutoDriver = {
+  enabled: boolean;
+  speed: number;
+  resumeDelay: number;
+  rampDurationMs: number;
+  mouse?: {
+    autoIntensity: number;
+    takeoverDuration: number;
+  } | null;
+};
+
+type WebGLManagerInstance = {
+  start: () => void;
+  pause: () => void;
+  dispose: () => void;
+  resize: () => void;
+  output?: LiquidEtherOutput;
+  autoDriver?: LiquidEtherAutoDriver | null;
+};
+
 export default function LiquidEther({
   mouseForce = 20,
   cursorSize = 100,
@@ -63,50 +138,26 @@ export default function LiquidEther({
   autoResumeDelay = 3000,
   autoRampDuration = 0.6
 }) {
-  const mountRef = useRef(null);
-  const webglRef = useRef(null);
-  const resizeObserverRef = useRef(null);
-  const rafRef = useRef(null);
-  const intersectionObserverRef = useRef(null);
+  const mountRef = useRef<HTMLDivElement | null>(null);
+  const webglRef = useRef<WebGLManagerInstance | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
   const isVisibleRef = useRef(true);
-  const resizeRafRef = useRef(null);
+  const resizeRafRef = useRef<number | null>(null);
+  const paletteTextureRef = useRef<THREE.DataTexture | null>(null);
+  const colorResolverRef = useRef<HTMLSpanElement | null>(null);
+  const colorsRef = useRef(colors);
+  colorsRef.current = colors;
 
   useEffect(() => {
     if (!mountRef.current) return;
 
     const colorResolver = createColorResolverElement();
+    colorResolverRef.current = colorResolver;
 
-    function makePaletteTexture(stops: string[]) {
-      let arr;
-      if (Array.isArray(stops) && stops.length > 0) {
-        if (stops.length === 1) {
-          arr = [stops[0], stops[0]];
-        } else {
-          arr = stops;
-        }
-      } else {
-        arr = ['#ffffff', '#ffffff'];
-      }
-      const w = arr.length;
-      const data = new Uint8Array(w * 4);
-      for (let i = 0; i < w; i++) {
-        const c = new THREE.Color(arr[i]);
-        data[i * 4 + 0] = Math.round(c.r * 255);
-        data[i * 4 + 1] = Math.round(c.g * 255);
-        data[i * 4 + 2] = Math.round(c.b * 255);
-        data[i * 4 + 3] = 255;
-      }
-      const tex = new THREE.DataTexture(data, w, 1, THREE.RGBAFormat);
-      tex.magFilter = THREE.LinearFilter;
-      tex.minFilter = THREE.LinearFilter;
-      tex.wrapS = THREE.ClampToEdgeWrapping;
-      tex.wrapT = THREE.ClampToEdgeWrapping;
-      tex.generateMipmaps = false;
-      tex.needsUpdate = true;
-      return tex;
-    }
-
-    const paletteTex = makePaletteTexture(resolveColorStops(colors, colorResolver));
+    const paletteTex = buildPaletteTexture(resolveColorStops(colorsRef.current, colorResolver));
+    paletteTextureRef.current = paletteTex;
     const bgVec4 = new THREE.Vector4(0, 0, 0, 0); // always transparent
 
     class CommonClass {
@@ -1335,9 +1386,14 @@ export default function LiquidEther({
         webglRef.current.dispose();
       }
       webglRef.current = null;
+      if (paletteTextureRef.current) {
+        paletteTextureRef.current.dispose();
+        paletteTextureRef.current = null;
+      }
       if (colorResolver && colorResolver.parentNode) {
         colorResolver.parentNode.removeChild(colorResolver);
       }
+      colorResolverRef.current = null;
     };
   }, [
     BFECC,
@@ -1350,7 +1406,6 @@ export default function LiquidEther({
     mouseForce,
     resolution,
     viscous,
-    colors,
     autoDemo,
     autoSpeed,
     autoIntensity,
@@ -1358,6 +1413,30 @@ export default function LiquidEther({
     autoResumeDelay,
     autoRampDuration
   ]);
+
+  useEffect(() => {
+    const webgl = webglRef.current;
+    const paletteTexture = paletteTextureRef.current;
+    const resolver = colorResolverRef.current ?? createColorResolverElement();
+    if (!resolver) return;
+    if (!colorResolverRef.current) {
+      colorResolverRef.current = resolver;
+    }
+    if (!webgl || !webgl.output?.output?.material) return;
+
+    const stops = resolveColorStops(colors, resolver);
+
+    const newTexture = buildPaletteTexture(stops);
+    const material = webgl.output.output.material as THREE.RawShaderMaterial;
+    if (material.uniforms?.palette) {
+      material.uniforms.palette.value = newTexture;
+      newTexture.needsUpdate = true;
+      if (paletteTexture) {
+        paletteTexture.dispose();
+      }
+      paletteTextureRef.current = newTexture;
+    }
+  }, [colors]);
 
   useEffect(() => {
     const webgl = webglRef.current;
