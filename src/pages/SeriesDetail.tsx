@@ -102,7 +102,7 @@ export default function SeriesDetail() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_85px_-70px_rgba(var(--primary-hsl)/0.3)] backdrop-blur-xl"
+          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_85px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
         >
           <MotionButton
             asChild
@@ -150,7 +150,7 @@ export default function SeriesDetail() {
             {works.map((work, index) => {
               const card = (
                 <motion.div
-                  className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/80 p-6 shadow-[0_35px_70px_-55px_rgba(var(--secondary-hsl)/0.3)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_rgba(var(--primary-hsl)/0.3)]"
+                  className="flex h-full flex-col rounded-[var(--radius)] border border-border/70 bg-card/80 p-6 shadow-[0_35px_70px_-55px_hsl(var(--secondary)/0.3)] transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-[0_25px_55px_-35px_hsl(var(--primary)/0.3)]"
                   whileHover={prefersReducedMotion ? undefined : { y: -5, boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}
                 >
                   {work.thumbnail && (
