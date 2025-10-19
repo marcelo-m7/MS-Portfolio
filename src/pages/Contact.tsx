@@ -35,7 +35,7 @@ export default function Contact() {
           name: formData.name,
           email: formData.email,
           message: formData.message,
-          to: 'hello@monynha.com',
+          to: 'marcelo@monynha.com',
         },
       });
 
