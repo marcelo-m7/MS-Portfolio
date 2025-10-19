@@ -28,18 +28,13 @@ export default function Navbar() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
   };
 
-  const mobileMenuVariants = {
-    hidden: { opacity: 0, y: '-100vh', transition: { duration: 0.4, ease: 'easeOut' } },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
-  };
-
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
       <motion.div
         initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
         animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 120, damping: 15, delay: 0.1 }}
-        className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-border/60 bg-card/85 px-6 py-3 shadow-md backdrop-blur-xl"
+        className="relative mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-border/60 bg-card/85 px-6 py-3 shadow-md backdrop-blur-xl"
       >
         <MotionLink
           to="/"
@@ -94,12 +89,11 @@ export default function Navbar() {
           </motion.div>
           <ThemeToggle />
         </div>
-
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle className="h-10 w-10 md:hidden" />
+          <ThemeToggle className="md:hidden" />
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="flex h-11 w-11 items-center justify-center rounded-2xl border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
             aria-expanded={isOpen}
           >
@@ -110,37 +104,44 @@ export default function Navbar() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={shouldReduceMotion ? undefined : 'hidden'}
-            animate={shouldReduceMotion ? undefined : 'visible'}
-            exit={shouldReduceMotion ? undefined : 'hidden'}
-            variants={mobileMenuVariants}
-            className="fixed inset-0 z-40 flex flex-col items-center justify-center gap-6 bg-background/95 backdrop-blur-xl md:hidden"
-          >
-            <button
+          <>
+            <motion.button
+              type="button"
               onClick={() => setIsOpen(false)}
-              className="absolute right-6 top-6 flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              initial={shouldReduceMotion ? undefined : { opacity: 0 }}
+              animate={shouldReduceMotion ? undefined : { opacity: 1 }}
+              exit={shouldReduceMotion ? undefined : { opacity: 0 }}
+              className="fixed inset-0 z-40 bg-background/70 backdrop-blur-sm md:hidden"
               aria-label="Fechar menu"
+            />
+            <motion.div
+              initial={shouldReduceMotion ? undefined : { opacity: 0, y: -12, scale: 0.96 }}
+              animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+              exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12, scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 210, damping: 26 }}
+              className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-50 px-4 sm:px-6 md:hidden"
             >
-              <X size={20} />
-            </button>
-
-            <div className="flex flex-col items-center gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`rounded-full px-6 py-3 text-xl font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                    isActive(link.href) ? 'bg-gradient-to-r from-primary/60 via-secondary/50 to-accent/50 text-white' : 'text-muted-foreground hover:bg-card'
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <ThemeToggle className="mt-2" />
-            </div>
-          </motion.div>
+              <div className="mx-auto max-w-6xl rounded-3xl border border-border/70 bg-card/95 p-4 shadow-2xl shadow-primary/10">
+                <div className="flex flex-col gap-2">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`flex items-center justify-between gap-3 rounded-2xl px-5 py-3 text-base font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                        isActive(link.href)
+                          ? 'bg-gradient-to-r from-primary/70 via-secondary/60 to-accent/60 text-primary-foreground shadow-inner'
+                          : 'text-muted-foreground hover:bg-background/70 hover:text-foreground'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      <span aria-hidden>→</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </nav>
