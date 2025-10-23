@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import cvData from '../../public/data/cv.json';
@@ -12,6 +12,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+
+  // Auto-close menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
     { href: '/', label: 'Início' },
@@ -122,6 +127,18 @@ export default function Navbar() {
               className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-50 px-4 sm:px-6 md:hidden"
             >
               <div className="mx-auto max-w-6xl rounded-3xl border border-border/70 bg-card/95 p-4 shadow-2xl shadow-primary/10">
+                {/* Close button */}
+                <div className="mb-3 flex items-center justify-between border-b border-border/50 pb-3">
+                  <span className="text-sm font-medium text-muted-foreground">Menu</span>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/50 text-muted-foreground transition-colors hover:border-border hover:bg-background hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    aria-label="Fechar menu"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+                
                 <div className="flex flex-col gap-2">
                   {navLinks.map((link) => (
                     <Link
