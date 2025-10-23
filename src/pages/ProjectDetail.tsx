@@ -13,10 +13,11 @@ import {
 } from 'lucide-react';
 import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
-import cvData from '../../public/data/cv.json';
+import { useProject } from '@/hooks/usePortfolioData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   languageToLocale,
   useCurrentLanguage,
@@ -34,7 +35,7 @@ export default function ProjectDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
-  const project = cvData.projects.find((item) => item.slug === slug);
+  const { data: dbProject, isLoading } = useProject(slug);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -52,10 +53,10 @@ export default function ProjectDetail() {
   };
 
   useEffect(() => {
-    if (typeof document === 'undefined' || !project) return;
+    if (typeof document === 'undefined' || !dbProject) return;
 
     const previousTitle = document.title;
-    document.title = `${project.name} · Portfólio Monynha Softwares`;
+    document.title = `${dbProject.name} · Portfólio Monynha Softwares`;
 
     const descriptionSelector = 'meta[name="description"]';
     const existingMeta = document.querySelector<HTMLMetaElement>(
@@ -73,7 +74,7 @@ export default function ProjectDetail() {
 
     meta.setAttribute(
       'content',
-      `${project.name} – ${project.summary}`,
+      `${dbProject.name} – ${dbProject.summary}`,
     );
 
     return () => {
@@ -84,9 +85,38 @@ export default function ProjectDetail() {
         meta.setAttribute('content', previousDescription);
       }
     };
-  }, [project]);
+  }, [dbProject]);
 
-  if (!project) {
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="px-6">
+        <div className="container mx-auto max-w-4xl">
+          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl">
+            <Skeleton className="mb-8 h-10 w-48 rounded-full" />
+            <div className="mb-10 space-y-4">
+              <div className="flex gap-3">
+                <Skeleton className="h-8 w-24 rounded-full" />
+                <Skeleton className="h-8 w-32 rounded-full" />
+              </div>
+              <Skeleton className="h-12 w-3/4" />
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-5/6" />
+            </div>
+            <Skeleton className="h-64 w-full rounded-2xl" />
+            <div className="mt-10 space-y-4">
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-full" />
+              <Skeleton className="h-6 w-4/5" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 404 state
+  if (!dbProject) {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
@@ -104,9 +134,10 @@ export default function ProjectDetail() {
 
   const formattedYear = new Intl.DateTimeFormat(locale, {
     year: 'numeric',
-  }).format(new Date(`${project.year}-01-01`));
+  }).format(new Date(`${dbProject.year}-01-01`));
 
-  const liveLink = project.url ?? undefined;
+  const liveLink = dbProject.url ?? undefined;
+  const stack = (dbProject.technologies ?? []).map((t) => t.name).filter(Boolean) as string[];
 
   return (
     <div className="px-6">
@@ -142,44 +173,44 @@ export default function ProjectDetail() {
               </span>
               <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-sm font-medium normal-case">
                 <Layers className="h-4 w-4" aria-hidden />
-                {project.category}
+                {dbProject.category}
               </span>
-              {project.status && (
+              {dbProject.status && (
                 <Badge
                   className={cn(
                     'text-[0.65rem] uppercase tracking-wide',
-                    getStatusBadgeClasses(project.status),
+                    getStatusBadgeClasses(dbProject.status),
                   )}
                 >
-                  {project.status}
+                  {dbProject.status}
                 </Badge>
               )}
-              {project.visibility && (
+              {dbProject.visibility && (
                 <Badge
                   className={cn(
                     'text-[0.65rem] uppercase tracking-wide',
-                    getVisibilityBadgeClasses(project.visibility),
+                    getVisibilityBadgeClasses(dbProject.visibility),
                   )}
                 >
-                  {project.visibility}
+                  {dbProject.visibility}
                 </Badge>
               )}
             </div>
             <h1 className="text-4xl font-display font-semibold text-foreground">
-              {project.name}
+              {dbProject.name}
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground/90">{project.summary}</p>
+            <p className="mt-4 text-lg text-muted-foreground/90">{dbProject.summary}</p>
           </motion.section>
 
           {/* Project Thumbnail */}
-          {project.thumbnail && (
+          {dbProject.thumbnail && (
             <motion.div
               variants={itemVariants}
               className="mt-8 overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20"
             >
               <img
-                src={project.thumbnail}
-                alt={`Thumbnail do projeto ${project.name}`}
+                src={dbProject.thumbnail}
+                alt={`Thumbnail do projeto ${dbProject.name}`}
                 loading="lazy"
                 decoding="async"
                 width={1280}
@@ -190,12 +221,12 @@ export default function ProjectDetail() {
           )}
 
           {/* Full Description */}
-          {project.fullDescription && (
+          {dbProject.full_description && (
             <motion.article
               variants={itemVariants}
               className="mt-10 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground"
             >
-              <ReactMarkdown>{project.fullDescription}</ReactMarkdown>
+              <ReactMarkdown>{dbProject.full_description}</ReactMarkdown>
             </motion.article>
           )}
 
@@ -204,19 +235,19 @@ export default function ProjectDetail() {
             <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground/90">
               <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
                 <Globe className="h-4 w-4 text-secondary" aria-hidden />
-                <span>{project.domain ?? 'Domínio reservado'}</span>
+                <span>{dbProject.domain ?? 'Domínio reservado'}</span>
               </div>
               <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
                 <Shield className="h-4 w-4 text-primary" aria-hidden />
-                <span>{project.visibility ?? 'Visibilidade não definida'}</span>
+                <span>{dbProject.visibility ?? 'Visibilidade não definida'}</span>
               </div>
               <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
                 <GitBranch className="h-4 w-4 text-emerald-300" aria-hidden />
-                <span>{project.status ?? 'Estado em revisão'}</span>
+                <span>{dbProject.status ?? 'Estado em revisão'}</span>
               </div>
               <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
                 <Layers className="h-4 w-4 text-primary" aria-hidden />
-                <span>{project.category}</span>
+                <span>{dbProject.category}</span>
               </div>
             </div>
 
@@ -225,7 +256,7 @@ export default function ProjectDetail() {
             <div>
               <h2 className="text-2xl font-display font-bold mb-4">Tecnologias Utilizadas</h2>
               <div className="flex flex-wrap gap-2">
-                {project.stack.map((tech) => (
+                {stack.map((tech) => (
                   <span
                     key={tech}
                     className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
@@ -244,10 +275,10 @@ export default function ProjectDetail() {
                 className="rounded-full border-border/70"
               >
                 <a
-                  href={project.repoUrl}
+                  href={dbProject.repo_url ?? '#'}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Abrir repositório ${project.name} no GitHub`}
+                  aria-label={`Abrir repositório ${dbProject.name} no GitHub`}
                   className="inline-flex items-center gap-2"
                 >
                   <Github className="h-4 w-4" aria-hidden />
@@ -264,7 +295,7 @@ export default function ProjectDetail() {
                     href={liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Visitar domínio de ${project.name}`}
+                    aria-label={`Visitar domínio de ${dbProject.name}`}
                     className="inline-flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" aria-hidden />

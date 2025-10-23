@@ -6,9 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import cvData from '../../public/data/cv.json';
-import { submitContact } from '@/lib/contactService';
+import { submitContactLead } from '@/lib/contactLead';
+import { supabase } from '@/lib/supabaseClient';
+import type { ContactLeadPayload } from '@/lib/contactLead';
 
-const createInitialFormState = () => ({
+const createInitialFormState = (): ContactLeadPayload => ({
   name: '',
   email: '',
   company: '',
@@ -26,22 +28,49 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const result = await submitContact({
-        name: formData.name.trim(),
-        email: formData.email.trim(),
-        company: formData.company.trim() || undefined,
-        project: formData.project.trim() || undefined,
-        message: formData.message.trim(),
-      });
+      const result = await submitContactLead(
+        supabase,
+        formData,
+        async (payload, reason) => {
+          if (!supabase) {
+            throw reason instanceof Error
+              ? reason
+              : new Error('Supabase client is not configured.');
+          }
 
-      toast.success(cvData.contact.successMessage);
+          const { error } = await supabase.functions.invoke(
+            'send-contact-email',
+            {
+              body: {
+                name: payload.name,
+                email: payload.email,
+                message: payload.message,
+                company: payload.company,
+                project: payload.project,
+                to: 'marcelo@monynha.com',
+              },
+            },
+          );
 
-      if (result.status === 'fallback') {
-        toast.info(
-          'Não foi possível salvar no Supabase, mas enviamos seus dados por e-mail.',
-        );
-      }
+          if (error) {
+            if (import.meta.env.DEV) {
+              console.error(
+                'Falha ao enviar email de fallback. Motivo original:',
+                reason,
+                'Erro do fallback:',
+                error,
+              );
+            }
+            throw error;
+          }
+        },
+      );
 
+      toast.success(
+        result === 'saved'
+          ? cvData.contact.successMessage
+          : 'Recebemos sua mensagem por email! Entraremos em contato em breve. 📬',
+      );
       setFormData(createInitialFormState());
     } catch (error) {
       if (import.meta.env.DEV) {
