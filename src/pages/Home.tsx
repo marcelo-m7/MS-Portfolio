@@ -2,10 +2,14 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import cvData from '../../public/data/cv.json';
+import { useProfile, useProjects, useThoughts } from '@/hooks/usePortfolioData';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
+  const { data: profile, isLoading: loadingProfile } = useProfile();
+  const { data: projects, isLoading: loadingProjects } = useProjects();
+  const { data: thoughts, isLoading: loadingThoughts } = useThoughts();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -38,7 +42,11 @@ export default function Home() {
               className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/60 px-4 py-2 shadow-[0_20px_35px_-25px_hsl(var(--secondary)/0.2)]"
             >
               <Sparkles className="w-4 h-4 text-accent" />
-              <span className="text-sm font-medium">{cvData.profile.location}</span>
+              {loadingProfile ? (
+                <Skeleton className="w-24 h-4" />
+              ) : (
+                <span className="text-sm font-medium">{profile?.location}</span>
+              )}
             </motion.div>
 
             <motion.h1
@@ -46,7 +54,7 @@ export default function Home() {
               className="text-5xl md:text-7xl font-display font-bold mb-6 mt-6 text-balance"
             >
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {cvData.profile.name}
+                {loadingProfile ? <Skeleton className="w-40 h-10 mx-auto" /> : profile?.name}
               </span>
             </motion.h1>
 
@@ -54,14 +62,14 @@ export default function Home() {
               variants={itemVariants}
               className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium"
             >
-              {cvData.profile.headline}
+              {loadingProfile ? <Skeleton className="w-64 h-6 mx-auto" /> : profile?.headline}
             </motion.p>
 
             <motion.p
               variants={itemVariants}
               className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto"
             >
-              {cvData.profile.bio}
+              {loadingProfile ? <Skeleton className="w-80 h-5 mx-auto" /> : profile?.bio}
             </motion.p>
 
             <motion.div
@@ -149,66 +157,66 @@ export default function Home() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {cvData.projects.slice(0, 6).map((project, index) => {
-              const linkTarget = project.url ?? project.repoUrl;
-
-              return (
-                <motion.div
-                  key={project.name}
-                  initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="group"
-                >
-                  <motion.a
-                    href={linkTarget}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Abrir ${project.name} em nova aba`}
-                    className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    style={{ transformStyle: 'preserve-3d' }}
-                    whileHover={
-                      prefersReducedMotion
-                        ? undefined
-                      : { rotateX: -6, rotateY: 6, translateZ: 12 }
-                  }
-                  whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                  transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-                >
-                  <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
-                        <Code2 className="text-white" size={24} aria-hidden />
-                      </div>
-                        <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
-                        {project.category}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
-                      {project.name}
-                    </h3>
-
-                    <p className="text-muted-foreground mb-4 text-sm">
-                      {project.summary}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2">
-                      {project.stack.slice(0, 3).map((tech) => (
-                        <span
-                          key={tech}
-                          className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  </motion.a>
-                </motion.div>
-              );
-            })}
+            {loadingProjects
+              ? Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} className="h-40 w-full rounded-2xl" />
+                ))
+              : (projects?.slice(0, 6).map((project, index) => {
+                  const linkTarget = project.url ?? project.repo_url;
+                  return (
+                    <motion.div
+                      key={project.name}
+                      initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+                      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1, duration: 0.5 }}
+                      className="group"
+                    >
+                      <motion.a
+                        href={linkTarget}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Abrir ${project.name} em nova aba`}
+                        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        style={{ transformStyle: 'preserve-3d' }}
+                        whileHover={
+                          prefersReducedMotion
+                            ? undefined
+                            : { rotateX: -6, rotateY: 6, translateZ: 12 }
+                        }
+                        whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+                        transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+                      >
+                        <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
+                              <Code2 className="text-white" size={24} aria-hidden />
+                            </div>
+                            <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                              {project.category}
+                            </span>
+                          </div>
+                          <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
+                            {project.name}
+                          </h3>
+                          <p className="text-muted-foreground mb-4 text-sm">
+                            {project.summary}
+                          </p>
+                          <div className="flex flex-wrap gap-2">
+                            {(project.technologies ?? project.stack ?? []).slice(0, 3).map((tech: any) => (
+                              <span
+                                key={typeof tech === 'string' ? tech : tech.name}
+                                className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
+                              >
+                                {typeof tech === 'string' ? tech : tech.name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.a>
+                    </motion.div>
+                  );
+                }))}
           </div>
 
           <motion.div
@@ -227,7 +235,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Collections & Art */}
+      {/* Collections & Art (static, no data needed) */}
       <section className="pb-24 px-6">
         <div className="container mx-auto">
           <motion.div
@@ -244,7 +252,7 @@ export default function Home() {
               Experiências imersivas e séries experimentais que conectam tecnologia, narrativa e arte digital.
             </p>
           </motion.div>
-
+          {/* Static links, unchanged */}
           <div className="grid gap-6 md:grid-cols-2">
             <motion.div
               initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -269,7 +277,6 @@ export default function Home() {
                 </div>
               </Link>
             </motion.div>
-
             <motion.div
               initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
               whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
