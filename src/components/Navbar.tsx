@@ -3,7 +3,7 @@ import { Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
-import cvData from '../../public/data/cv.json';
+import { useProfile } from '@/hooks/usePortfolioData';
 import { ThemeToggle } from './ThemeToggle';
 
 const MotionLink = motion(Link);
@@ -12,6 +12,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
+  const { data: profile } = useProfile();
 
   // Auto-close menu when route changes
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed inset-x-0 top-4 z-50 w-full px-4 sm:px-6">
+    <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
       <motion.div
         initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
         animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}
@@ -52,7 +53,7 @@ export default function Navbar() {
         >
           <MonynhaLogo size={28} className="text-primary" /> {/* Use the new logo */}
           <span className="hidden sm:inline-flex bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            {cvData.profile.name.split(' ')[0]}
+            {(profile?.name || 'Marcelo').split(' ')[0]}
           </span>
         </MotionLink>
 

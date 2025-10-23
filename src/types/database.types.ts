@@ -12,539 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.5"
   }
-  portfolio: {
-    Tables: {
-      artwork_materials: {
-        Row: {
-          artwork_id: string
-          created_at: string | null
-          display_order: number
-          id: string
-          material: string
-        }
-        Insert: {
-          artwork_id: string
-          created_at?: string | null
-          display_order?: number
-          id?: string
-          material: string
-        }
-        Update: {
-          artwork_id?: string
-          created_at?: string | null
-          display_order?: number
-          id?: string
-          material?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "artwork_materials_artwork_id_fkey"
-            columns: ["artwork_id"]
-            isOneToOne: false
-            referencedRelation: "artworks"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      artwork_media: {
-        Row: {
-          artwork_id: string
-          created_at: string | null
-          display_order: number
-          id: string
-          media_url: string
-        }
-        Insert: {
-          artwork_id: string
-          created_at?: string | null
-          display_order?: number
-          id?: string
-          media_url: string
-        }
-        Update: {
-          artwork_id?: string
-          created_at?: string | null
-          display_order?: number
-          id?: string
-          media_url?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "artwork_media_artwork_id_fkey"
-            columns: ["artwork_id"]
-            isOneToOne: false
-            referencedRelation: "artworks"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      artworks: {
-        Row: {
-          created_at: string | null
-          description: string
-          display_order: number | null
-          id: string
-          slug: string
-          title: string
-          updated_at: string | null
-          url_3d: string | null
-          year: number
-        }
-        Insert: {
-          created_at?: string | null
-          description: string
-          display_order?: number | null
-          id?: string
-          slug: string
-          title: string
-          updated_at?: string | null
-          url_3d?: string | null
-          year: number
-        }
-        Update: {
-          created_at?: string | null
-          description?: string
-          display_order?: number | null
-          id?: string
-          slug?: string
-          title?: string
-          updated_at?: string | null
-          url_3d?: string | null
-          year?: number
-        }
-        Relationships: []
-      }
-      contact: {
-        Row: {
-          availability: string
-          created_at: string | null
-          email: string
-          error_message: string
-          id: string
-          note: string | null
-          success_message: string
-          updated_at: string | null
-        }
-        Insert: {
-          availability: string
-          created_at?: string | null
-          email: string
-          error_message: string
-          id?: string
-          note?: string | null
-          success_message: string
-          updated_at?: string | null
-        }
-        Update: {
-          availability?: string
-          created_at?: string | null
-          email?: string
-          error_message?: string
-          id?: string
-          note?: string | null
-          success_message?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      experience: {
-        Row: {
-          created_at: string | null
-          display_order: number | null
-          end_date: string | null
-          id: string
-          location: string
-          org: string
-          role: string
-          start_date: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          display_order?: number | null
-          end_date?: string | null
-          id?: string
-          location: string
-          org: string
-          role: string
-          start_date: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          display_order?: number | null
-          end_date?: string | null
-          id?: string
-          location?: string
-          org?: string
-          role?: string
-          start_date?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      experience_highlights: {
-        Row: {
-          created_at: string | null
-          display_order: number
-          experience_id: string
-          highlight: string
-          id: string
-        }
-        Insert: {
-          created_at?: string | null
-          display_order?: number
-          experience_id: string
-          highlight: string
-          id?: string
-        }
-        Update: {
-          created_at?: string | null
-          display_order?: number
-          experience_id?: string
-          highlight?: string
-          id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "experience_highlights_experience_id_fkey"
-            columns: ["experience_id"]
-            isOneToOne: false
-            referencedRelation: "experience"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profile: {
-        Row: {
-          avatar: string | null
-          bio: string
-          created_at: string | null
-          headline: string
-          id: string
-          lang_default: string | null
-          location: string
-          name: string
-          updated_at: string | null
-        }
-        Insert: {
-          avatar?: string | null
-          bio: string
-          created_at?: string | null
-          headline: string
-          id?: string
-          lang_default?: string | null
-          location: string
-          name: string
-          updated_at?: string | null
-        }
-        Update: {
-          avatar?: string | null
-          bio?: string
-          created_at?: string | null
-          headline?: string
-          id?: string
-          lang_default?: string | null
-          location?: string
-          name?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      project_stack: {
-        Row: {
-          created_at: string | null
-          display_order: number | null
-          id: string
-          project_id: string
-          technology_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          project_id: string
-          technology_id: string
-        }
-        Update: {
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          project_id?: string
-          technology_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "project_stack_project_id_fkey"
-            columns: ["project_id"]
-            isOneToOne: false
-            referencedRelation: "projects"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "project_stack_technology_id_fkey"
-            columns: ["technology_id"]
-            isOneToOne: false
-            referencedRelation: "technologies"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      projects: {
-        Row: {
-          category: string
-          created_at: string | null
-          display_order: number | null
-          domain: string | null
-          full_description: string
-          id: string
-          name: string
-          repo_url: string | null
-          slug: string
-          status: string | null
-          summary: string
-          thumbnail: string | null
-          updated_at: string | null
-          url: string | null
-          visibility: string | null
-          year: number
-        }
-        Insert: {
-          category: string
-          created_at?: string | null
-          display_order?: number | null
-          domain?: string | null
-          full_description: string
-          id?: string
-          name: string
-          repo_url?: string | null
-          slug: string
-          status?: string | null
-          summary: string
-          thumbnail?: string | null
-          updated_at?: string | null
-          url?: string | null
-          visibility?: string | null
-          year: number
-        }
-        Update: {
-          category?: string
-          created_at?: string | null
-          display_order?: number | null
-          domain?: string | null
-          full_description?: string
-          id?: string
-          name?: string
-          repo_url?: string | null
-          slug?: string
-          status?: string | null
-          summary?: string
-          thumbnail?: string | null
-          updated_at?: string | null
-          url?: string | null
-          visibility?: string | null
-          year?: number
-        }
-        Relationships: []
-      }
-      series: {
-        Row: {
-          created_at: string | null
-          description: string
-          display_order: number | null
-          id: string
-          slug: string
-          title: string
-          updated_at: string | null
-          year: number
-        }
-        Insert: {
-          created_at?: string | null
-          description: string
-          display_order?: number | null
-          id?: string
-          slug: string
-          title: string
-          updated_at?: string | null
-          year: number
-        }
-        Update: {
-          created_at?: string | null
-          description?: string
-          display_order?: number | null
-          id?: string
-          slug?: string
-          title?: string
-          updated_at?: string | null
-          year?: number
-        }
-        Relationships: []
-      }
-      series_works: {
-        Row: {
-          created_at: string | null
-          display_order: number | null
-          id: string
-          series_id: string
-          work_slug: string
-          work_type: string
-        }
-        Insert: {
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          series_id: string
-          work_slug: string
-          work_type: string
-        }
-        Update: {
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          series_id?: string
-          work_slug?: string
-          work_type?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "series_works_series_id_fkey"
-            columns: ["series_id"]
-            isOneToOne: false
-            referencedRelation: "series"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      skills: {
-        Row: {
-          category: string
-          created_at: string | null
-          display_order: number | null
-          id: string
-          level: string
-          name: string
-          updated_at: string | null
-        }
-        Insert: {
-          category: string
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          level: string
-          name: string
-          updated_at?: string | null
-        }
-        Update: {
-          category?: string
-          created_at?: string | null
-          display_order?: number | null
-          id?: string
-          level?: string
-          name?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      technologies: {
-        Row: {
-          category: string | null
-          created_at: string | null
-          id: string
-          name: string
-        }
-        Insert: {
-          category?: string | null
-          created_at?: string | null
-          id?: string
-          name: string
-        }
-        Update: {
-          category?: string | null
-          created_at?: string | null
-          id?: string
-          name?: string
-        }
-        Relationships: []
-      }
-      thought_tags: {
-        Row: {
-          created_at: string | null
-          id: string
-          tag: string
-          thought_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          tag: string
-          thought_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          tag?: string
-          thought_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "thought_tags_thought_id_fkey"
-            columns: ["thought_id"]
-            isOneToOne: false
-            referencedRelation: "thoughts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      thoughts: {
-        Row: {
-          body: string
-          created_at: string | null
-          date: string
-          display_order: number | null
-          excerpt: string
-          id: string
-          slug: string
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          body: string
-          created_at?: string | null
-          date: string
-          display_order?: number | null
-          excerpt: string
-          id?: string
-          slug: string
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          body?: string
-          created_at?: string | null
-          date?: string
-          display_order?: number | null
-          excerpt?: string
-          id?: string
-          slug?: string
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       leads: {
@@ -582,7 +49,468 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      artwork_materials: {
+        Row: {
+          artwork_id: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string | null
+          material: string | null
+        }
+        Insert: {
+          artwork_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          material?: string | null
+        }
+        Update: {
+          artwork_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          material?: string | null
+        }
+        Relationships: []
+      }
+      artwork_media: {
+        Row: {
+          artwork_id: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string | null
+          media_url: string | null
+        }
+        Insert: {
+          artwork_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          media_url?: string | null
+        }
+        Update: {
+          artwork_id?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          media_url?: string | null
+        }
+        Relationships: []
+      }
+      artworks: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string | null
+          url_3d: string | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url_3d?: string | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+          url_3d?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
+      contact: {
+        Row: {
+          availability: string | null
+          created_at: string | null
+          email: string | null
+          error_message: string | null
+          id: string | null
+          note: string | null
+          success_message: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          availability?: string | null
+          created_at?: string | null
+          email?: string | null
+          error_message?: string | null
+          id?: string | null
+          note?: string | null
+          success_message?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          availability?: string | null
+          created_at?: string | null
+          email?: string | null
+          error_message?: string | null
+          id?: string | null
+          note?: string | null
+          success_message?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      experience: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          end_date: string | null
+          id: string | null
+          location: string | null
+          org: string | null
+          role: string | null
+          start_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          end_date?: string | null
+          id?: string | null
+          location?: string | null
+          org?: string | null
+          role?: string | null
+          start_date?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          end_date?: string | null
+          id?: string | null
+          location?: string | null
+          org?: string | null
+          role?: string | null
+          start_date?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      experience_highlights: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          experience_id: string | null
+          highlight: string | null
+          id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          experience_id?: string | null
+          highlight?: string | null
+          id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          experience_id?: string | null
+          highlight?: string | null
+          id?: string | null
+        }
+        Relationships: []
+      }
+      profile: {
+        Row: {
+          avatar: string | null
+          bio: string | null
+          created_at: string | null
+          headline: string | null
+          id: string | null
+          lang_default: string | null
+          location: string | null
+          name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar?: string | null
+          bio?: string | null
+          created_at?: string | null
+          headline?: string | null
+          id?: string | null
+          lang_default?: string | null
+          location?: string | null
+          name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar?: string | null
+          bio?: string | null
+          created_at?: string | null
+          headline?: string | null
+          id?: string | null
+          lang_default?: string | null
+          location?: string | null
+          name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      project_stack: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          id: string | null
+          project_id: string | null
+          technology_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          project_id?: string | null
+          technology_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          project_id?: string | null
+          technology_id?: string | null
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          display_order: number | null
+          domain: string | null
+          full_description: string | null
+          id: string | null
+          name: string | null
+          repo_url: string | null
+          slug: string | null
+          status: string | null
+          summary: string | null
+          thumbnail: string | null
+          updated_at: string | null
+          url: string | null
+          visibility: string | null
+          year: number | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          domain?: string | null
+          full_description?: string | null
+          id?: string | null
+          name?: string | null
+          repo_url?: string | null
+          slug?: string | null
+          status?: string | null
+          summary?: string | null
+          thumbnail?: string | null
+          updated_at?: string | null
+          url?: string | null
+          visibility?: string | null
+          year?: number | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          domain?: string | null
+          full_description?: string | null
+          id?: string | null
+          name?: string | null
+          repo_url?: string | null
+          slug?: string | null
+          status?: string | null
+          summary?: string | null
+          thumbnail?: string | null
+          updated_at?: string | null
+          url?: string | null
+          visibility?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
+      series: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
+      series_works: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          id: string | null
+          series_id: string | null
+          work_slug: string | null
+          work_type: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          series_id?: string | null
+          work_slug?: string | null
+          work_type?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          series_id?: string | null
+          work_slug?: string | null
+          work_type?: string | null
+        }
+        Relationships: []
+      }
+      skills: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          display_order: number | null
+          id: string | null
+          level: string | null
+          name: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          level?: string | null
+          name?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          display_order?: number | null
+          id?: string | null
+          level?: string | null
+          name?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      technologies: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          id: string | null
+          name: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          id?: string | null
+          name?: string | null
+        }
+        Relationships: []
+      }
+      thought_tags: {
+        Row: {
+          created_at: string | null
+          id: string | null
+          tag: string | null
+          thought_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string | null
+          tag?: string | null
+          thought_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string | null
+          tag?: string | null
+          thought_id?: string | null
+        }
+        Relationships: []
+      }
+      thoughts: {
+        Row: {
+          body: string | null
+          created_at: string | null
+          date: string | null
+          display_order: number | null
+          excerpt: string | null
+          id: string | null
+          slug: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string | null
+          date?: string | null
+          display_order?: number | null
+          excerpt?: string | null
+          id?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string | null
+          date?: string | null
+          display_order?: number | null
+          excerpt?: string | null
+          id?: string | null
+          slug?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
@@ -714,9 +642,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  portfolio: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },

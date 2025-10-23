@@ -24,7 +24,7 @@ import {
   fetchSkills,
   fetchTechnologies,
 } from '@/lib/api/queries';
-import cvData from '../../public/data/cv.json';
+// Removed cv.json fallback to use Supabase as the single source of truth.
 
 // Stale time: 5 minutes (data is considered fresh for 5 min)
 const STALE_TIME = 5 * 60 * 1000;
@@ -41,22 +41,7 @@ export function useProjects() {
     queryKey: ['projects'],
     queryFn: async () => {
       const dbData = await fetchProjects();
-      
-      // Fallback to cv.json if database is unavailable
-      if (!dbData) {
-        console.info('Using cv.json fallback for projects');
-        return cvData.projects.map((project) => ({
-          ...project,
-          technologies: project.stack.map((name) => ({ name, category: null })),
-          id: project.slug, // Use slug as ID for cv.json data
-          full_description: project.fullDescription,
-          repo_url: project.repoUrl,
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        }));
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -74,25 +59,7 @@ export function useProject(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchProjectBySlug(slug);
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info(`Using cv.json fallback for project: ${slug}`);
-        const project = cvData.projects.find((p) => p.slug === slug);
-        if (!project) return null;
-        
-        return {
-          ...project,
-          technologies: project.stack.map((name) => ({ name, category: null })),
-          id: project.slug,
-          full_description: project.fullDescription,
-          repo_url: project.repoUrl,
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        };
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     enabled: !!slug,
@@ -109,21 +76,7 @@ export function useArtworks() {
     queryKey: ['artworks'],
     queryFn: async () => {
       const dbData = await fetchArtworks();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for artworks');
-        return cvData.artworks.map((artwork) => ({
-          ...artwork,
-          id: artwork.slug,
-          media: artwork.media.map((url, idx) => ({ media_url: url, display_order: idx + 1 })),
-          url_3d: artwork.url3d || null,
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        }));
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -141,24 +94,7 @@ export function useArtwork(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchArtworkBySlug(slug);
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info(`Using cv.json fallback for artwork: ${slug}`);
-        const artwork = cvData.artworks.find((a) => a.slug === slug);
-        if (!artwork) return null;
-        
-        return {
-          ...artwork,
-          id: artwork.slug,
-          media: artwork.media.map((url, idx) => ({ media_url: url, display_order: idx + 1 })),
-          url_3d: artwork.url3d || null,
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        };
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     enabled: !!slug,
@@ -175,24 +111,7 @@ export function useSeries() {
     queryKey: ['series'],
     queryFn: async () => {
       const dbData = await fetchSeries();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for series');
-        return cvData.series.map((s) => ({
-          ...s,
-          id: s.slug,
-          works: s.works.map((workSlug, idx) => ({
-            work_slug: workSlug,
-            work_type: 'project', // Default type
-            display_order: idx + 1,
-          })),
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        }));
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -210,27 +129,7 @@ export function useSeriesDetail(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchSeriesBySlug(slug);
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info(`Using cv.json fallback for series: ${slug}`);
-        const series = cvData.series.find((s) => s.slug === slug);
-        if (!series) return null;
-        
-        return {
-          ...series,
-          id: series.slug,
-          works: series.works.map((workSlug, idx) => ({
-            work_slug: workSlug,
-            work_type: 'project',
-            display_order: idx + 1,
-          })),
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        };
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     enabled: !!slug,
@@ -247,19 +146,7 @@ export function useThoughts() {
     queryKey: ['thoughts'],
     queryFn: async () => {
       const dbData = await fetchThoughts();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for thoughts');
-        return cvData.thoughts.map((thought) => ({
-          ...thought,
-          id: thought.slug,
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        }));
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -277,22 +164,7 @@ export function useThought(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchThoughtBySlug(slug);
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info(`Using cv.json fallback for thought: ${slug}`);
-        const thought = cvData.thoughts.find((t) => t.slug === slug);
-        if (!thought) return null;
-        
-        return {
-          ...thought,
-          id: thought.slug,
-          display_order: null,
-          created_at: null,
-          updated_at: null,
-        };
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     enabled: !!slug,
@@ -309,23 +181,7 @@ export function useProfile() {
     queryKey: ['profile'],
     queryFn: async () => {
       const dbData = await fetchProfile();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for profile');
-        return {
-          id: 'profile',
-          name: cvData.profile.name,
-          headline: cvData.profile.headline,
-          location: cvData.profile.location,
-          bio: cvData.profile.bio,
-          avatar: cvData.profile.avatar,
-          lang_default: cvData.langDefault,
-          created_at: null,
-          updated_at: null,
-        };
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -341,22 +197,7 @@ export function useContact() {
     queryKey: ['contact'],
     queryFn: async () => {
       const dbData = await fetchContact();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for contact');
-        return {
-          id: 'contact',
-          email: cvData.contact.email,
-          availability: cvData.contact.availability,
-          note: cvData.contact.note,
-          success_message: cvData.contact.successMessage,
-          error_message: cvData.contact.errorMessage,
-          created_at: null,
-          updated_at: null,
-        };
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -372,24 +213,7 @@ export function useExperience() {
     queryKey: ['experience'],
     queryFn: async () => {
       const dbData = await fetchExperience();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for experience');
-        return cvData.experience.map((exp, idx) => ({
-          id: `exp-${idx}`,
-          role: exp.role,
-          org: exp.org,
-          start_date: exp.start,
-          end_date: exp.end,
-          location: exp.location,
-          highlights: exp.highlights,
-          display_order: idx + 1,
-          created_at: null,
-          updated_at: null,
-        }));
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,
@@ -405,21 +229,7 @@ export function useSkills() {
     queryKey: ['skills'],
     queryFn: async () => {
       const dbData = await fetchSkills();
-      
-      // Fallback to cv.json
-      if (!dbData) {
-        console.info('Using cv.json fallback for skills');
-        return cvData.skills.map((skill, idx) => ({
-          id: `skill-${idx}`,
-          name: skill.name,
-          category: skill.category,
-          level: skill.level,
-          display_order: idx + 1,
-          created_at: null,
-          updated_at: null,
-        }));
-      }
-      
+      // Return data from Supabase (no JSON fallback)
       return dbData;
     },
     staleTime: STALE_TIME,

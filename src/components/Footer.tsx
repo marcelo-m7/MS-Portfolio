@@ -1,29 +1,32 @@
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
-import cvData from '../../public/data/cv.json';
+import { useProfile, useContact } from '@/hooks/usePortfolioData';
+import { LINKS } from '../lib/siteLinks';
 
 const MotionLink = motion(Link);
 
 export default function Footer() {
   const prefersReducedMotion = useReducedMotion();
+  const { data: profile } = useProfile();
+  const { data: contact } = useContact();
 
   const socialLinks = [
     {
       icon: Github,
-      href: cvData.links.github,
+      href: LINKS.github,
       label: 'GitHub',
       colorClass: 'hover:text-primary',
     },
     {
       icon: Linkedin,
-      href: cvData.links.linkedin,
+      href: LINKS.linkedin,
       label: 'LinkedIn',
       colorClass: 'hover:text-secondary',
     },
     {
       icon: Mail,
-      href: cvData.links.email,
+      href: `mailto:${contact?.email || LINKS.email.replace('mailto:','')}`,
       label: 'Email',
       colorClass: 'hover:text-accent',
     },
@@ -58,7 +61,7 @@ export default function Footer() {
                 M
               </span>
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {cvData.profile.name.split(' ')[0]}
+                {(profile?.name || 'Marcelo').split(' ')[0]}
               </span>
             </MotionLink>
             <p className="mt-4 text-sm text-muted-foreground">

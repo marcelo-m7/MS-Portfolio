@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import cvData from '../../public/data/cv.json';
+import { useContact } from '@/hooks/usePortfolioData';
+import { LINKS } from '../lib/siteLinks';
 import { submitContactLead } from '@/lib/contactLead';
 import { supabase } from '@/lib/supabaseClient';
 import type { ContactLeadPayload } from '@/lib/contactLead';
@@ -22,6 +23,7 @@ export default function Contact() {
   const prefersReducedMotion = useReducedMotion();
   const [formData, setFormData] = useState(createInitialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: contactInfo } = useContact();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,7 +70,7 @@ export default function Contact() {
 
       toast.success(
         result === 'saved'
-          ? cvData.contact.successMessage
+          ? (contactInfo?.success_message || 'Mensagem enviada com sucesso!')
           : 'Recebemos sua mensagem por email! Entraremos em contato em breve. 📬',
       );
       setFormData(createInitialFormState());
@@ -76,7 +78,7 @@ export default function Contact() {
       if (import.meta.env.DEV) {
         console.error('Erro ao processar mensagem de contato:', error);
       }
-      toast.error(cvData.contact.errorMessage);
+      toast.error(contactInfo?.error_message || 'Não foi possível enviar sua mensagem. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -95,7 +97,7 @@ export default function Contact() {
             Vamos Conversar
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {cvData.contact.note}
+            {contactInfo?.note || 'Entre em contato e vamos criar algo incrível juntos.'}
           </p>
         </motion.div>
 
@@ -114,7 +116,7 @@ export default function Contact() {
 
               <div className="space-y-6">
                 <motion.a
-                  href={cvData.links.email}
+                  href={`mailto:${contactInfo?.email || LINKS.email.replace('mailto:','')}`}
                   className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
                   whileHover={prefersReducedMotion ? undefined : { x: 5, boxShadow: '0 5px 15px rgba(0,0,0,0.1)' }}
                   transition={{ type: 'spring', stiffness: 300, damping: 20 }}
@@ -124,12 +126,12 @@ export default function Contact() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground/60">Email</p>
-                    <p className="font-medium">{cvData.contact.email}</p>
+                    <p className="font-medium">{contactInfo?.email || LINKS.email.replace('mailto:','')}</p>
                   </div>
                 </motion.a>
 
                 <motion.a
-                  href={cvData.links.github}
+                  href={LINKS.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
@@ -146,7 +148,7 @@ export default function Contact() {
                 </motion.a>
 
                 <motion.a
-                  href={cvData.links.linkedin}
+                  href={LINKS.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 text-muted-foreground transition-colors hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background group"
@@ -167,7 +169,7 @@ export default function Contact() {
             <div className="glass p-8">
               <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
               <p className="text-muted-foreground">
-                {cvData.contact.availability}
+                {contactInfo?.availability || 'Disponível para projetos e colaborações.'}
               </p>
             </div>
           </motion.div>

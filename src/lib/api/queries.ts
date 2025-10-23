@@ -9,28 +9,41 @@
  *   if (projects) { ... }
  */
 
-import { supabase, PORTFOLIO_SCHEMA } from '../supabaseClient';
-import type { Database } from '@/types/database.types';
+import { supabase } from '../supabaseClient';
+import type { Tables as DBTables } from '@/types/database.types';
 
-// Type aliases for cleaner code
-type Tables = Database['portfolio']['Tables'];
-type Project = Tables['projects']['Row'];
+// Row type aliases from public views (generated types)
+type Project = DBTables<'projects'>;
+type ProjectStack = DBTables<'project_stack'>;
+type Technology = DBTables<'technologies'>;
 type ProjectWithStack = Project & {
-  technologies: Array<{ name: string; category: string | null }>;
+  technologies: Array<{ name: string | null; category: string | null }>;
 };
-type Artwork = Tables['artworks']['Row'] & {
-  media: Array<{ media_url: string; display_order: number }>;
-  materials: Array<{ material: string; display_order: number }>;
+type ArtworkRow = DBTables<'artworks'>;
+type ArtworkMedia = DBTables<'artwork_media'>;
+type ArtworkMaterial = DBTables<'artwork_materials'>;
+type Artwork = ArtworkRow & {
+  media: Array<ArtworkMedia>;
+  materials: Array<ArtworkMaterial>;
 };
-type Series = Tables['series']['Row'] & {
-  works: Array<{ work_slug: string; work_type: string; display_order: number | null }>;
+type SeriesRow = DBTables<'series'>;
+type SeriesWork = DBTables<'series_works'>;
+type Series = SeriesRow & {
+  works: Array<SeriesWork>;
 };
-type Thought = Tables['thoughts']['Row'] & {
+type ThoughtRow = DBTables<'thoughts'>;
+type ThoughtTag = DBTables<'thought_tags'>;
+type Thought = ThoughtRow & {
   tags: string[];
 };
-type Experience = Tables['experience']['Row'] & {
+type ExperienceRow = DBTables<'experience'>;
+type ExperienceHighlight = DBTables<'experience_highlights'>;
+type Experience = ExperienceRow & {
   highlights: string[];
 };
+
+// Small helper for filtering null/undefined items
+const notNull = <T>(v: T | null | undefined): v is T => v != null;
 
 /**
  * Fetch all projects with their technology stack
@@ -41,7 +54,6 @@ export async function fetchProjects(): Promise<ProjectWithStack[] | null> {
   try {
     // Fetch projects
     const { data: projects, error: projectsError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('projects')
       .select('*')
       .order('display_order', { ascending: true });
@@ -49,30 +61,32 @@ export async function fetchProjects(): Promise<ProjectWithStack[] | null> {
     if (projectsError) throw projectsError;
     if (!projects) return null;
 
-    // Fetch technology relationships for all projects
-    const { data: stackData, error: stackError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
-      .from('project_stack')
-      .select(`
-        project_id,
-        technologies (name, category)
-      `)
-      .order('display_order', { ascending: true });
+    // Fetch project_stack and technologies separately (views may not have FKs for embedded selects)
+    const [{ data: stackData, error: stackError }, { data: techData, error: techError }] = await Promise.all([
+      supabase.from('project_stack').select('*').order('display_order', { ascending: true }),
+      supabase.from('technologies').select('*'),
+    ] as const);
 
     if (stackError) throw stackError;
+    if (techError) throw techError;
 
     // Map technologies to projects
-    const projectsWithStack: ProjectWithStack[] = projects.map((project) => {
-      const projectTechs = stackData
-        ?.filter((s) => s.project_id === project.id)
-        .map((s) => s.technologies)
-        .filter((t): t is { name: string; category: string | null } => t !== null) || [];
+    const projectsWithStack: ProjectWithStack[] = (projects ?? [])
+      .filter((p): p is Project => !!p && !!p.id)
+      .map((project) => {
+        const techs = (stackData ?? [])
+          .filter((s: ProjectStack) => s?.project_id === project.id)
+          .map((s) => s?.technology_id)
+          .filter(notNull)
+          .map((tid) => (techData ?? [])?.find((t: Technology) => t?.id === tid))
+          .filter(notNull)
+          .map((t) => ({ name: t.name ?? null, category: t.category ?? null }));
 
-      return {
-        ...project,
-        technologies: projectTechs,
-      };
-    });
+        return {
+          ...project,
+          technologies: techs,
+        };
+      });
 
     return projectsWithStack;
   } catch (error) {
@@ -89,7 +103,6 @@ export async function fetchProjectBySlug(slug: string): Promise<ProjectWithStack
 
   try {
     const { data: project, error: projectError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('projects')
       .select('*')
       .eq('slug', slug)
@@ -99,20 +112,18 @@ export async function fetchProjectBySlug(slug: string): Promise<ProjectWithStack
     if (!project) return null;
 
     // Fetch technologies for this project
-    const { data: stackData, error: stackError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
-      .from('project_stack')
-      .select(`
-        technologies (name, category)
-      `)
-      .eq('project_id', project.id)
-      .order('display_order', { ascending: true});
+    const [{ data: stackData, error: stackError }, { data: techData, error: techError }] = await Promise.all([
+      supabase.from('project_stack').select('*').eq('project_id', project.id).order('display_order', { ascending: true }),
+      supabase.from('technologies').select('*'),
+    ] as const);
 
     if (stackError) throw stackError;
+    if (techError) throw techError;
 
-    const technologies = stackData
-      ?.map((s) => s.technologies)
-      .filter((t): t is { name: string; category: string | null } => t !== null) || [];
+    const technologies = (stackData ?? [])
+      .map((s: ProjectStack) => (techData ?? [])?.find((t: Technology) => t?.id === s?.technology_id))
+      .filter(notNull)
+      .map((t) => ({ name: t.name ?? null, category: t.category ?? null }));
 
     return {
       ...project,
@@ -132,7 +143,6 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
 
   try {
     const { data: artworks, error: artworksError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('artworks')
       .select('*')
       .order('display_order', { ascending: true });
@@ -142,7 +152,6 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
 
     // Fetch media for all artworks
     const { data: mediaData, error: mediaError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('artwork_media')
       .select('*')
       .order('display_order', { ascending: true });
@@ -151,7 +160,6 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
 
     // Fetch materials for all artworks
     const { data: materialsData, error: materialsError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('artwork_materials')
       .select('*')
       .order('display_order', { ascending: true });
@@ -159,11 +167,13 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
     if (materialsError) throw materialsError;
 
     // Map media and materials to artworks
-    const artworksWithDetails: Artwork[] = artworks.map((artwork) => ({
-      ...artwork,
-      media: mediaData?.filter((m) => m.artwork_id === artwork.id) || [],
-      materials: materialsData?.filter((m) => m.artwork_id === artwork.id) || [],
-    }));
+    const artworksWithDetails: Artwork[] = (artworks ?? [])
+      .filter((a): a is ArtworkRow => !!a && !!a.id)
+      .map((artwork) => ({
+        ...artwork,
+        media: (mediaData ?? []).filter((m: ArtworkMedia) => m?.artwork_id === artwork.id),
+        materials: (materialsData ?? []).filter((m: ArtworkMaterial) => m?.artwork_id === artwork.id),
+      }));
 
     return artworksWithDetails;
   } catch (error) {
@@ -180,7 +190,6 @@ export async function fetchArtworkBySlug(slug: string): Promise<Artwork | null> 
 
   try {
     const { data: artwork, error: artworkError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('artworks')
       .select('*')
       .eq('slug', slug)
@@ -191,7 +200,6 @@ export async function fetchArtworkBySlug(slug: string): Promise<Artwork | null> 
 
     // Fetch media
     const { data: mediaData, error: mediaError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('artwork_media')
       .select('*')
       .eq('artwork_id', artwork.id)
@@ -201,7 +209,6 @@ export async function fetchArtworkBySlug(slug: string): Promise<Artwork | null> 
 
     // Fetch materials
     const { data: materialsData, error: materialsError} = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('artwork_materials')
       .select('*')
       .eq('artwork_id', artwork.id)
@@ -228,7 +235,6 @@ export async function fetchSeries(): Promise<Series[] | null> {
 
   try {
     const { data: series, error: seriesError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('series')
       .select('*')
       .order('display_order', { ascending: true });
@@ -238,7 +244,6 @@ export async function fetchSeries(): Promise<Series[] | null> {
 
     // Fetch works for all series
     const { data: worksData, error: worksError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('series_works')
       .select('*')
       .order('display_order', { ascending: true });
@@ -246,10 +251,12 @@ export async function fetchSeries(): Promise<Series[] | null> {
     if (worksError) throw worksError;
 
     // Map works to series
-    const seriesWithWorks: Series[] = series.map((s) => ({
-      ...s,
-      works: worksData?.filter((w) => w.series_id === s.id) || [],
-    }));
+    const seriesWithWorks: Series[] = (series ?? [])
+      .filter((s): s is SeriesRow => !!s && !!s.id)
+      .map((s) => ({
+        ...s,
+        works: (worksData ?? []).filter((w: SeriesWork) => w?.series_id === s.id),
+      }));
 
     return seriesWithWorks;
   } catch (error) {
@@ -266,7 +273,6 @@ export async function fetchSeriesBySlug(slug: string): Promise<Series | null> {
 
   try {
     const { data: series, error: seriesError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('series')
       .select('*')
       .eq('slug', slug)
@@ -277,7 +283,6 @@ export async function fetchSeriesBySlug(slug: string): Promise<Series | null> {
 
     // Fetch works
     const { data: worksData, error: worksError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('series_works')
       .select('*')
       .eq('series_id', series.id)
@@ -303,7 +308,6 @@ export async function fetchThoughts(): Promise<Thought[] | null> {
 
   try {
     const { data: thoughts, error: thoughtsError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('thoughts')
       .select('*')
       .order('date', { ascending: false });
@@ -313,17 +317,22 @@ export async function fetchThoughts(): Promise<Thought[] | null> {
 
     // Fetch tags for all thoughts
     const { data: tagsData, error: tagsError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('thought_tags')
       .select('*');
 
     if (tagsError) throw tagsError;
 
     // Map tags to thoughts
-    const thoughtsWithTags: Thought[] = thoughts.map((thought) => ({
-      ...thought,
-      tags: tagsData?.filter((t) => t.thought_id === thought.id).map((t) => t.tag) || [],
-    }));
+    const thoughtsWithTags: Thought[] = (thoughts ?? [])
+      .filter((t): t is ThoughtRow => !!t && !!t.id)
+      .map((thought) => ({
+        ...thought,
+        tags:
+          (tagsData ?? [])
+            .filter((t: ThoughtTag) => t?.thought_id === thought.id)
+            .map((t) => t?.tag)
+            .filter(notNull) || [],
+      }));
 
     return thoughtsWithTags;
   } catch (error) {
@@ -340,7 +349,6 @@ export async function fetchThoughtBySlug(slug: string): Promise<Thought | null> 
 
   try {
     const { data: thought, error: thoughtError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('thoughts')
       .select('*')
       .eq('slug', slug)
@@ -351,7 +359,6 @@ export async function fetchThoughtBySlug(slug: string): Promise<Thought | null> 
 
     // Fetch tags
     const { data: tagsData, error: tagsError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('thought_tags')
       .select('*')
       .eq('thought_id', thought.id);
@@ -360,7 +367,7 @@ export async function fetchThoughtBySlug(slug: string): Promise<Thought | null> 
 
     return {
       ...thought,
-      tags: tagsData?.map((t) => t.tag) || [],
+  tags: (tagsData ?? []).map((t: ThoughtTag) => t?.tag).filter(notNull) || [],
     };
   } catch (error) {
     console.error(`Error fetching thought ${slug}:`, error);
@@ -376,7 +383,6 @@ export async function fetchProfile() {
 
   try {
     const { data, error } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('profile')
       .select('*')
       .single();
@@ -397,7 +403,6 @@ export async function fetchContact() {
 
   try {
     const { data, error } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('contact')
       .select('*')
       .single();
@@ -418,7 +423,6 @@ export async function fetchExperience(): Promise<Experience[] | null> {
 
   try {
     const { data: experience, error: expError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('experience')
       .select('*')
       .order('display_order', { ascending: true });
@@ -428,7 +432,6 @@ export async function fetchExperience(): Promise<Experience[] | null> {
 
     // Fetch highlights
     const { data: highlightsData, error: highlightsError } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('experience_highlights')
       .select('*')
       .order('display_order', { ascending: true });
@@ -436,10 +439,16 @@ export async function fetchExperience(): Promise<Experience[] | null> {
     if (highlightsError) throw highlightsError;
 
     // Map highlights to experience
-    const experienceWithHighlights: Experience[] = experience.map((exp) => ({
-      ...exp,
-      highlights: highlightsData?.filter((h) => h.experience_id === exp.id).map((h) => h.highlight) || [],
-    }));
+    const experienceWithHighlights: Experience[] = (experience ?? [])
+      .filter((e): e is ExperienceRow => !!e && !!e.id)
+      .map((exp) => ({
+        ...exp,
+        highlights:
+          (highlightsData ?? [])
+            .filter((h: ExperienceHighlight) => h?.experience_id === exp.id)
+            .map((h) => h?.highlight)
+            .filter(notNull) || [],
+      }));
 
     return experienceWithHighlights;
   } catch (error) {
@@ -456,7 +465,6 @@ export async function fetchSkills() {
 
   try {
     const { data, error } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('skills')
       .select('*')
       .order('display_order', { ascending: true });
@@ -477,7 +485,6 @@ export async function fetchTechnologies() {
 
   try {
     const { data, error } = await supabase
-      .schema(PORTFOLIO_SCHEMA)
       .from('technologies')
       .select('*')
       .order('name', { ascending: true });
