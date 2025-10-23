@@ -1,4 +1,4 @@
-import type { PostgrestError } from '@supabase/supabase-js';
+import type { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 
 export interface ContactLeadPayload {
   name: string;
@@ -17,17 +17,8 @@ export interface NormalizedContactLead {
   project_source: string;
 }
 
-export type SupabaseLeadsClient = {
-  from: (
-    table: 'leads',
-  ) => {
-    insert: (
-      values: NormalizedContactLead[],
-    ) => {
-      select: () => Promise<{ error: PostgrestError | null }>;
-    };
-  };
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SupabaseLeadsClient = SupabaseClient<any, 'public', any> | undefined;
 
 export type ContactFallbackSender = (
   payload: NormalizedContactLead,

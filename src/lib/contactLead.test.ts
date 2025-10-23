@@ -30,8 +30,8 @@ const createSupabaseMock = (
   const from = vi.fn(() => ({ insert }));
 
   return {
-    from: from as SupabaseLeadsClient['from'],
-  };
+    from,
+  } as unknown as SupabaseLeadsClient;
 };
 
 describe('normalize', () => {

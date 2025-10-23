@@ -20,6 +20,13 @@ Architecture & conventions (practical, discoverable):
   - When adding tables, decide if shared (→ `public`) or project-specific (→ `portfolio`). All `leads` submissions automatically include `project_source='portfolio'`.
 - Styling: Tailwind + shadcn components. Prefer existing UI primitives in `src/components/ui/` instead of creating new styles from scratch.
 
+Package management:
+- **Primary package manager**: npm (enforced via `.npmrc` with `engine-strict=true`)
+- **Lock file**: `package-lock.json` (committed to git)
+- **Not used**: pnpm, yarn, bun (lock files are gitignored)
+- Always use `npm install` to add dependencies (never `pnpm`, `yarn`, or `bun`)
+- Vite handles all bundling and dev server (port 8080)
+
 Build / dev / test commands (use project scripts in `package.json`):
 - Start dev server: `npm run dev` (Vite on port 8080 per `vite.config.ts`).
 - Build: `npm run build` (or `npm run build:dev` for dev-mode build).
