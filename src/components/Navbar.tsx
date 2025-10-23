@@ -34,7 +34,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
+    <nav className="fixed inset-x-0 top-4 z-50 w-full px-4 sm:px-6">
       <motion.div
         initial={shouldReduceMotion ? undefined : { y: -100, opacity: 0 }}
         animate={shouldReduceMotion ? undefined : { y: 0, opacity: 1 }}

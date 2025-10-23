@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative min-h-[calc(100vh-8rem)] flex items-center justify-center overflow-hidden py-16">
+      <section className="relative min-h-[calc(100dvh-8rem)] flex items-center justify-center overflow-hidden py-16">
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
             variants={containerVariants}
