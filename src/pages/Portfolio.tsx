@@ -1,6 +1,8 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
-import cvData from '../../public/data/cv.json';
+import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { Database } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
@@ -47,9 +49,60 @@ type PortfolioEntry =
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
   const prefersReducedMotion = useReducedMotion();
-  const projects = cvData.projects as CVProject[];
-  const artworks = cvData.artworks as CVArtwork[];
-  const seriesEntries = cvData.series as CVSeries[];
+  const { data: dbProjects, isLoading: loadingProjects } = useProjects();
+  const { data: dbArtworks, isLoading: loadingArtworks } = useArtworks();
+  const { data: dbSeries, isLoading: loadingSeries } = useSeries();
+
+  // Map DB-shaped data to the UI shapes expected by the existing cards
+  type DBProject = Database['portfolio']['Tables']['projects']['Row'] & {
+    technologies?: Array<{ name: string; category: string | null }>;
+  };
+  const projects = useMemo<CVProject[]>(() => {
+    return (dbProjects as DBProject[] | undefined ?? []).map((p) => ({
+      slug: p.slug,
+      name: p.name,
+      summary: p.summary,
+      stack: (p.technologies ?? []).map((t) => t?.name).filter(Boolean) as string[],
+      url: p.url ?? null,
+      domain: p.domain ?? null,
+  repoUrl: p.repo_url ?? '',
+      thumbnail: p.thumbnail ?? '',
+      category: p.category,
+      status: p.status ?? undefined,
+      visibility: p.visibility ?? undefined,
+      year: p.year,
+  fullDescription: p.full_description,
+    }));
+  }, [dbProjects]);
+
+  type DBArtwork = Database['portfolio']['Tables']['artworks']['Row'] & {
+    media?: Array<{ media_url: string; display_order: number }>;
+    materials?: Array<{ material: string; display_order: number }>;
+    url_3d?: string | null;
+  };
+  const artworks = useMemo<CVArtwork[]>(() => {
+    return (dbArtworks as DBArtwork[] | undefined ?? []).map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      description: a.description,
+      media: (a.media ?? []).map((m) => m.media_url).filter(Boolean),
+      materials: (a.materials ?? []).map((m) => m.material).filter(Boolean),
+      year: a.year,
+    }));
+  }, [dbArtworks]);
+
+  type DBSeries = Database['portfolio']['Tables']['series']['Row'] & {
+    works?: Array<{ work_slug: string; work_type: string; display_order: number | null }>;
+  };
+  const seriesEntries = useMemo<CVSeries[]>(() => {
+    return (dbSeries as DBSeries[] | undefined ?? []).map((s) => ({
+      slug: s.slug,
+      title: s.title,
+      description: s.description,
+      works: (s.works ?? []).map((w) => w.work_slug).filter(Boolean),
+      year: s.year,
+    }));
+  }, [dbSeries]);
 
   useEffect(() => {
     if (typeof document === 'undefined') return;
@@ -156,7 +209,11 @@ export default function Portfolio() {
 
         {/* Dynamic Content Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredItems.map((item, index) => {
+          {(loadingProjects || loadingArtworks || loadingSeries) &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={`s-${i}`} className="h-80 w-full rounded-2xl" />
+            ))}
+          {!loadingProjects && !loadingArtworks && !loadingSeries && filteredItems.map((item, index) => {
             if (item.type === 'project') {
               return <ProjectCard key={item.slug} project={item} index={index} />;
             }

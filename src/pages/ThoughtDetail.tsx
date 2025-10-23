@@ -2,8 +2,9 @@ import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useThought, useProfile } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
   useCurrentLanguage,
@@ -17,7 +18,43 @@ export default function ThoughtDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
-  const thought = cvData.thoughts.find((item) => item.slug === slug);
+  const { data: thought, isLoading: isLoadingThought } = useThought(slug ?? '');
+  const { data: profile, isLoading: isLoadingProfile } = useProfile();
+
+  const isLoading = isLoadingThought || isLoadingProfile;
+
+  if (isLoading) {
+    return (
+      <div className="py-0 px-6">
+        <div className="container mx-auto max-w-3xl">
+          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-8 shadow-md backdrop-blur-xl">
+            <Skeleton className="h-10 w-48 rounded-full mb-6" />
+            <div className="flex gap-3 mb-6">
+              <Skeleton className="h-6 w-32 rounded-full" />
+              <Skeleton className="h-6 w-24 rounded-full" />
+            </div>
+            <Skeleton className="h-10 w-3/4 mb-4" />
+            <Skeleton className="h-20 w-full mb-6" />
+            <div className="flex gap-2 mb-8">
+              <Skeleton className="h-6 w-20 rounded-full" />
+              <Skeleton className="h-6 w-24 rounded-full" />
+            </div>
+            <Skeleton className="h-48 w-full mb-6" />
+            <div className="rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
+              <Skeleton className="h-4 w-24 mb-4" />
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-12 w-12 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-48" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!thought) {
     return (
@@ -111,21 +148,23 @@ export default function ThoughtDetail() {
             <ReactMarkdown>{thought.body}</ReactMarkdown>
           </article>
 
-          <footer className="mt-12 rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
-            <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>
-            <div className="mt-4 flex items-center gap-3">
-              <img
-                src={cvData.profile.avatar}
-                alt={cvData.profile.name}
-                className="h-12 w-12 rounded-full object-cover"
-                loading="lazy"
-              />
-              <div>
-                <p className="text-base font-semibold text-foreground">{cvData.profile.name}</p>
-                <p className="text-sm text-muted-foreground">{cvData.profile.headline}</p>
+          {profile && (
+            <footer className="mt-12 rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
+              <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground">Escrito por</p>
+              <div className="mt-4 flex items-center gap-3">
+                <img
+                  src={profile.avatar ?? ''}
+                  alt={profile.name}
+                  className="h-12 w-12 rounded-full object-cover"
+                  loading="lazy"
+                />
+                <div>
+                  <p className="text-base font-semibold text-foreground">{profile.name}</p>
+                  <p className="text-sm text-muted-foreground">{profile.headline}</p>
+                </div>
               </div>
-            </div>
-          </footer>
+            </footer>
+          )}
         </motion.div>
       </div>
     </div>

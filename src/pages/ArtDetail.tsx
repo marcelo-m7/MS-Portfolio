@@ -2,8 +2,9 @@ import { useState, Suspense, lazy } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Maximize2, Orbit } from 'lucide-react';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useArtwork } from '@/hooks/usePortfolioData';
 import {
   Dialog,
   DialogContent,
@@ -31,17 +32,46 @@ export default function ArtDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
-  const artwork = cvData.artworks.find((item) => item.slug === slug);
+  const { data: artwork, isLoading } = useArtwork(slug ?? '');
   const [isMediaOpen, setIsMediaOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState<string | null>(null);
   const [is3DOpen, setIs3DOpen] = useState(false);
 
-  const canRender3DPreview = Boolean(artwork?.url3d && Art3DPreviewLazy);
+  // Extract arrays from database objects
+  const mediaUrls = artwork?.media?.map(m => m.media_url) ?? [];
+  const materials = artwork?.materials?.map(m => m.material) ?? [];
+
+  const canRender3DPreview = Boolean(artwork?.url_3d && Art3DPreviewLazy);
 
   const handleOpenMedia = (media: string) => {
     setActiveMedia(media);
     setIsMediaOpen(true);
   };
+
+  if (isLoading) {
+    return (
+      <div className="py-0 px-6">
+        <div className="container mx-auto max-w-4xl">
+          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-md backdrop-blur-xl">
+            <Skeleton className="h-10 w-48 rounded-full mb-8" />
+            <div className="space-y-4 mb-8">
+              <Skeleton className="h-8 w-3/4" />
+              <div className="flex gap-3">
+                <Skeleton className="h-6 w-24 rounded-full" />
+                <Skeleton className="h-6 w-32 rounded-full" />
+              </div>
+            </div>
+            <Skeleton className="h-96 w-full rounded-lg mb-6" />
+            <Skeleton className="h-32 w-full mb-6" />
+            <div className="grid grid-cols-2 gap-4">
+              <Skeleton className="h-24 w-full rounded-lg" />
+              <Skeleton className="h-24 w-full rounded-lg" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!artwork) {
     return (
@@ -99,7 +129,7 @@ export default function ArtDetail() {
               whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
-              {artwork.materials.join(' • ')}
+              {materials.join(' • ')}
             </motion.span>
           </div>
 
@@ -110,7 +140,7 @@ export default function ArtDetail() {
           <p className="mt-4 text-lg text-muted-foreground/90">{artwork.description}</p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {artwork.media.map((media, index) => (
+            {mediaUrls.map((media, index) => (
               <motion.button
                 key={`${media}-${index}`}
                 type="button"
@@ -143,7 +173,7 @@ export default function ArtDetail() {
             ))}
           </div>
 
-          {artwork.url3d && (
+          {artwork.url_3d && (
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <MotionButton
                 type="button"
@@ -158,7 +188,7 @@ export default function ArtDetail() {
                 {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
               </MotionButton>
               <motion.a
-                href={artwork.url3d}
+                href={artwork.url_3d}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -196,7 +226,7 @@ export default function ArtDetail() {
         </DialogContent>
       </Dialog>
 
-      {artwork.url3d && (
+      {artwork.url_3d && (
         <Dialog open={is3DOpen} onOpenChange={setIs3DOpen}>
           <DialogContent className="max-w-5xl border border-border/60 bg-card/90 backdrop-blur-xl">
             <DialogHeader>
