@@ -12,11 +12,13 @@ Key places to read first:
 Architecture & conventions (practical, discoverable):
 - Single-page app with nested routes: `Layout` is the parent route (see `App.tsx`). Pages are lazy-loaded.
 - Data: content is driven from `public/data/cv.json` and static SVG thumbnails in `public/images/`. Avoid adding raster images to the repo.
+  - **Migration in progress**: Portfolio schema tables created in Supabase (see `supabase/migrations/`). Frontend still reads from cv.json. Future: migrate to DB queries.
 - Language: `src/lib/language.ts` controls language selection and broadcasts `monynha:languagechange` events. Add languages by updating `SUPPORTED_LANGUAGES` and `public/data` translations.
 - Forms & persistence: `src/lib/supabaseClient.ts` reads `VITE_SUPABASE_URL`, `VITE_SUPABASE_KEY`, and `VITE_SUPABASE_SCHEMA`. If missing, the code gracefully disables persistence and tests expect fallback behavior (see `contactLead.ts` and `contactLead.test.ts`).
 - Database schema strategy: **Multi-project database** with two schemas:
   - `public` schema: shared tables across all Monynha projects (e.g., `leads` table with `project_source` column to identify origin)
-  - `portfolio` schema: project-specific tables for MS-Portfolio (for future tables like project metadata, artwork data, series info)
+  - `portfolio` schema: project-specific tables for MS-Portfolio content (15 tables: projects, artworks, series, thoughts, experience, skills, etc.)
+  - All migrations in `supabase/migrations/` with timestamp prefix (e.g., `20251023000001_create_core_tables.sql`)
   - When adding tables, decide if shared (→ `public`) or project-specific (→ `portfolio`). All `leads` submissions automatically include `project_source='portfolio'`.
 - Styling: Tailwind + shadcn components. Prefer existing UI primitives in `src/components/ui/` instead of creating new styles from scratch.
 

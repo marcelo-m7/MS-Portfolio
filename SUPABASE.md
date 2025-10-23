@@ -144,10 +144,322 @@ CREATE POLICY "Allow authenticated reads" ON public.leads
 
 ### `portfolio` Schema
 
-Currently empty. Future tables will be added here for:
-- Project metadata (views, likes, etc.)
-- Artwork data
-- Series information
+The `portfolio` schema contains project-specific tables for MS-Portfolio content. All tables have RLS enabled with public read access.
+
+#### Tables Overview
+- **`profile`** - Portfolio owner profile (singleton)
+- **`contact`** - Contact page configuration (singleton)
+- **`technologies`** - Normalized technology names
+- **`projects`** - Portfolio projects
+- **`project_stack`** - Many-to-many: projects ↔ technologies
+- **`artworks`** - Digital artworks and 3D experiences
+- **`artwork_media`** - Media URLs for artworks (ordered)
+- **`artwork_materials`** - Materials/techniques (ordered)
+- **`series`** - Collections grouping related works
+- **`series_works`** - Works in series (references slugs)
+- **`thoughts`** - Blog posts/reflections
+- **`thought_tags`** - Tags for thoughts
+- **`experience`** - Work history
+- **`experience_highlights`** - Key achievements (ordered)
+- **`skills`** - Skills inventory
+
+#### Schema Details
+
+<details>
+<summary><b>profile</b> (singleton)</summary>
+
+```sql
+CREATE TABLE portfolio.profile (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  headline TEXT NOT NULL,
+  location TEXT NOT NULL,
+  bio TEXT NOT NULL,
+  avatar TEXT,
+  lang_default TEXT DEFAULT 'pt',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**Usage:**
+```sql
+-- Insert or update profile (singleton pattern)
+INSERT INTO portfolio.profile (name, headline, location, bio, avatar)
+VALUES ('Marcelo Santos', 'Software Engineer & Founder', 'Portugal', 'Bio text...', '/avatar.jpg')
+ON CONFLICT (id) DO UPDATE SET 
+  name = EXCLUDED.name,
+  headline = EXCLUDED.headline,
+  updated_at = NOW();
+
+-- Retrieve profile
+SELECT * FROM portfolio.profile LIMIT 1;
+```
+</details>
+
+<details>
+<summary><b>projects</b> + <b>project_stack</b> + <b>technologies</b></summary>
+
+```sql
+CREATE TABLE portfolio.projects (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
+  summary TEXT NOT NULL,
+  full_description TEXT NOT NULL,
+  url TEXT,
+  domain TEXT,
+  repo_url TEXT,
+  thumbnail TEXT,
+  category TEXT NOT NULL,
+  status TEXT,
+  visibility TEXT,
+  year INTEGER NOT NULL,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.technologies (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL UNIQUE,
+  category TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.project_stack (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id UUID NOT NULL REFERENCES portfolio.projects(id) ON DELETE CASCADE,
+  technology_id UUID NOT NULL REFERENCES portfolio.technologies(id) ON DELETE CASCADE,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(project_id, technology_id)
+);
+```
+
+**Indexes:**
+- `idx_projects_slug` (unique)
+- `idx_projects_category`
+- `idx_projects_year`
+- `idx_projects_display_order`
+
+**Usage:**
+```sql
+-- Get project with tech stack
+SELECT 
+  p.slug, p.name, p.category, p.year,
+  json_agg(
+    json_build_object('name', t.name, 'category', t.category)
+    ORDER BY ps.display_order
+  ) as stack
+FROM portfolio.projects p
+LEFT JOIN portfolio.project_stack ps ON p.id = ps.project_id
+LEFT JOIN portfolio.technologies t ON ps.technology_id = t.id
+WHERE p.slug = 'boteco-pro'
+GROUP BY p.id;
+
+-- List all projects
+SELECT slug, name, category, year, status 
+FROM portfolio.projects 
+ORDER BY display_order, year DESC;
+```
+</details>
+
+<details>
+<summary><b>artworks</b> + <b>artwork_media</b> + <b>artwork_materials</b></summary>
+
+```sql
+CREATE TABLE portfolio.artworks (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  description TEXT NOT NULL,
+  url_3d TEXT,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.artwork_media (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  artwork_id UUID NOT NULL REFERENCES portfolio.artworks(id) ON DELETE CASCADE,
+  media_url TEXT NOT NULL,
+  display_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.artwork_materials (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  artwork_id UUID NOT NULL REFERENCES portfolio.artworks(id) ON DELETE CASCADE,
+  material TEXT NOT NULL,
+  display_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**Usage:**
+```sql
+-- Get artwork with media and materials
+SELECT 
+  a.slug, a.title, a.year, a.url_3d,
+  (SELECT json_agg(media_url ORDER BY display_order) 
+   FROM portfolio.artwork_media WHERE artwork_id = a.id) as media,
+  (SELECT json_agg(material ORDER BY display_order) 
+   FROM portfolio.artwork_materials WHERE artwork_id = a.id) as materials
+FROM portfolio.artworks a
+WHERE a.slug = 'artleo';
+```
+</details>
+
+<details>
+<summary><b>series</b> + <b>series_works</b></summary>
+
+```sql
+CREATE TABLE portfolio.series (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.series_works (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  series_id UUID NOT NULL REFERENCES portfolio.series(id) ON DELETE CASCADE,
+  work_slug TEXT NOT NULL,
+  work_type TEXT NOT NULL CHECK (work_type IN ('project', 'artwork')),
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(series_id, work_slug)
+);
+```
+
+**Usage:**
+```sql
+-- Get series with works (resolve slugs in application)
+SELECT 
+  s.slug, s.title, s.year,
+  json_agg(
+    json_build_object('slug', sw.work_slug, 'type', sw.work_type)
+    ORDER BY sw.display_order
+  ) as works
+FROM portfolio.series s
+LEFT JOIN portfolio.series_works sw ON s.id = sw.series_id
+WHERE s.slug = 'creative-systems'
+GROUP BY s.id;
+```
+</details>
+
+<details>
+<summary><b>thoughts</b> + <b>thought_tags</b></summary>
+
+```sql
+CREATE TABLE portfolio.thoughts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  excerpt TEXT NOT NULL,
+  body TEXT NOT NULL,
+  date DATE NOT NULL,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.thought_tags (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  thought_id UUID NOT NULL REFERENCES portfolio.thoughts(id) ON DELETE CASCADE,
+  tag TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(thought_id, tag)
+);
+```
+
+**Usage:**
+```sql
+-- Get thought with tags
+SELECT 
+  t.slug, t.title, t.excerpt, t.date,
+  json_agg(tt.tag ORDER BY tt.tag) as tags
+FROM portfolio.thoughts t
+LEFT JOIN portfolio.thought_tags tt ON t.id = tt.thought_id
+WHERE t.slug = 'design-patterns-react-2024'
+GROUP BY t.id;
+
+-- List recent thoughts
+SELECT slug, title, excerpt, date
+FROM portfolio.thoughts
+ORDER BY date DESC
+LIMIT 10;
+```
+</details>
+
+<details>
+<summary><b>experience</b> + <b>experience_highlights</b></summary>
+
+```sql
+CREATE TABLE portfolio.experience (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  role TEXT NOT NULL,
+  org TEXT NOT NULL,
+  start_date DATE NOT NULL,
+  end_date DATE,
+  location TEXT NOT NULL,
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE portfolio.experience_highlights (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  experience_id UUID NOT NULL REFERENCES portfolio.experience(id) ON DELETE CASCADE,
+  highlight TEXT NOT NULL,
+  display_order INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**Usage:**
+```sql
+-- Get experience with highlights
+SELECT 
+  e.role, e.org, e.start_date, e.end_date, e.location,
+  json_agg(eh.highlight ORDER BY eh.display_order) as highlights
+FROM portfolio.experience e
+LEFT JOIN portfolio.experience_highlights eh ON e.id = eh.experience_id
+GROUP BY e.id
+ORDER BY e.display_order;
+```
+</details>
+
+<details>
+<summary><b>skills</b></summary>
+
+```sql
+CREATE TABLE portfolio.skills (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  level TEXT NOT NULL CHECK (level IN ('Beginner', 'Intermediate', 'Advanced', 'Expert')),
+  display_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+```
+
+**Usage:**
+```sql
+-- Get skills by category
+SELECT category, json_agg(json_build_object('name', name, 'level', level) ORDER BY display_order) as skills
+FROM portfolio.skills
+GROUP BY category
+ORDER BY category;
+```
+</details>
 - User preferences specific to portfolio
 
 ## Usage in Code
@@ -252,6 +564,7 @@ const { data, error } = await supabase
 
 ### Current Migrations
 
+#### Public Schema
 1. **`20251023095136_create_leads_table.sql`**
    - Creates `public.leads` table
    - Sets up indexes and RLS policies
@@ -264,13 +577,61 @@ const { data, error } = await supabase
    - Adds `project_source` column
    - Documents schema usage
 
+#### Portfolio Schema
+4. **`20251023000001_create_core_tables.sql`**
+   - Creates `profile` table (singleton)
+   - Creates `contact` table (singleton)
+   - Creates `technologies` table (normalized)
+   - Creates `update_updated_at_column()` trigger function
+   - Sets up RLS policies and indexes
+
+5. **`20251023000002_create_projects.sql`**
+   - Creates `projects` table
+   - Creates `project_stack` junction table
+   - Links projects to technologies (many-to-many)
+   - Indexes on slug, category, year, display_order
+
+6. **`20251023000003_create_artworks.sql`**
+   - Creates `artworks` table
+   - Creates `artwork_media` table (ordered media URLs)
+   - Creates `artwork_materials` table (ordered materials list)
+   - Cascade deletes on artwork removal
+
+7. **`20251023000004_create_series.sql`**
+   - Creates `series` table (collections)
+   - Creates `series_works` table (references work slugs)
+   - Supports project + artwork references
+
+8. **`20251023000005_create_thoughts.sql`**
+   - Creates `thoughts` table (blog posts)
+   - Creates `thought_tags` table (many-to-many)
+   - Index on date for chronological queries
+
+9. **`20251023000006_create_experience_skills.sql`**
+   - Creates `experience` table (work history)
+   - Creates `experience_highlights` table (ordered list)
+   - Creates `skills` table with level constraints
+
+### Migration Files Location
+
+All migrations are stored in:
+```
+supabase/migrations/
+├── 20251023000001_create_core_tables.sql
+├── 20251023000002_create_projects.sql
+├── 20251023000003_create_artworks.sql
+├── 20251023000004_create_series.sql
+├── 20251023000005_create_thoughts.sql
+└── 20251023000006_create_experience_skills.sql
+```
+
 ### Creating New Migrations
 
 If using Supabase CLI:
 
 ```bash
 # Create a new migration
-supabase migration new add_project_metadata_table
+supabase migration new add_project_analytics
 
 # Edit the generated file in supabase/migrations/
 # Then push to remote
@@ -282,6 +643,26 @@ If using Supabase Dashboard:
 2. Write your migration SQL
 3. Run it
 4. Export the migration (Settings → Database → Migrations)
+
+### Data Migration Strategy
+
+**Current State:** Portfolio data lives in `public/data/cv.json` (static JSON file)
+
+**Future State:** Data will be migrated to portfolio schema tables
+
+**Migration Plan:**
+1. ✅ **Phase 1 (Complete)**: Create database schema
+2. **Phase 2**: Create migration scripts to populate DB from cv.json
+3. **Phase 3**: Create API layer (Supabase client hooks)
+4. **Phase 4**: Refactor pages to fetch from DB instead of cv.json
+5. **Phase 5**: Add CMS/admin interface for content management
+
+**Benefits of Migration:**
+- Real-time updates without redeployment
+- Add analytics (views, likes, shares)
+- Search and filtering on server side
+- Content management without code changes
+- Multi-language support via DB
 
 ## Testing
 
