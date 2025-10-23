@@ -100,7 +100,7 @@ export default function HeroCanvas() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
-    <div className="pointer-events-none absolute inset-0 -z-10">
+    <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
       <Canvas
         camera={{ position: [0, 0, 5.5], fov: 45 }}
         dpr={[1, 1.6]}
