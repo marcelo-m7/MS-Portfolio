@@ -1,22 +1,44 @@
-# Welcome to your Lovable project
+# Marcelo Santos - Portfolio
 
-## Project info
+[![Production](https://img.shields.io/badge/Production-Live-success)](https://marcelo.monynha.com)
+[![Supabase](https://img.shields.io/badge/Database-Supabase-green)](https://supabase.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.1-purple)](https://vitejs.dev/)
 
-**URL**: https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7
+Portfolio pessoal e site profissional de Marcelo M7, fundador da Monynha Softwares. Construído como laboratório vivo para novas interações, acessibilidade avançada e componentes do design system interno.
 
-## How can I edit this code?
+## 🚀 Tech Stack
 
-There are several ways of editing your application.
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Database**: Supabase (PostgreSQL)
+- **3D Graphics**: React Three Fiber
+- **Animations**: Framer Motion
+- **Routing**: React Router v6
 
-**Use Lovable**
+## 📁 Project Structure
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and start prompting.
+```
+MS-Portfolio/
+├── src/
+│   ├── components/     # UI components (shadcn + custom)
+│   ├── pages/          # Route pages (lazy-loaded)
+│   ├── lib/            # Utilities & Supabase client
+│   ├── types/          # TypeScript type definitions
+│   └── hooks/          # Custom React hooks
+├── public/
+│   ├── data/           # cv.json (fallback data source)
+│   └── images/         # Static SVG assets
+└── supabase/
+    └── migrations/     # Database schema & seed data
+```
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Development
 
-**Use your preferred IDE**
+### Prerequisites
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- Node.js 20.19+ or 22.12+ (Vite 7 requirement)
+- npm (primary package manager - enforced via .npmrc)
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
@@ -26,40 +48,42 @@ Follow these steps:
 # Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Navigate to the project directory
+cd MS-Portfolio
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Step 3: Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Start the development server (port 8080)
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Build for Production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Build the project
+npm run build
 
-**Use GitHub Codespaces**
+# Preview the production build locally
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Run Tests
 
-## What technologies are used for this project?
+```bash
+# Run Vitest unit tests
+npm run test
 
-This project is built with:
+# Run tests with coverage
+npm run test -- --coverage
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-- Supabase (optional, for contact form persistence)
+## 📊 Database Architecture
+
+This project uses **Supabase** (PostgreSQL) with a multi-schema approach:
+
+- **`public` schema**: Shared tables across Monynha projects (e.g., `leads` table)
+- **`portfolio` schema**: Project-specific tables (15 tables for portfolio content)
 
 ## Database & Backend
 
@@ -76,27 +100,39 @@ This project uses **Supabase** for optional backend persistence. The contact for
    ```
 3. Restart the dev server
 
-**📖 For complete Supabase setup, schema details, and usage examples, see [SUPABASE.md](./SUPABASE.md)**
+**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./SUPABASE.md)**
 
-### Multi-Project Database
+### Database Schema (15 Tables)
 
-The database uses a shared architecture:
-- `public` schema: Shared tables across all Monynha projects (e.g., `leads` with `project_source` column)
-- `portfolio` schema: MS-Portfolio specific tables (for future project metadata, artwork data, etc.)
+- `profile` - Portfolio owner profile (singleton)
+- `contact` - Contact form configuration (singleton)
+- `projects` + `project_stack` + `technologies` - Project portfolio with tech stack
+- `artworks` + `artwork_media` + `artwork_materials` - Art portfolio with media files
+- `series` + `series_works` - Collections of related projects/artworks
+- `thoughts` + `thought_tags` - Blog posts/articles with tags
+- `experience` + `experience_highlights` - Work history with achievements
+- `skills` - Technical skills with proficiency levels
 
 All contact form submissions automatically include `project_source='portfolio'` to identify their origin.
 
-## How can I deploy this project?
+## 🚀 Deployment
 
-Simply open [Lovable](https://lovable.dev/projects/6628e239-c846-4fe2-be14-67c58256d6a7) and click on Share -> Publish.
+### Production Build
 
-## Can I connect a custom domain to my Lovable project?
+This project is configured for deployment to any static hosting provider (Vercel, Netlify, Cloudflare Pages, etc.):
 
-Yes, you can!
+```bash
+npm run build
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Output will be in the `dist/` folder ready for deployment.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### Custom Domain Setup
+
+1. Deploy the `dist/` folder to your hosting provider
+2. Configure DNS records to point to your hosting provider
+3. Update environment variables with production Supabase credentials
+4. Set up SSL certificate (usually automatic with modern hosts)
 
 ## Language handling
 
