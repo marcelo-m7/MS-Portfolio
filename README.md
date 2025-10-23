@@ -59,6 +59,32 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase (optional, for contact form persistence)
+
+## Database & Backend
+
+This project uses **Supabase** for optional backend persistence. The contact form will work with or without Supabase configured.
+
+### Quick Setup
+
+1. Copy `.env.example` to `.env`
+2. Add your Supabase credentials:
+   ```bash
+   VITE_SUPABASE_URL=https://your-project.supabase.co
+   VITE_SUPABASE_KEY=your-anon-key
+   VITE_SUPABASE_SCHEMA=portfolio
+   ```
+3. Restart the dev server
+
+**📖 For complete Supabase setup, schema details, and usage examples, see [SUPABASE.md](./SUPABASE.md)**
+
+### Multi-Project Database
+
+The database uses a shared architecture:
+- `public` schema: Shared tables across all Monynha projects (e.g., `leads` with `project_source` column)
+- `portfolio` schema: MS-Portfolio specific tables (for future project metadata, artwork data, etc.)
+
+All contact form submissions automatically include `project_source='portfolio'` to identify their origin.
 
 ## How can I deploy this project?
 

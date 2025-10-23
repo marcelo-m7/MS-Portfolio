@@ -14,6 +14,7 @@ export interface NormalizedContactLead {
   company: string;
   project: string;
   message: string;
+  project_source: string;
 }
 
 export type SupabaseLeadsClient = {
@@ -41,6 +42,7 @@ const normalize = (payload: ContactLeadPayload): NormalizedContactLead => ({
   company: payload.company?.trim() ?? '',
   project: payload.project?.trim() ?? '',
   message: payload.message.trim(),
+  project_source: 'portfolio',
 });
 
 const runFallbackOrThrow = async (

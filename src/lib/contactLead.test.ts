@@ -52,6 +52,7 @@ describe('normalize', () => {
       company: '',
       project: '',
       message: 'Hello world',
+      project_source: 'portfolio',
     });
   });
 });
@@ -91,6 +92,7 @@ describe('submitContactLead', () => {
         company: 'Acme',
         project: 'Website',
         message: 'Hi there',
+        project_source: 'portfolio',
       },
       persistenceError,
     );
@@ -134,6 +136,7 @@ describe('submitContactLead', () => {
         company: 'Acme',
         project: 'Website',
         message: 'Hi there',
+        project_source: 'portfolio',
       },
       thrown,
     );
