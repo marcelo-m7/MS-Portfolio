@@ -1,8 +1,10 @@
+import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Layers, ExternalLink } from 'lucide-react';
-import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useSeriesDetail, useArtworks, useProjects } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
   useCurrentLanguage,
@@ -29,51 +31,72 @@ const slugify = (value: string) =>
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
 
-const buildWorkCards = (): Record<string, WorkCard> => {
-  const artworkMap = cvData.artworks.reduce<Record<string, WorkCard>>(
-    (acc, artwork) => {
+export default function SeriesDetail() {
+  const { slug } = useParams<{ slug: string }>();
+  const prefersReducedMotion = useReducedMotion();
+  const language = useCurrentLanguage();
+  const locale = languageToLocale(language);
+  const { data: series, isLoading: isLoadingSeries } = useSeriesDetail(slug);
+  const { data: artworks = [], isLoading: isLoadingArtworks } = useArtworks();
+  const { data: projects = [], isLoading: isLoadingProjects } = useProjects();
+
+  const isLoading = isLoadingSeries || isLoadingArtworks || isLoadingProjects;
+
+  // Build work cards map from hooks data
+  const workCardsMap = React.useMemo(() => {
+    const artworkMap = artworks.reduce<Record<string, WorkCard>>((acc, artwork) => {
       acc[artwork.slug] = {
         slug: artwork.slug,
         title: artwork.title,
         description: artwork.description,
         href: `/art/${artwork.slug}`,
         isInternal: true,
-        thumbnail: artwork.media?.[0],
+        thumbnail: artwork.media?.[0]?.media_url,
         badge: 'Arte Digital',
       };
       return acc;
-    },
-    {},
-  );
+    }, {});
 
-  const projectMap = cvData.projects.reduce<Record<string, WorkCard>>(
-    (acc, project) => {
-      const key = project.slug || slugify(project.name);
-      acc[key] = {
-        slug: key,
+    const projectMap = projects.reduce<Record<string, WorkCard>>((acc, project) => {
+      acc[project.slug] = {
+        slug: project.slug,
         title: project.name,
         description: project.summary,
-        href: project.url ?? project.repoUrl,
+        href: project.url ?? project.repo_url,
         isInternal: false,
         thumbnail: project.thumbnail,
         badge: project.category,
       };
       return acc;
-    },
-    {},
-  );
+    }, {});
 
-  return { ...projectMap, ...artworkMap };
-};
+    return { ...projectMap, ...artworkMap };
+  }, [artworks, projects]);
 
-const WORK_CARDS = buildWorkCards();
-
-export default function SeriesDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const prefersReducedMotion = useReducedMotion();
-  const language = useCurrentLanguage();
-  const locale = languageToLocale(language);
-  const series = cvData.series.find((entry) => entry.slug === slug);
+  if (isLoading) {
+    return (
+      <div className="py-0 px-6">
+        <div className="container mx-auto max-w-5xl">
+          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-md backdrop-blur-xl">
+            <Skeleton className="h-10 w-48 rounded-full mb-8" />
+            <div className="space-y-4 mb-8">
+              <div className="flex gap-3">
+                <Skeleton className="h-6 w-32 rounded-full" />
+                <Skeleton className="h-6 w-24 rounded-full" />
+              </div>
+              <Skeleton className="h-10 w-3/4" />
+              <Skeleton className="h-20 w-full" />
+            </div>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-64 w-full rounded-2xl" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!series) {
     return (
@@ -91,8 +114,10 @@ export default function SeriesDetail() {
     );
   }
 
-  const works: WorkCard[] = series.works
-    .map((workSlug) => WORK_CARDS[workSlug] || WORK_CARDS[slugify(workSlug)])
+  // Extract work slugs from series.works array
+  const workSlugs = series.works?.map(w => w.work_slug) ?? [];
+  const works: WorkCard[] = workSlugs
+    .map((workSlug) => workCardsMap[workSlug] || workCardsMap[slugify(workSlug)])
     .filter((card): card is WorkCard => Boolean(card));
 
   return (
