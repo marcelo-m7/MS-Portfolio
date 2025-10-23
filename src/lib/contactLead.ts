@@ -75,6 +75,7 @@ export const submitContactLead = async (
 
   try {
     const { error } = await client
+      .schema('public')
       .from('leads')
       .insert([normalized])
       .select();

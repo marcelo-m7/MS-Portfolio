@@ -11,9 +11,11 @@ if (!supabaseUrl || !supabaseAnonKey) {
   }
 }
 
+// Create client without schema lock - we'll use .schema() method in queries
 export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient<Database>(supabaseUrl, supabaseAnonKey)
   : undefined;
 
-// Export the schema for use in queries
-export const SUPABASE_SCHEMA = supabaseSchema || 'public';
+// Export the schema for use in queries (portfolio is our main schema)
+export const PORTFOLIO_SCHEMA = 'portfolio' as const;
+export const PUBLIC_SCHEMA = 'public' as const;
