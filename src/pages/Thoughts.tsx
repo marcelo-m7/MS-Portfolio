@@ -2,7 +2,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import cvData from '../../public/data/cv.json';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useThoughts } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
   useCurrentLanguage,
@@ -13,6 +14,7 @@ export default function Thoughts() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const { data: thoughts = [], isLoading } = useThoughts();
 
   return (
     <div className="py-0 px-6">
@@ -44,8 +46,27 @@ export default function Thoughts() {
             </p>
           </header>
 
-          <div className="grid gap-8 md:grid-cols-2">
-            {cvData.thoughts.map((thought, index) => {
+          {isLoading ? (
+            <div className="grid gap-8 md:grid-cols-2">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="flex h-full flex-col rounded-2xl border border-border/70 bg-card/90 p-8 shadow-md">
+                  <div className="mb-6 flex gap-3">
+                    <Skeleton className="h-6 w-32 rounded-full" />
+                    <Skeleton className="h-6 w-24 rounded-full" />
+                  </div>
+                  <Skeleton className="h-9 w-3/4 mb-4" />
+                  <Skeleton className="h-20 w-full mb-6" />
+                  <div className="flex gap-2 mb-6">
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                    <Skeleton className="h-6 w-24 rounded-full" />
+                  </div>
+                  <Skeleton className="h-10 w-48 rounded-2xl mt-auto" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="grid gap-8 md:grid-cols-2">
+              {thoughts.map((thought, index) => {
               const formattedDate = new Intl.DateTimeFormat(locale, {
                 day: '2-digit',
                 month: 'short',
@@ -105,7 +126,8 @@ export default function Thoughts() {
                 </motion.article>
               );
             })}
-          </div>
+            </div>
+          )}
 
           <div className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-border/60 bg-background/40 p-8 text-center shadow-md">
             <p className="text-sm uppercase tracking-[0.3em] text-muted-foreground">Monynha Softwares Journal</p>
