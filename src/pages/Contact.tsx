@@ -74,7 +74,7 @@ export default function Contact() {
       setFormData(createInitialFormState());
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Erro ao enviar mensagem de contato:', error);
+        console.error('Erro ao processar mensagem de contato:', error);
       }
       toast.error(cvData.contact.errorMessage);
     } finally {
