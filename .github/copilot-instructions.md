@@ -1,4 +1,73 @@
+````instructions
 ## Quick orientation for AI coding agents
+
+This is a Vite + React + TypeScript single-page portfolio app using Tailwind + shadcn-ui, React Router (v6), React Query and optional Supabase. Keep changes small and focused unless asked.
+
+Read first (fast path):
+- `src/App.tsx` — routing, lazy pages, Layout attachment.
+- `src/main.tsx` — app root, `ThemeProvider` and global providers.
+- `public/data/cv.json` — canonical content (projects, artworks, series). Editing this drives the UI.
+- `src/lib/supabaseClient.ts` and `src/lib/contactLead.ts` — Supabase integration + graceful fallback when env vars are missing.
+- `src/components` — layout & UI primitives (`Layout.tsx`, `Navbar.tsx`, `ProjectCard.tsx`, `ArtworkCard.tsx`).
+
+Essential architecture notes (what matters):
+- Single-page app with nested routes. `Layout` is the parent route; pages are lazy-loaded in `App.tsx`.
+- Content-first: frontend reads from `public/data/cv.json` and SVG thumbnails in `public/images/`. The DB migration (Supabase) is being added but the frontend still uses the JSON file.
+- Supabase is optional: `supabaseClient.ts` may export undefined if env vars are absent. Call sites must handle this (see `submitContactLead`).
+- DB strategy: multi-schema approach — `public` for shared tables (e.g., `leads`), `portfolio` for project-specific tables. Migrations live in `supabase/migrations/` and use timestamp prefixes.
+
+Conventions & patterns to follow:
+- Prefer existing UI primitives in `src/components/ui/` (shadcn patterns) over ad-hoc CSS.
+- Add content (project/artwork/series) by updating `public/data/cv.json` and adding an SVG under `public/images/` (include a `<title>` tag for accessibility). Avoid adding raster images.
+- Language: `src/lib/language.ts` handles detection and fires `monynha:languagechange`. Use `useCurrentLanguage` hook in `src/hooks` for components.
+- Tests use Vitest. Look at `src/lib/contactLead.test.ts` for mocking style (Supabase is mocked; tests expect fallback behavior when env vars missing).
+
+Developer workflows (short commands — PowerShell):
+```powershell
+# install deps (npm only)
+npm install
+
+# dev server (Vite, port 8080)
+npm run dev
+
+# build / preview
+npm run build
+npm run preview
+
+# tests (Vitest)
+npm run test
+
+# lint
+npm run lint
+```
+
+Files and places to NOT change without checking first:
+- Global routing and page composition: `src/App.tsx` and `src/components/Layout.tsx`.
+- `public/data/cv.json` schema shape — many components depend on its field names.
+- Tailwind config and design tokens unless the change is narrowly scoped.
+
+Supabase & migrations (practical):
+- Migrations: add SQL files to `supabase/migrations/` with the existing timestamp prefix format (e.g., `20251023000007_add_x.sql`).
+- When writing code that uses `supabase`, always guard for undefined: `if (!supabase) { /* fallback */ }`.
+- See `SUPABASE.md` for onboarding the DB locally / secrets.
+
+Small examples to cite in PRs:
+- Language event: `src/lib/language.ts` (functions: `detectInitialLanguage`, `setLanguage`, event name `monynha:languagechange`).
+- Contact persistence: `src/lib/contactLead.ts` and `src/lib/supabaseClient.ts` (handles absent env vars and includes `project_source='portfolio'`).
+- Data-driven page: `src/pages/ProjectDetail.tsx` reads entries from `public/data/cv.json`.
+
+Quality gates to validate locally:
+- Build: `npm run build` (check for bundling errors and large SVGs).
+- Tests: `npm run test` (unit tests with Vitest; Supabase must be mocked in tests).
+- Lint/typecheck: `npm run lint` (project scripts wired in `package.json`).
+
+When editing or adding files:
+- Keep changes small and include file-level rationale in PR descriptions.
+- For data + image changes include a quick local preview and mention accessibility (`<title>` in SVGs).
+
+If anything here is unclear or you want more examples (tests, adding pages, or migration examples), say which area to expand.
+
+````## Quick orientation for AI coding agents
 
 This repository is a Vite + React + TypeScript single-page portfolio site that uses shadcn-ui, Tailwind, React Router (v6), React Query, Supabase (optional), and Three/React-Three for artwork previews. Keep instructions concise and make minimal changes unless asked.
 
