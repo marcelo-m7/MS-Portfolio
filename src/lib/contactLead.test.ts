@@ -28,9 +28,10 @@ const createSupabaseMock = (
 
   const insert = vi.fn(() => ({ select }));
   const from = vi.fn(() => ({ insert }));
+  const schema = vi.fn(() => ({ from }));
 
   return {
-    from,
+    schema,
   } as unknown as SupabaseLeadsClient;
 };
 
