@@ -203,12 +203,17 @@ export default function Home() {
                             {project.summary}
                           </p>
                           <div className="flex flex-wrap gap-2">
-                            {(project.technologies ?? project.stack ?? []).slice(0, 3).map((tech: any) => (
+                            {(
+                              ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
+                                (project.stack as string[] | undefined) ??
+                                []
+                              ).slice(0, 3)
+                            ).map((tech) => (
                               <span
-                                key={typeof tech === 'string' ? tech : tech.name}
+                                key={tech}
                                 className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
                               >
-                                {typeof tech === 'string' ? tech : tech.name}
+                                {tech}
                               </span>
                             ))}
                           </div>
