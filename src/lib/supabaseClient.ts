@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import type { Database } from '@/types/database.types';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_KEY as string | undefined;
@@ -11,11 +12,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient(supabaseUrl, supabaseAnonKey, {
-      db: {
-        schema: supabaseSchema || 'public',
-      },
-    })
+  ? createClient<Database>(supabaseUrl, supabaseAnonKey)
   : undefined;
 
 // Export the schema for use in queries
