@@ -54,7 +54,14 @@ export default function Home() {
               className="text-5xl md:text-7xl font-display font-bold mb-6 mt-6 text-balance"
             >
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                {loadingProfile ? <Skeleton className="w-40 h-10 mx-auto" /> : profile?.name}
+                {loadingProfile ? (
+                  <span
+                    className="inline-block w-40 h-10 mx-auto rounded-md bg-muted animate-pulse"
+                    aria-hidden
+                  />
+                ) : (
+                  profile?.name
+                )}
               </span>
             </motion.h1>
 
@@ -62,14 +69,28 @@ export default function Home() {
               variants={itemVariants}
               className="text-xl md:text-2xl text-muted-foreground mb-4 font-medium"
             >
-              {loadingProfile ? <Skeleton className="w-64 h-6 mx-auto" /> : profile?.headline}
+              {loadingProfile ? (
+                <span
+                  className="inline-block w-64 h-6 mx-auto rounded-md bg-muted animate-pulse"
+                  aria-hidden
+                />
+              ) : (
+                profile?.headline
+              )}
             </motion.p>
 
             <motion.p
               variants={itemVariants}
               className="text-lg text-muted-foreground/80 mb-12 max-w-2xl mx-auto"
             >
-              {loadingProfile ? <Skeleton className="w-80 h-5 mx-auto" /> : profile?.bio}
+              {loadingProfile ? (
+                <span
+                  className="inline-block w-80 h-5 mx-auto rounded-md bg-muted animate-pulse"
+                  aria-hidden
+                />
+              ) : (
+                profile?.bio
+              )}
             </motion.p>
 
             <motion.div
@@ -205,7 +226,8 @@ export default function Home() {
                           <div className="flex flex-wrap gap-2">
                             {(
                               ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
-                                (project.stack as string[] | undefined) ??
+                                // Some legacy entries might include a `stack` array; guard to satisfy types safely
+                                (("stack" in (project as object) ? (project as any).stack : undefined) as string[] | undefined) ??
                                 []
                               ).slice(0, 3)
                             ).map((tech) => (

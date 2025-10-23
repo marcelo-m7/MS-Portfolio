@@ -74,11 +74,17 @@ export const submitContactLead = async (
   }
 
   try {
-    const { error } = await client
+    const builder = client
       .schema('public')
       .from('leads')
-      .insert([normalized])
-      .select();
+      .insert([normalized]);
+
+    // In the browser, avoid chaining .select() on INSERT due to RLS (anon cannot SELECT from leads)
+    // Awaiting the insert without .select reduces the chance of a follow-up read request.
+    const { error } =
+      typeof window !== 'undefined'
+        ? await builder
+        : await builder.select();
 
     if (error) {
       return runFallbackOrThrow(fallback, normalized, error);

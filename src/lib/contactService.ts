@@ -70,19 +70,31 @@ const sendFallbackEmail = async (
 };
 
 const persistLead = async (payload: ContactFormData, client: SupabaseClient) => {
-  const { data, error } = await client
-    .from(CONTACT_TABLE)
-    .insert([
-      {
-        name: payload.name,
-        email: payload.email,
-        company: payload.company ?? null,
-        project: payload.project ?? null,
-        message: payload.message,
-      },
-    ])
-    .select();
+  // In the browser, avoid .select() on INSERT due to RLS (anon users cannot SELECT from leads).
+  // Use minimal returning so the insert succeeds without requiring SELECT privileges.
+  const isBrowser = typeof window !== 'undefined';
 
+  const insertPayload = {
+    name: payload.name,
+    email: payload.email,
+    company: payload.company ?? null,
+    project: payload.project ?? null,
+    message: payload.message,
+    // Ensure RLS policy WITH CHECK passes explicitly
+    project_source: 'portfolio',
+  } as const;
+
+  // Build insert query once
+  const builder = client.from(CONTACT_TABLE).insert([insertPayload]);
+
+  if (isBrowser) {
+    // Avoid .select() in browser to reduce chance of SELECT-related RLS errors
+    const { error } = await builder;
+    return { data: null, error } as { data: Array<{ id?: string }> | null; error: PostgrestError | null };
+  }
+
+  // In tests/server environments keep the original behavior for compatibility
+  const { data, error } = await builder.select();
   return { data, error };
 };
 

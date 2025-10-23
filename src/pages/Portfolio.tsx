@@ -138,15 +138,15 @@ export default function Portfolio() {
     };
   }, []);
 
-  const categories = useMemo(
-    () => [
+  const categories = useMemo(() => {
+    const base = [
       'Todos',
-      ...new Set(projects.map((p) => p.category)),
+      ...projects.map((p) => p.category),
       'Arte Digital',
       'Série Criativa',
-    ],
-    [projects],
-  );
+    ];
+    return Array.from(new Set(base));
+  }, [projects]);
 
   const filteredItems = useMemo<PortfolioEntry[]>(() => {
     let items: Array<CVProject | CVArtwork | CVSeries> = [];
@@ -215,13 +215,13 @@ export default function Portfolio() {
             ))}
           {!loadingProjects && !loadingArtworks && !loadingSeries && filteredItems.map((item, index) => {
             if (item.type === 'project') {
-              return <ProjectCard key={item.slug} project={item} index={index} />;
+              return <ProjectCard key={`project-${item.slug}`} project={item} index={index} />;
             }
             if (item.type === 'artwork') {
-              return <ArtworkCard key={item.slug} artwork={item} index={index} />;
+              return <ArtworkCard key={`artwork-${item.slug}`} artwork={item} index={index} />;
             }
             if (item.type === 'series') {
-              return <SeriesCard key={item.slug} series={item} index={index} />;
+              return <SeriesCard key={`series-${item.slug}`} series={item} index={index} />;
             }
             return null;
           })}
