@@ -12,15 +12,14 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy the entire source first
-COPY . .
+# Copy package files first for better layer caching
+COPY package.json package-lock.json ./
 
-# Install dependencies - copy node_modules if present or install
-RUN if [ -d "node_modules" ]; then \
-        echo "Using existing node_modules"; \
-    else \
-        npm install; \
-    fi
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
 
 # Build the application
 RUN if [ -d "dist" ]; then \
@@ -37,9 +36,6 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/index.html.orig
 
 # Create non-root user for nginx
 RUN addgroup -g 1001 -S nginx-app && \
