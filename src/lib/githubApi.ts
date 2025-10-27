@@ -116,9 +116,12 @@ export async function fetchMultipleRepoStats(
 }
 
 /**
- * Format star count for display (e.g., 1500 -> "1.5k")
+ * Format star count for display (e.g., 1500 -> "1.5k", 1500000 -> "1.5M")
  */
 export function formatStarCount(count: number): string {
+  if (count >= 1000000) {
+    return `${(count / 1000000).toFixed(1)}M`;
+  }
   if (count >= 1000) {
     return `${(count / 1000).toFixed(1)}k`;
   }

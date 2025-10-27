@@ -14,7 +14,7 @@ interface GitHubStatsProps {
 }
 
 export function GitHubStats({ repoUrl, compact = false }: GitHubStatsProps) {
-  const { data: stats, isLoading } = useGitHubRepoStats(repoUrl);
+  const { data: stats, isLoading, isError } = useGitHubRepoStats(repoUrl);
 
   if (!repoUrl) {
     return null;
@@ -29,7 +29,8 @@ export function GitHubStats({ repoUrl, compact = false }: GitHubStatsProps) {
     );
   }
 
-  if (!stats) {
+  // Silently fail on errors (GitHub API rate limits or network issues)
+  if (isError || !stats) {
     return null;
   }
 
