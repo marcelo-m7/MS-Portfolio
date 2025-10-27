@@ -1,0 +1,42 @@
+# Caddyfile for MS-Portfolio SPA
+# Serves static files from dist/ with proper SPA routing support
+
+:80 {
+    # Enable compression for better performance
+    encode gzip zstd
+
+    # Root directory where Vite outputs the build
+    root * /app/dist
+
+    # Security headers
+    header {
+        # Prevent MIME type sniffing
+        X-Content-Type-Options "nosniff"
+        # Enable XSS protection
+        X-XSS-Protection "1; mode=block"
+        # Prevent clickjacking
+        X-Frame-Options "SAMEORIGIN"
+        # Referrer policy
+        Referrer-Policy "strict-origin-when-cross-origin"
+        # Remove server identification
+        -Server
+    }
+
+    # Cache static assets for better performance
+    @static {
+        path /assets/* /images/* /data/* *.ico *.svg *.jpg *.png *.webp *.woff *.woff2
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+
+    # Try to serve the file, otherwise serve index.html (SPA fallback)
+    try_files {path} /index.html
+
+    # Serve files
+    file_server
+
+    # Log requests for debugging
+    log {
+        output stdout
+        format console
+    }
+}

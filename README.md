@@ -117,22 +117,21 @@ All contact form submissions automatically include `project_source='portfolio'` 
 
 ## 🚀 Deployment
 
-### Production Build
+This project is configured for multiple deployment options:
 
-This project is configured for deployment to any static hosting provider (Vercel, Netlify, Cloudflare Pages, etc.):
+- **Coolify / Nixpacks** (recommended) - Automatic deployment with `nixpacks.toml`
+- **Static Hosting** (Vercel, Netlify, Cloudflare Pages, etc.) - Deploy the `dist/` folder
+
+### Quick Start
 
 ```bash
+# Build the project
 npm run build
 ```
 
 Output will be in the `dist/` folder ready for deployment.
 
-### Custom Domain Setup
-
-1. Deploy the `dist/` folder to your hosting provider
-2. Configure DNS records to point to your hosting provider
-3. Update environment variables with production Supabase credentials
-4. Set up SSL certificate (usually automatic with modern hosts)
+**📖 For complete deployment instructions, including Coolify/Nixpacks setup, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
 
 ## Language handling
 
