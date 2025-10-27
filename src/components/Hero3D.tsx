@@ -1,10 +1,10 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useRef, Suspense, useMemo } from 'react';
-import { Mesh, BufferGeometry, PointsMaterial, Float32BufferAttribute } from 'three';
+import { Mesh, BufferGeometry, Points, Float32BufferAttribute } from 'three';
 import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei';
 
 function Particles() {
-  const points = useRef<any>(null);
+  const points = useRef<Points>(null);
   
   const particlesGeometry = useMemo(() => {
     const geometry = new BufferGeometry();

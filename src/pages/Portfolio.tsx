@@ -1,17 +1,48 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, Code2 } from 'lucide-react';
+import { ExternalLink, Code2, Github, Star, GitFork } from 'lucide-react';
 import { useState } from 'react';
 import cvData from '../../public/data/cv.json';
 import { Button } from '@/components/ui/button';
+import { useGitHubRepos } from '@/hooks/useGitHubRepos';
 
 export default function Portfolio() {
   const [filter, setFilter] = useState<string>('Todos');
+  const [useGitHubData, setUseGitHubData] = useState(false);
+  
+  // Extract GitHub username from URL
+  const githubUsername = cvData.links.github.split('/').pop() || '';
+  const githubOrg = cvData.links.org.split('/').pop() || '';
+  
+  // Fetch GitHub repos
+  const { repos: githubRepos, isLoading: githubLoading } = useGitHubRepos(
+    githubUsername,
+    githubOrg
+  );
   
   const categories = ['Todos', ...new Set(cvData.projects.map(p => p.category))];
   
+  // Use either GitHub data or local cv.json data
+  const projects = useGitHubData && githubRepos.length > 0
+    ? githubRepos.map(repo => ({
+        name: repo.name,
+        summary: repo.description || 'Sem descrição disponível',
+        stack: repo.topics.length > 0 
+          ? repo.topics.slice(0, 5) 
+          : repo.language 
+          ? [repo.language] 
+          : ['GitHub'],
+        url: repo.html_url,
+        thumbnail: '',
+        category: repo.topics[0] || repo.language || 'Outros',
+        year: new Date(repo.created_at).getFullYear(),
+        stars: repo.stargazers_count,
+        forks: repo.forks_count,
+      }))
+    : cvData.projects;
+  
   const filteredProjects = filter === 'Todos' 
-    ? cvData.projects 
-    : cvData.projects.filter(p => p.category === filter);
+    ? projects 
+    : projects.filter(p => p.category === filter);
 
   return (
     <div className="min-h-screen pt-24 pb-16">
@@ -28,6 +59,29 @@ export default function Portfolio() {
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Projetos e trabalhos desenvolvidos no ecossistema Monynha
           </p>
+        </motion.div>
+
+        {/* GitHub Integration Toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="flex justify-center mb-6"
+        >
+          <Button
+            variant={useGitHubData ? 'default' : 'outline'}
+            onClick={() => setUseGitHubData(!useGitHubData)}
+            disabled={githubLoading}
+            className="rounded-2xl"
+          >
+            <Github className="mr-2" size={18} />
+            {githubLoading 
+              ? 'Carregando do GitHub...' 
+              : useGitHubData 
+              ? 'Mostrando Repositórios do GitHub' 
+              : 'Carregar Repositórios do GitHub'
+            }
+          </Button>
         </motion.div>
 
         {/* Filters */}
@@ -69,6 +123,18 @@ export default function Portfolio() {
                       {project.year}
                     </span>
                   </div>
+                  {useGitHubData && 'stars' in project && (
+                    <div className="absolute bottom-4 left-4 flex gap-3">
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-full glass text-xs">
+                        <Star size={12} className="text-yellow-500" />
+                        <span>{project.stars}</span>
+                      </div>
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-full glass text-xs">
+                        <GitFork size={12} className="text-blue-500" />
+                        <span>{project.forks}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-6 flex-1 flex flex-col">

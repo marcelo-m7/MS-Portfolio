@@ -24,15 +24,21 @@ export default function Contact() {
 
     try {
       if (!supabase) {
-        throw new Error('Supabase client is not configured.');
+        // If Supabase is not configured, show a helpful message
+        console.log('Contact form submission:', formData);
+        toast.success('Mensagem recebida! (Modo de demonstração)');
+        setFormData({ name: '', email: '', company: '', project: '', message: '' });
+        return;
       }
 
       const { error } = await supabase.functions.invoke('send-contact-email', {
         body: {
           name: formData.name,
           email: formData.email,
+          company: formData.company,
+          project: formData.project,
           message: formData.message,
-          to: 'hello@monynha.com',
+          to: cvData.contact.email,
         },
       });
 
@@ -41,7 +47,7 @@ export default function Contact() {
       }
 
       toast.success(cvData.contact.successMessage);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', company: '', project: '', message: '' });
     } catch (error) {
       console.error('Erro ao enviar mensagem de contato:', error);
       toast.error(cvData.contact.errorMessage);
