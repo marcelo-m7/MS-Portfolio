@@ -1,0 +1,29 @@
+# nixpacks.toml
+# Configuração de build e deploy para o projeto MS-Portfolio (branch main)
+
+[phases.setup]
+# Usa o Node 22.12.0, compatível com vite@7.1.12
+nixPkgs = ["nodejs_22"]
+
+[variables]
+# Garante a versão correta do Node durante o build
+NIXPACKS_NODE_VERSION = "22.12.0"
+NODE_ENV = "production"
+
+# Variáveis de ambiente expostas pelo Vite
+# ⚠️ Configure os valores reais no painel do Coolify
+VITE_SUPABASE_URL = ""
+VITE_SUPABASE_KEY = ""
+VITE_SUPABASE_SCHEMA = "public"
+VITE_ENABLE_ART_3D = "true"
+VITE_ENABLE_HERO_3D = "true"
+VITE_ENABLE_PRISM_BACKGROUND = "true"
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npx vite preview --port ${PORT:-3000} --host 0.0.0.0"
