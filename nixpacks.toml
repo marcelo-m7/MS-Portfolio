@@ -1,29 +1,23 @@
-# nixpacks.toml
-# Configuração de build e deploy para o projeto MS-Portfolio (branch main)
+[variables]
+# Use Node 20 LTS to satisfy vite@7.x engine requirements
+NIXPACKS_NODE_VERSION = "20.19.0"
+# Node environment set to production
+NODE_ENV = "production"
+# Directory where Vite outputs static files
+NIXPACKS_SPA_OUTPUT_DIR = "dist"
 
 [phases.setup]
-# Usa o Node 22.12.0, compatível com vite@7.1.12
-nixPkgs = ["nodejs_22"]
-
-[variables]
-# Garante a versão correta do Node durante o build
-NIXPACKS_NODE_VERSION = "22.12.0"
-NODE_ENV = "production"
-
-# Variáveis de ambiente expostas pelo Vite
-# ⚠️ Configure os valores reais no painel do Coolify
-VITE_SUPABASE_URL = ""
-VITE_SUPABASE_KEY = ""
-VITE_SUPABASE_SCHEMA = "public"
-VITE_ENABLE_ART_3D = "true"
-VITE_ENABLE_HERO_3D = "true"
-VITE_ENABLE_PRISM_BACKGROUND = "true"
+# Install Node 20 instead of the default Node 22
+nixPkgs = ["nodejs_20", "npm-9_x"]
 
 [phases.install]
+# Use npm ci for deterministic installs
 cmds = ["npm ci"]
 
 [phases.build]
+# Run the Vite build script
 cmds = ["npm run build"]
 
 [start]
-cmd = "npx vite preview --port ${PORT:-3000} --host 0.0.0.0"
+# Serve the built files using caddy, which is included by the default Nixpacks plan
+cmd = "exec caddy run --config /assets/Caddyfile --adapter caddyfile 2>&1"
