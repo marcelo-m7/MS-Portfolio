@@ -227,7 +227,7 @@ export default function Home() {
                             {(
                               ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
                                 // Some legacy entries might include a `stack` array; guard to satisfy types safely
-                                (("stack" in (project as object) ? (project as any).stack : undefined) as string[] | undefined) ??
+                                (("stack" in (project as object) ? (project as Record<string, unknown>).stack : undefined) as string[] | undefined) ??
                                 []
                               ).slice(0, 3)
                             ).map((tech) => (

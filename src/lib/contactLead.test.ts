@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 import { describe, expect, it, vi } from 'vitest';
 
 import {
@@ -22,7 +21,7 @@ const createSupabaseMock = (
     }
 
     return {
-      error: (options.error ?? null) as any,
+      error: (options.error ?? null) as unknown,
     };
   });
 
