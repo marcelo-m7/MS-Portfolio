@@ -31,12 +31,12 @@ The `nixpacks.toml` file configures:
 
 ```toml
 [variables]
-NIXPACKS_NODE_VERSION = "20.19.0"  # Required by Vite 7.x
+NIXPACKS_NODE_VERSION = "20.19.0"  # Required by Vite 7.1+ (engines: node >=20.19.0)
 NODE_ENV = "production"
 NIXPACKS_SPA_OUTPUT_DIR = "dist"
 
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm-9_x", "caddy"]
+nixPkgs = ["nodejs_20", "caddy"]
 
 [phases.install]
 cmds = ["npm ci"]

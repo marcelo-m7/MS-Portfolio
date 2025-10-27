@@ -8,7 +8,8 @@ NIXPACKS_SPA_OUTPUT_DIR = "dist"
 
 [phases.setup]
 # Install Node 20 and Caddy web server for serving the SPA
-nixPkgs = ["nodejs_20", "npm-9_x", "caddy"]
+# npm is included with Node.js
+nixPkgs = ["nodejs_20", "caddy"]
 
 [phases.install]
 # Use npm ci for deterministic installs in production
