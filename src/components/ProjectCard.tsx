@@ -18,6 +18,7 @@ import {
   getStatusBadgeClasses,
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
+import { GitHubStats } from '@/components/GitHubStats';
 
 const MotionCard = motion(Card);
 
@@ -123,6 +124,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
       <CardContent className="flex flex-col gap-4 pt-0">
         <Separator className="bg-border/70" />
+        
+        {/* GitHub Stats */}
+        <GitHubStats repoUrl={project.repoUrl} compact />
+        
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground/80">
           <span className="inline-flex items-center gap-2">
             <Globe className="h-4 w-4 text-secondary" aria-hidden />

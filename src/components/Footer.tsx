@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useProfile, useContact } from '@/hooks/usePortfolioData';
 import { LINKS } from '../lib/siteLinks';
+import { useTranslations } from '@/hooks/useTranslations';
 
 const MotionLink = motion(Link);
 
@@ -10,6 +11,7 @@ export default function Footer() {
   const prefersReducedMotion = useReducedMotion();
   const { data: profile } = useProfile();
   const { data: contact } = useContact();
+  const t = useTranslations();
 
   const socialLinks = [
     {
@@ -33,11 +35,11 @@ export default function Footer() {
   ];
 
   const navLinks = [
-    { href: '/', label: 'Início' },
-    { href: '/portfolio', label: 'Portfolio' },
-    { href: '/about', label: 'Sobre' },
-    { href: '/thoughts', label: 'Pensamentos' },
-    { href: '/contact', label: 'Contato' },
+    { href: '/', label: t.nav.home },
+    { href: '/portfolio', label: t.nav.portfolio },
+    { href: '/about', label: t.nav.about },
+    { href: '/thoughts', label: t.nav.thoughts },
+    { href: '/contact', label: t.nav.contact },
   ];
 
   return (
@@ -65,7 +67,7 @@ export default function Footer() {
               </span>
             </MotionLink>
             <p className="mt-4 text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} Monynha Softwares. Todos os direitos reservados.
+              &copy; {new Date().getFullYear()} Monynha Softwares. {t.footer.rights}
             </p>
           </div>
 
