@@ -7,17 +7,18 @@ NODE_ENV = "production"
 NIXPACKS_SPA_OUTPUT_DIR = "dist"
 
 [phases.setup]
-# Install Node 20 instead of the default Node 22
-nixPkgs = ["nodejs_20", "npm-9_x"]
+# Install Node 20 and Caddy web server for serving the SPA
+nixPkgs = ["nodejs_20", "npm-9_x", "caddy"]
 
 [phases.install]
-# Use npm ci for deterministic installs
+# Use npm ci for deterministic installs in production
 cmds = ["npm ci"]
 
 [phases.build]
-# Run the Vite build script
+# Run the Vite build script to generate static files
 cmds = ["npm run build"]
 
 [start]
-# Serve the built files using caddy, which is included by the default Nixpacks plan
-cmd = "exec caddy run --config /assets/Caddyfile --adapter caddyfile 2>&1"
+# Serve the built files using Caddy with our custom configuration
+# The Caddyfile provides proper SPA routing (fallback to index.html)
+cmd = "caddy run --config /app/Caddyfile --adapter caddyfile"
