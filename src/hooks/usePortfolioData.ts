@@ -182,8 +182,8 @@ export function useThought(slug: string | undefined) {
       
       // Fallback to cv.json
       const cv = await loadCvData();
-      const thoughts = cv.thoughts as Array<{ slug: string; title: string; excerpt: string; body: string; date: string; tags: string[] }> | undefined;
-      return thoughts?.find((t) => t.slug === slug) || null;
+      const thoughts = (cv.thoughts as Array<Record<string, unknown>>) || [];
+      return thoughts.find((t) => t.slug === slug) || null;
     },
     enabled: !!slug,
     staleTime: STALE_TIME,
