@@ -1,26 +1,157 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
-  <title>Ilustração do projeto AssisTina com formas orgânicas em violeta e azul</title>
+  <title>AssisTina - Assistente virtual por IA para atendimento</title>
   <defs>
+    <!-- Brand gradient -->
     <linearGradient id="assistinaGradient" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#7C3AED" />
-      <stop offset="100%" stop-color="#0EA5E9" />
+      <stop offset="50%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#D946EF" />
     </linearGradient>
-    <radialGradient id="assistinaGlow" cx="50%" cy="45%" r="60%">
-      <stop offset="0%" stop-color="rgba(236,72,153,0.6)" />
-      <stop offset="100%" stop-color="rgba(124,58,237,0)" />
+    
+    <!-- Glow for AI effect -->
+    <radialGradient id="aiGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#D946EF" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0" />
     </radialGradient>
   </defs>
+  
+  <!-- Background -->
   <rect width="640" height="360" rx="32" fill="#020617" />
-  <circle cx="120" cy="110" r="90" fill="url(#assistinaGradient)" opacity="0.25" />
-  <circle cx="520" cy="250" r="110" fill="url(#assistinaGradient)" opacity="0.2" />
-  <ellipse cx="320" cy="180" rx="230" ry="140" fill="url(#assistinaGlow)" />
-  <path d="M170 250 C 220 180, 420 180, 470 120" fill="none" stroke="#38bdf8" stroke-width="20" stroke-linecap="round" stroke-dasharray="36 28" opacity="0.45" />
-  <g transform="translate(220 120)">
-    <rect x="0" y="0" width="200" height="120" rx="28" fill="rgba(15,23,42,0.8)" stroke="rgba(124,58,237,0.65)" stroke-width="2" />
-    <circle cx="40" cy="60" r="28" fill="rgba(124,58,237,0.75)" />
-    <path d="M140 46 H 100 M140 76 H 80" stroke="#38bdf8" stroke-width="8" stroke-linecap="round" opacity="0.8" />
+  
+  <!-- Decorative glows -->
+  <circle cx="150" cy="120" r="140" fill="url(#aiGlow)"/>
+  <circle cx="490" cy="240" r="160" fill="url(#aiGlow)"/>
+  
+  <!-- Main container -->
+  <rect x="48" y="52" width="544" height="256" rx="24" 
+        fill="rgba(15,23,42,0.6)" 
+        stroke="rgba(124,58,237,0.5)" 
+        stroke-width="2" />
+  
+  <!-- Chat interface mockup -->
+  <g transform="translate(100, 90)">
+    <!-- Chat window -->
+    <rect x="0" y="0" width="220" height="140" rx="16" 
+          fill="rgba(15,23,42,0.8)" 
+          stroke="url(#assistinaGradient)" 
+          stroke-width="2"/>
+    
+    <!-- AI avatar circle -->
+    <circle cx="30" cy="30" r="18" 
+            fill="url(#assistinaGradient)" 
+            opacity="0.3"/>
+    <circle cx="30" cy="30" r="12" 
+            fill="url(#assistinaGradient)"/>
+    
+    <!-- Message bubbles -->
+    <g opacity="0.8">
+      <!-- Incoming message -->
+      <rect x="55" y="20" width="145" height="20" rx="10" 
+            fill="rgba(124,58,237,0.4)" 
+            stroke="#7C3AED" 
+            stroke-width="1.5"/>
+      
+      <!-- Response indicators -->
+      <rect x="20" y="55" width="180" height="16" rx="8" 
+            fill="rgba(14,165,233,0.3)" 
+            stroke="#0EA5E9" 
+            stroke-width="1.5"/>
+      <rect x="20" y="80" width="150" height="16" rx="8" 
+            fill="rgba(14,165,233,0.3)" 
+            stroke="#0EA5E9" 
+            stroke-width="1.5"/>
+      
+      <!-- User message -->
+      <rect x="75" y="110" width="130" height="18" rx="9" 
+            fill="rgba(217,70,239,0.3)" 
+            stroke="#D946EF" 
+            stroke-width="1.5"/>
+    </g>
   </g>
-  <text x="50%" y="82%" text-anchor="middle" fill="#e0f2fe" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="42" font-weight="600">
+  
+  <!-- Connection/network lines -->
+  <g stroke="url(#assistinaGradient)" stroke-width="2" opacity="0.4">
+    <path d="M 340 100 Q 380 130 420 100" 
+          fill="none" 
+          stroke-dasharray="4 4"/>
+    <path d="M 340 160 Q 380 130 420 160" 
+          fill="none" 
+          stroke-dasharray="4 4"/>
+    <path d="M 340 180 Q 380 200 420 180" 
+          fill="none" 
+          stroke-dasharray="4 4"/>
+  </g>
+  
+  <!-- AI nodes -->
+  <g transform="translate(440, 100)">
+    <!-- Node 1 -->
+    <circle cx="0" cy="0" r="14" 
+            fill="rgba(124,58,237,0.4)" 
+            stroke="#7C3AED" 
+            stroke-width="2"/>
+    <circle cx="0" cy="0" r="6" fill="#7C3AED"/>
+    
+    <!-- Node 2 -->
+    <circle cx="0" cy="60" r="16" 
+            fill="rgba(14,165,233,0.4)" 
+            stroke="#0EA5E9" 
+            stroke-width="2"/>
+    <circle cx="0" cy="60" r="7" fill="#0EA5E9"/>
+    
+    <!-- Node 3 -->
+    <circle cx="0" cy="80" r="12" 
+            fill="rgba(217,70,239,0.4)" 
+            stroke="#D946EF" 
+            stroke-width="2"/>
+    <circle cx="0" cy="80" r="5" fill="#D946EF"/>
+  </g>
+  
+  <!-- Pulse rings around main node -->
+  <g transform="translate(500, 150)" opacity="0.3">
+    <circle cx="0" cy="0" r="35" 
+            fill="none" 
+            stroke="url(#assistinaGradient)" 
+            stroke-width="1.5"/>
+    <circle cx="0" cy="0" r="50" 
+            fill="none" 
+            stroke="url(#assistinaGradient)" 
+            stroke-width="1"/>
+  </g>
+  
+  <!-- Central AI brain icon -->
+  <g transform="translate(500, 150)">
+    <circle cx="0" cy="0" r="24" 
+            fill="url(#assistinaGradient)" 
+            opacity="0.3"/>
+    <circle cx="0" cy="0" r="18" 
+            fill="url(#assistinaGradient)"/>
+    <text x="0" y="7" 
+          text-anchor="middle" 
+          font-family="'Space Grotesk', sans-serif" 
+          font-size="20" 
+          font-weight="700" 
+          fill="#FFFFFF">
+      AI
+    </text>
+  </g>
+  
+  <!-- Project title -->
+  <text x="320" y="275" 
+        text-anchor="middle" 
+        fill="url(#assistinaGradient)" 
+        font-family="'Space Grotesk', 'Inter', sans-serif" 
+        font-size="44" 
+        font-weight="700">
     AssisTina
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="320" y="310" 
+        text-anchor="middle" 
+        fill="#94A3B8" 
+        font-family="'Inter', sans-serif" 
+        font-size="16" 
+        font-weight="500">
+    Assistente Virtual IA
   </text>
 </svg>

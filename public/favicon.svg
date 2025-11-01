@@ -1,12 +1,37 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
   <title>Monynha Softwares - Monograma M</title>
   <defs>
+    <!-- Enhanced gradient with three colors -->
     <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7c3aed" />
-      <stop offset="100%" stop-color="#0ea5e9" />
+      <stop offset="0%" stop-color="#7C3AED" />
+      <stop offset="50%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#D946EF" />
     </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Subtle inner glow -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1E1B4B" />
+      <stop offset="100%" stop-color="#05010D" />
+    </radialGradient>
   </defs>
-  <rect width="256" height="256" rx="64" fill="#05010d" />
+  
+  <!-- Background with subtle glow -->
+  <rect width="256" height="256" rx="64" fill="url(#bgGlow)" />
+  
+  <!-- Decorative subtle corner accents -->
+  <circle cx="64" cy="64" r="48" fill="#7C3AED" opacity="0.08"/>
+  <circle cx="192" cy="192" r="48" fill="#D946EF" opacity="0.08"/>
+  
+  <!-- Main M logo -->
   <path
     d="M64 184V72h36l28 50 28-50h36v112h-28V114l-36 62-36-62v70z"
     fill="none"
@@ -14,5 +39,13 @@
     stroke-width="18"
     stroke-linecap="round"
     stroke-linejoin="round"
+    filter="url(#glow)"
+  />
+  
+  <!-- Subtle filled version for depth -->
+  <path
+    d="M64 184V72h36l28 50 28-50h36v112h-28V114l-36 62-36-62v70z"
+    fill="url(#faviconGradient)"
+    opacity="0.12"
   />
 </svg>
