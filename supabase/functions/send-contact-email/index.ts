@@ -1,5 +1,13 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
+// Deno global is provided by Supabase Edge Runtime
+declare const Deno: {
+  serve: (handler: (req: Request) => Response | Promise<Response>) => void;
+  env: {
+    get(key: string): string | undefined;
+  };
+};
+
 /**
  * Edge Function: send-contact-email
  * 
