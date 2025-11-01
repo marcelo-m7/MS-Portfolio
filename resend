@@ -1,8 +1,0 @@
-curl -X POST https://pkjigvacvddcnlxhvvba.supabase.co/functions/v1/send-contact-email \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1" \
-  -d '{
-    "name": "Test User",
-    "email": "your-email@example.com",
-    "message": "Testing the edge function!"
-  }'
