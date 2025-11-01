@@ -24,7 +24,15 @@ import {
   fetchSkills,
   fetchTechnologies,
 } from '@/lib/api/queries';
-// Removed cv.json fallback to use Supabase as the single source of truth.
+
+// Fallback to cv.json when Supabase is unavailable
+let cvData: Record<string, unknown> | null = null;
+async function loadCvData() {
+  if (cvData) return cvData;
+  const response = await fetch('/data/cv.json');
+  cvData = await response.json() as Record<string, unknown>;
+  return cvData;
+}
 
 // Stale time: 5 minutes (data is considered fresh for 5 min)
 const STALE_TIME = 5 * 60 * 1000;
@@ -41,8 +49,11 @@ export function useProjects() {
     queryKey: ['projects'],
     queryFn: async () => {
       const dbData = await fetchProjects();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.projects || [];
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -146,8 +157,11 @@ export function useThoughts() {
     queryKey: ['thoughts'],
     queryFn: async () => {
       const dbData = await fetchThoughts();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.thoughts || [];
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -181,8 +195,11 @@ export function useProfile() {
     queryKey: ['profile'],
     queryFn: async () => {
       const dbData = await fetchProfile();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.profile || null;
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -213,8 +230,11 @@ export function useExperience() {
     queryKey: ['experience'],
     queryFn: async () => {
       const dbData = await fetchExperience();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.experience || [];
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -229,8 +249,11 @@ export function useSkills() {
     queryKey: ['skills'],
     queryFn: async () => {
       const dbData = await fetchSkills();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.skills || [];
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
