@@ -3,9 +3,9 @@
  * Minimal implementation supporting Portuguese and English
  */
 
-export type SupportedLanguage = 'pt' | 'en';
+export type SupportedLanguage = 'pt' | 'en' | 'es' | 'fr';
 
-export const SUPPORTED_LANGUAGES: readonly SupportedLanguage[] = ['pt', 'en'] as const;
+export const SUPPORTED_LANGUAGES: readonly SupportedLanguage[] = ['pt', 'en', 'es', 'fr'] as const;
 
 export interface Translations {
   nav: {
@@ -121,6 +121,82 @@ export const translations: Record<SupportedLanguage, Translations> = {
     footer: {
       quickLinks: 'Quick Links',
       rights: 'All rights reserved.',
+    },
+  },
+  es: {
+    nav: {
+      home: 'Inicio',
+      portfolio: 'Portfolio',
+      about: 'Acerca de',
+      thoughts: 'Pensamientos',
+      contact: 'Contacto',
+      menu: 'Menú',
+      closeMenu: 'Cerrar menú',
+      openMenu: 'Abrir menú',
+    },
+    common: {
+      loading: 'Cargando…',
+      error: 'Error al cargar',
+      notFound: 'No encontrado',
+      backToHome: 'Volver al inicio',
+      readMore: 'Leer más',
+      viewProject: 'Ver proyecto',
+      seeMore: 'Ver más',
+    },
+    contact: {
+      title: 'Hablemos',
+      subtitle: 'Ponte en contacto y creemos algo increíble juntos.',
+      namePlaceholder: 'Tu nombre',
+      emailPlaceholder: 'Tu email',
+      companyPlaceholder: 'Tu empresa (opcional)',
+      projectPlaceholder: 'Tipo de proyecto (opcional)',
+      messagePlaceholder: 'Cuéntame sobre tu proyecto...',
+      sendButton: 'Enviar Mensaje',
+      sending: 'Enviando...',
+      successMessage: '¡Mensaje enviado con éxito!',
+      errorMessage: 'No se pudo enviar tu mensaje. Inténtalo de nuevo.',
+    },
+    footer: {
+      quickLinks: 'Enlaces Rápidos',
+      rights: 'Todos los derechos reservados.',
+    },
+  },
+  fr: {
+    nav: {
+      home: 'Accueil',
+      portfolio: 'Portfolio',
+      about: 'À propos',
+      thoughts: 'Réflexions',
+      contact: 'Contact',
+      menu: 'Menu',
+      closeMenu: 'Fermer le menu',
+      openMenu: 'Ouvrir le menu',
+    },
+    common: {
+      loading: 'Chargement…',
+      error: 'Erreur de chargement',
+      notFound: 'Non trouvé',
+      backToHome: 'Retour à l\'accueil',
+      readMore: 'Lire plus',
+      viewProject: 'Voir le projet',
+      seeMore: 'Voir plus',
+    },
+    contact: {
+      title: 'Parlons-en',
+      subtitle: 'Contactez-moi et créons quelque chose d\'incroyable ensemble.',
+      namePlaceholder: 'Votre nom',
+      emailPlaceholder: 'Votre email',
+      companyPlaceholder: 'Votre entreprise (facultatif)',
+      projectPlaceholder: 'Type de projet (facultatif)',
+      messagePlaceholder: 'Parlez-moi de votre projet...',
+      sendButton: 'Envoyer le Message',
+      sending: 'Envoi en cours...',
+      successMessage: 'Message envoyé avec succès !',
+      errorMessage: 'Impossible d\'envoyer votre message. Veuillez réessayer.',
+    },
+    footer: {
+      quickLinks: 'Liens Rapides',
+      rights: 'Tous droits réservés.',
     },
   },
 };
