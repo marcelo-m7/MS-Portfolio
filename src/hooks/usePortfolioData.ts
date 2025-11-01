@@ -178,8 +178,12 @@ export function useThought(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchThoughtBySlug(slug);
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      const thoughts = cv.thoughts as Array<{ slug: string; title: string; excerpt: string; body: string; date: string; tags: string[] }> | undefined;
+      return thoughts?.find((t) => t.slug === slug) || null;
     },
     enabled: !!slug,
     staleTime: STALE_TIME,
