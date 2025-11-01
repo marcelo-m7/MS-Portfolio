@@ -44,6 +44,16 @@ export interface Translations {
     quickLinks: string;
     rights: string;
   };
+  home: {
+    explorePortfolio: string;
+    getInTouch: string;
+    viewAllProjects: string;
+    recentProjects: string;
+    recentThoughts: string;
+  };
+  portfolio: {
+    filterAll: string;
+  };
 }
 
 export const translations: Record<SupportedLanguage, Translations> = {
@@ -84,6 +94,16 @@ export const translations: Record<SupportedLanguage, Translations> = {
       quickLinks: 'Links Rápidos',
       rights: 'Todos os direitos reservados.',
     },
+    home: {
+      explorePortfolio: 'Explorar Portfolio',
+      getInTouch: 'Entre em Contato',
+      viewAllProjects: 'Ver Todos os Projetos',
+      recentProjects: 'Projetos Recentes',
+      recentThoughts: 'Pensamentos Recentes',
+    },
+    portfolio: {
+      filterAll: 'Todos',
+    },
   },
   en: {
     nav: {
@@ -121,6 +141,16 @@ export const translations: Record<SupportedLanguage, Translations> = {
     footer: {
       quickLinks: 'Quick Links',
       rights: 'All rights reserved.',
+    },
+    home: {
+      explorePortfolio: 'Explore Portfolio',
+      getInTouch: 'Get in Touch',
+      viewAllProjects: 'View All Projects',
+      recentProjects: 'Recent Projects',
+      recentThoughts: 'Recent Thoughts',
+    },
+    portfolio: {
+      filterAll: 'All',
     },
   },
   es: {
@@ -160,6 +190,16 @@ export const translations: Record<SupportedLanguage, Translations> = {
       quickLinks: 'Enlaces Rápidos',
       rights: 'Todos los derechos reservados.',
     },
+    home: {
+      explorePortfolio: 'Explorar Portfolio',
+      getInTouch: 'Ponerse en contacto',
+      viewAllProjects: 'Ver Todos los Proyectos',
+      recentProjects: 'Proyectos Recientes',
+      recentThoughts: 'Pensamientos Recientes',
+    },
+    portfolio: {
+      filterAll: 'Todos',
+    },
   },
   fr: {
     nav: {
@@ -197,6 +237,16 @@ export const translations: Record<SupportedLanguage, Translations> = {
     footer: {
       quickLinks: 'Liens Rapides',
       rights: 'Tous droits réservés.',
+    },
+    home: {
+      explorePortfolio: 'Explorer le Portfolio',
+      getInTouch: 'Entrer en Contact',
+      viewAllProjects: 'Voir Tous les Projets',
+      recentProjects: 'Projets Récents',
+      recentThoughts: 'Réflexions Récentes',
+    },
+    portfolio: {
+      filterAll: 'Tous',
     },
   },
 };
