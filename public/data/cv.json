@@ -334,11 +334,13 @@
       "tags": [
         "Acessibilidade",
         "Design",
-        "Experiência do utilizador"
+        "Experiência do Utilizador",
+        "Inclusão",
+        "UX/UI"
       ],
       "title": "Design e Tecnologia Inclusiva",
-      "excerpt": "A tecnologia é mais humana quando é acessível.",
-      "body": "Acredito que design e acessibilidade não são opostos, mas aliados. No ecossistema Monynha, cada interface nasce com empatia: contraste adequado, navegação por teclado e respeito ao prefers-reduced-motion fazem parte do nosso DNA digital."
+      "excerpt": "A tecnologia é mais humana quando é feita para todas as pessoas — não apenas para quem tem acesso fácil a ela.",
+      "body": "Sempre acreditei que design e acessibilidade não são pontos opostos num espectro, mas duas linguagens que, quando dialogam, traduzem o verdadeiro sentido da inovação. A estética só é completa quando é compreensível. O belo só é belo quando é acessível.\n\nNa Monynha Softwares, cada interface nasce de um princípio simples: **empatia como arquitetura**. Criar não é só desenhar pixels; é entender contextos, reconhecer diferenças e garantir que ninguém fique de fora da experiência digital.\n\nImplementamos contrastes adequados, hierarquias visuais claras e navegação por teclado desde o primeiro protótipo. Evitamos animações que possam causar desconforto a pessoas sensíveis ao movimento, respeitando o `prefers-reduced-motion`. Cada componente é pensado para ser útil, não apenas bonito.\n\nMais do que cumprir normas da WCAG, tratamos acessibilidade como expressão de respeito. Cada *alt-text* é um convite à inclusão; cada *aria-label* é um gesto de empatia codificado.\n\nO design inclusivo não é um diferencial competitivo — é um ato político e ético. Porque se a tecnologia é feita por pessoas, para pessoas, então ela deve abraçar todas as formas de existir. 💜"
     },
     {
       "slug": "por-tras-da-monynha",
@@ -346,11 +348,13 @@
       "tags": [
         "Cultura",
         "Comunidade",
-        "Empreendedorismo"
+        "Empreendedorismo",
+        "Orgulho",
+        "Diversidade"
       ],
       "title": "Por trás da Monynha",
-      "excerpt": "Mais do que software, é movimento.",
-      "body": "Monynha Softwares nasceu da vontade de unir diversidade e tecnologia em um só propósito: criar ferramentas que empoderem pessoas e transformem ideias em experiências digitais acessíveis, criativas e babadeiras 💅."
+      "excerpt": "Mais do que software — um movimento de orgulho, diversidade e resistência digital.",
+      "body": "A **Monynha Softwares** nasceu de um sonho coletivo: provar que tecnologia e afeto podem coexistir. Que inovação também vem da margem. Que a web pode ser um espaço de acolhimento, criação e resistência.\n\nO nome carrega essa essência. *\"Mona\"*, palavra de resistência do Pajubá, e o sufixo *\"-nynha\"*, expressão carinhosa e periférica, simbolizam a mistura de ternura, humor e coragem que definem quem somos. Criamos com amor, mas também com propósito — cada projeto é uma forma de dizer: **estamos aqui e não vamos voltar pro armário da tecnologia.** 🏳️‍🌈\n\nNosso manifesto é simples: **democratizar o digital, celebrar a diferença e hackear o sistema com orgulho.** Através de software livre, design acessível e comunidades diversas, buscamos transformar o que antes era privilégio em possibilidade.\n\nDe apps e plataformas open source a iniciativas culturais e educacionais, cada linha de código escrita pela Monynha é um gesto de resistência criativa. Nossos produtos — como o BotecoPro, o FACODI e a AssisTina — não são apenas soluções tecnológicas; são manifestações vivas de empatia, inclusão e representatividade.\n\nSer Monynha é entender que tecnologia é linguagem, e linguagem é poder. Que cada pessoa que se vê num produto é mais do que usuária — é protagonista. E é por isso que seguimos criando, dia após dia, com a certeza de que **diversidade também é performance.** 💅✨"
     }
   ],
   "contact": {
