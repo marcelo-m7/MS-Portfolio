@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" aria-labelledby="botecopt-title">
+  <title id="botecopt-title">Boteco.pt - Site Institucional para Gestão de Restaurantes</title>
+  <defs>
+    <linearGradient id="boteco-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8a1d3e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b26f1a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="640" height="360" fill="#f1ddad"/>
+  
+  <!-- Main container with rounded corners -->
+  <rect x="60" y="60" width="520" height="240" rx="20" fill="url(#boteco-grad)"/>
+  
+  <!-- Restaurant/Bar icon elements -->
+  <!-- Glass icon (left) -->
+  <g transform="translate(140, 140)">
+    <path d="M-20,-40 L-30,-10 L10,-10 L0,-40 Z" fill="#f1ddad" opacity="0.9"/>
+    <rect x="-25" y="-10" width="35" height="60" rx="5" fill="#f1ddad" opacity="0.9"/>
+    <circle cx="-7.5" cy="20" r="8" fill="#8a1d3e"/>
+  </g>
+  
+  <!-- Fork icon (center) -->
+  <g transform="translate(320, 140)">
+    <rect x="-3" y="-30" width="6" height="80" rx="3" fill="#f1ddad" opacity="0.9"/>
+    <rect x="-12" y="-30" width="4" height="35" rx="2" fill="#f1ddad" opacity="0.9"/>
+    <rect x="8" y="-30" width="4" height="35" rx="2" fill="#f1ddad" opacity="0.9"/>
+  </g>
+  
+  <!-- Plate icon (right) -->
+  <g transform="translate(500, 140)">
+    <ellipse cx="0" cy="0" rx="35" ry="30" fill="#f1ddad" opacity="0.9"/>
+    <ellipse cx="0" cy="0" rx="25" ry="20" fill="#b26f1a"/>
+  </g>
+  
+  <!-- Decorative dots -->
+  <circle cx="100" cy="100" r="4" fill="#df8f29" opacity="0.6"/>
+  <circle cx="540" cy="260" r="4" fill="#d74672" opacity="0.6"/>
+  <circle cx="120" cy="260" r="3" fill="#df8f29" opacity="0.6"/>
+  <circle cx="520" cy="100" r="3" fill="#d74672" opacity="0.6"/>
+</svg>

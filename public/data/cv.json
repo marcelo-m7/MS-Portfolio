@@ -35,6 +35,28 @@
       "year": 2025
     },
     {
+      "slug": "boteco-pt",
+      "name": "Boteco.pt",
+      "summary": "Site institucional multilíngue (pt/en/es/fr) do BotecoPro com foco em performance, acessibilidade e experiência do usuário.",
+      "fullDescription": "Boteco.pt é a vitrine digital do BotecoPro, apresentando soluções de gestão para bares e restaurantes. O site combina design responsivo, lazy loading progressivo, testes visuais automatizados e suporte a 4 idiomas. A arquitetura prioriza Core Web Vitals, SEO e acessibilidade WCAG, com bundle otimizado (75% de redução) e sistema de design customizado com shadcn/ui.",
+      "stack": [
+        "React",
+        "TypeScript",
+        "Vite",
+        "Tailwind CSS",
+        "i18next",
+        "Playwright"
+      ],
+      "url": "https://boteco.pt",
+      "domain": "boteco.pt",
+      "repoUrl": "https://github.com/marcelo-m7/boteco.pt",
+      "thumbnail": "/images/boteco-pt.svg",
+      "category": "Institucional",
+      "status": "Produção",
+      "visibility": "Pública",
+      "year": 2025
+    },
+    {
       "slug": "facodi",
       "name": "FACODI",
       "summary": "Faculdade Comunitária Digital — plataforma de educação comunitária aberta e gratuita, com foco em inclusão social.",
