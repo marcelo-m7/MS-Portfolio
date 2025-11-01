@@ -45,7 +45,10 @@ function MyComponent() {
 - **Multi-schema DB**:
   - `public` schema: shared tables across Monynha projects (`leads` table with `project_source` column)
   - `portfolio` schema: project-specific tables (15 tables for MS-Portfolio)
-- **Graceful degradation**: always check `if (!supabase) { /* fallback */ }` (see `contactLead.ts`)
+- **Graceful degradation**: 
+  - Queries check `if (!supabase) { /* fallback */ }`
+  - Frontend hooks (useProjects, useProfile, etc.) fall back to `cv.json` when Supabase returns null
+  - Contact form uses email-only when DB unavailable (via `send-contact-email` Edge Function)
 - **Migrations**: timestamp-prefixed SQL files in `supabase/migrations/` (e.g., `20251023000001_*.sql`)
 
 Example pattern:
@@ -54,12 +57,17 @@ import { supabase } from '@/lib/supabaseClient';
 
 async function saveData() {
   if (!supabase) {
-    // fallback: email, console.warn, etc.
+    // fallback: use cv.json, email, console.warn, etc.
     return;
   }
   const { data, error } = await supabase.from('leads').insert({ ... });
 }
 ```
+
+**Contact Form Flow**:
+1. Try to insert into `public.leads` table
+2. On failure, invoke `send-contact-email` Edge Function (requires `RESEND_API_KEY` secret in Supabase)
+3. Return `'saved'` (DB) or `'emailed'` (fallback) status
 
 ### 3D Graphics & Animation
 - **LiquidEther**: custom Three.js fluid simulation background (`src/components/LiquidEther.tsx`, 1492 lines)

@@ -87,20 +87,29 @@ This project uses **Supabase** (PostgreSQL) with a multi-schema approach:
 
 ## Database & Backend
 
-This project uses **Supabase** for optional backend persistence. The contact form will work with or without Supabase configured.
+This project uses **Supabase** for backend persistence with **graceful degradation**:
+
+- ✅ When Supabase is configured: Data fetched from database, contact form saves to DB + email fallback
+- 📦 When Supabase is unavailable: Falls back to `cv.json` file, contact form uses email-only
 
 ### Quick Setup
 
 1. Copy `.env.example` to `.env`
 2. Add your Supabase credentials:
+
    ```bash
    VITE_SUPABASE_URL=https://your-project.supabase.co
    VITE_SUPABASE_KEY=your-anon-key
    VITE_SUPABASE_SCHEMA=portfolio
    ```
-3. Restart the dev server
 
-**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./SUPABASE.md)**
+3. (Optional) Configure email fallback for contact form:
+   - Deploy the `send-contact-email` Edge Function (see `EDGE_FUNCTION_SETUP.md`)
+   - Add `RESEND_API_KEY` secret in Supabase Dashboard
+4. Restart the dev server
+
+**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./SUPABASE.md)**  
+**📧 For Edge Function deployment and email configuration, see [EDGE_FUNCTION_SETUP.md](./EDGE_FUNCTION_SETUP.md)**
 
 ### Database Schema (15 Tables)
 
