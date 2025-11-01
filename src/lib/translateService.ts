@@ -73,7 +73,8 @@ class TranslationService {
   }
 
   private getCacheKey(text: string, targetLang: string): string {
-    return `${text}::${targetLang}`;
+    // Use JSON.stringify to avoid collision issues with special characters
+    return JSON.stringify({ text, targetLang });
   }
 
   private getCachedTranslation(text: string, targetLang: string): string | null {
@@ -141,18 +142,19 @@ class TranslationService {
     targetLang: string,
     sourceLang: string
   ): Promise<string> {
-    const url = new URL(API_ENDPOINT);
-    url.searchParams.set('key', this.apiKey!);
-    url.searchParams.set('q', text);
-    url.searchParams.set('target', targetLang);
-    url.searchParams.set('source', sourceLang);
-    url.searchParams.set('format', 'text');
-
-    const response = await fetch(url.toString(), {
+    const url = `${API_ENDPOINT}?key=${this.apiKey!}`;
+    
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        q: text,
+        target: targetLang,
+        source: sourceLang,
+        format: 'text',
+      }),
     });
 
     if (!response.ok) {

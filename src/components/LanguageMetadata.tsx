@@ -22,12 +22,19 @@ export function LanguageMetadata() {
     // Add hreflang tags for all supported languages
     const baseUrl = window.location.origin;
     const currentPath = location.pathname;
+    
+    // Build URL with proper query string handling
+    const buildLanguageUrl = (lang: string) => {
+      const url = new URL(currentPath, baseUrl);
+      url.searchParams.set('lang', lang);
+      return url.toString();
+    };
 
     SUPPORTED_LANGUAGES.forEach((lang) => {
       const link = document.createElement('link');
       link.rel = 'alternate';
       link.hreflang = lang;
-      link.href = `${baseUrl}${currentPath}${currentPath.includes('?') ? '&' : '?'}lang=${lang}`;
+      link.href = buildLanguageUrl(lang);
       document.head.appendChild(link);
     });
 

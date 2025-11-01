@@ -92,7 +92,7 @@ export function useTranslatedTexts(
     return () => {
       cancelled = true;
     };
-  }, [originalTexts.join('|'), currentLang, sourceLang]);
+  }, [JSON.stringify(originalTexts), currentLang, sourceLang]);
 
   return translatedTexts;
 }
@@ -158,7 +158,7 @@ export function useTranslatedObject<T extends Record<string, any>>(
     return () => {
       cancelled = true;
     };
-  }, [obj, currentLang, sourceLang, fieldsToTranslate.join(',')]);
+  }, [obj, currentLang, sourceLang, JSON.stringify(fieldsToTranslate)]);
 
   return translatedObj;
 }
