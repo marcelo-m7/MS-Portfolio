@@ -115,11 +115,12 @@ export function useTranslatedObject<T extends Record<string, unknown>>(
   const currentLang = useCurrentLanguage();
   const [translatedObj, setTranslatedObj] = useState<T | null>(obj || null);
 
-  // Memoize fieldsToTranslate key to avoid effect re-runs
-  // Using join to create a stable dependency key
+    // Memoize fieldsToTranslate to avoid effect re-runs on array identity changes
+    // Convert array to stable string key for dependency comparison
+    const fieldsToTranslateString = fieldsToTranslate.join(',');
   const fieldsKey = useMemo(
-    () => fieldsToTranslate.join(','),
-    [fieldsToTranslate.join(',')]
+     () => fieldsToTranslateString,
+     [fieldsToTranslateString]
   );
 
   useEffect(() => {

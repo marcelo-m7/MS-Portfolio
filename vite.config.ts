@@ -31,6 +31,13 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
+        onwarn(warning, warn) {
+          // Suppress gray-matter eval warning (external dependency, cannot fix)
+          if (warning.code === 'EVAL' && warning.id?.includes('gray-matter')) {
+            return;
+          }
+          warn(warning);
+        },
       output: {
         manualChunks: {
           // React core (shared by all pages)
@@ -107,8 +114,9 @@ export default defineConfig(({ mode }) => ({
         },
       },
     },
-    // Increase chunk size warning limit (after splitting, chunks will be smaller)
-    chunkSizeWarningLimit: 600,
+      // Increase chunk size warning limit
+      // Three.js vendor chunk is large (~850KB) but lazy loaded only when needed
+      chunkSizeWarningLimit: 900,
   },
   test: {
     globals: true,
