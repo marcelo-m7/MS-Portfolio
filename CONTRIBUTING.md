@@ -2,14 +2,18 @@
 
 Thanks for your interest in contributing! This project is the personal portfolio of Marcelo Santos with a focus on clean code, accessibility, and performance. Contributions that improve docs, tests, DX, or fix bugs are welcome.
 
+For questions or to propose work directly, contact: [marcelo@monynha.com](mailto:marcelo@monynha.com) or connect on LinkedIn: [linkedin.com/in/marcelo-m7](https://linkedin.com/in/marcelo-m7).
+
 ## Table of Contents
 
-- [Development Setup](#development-setup)
-- [Workflow](#workflow)
-- [Coding Standards](#coding-standards)
-- [Testing](#testing)
-- [Docs & Linting](#docs--linting)
-- [Commits & PRs](#commits--prs)
+- [Contributing to MS-Portfolio](#contributing-to-ms-portfolio)
+  - [Table of Contents](#table-of-contents)
+  - [Development Setup](#development-setup)
+  - [Workflow](#workflow)
+  - [Coding Standards](#coding-standards)
+  - [Testing](#testing)
+  - [Docs \& Linting](#docs--linting)
+  - [Commits \& PRs](#commits--prs)
 
 ## Development Setup
 
