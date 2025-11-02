@@ -61,6 +61,15 @@ const STALE_TIME = 15 * 60 * 1000;
 // Reduces API calls and improves loading speed for repeat visits
 const CACHE_TIME = 30 * 60 * 1000;
 
+// Default query options for all portfolio data hooks
+const DEFAULT_QUERY_OPTIONS = {
+  staleTime: STALE_TIME,
+  gcTime: CACHE_TIME,
+  refetchOnWindowFocus: false, // Don't refetch when window regains focus
+  refetchOnMount: false, // Don't refetch on component mount if data exists
+  retry: 1, // Only retry once on failure
+};
+
 /**
  * Hook to fetch all projects with tech stack
  * Falls back to cv.json if database is unavailable
@@ -76,8 +85,7 @@ export function useProjects() {
       const cv = await loadCvData();
       return cv.projects || [];
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
   });
 }
 
@@ -99,8 +107,8 @@ export function useProject(slug: string | undefined) {
       return projects.find((p) => p.slug === slug) || null;
     },
     enabled: !!slug,
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -118,8 +126,8 @@ export function useArtworks() {
       const cv = await loadCvData();
       return cv.artworks || [];
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -141,8 +149,8 @@ export function useArtwork(slug: string | undefined) {
       return artworks.find((a) => a.slug === slug) || null;
     },
     enabled: !!slug,
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -160,8 +168,8 @@ export function useSeries() {
       const cv = await loadCvData();
       return cv.series || [];
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -183,8 +191,8 @@ export function useSeriesDetail(slug: string | undefined) {
       return series.find((s) => s.slug === slug) || null;
     },
     enabled: !!slug,
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -208,8 +216,8 @@ export function useThoughts() {
       const cv = await loadCvData();
       return cv.thoughts || [];
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -237,8 +245,8 @@ export function useThought(slug: string | undefined) {
       return thoughts.find((t) => t.slug === slug) || null;
     },
     enabled: !!slug,
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -256,8 +264,8 @@ export function useProfile() {
       const cv = await loadCvData();
       return cv.profile || null;
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -272,8 +280,8 @@ export function useContact() {
       // Return data from Supabase (no JSON fallback)
       return dbData;
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -291,8 +299,8 @@ export function useExperience() {
       const cv = await loadCvData();
       return cv.experience || [];
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -310,8 +318,8 @@ export function useSkills() {
       const cv = await loadCvData();
       return cv.skills || [];
     },
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
 
@@ -322,7 +330,7 @@ export function useTechnologies() {
   return useQuery({
     queryKey: ['technologies'],
     queryFn: fetchTechnologies,
-    staleTime: STALE_TIME,
-    gcTime: CACHE_TIME,
+    ...DEFAULT_QUERY_OPTIONS,
+    
   });
 }
