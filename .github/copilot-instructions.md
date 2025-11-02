@@ -9,7 +9,10 @@ Vite + React + TypeScript portfolio site with Tailwind, shadcn/ui, React Router 
 - `src/components/Layout.tsx` — shared layout wrapping all pages with `Navbar`, `Footer`, and `LiquidEther` background (Three.js fluid simulation)
 - `public/data/cv.json` — **single source of truth** for all content (projects, artworks, series, thoughts)
 - `src/lib/language.ts` — language system broadcasting `monynha:languagechange` custom events
+- `src/lib/translations.ts` — static UI translations (nav, buttons, labels) for 4 languages
+- `src/lib/translateService.ts` — Google Translate API integration for dynamic content
 - `src/lib/supabaseClient.ts` + `src/lib/contactLead.ts` — Supabase integration with graceful undefined handling
+- `src/lib/logger.ts` — structured logging (suppresses log/info in production, preserves warn/error)
 
 ## Architecture
 
@@ -23,20 +26,38 @@ Vite + React + TypeScript portfolio site with Tailwind, shadcn/ui, React Router 
 - **SVG thumbnails**: `public/images/` (must include `<title>` tag for accessibility)
 - **Database migration in progress**: Supabase tables exist (`supabase/migrations/`) but frontend still reads from JSON file
 - **Future state**: migrate from JSON file to DB queries
+- **React Query hooks**: `src/hooks/usePortfolioData.ts` exports hooks like `useProjects()`, `useArtwork()`, `useSeries()`, `useThoughts()` with 5-min stale time, 10-min cache
+- **Fallback pattern**: All hooks attempt DB query first, fall back to `cv.json` if Supabase unavailable or returns null
+- **Error boundaries**: Wrap lazy-loaded routes in `ErrorBoundary` component for graceful failure handling
 
 ### Language System
 - **Detection**: `detectInitialLanguage()` in `src/lib/language.ts` checks localStorage → browser language → falls back to `pt`
 - **Broadcast**: `setLanguage()` fires `monynha:languagechange` CustomEvent
 - **Hook**: `useCurrentLanguage` in `src/hooks/useCurrentLanguage.ts` listens to events and re-renders components
-- **Supported**: `['pt', 'en']` (expandable in `src/lib/language.ts`)
+- **Supported**: `['pt', 'en', 'es', 'fr']` (Portuguese, English, Spanish, French)
+- **Two-layer translation**:
+  1. **Static UI** (`src/lib/translations.ts`): Pre-translated nav/buttons/labels via `useTranslations()` hook
+  2. **Dynamic content** (`src/lib/translateService.ts`): Auto-translates `cv.json` content via Google Translate API in background
+- **Caching**: Translations stored in localStorage (`monynha-translate-cache`) with version `1.0`
+- **Request deduplication**: Multiple components requesting same text → single API call
 
 Example usage:
 ```typescript
 import { useCurrentLanguage } from '@/hooks/useCurrentLanguage';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
-function MyComponent() {
-  const lang = useCurrentLanguage(); // 'pt' | 'en'
-  // Component re-renders on language change
+function MyComponent({ profile }) {
+  const lang = useCurrentLanguage(); // 'pt' | 'en' | 'es' | 'fr'
+  const t = useTranslations(); // Static UI translations
+  const translatedBio = useTranslatedText(profile.bio); // Dynamic content
+  
+  return (
+    <div>
+      <button>{t.nav.home}</button>
+      <p>{translatedBio}</p> {/* Shows PT first, updates when translation completes */}
+    </div>
+  );
 }
 ```
 
@@ -116,8 +137,10 @@ npm run lint         # ESLint check
 ## Files to NOT Change Without Asking
 - `src/App.tsx` and `src/components/Layout.tsx` — routing & layout affect all pages
 - `public/data/cv.json` schema shape — many components depend on field names
+- `vite.config.ts` manual chunks — optimized for bundle splitting (already configured)
 - Tailwind config and design tokens — unless narrowly scoped
 - `src/components/LiquidEther.tsx` — complex shader/Three.js code (1492 lines)
+- `tsconfig.json` strict flags — intentionally relaxed (`noImplicitAny: false`, `strictNullChecks: false`)
 
 ## Quality Gates
 ```powershell
