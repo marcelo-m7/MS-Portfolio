@@ -22,12 +22,18 @@ export default function Layout() {
           <div className="fixed inset-0 w-full h-full -z-20">
             <Suspense fallback={null}>
               <Galaxy
-                mouseRepulsion
-                mouseInteraction
-                density={1.5}
-                glowIntensity={0.5}
-                saturation={0.8}
-                hueShift={240}
+                mouseInteraction={false}
+                mouseRepulsion={false}
+                density={2.1}
+                glowIntensity={0.6}
+                saturation={1}
+                hueShift={200}
+                twinkleIntensity={0.8}
+                rotationSpeed={0}
+                repulsionStrength={4.5}
+                autoCenterRepulsion={0}
+                starSpeed={0.3}
+                speed={1}
               />
             </Suspense>
           </div>
