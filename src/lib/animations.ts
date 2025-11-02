@@ -36,5 +36,3 @@ export const springTransition: Transition = {
 
 
 // Back button hover animation
-export const backButtonHover = { x: -5 };
-export const backButtonTap = { scale: 0.98 };
