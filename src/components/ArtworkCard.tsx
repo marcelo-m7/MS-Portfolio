@@ -54,7 +54,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = memo(({ artwork, index }) => {
               src={mediaUrls[0]}
               loading="lazy"
               decoding="async"
-              fetchpriority={index < 3 ? "high" : "low"}
+              fetchpriority={(index < 3 ? "high" : "low") as "high" | "low"}
               alt={`${artwork.title} – Arte Digital`}
               className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
