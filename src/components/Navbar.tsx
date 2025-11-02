@@ -7,6 +7,7 @@ import { useProfile } from '@/hooks/usePortfolioData';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useTranslations } from '@/hooks/useTranslations';
+import { getNavigationLinks } from '@/lib/navigation';
 
 const MotionLink = motion(Link);
 
@@ -22,13 +23,7 @@ export default function Navbar() {
     setIsOpen(false);
   }, [location.pathname]);
 
-  const navLinks = [
-    { href: '/', label: t.nav.home },
-    { href: '/portfolio', label: t.nav.portfolio },
-    { href: '/about', label: t.nav.about },
-    { href: '/thoughts', label: t.nav.thoughts },
-    { href: '/contact', label: t.nav.contact },
-  ];
+  const navLinks = getNavigationLinks(t);
 
   const isActive = (path: string) => location.pathname === path;
 

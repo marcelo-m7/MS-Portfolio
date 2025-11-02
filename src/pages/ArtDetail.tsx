@@ -1,7 +1,7 @@
 import { useState, Suspense, lazy } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Maximize2, Orbit } from 'lucide-react';
+import { ExternalLink, Maximize2, Orbit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoadingArtDetail } from '@/components/LoadingStates';
 import { useArtwork } from '@/hooks/usePortfolioData';
@@ -18,9 +18,12 @@ import {
 } from '@/hooks/useCurrentLanguage';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+import BackButton from '@/components/shared/BackButton';
+import NotFoundState from '@/components/shared/NotFoundState';
+import MetadataBadge from '@/components/shared/MetadataBadge';
+import { Calendar } from 'lucide-react';
 
 const MotionButton = motion(Button);
-const MotionImg = motion.img;
 
 const isArtPreview3DEnabled =
   import.meta.env.VITE_ENABLE_ART_3D?.toLowerCase() === 'true';
@@ -61,17 +64,11 @@ export default function ArtDetail() {
 
   if (!artwork) {
     return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
-          <p className="mt-4 text-muted-foreground">
-            {notFoundMessage}
-          </p>
-          <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">{t.nav.portfolio}</Link>
-          </Button>
-        </div>
-      </div>
+      <NotFoundState
+        message={notFoundMessage}
+        backTo="/portfolio"
+        backLabel={t.nav.portfolio}
+      />
     );
   }
 
@@ -84,39 +81,17 @@ export default function ArtDetail() {
           transition={{ duration: 0.6 }}
           className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
         >
-          <MotionButton
-            asChild
-            variant="ghost"
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
-            whileHover={prefersReducedMotion ? undefined : { x: -5 }}
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            <Link to="/portfolio">
-              <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar ao Portfolio
-            </Link>
-          </MotionButton>
+          <BackButton to="/portfolio" label="Voltar ao Portfolio" />
 
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <motion.span
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
+            <MetadataBadge icon={Calendar} className="text-sm">
               {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
                 new Date(`${artwork.year}-01-01`),
               )}
-            </motion.span>
-            <motion.span
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
+            </MetadataBadge>
+            <MetadataBadge icon={Calendar} className="text-sm">
               {materials.join(' • ')}
-            </motion.span>
+            </MetadataBadge>
           </div>
 
           <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">

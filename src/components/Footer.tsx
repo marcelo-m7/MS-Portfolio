@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useProfile, useContact } from '@/hooks/usePortfolioData';
 import { LINKS } from '../lib/siteLinks';
 import { useTranslations } from '@/hooks/useTranslations';
+import { getNavigationLinks } from '@/lib/navigation';
 
 const MotionLink = motion(Link);
 
@@ -34,13 +35,7 @@ export default function Footer() {
     },
   ];
 
-  const navLinks = [
-    { href: '/', label: t.nav.home },
-    { href: '/portfolio', label: t.nav.portfolio },
-    { href: '/about', label: t.nav.about },
-    { href: '/thoughts', label: t.nav.thoughts },
-    { href: '/contact', label: t.nav.contact },
-  ];
+  const navLinks = getNavigationLinks(t);
 
   return (
     <footer className="bg-card/80 backdrop-blur-xl border-t border-border/60 py-12 px-6">

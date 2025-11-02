@@ -1,8 +1,7 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, Calendar, BookOpen, Tag } from 'lucide-react';
+import { Calendar, BookOpen, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { Button } from '@/components/ui/button';
 import { LoadingThoughtDetail } from '@/components/LoadingStates';
 import { useThought, useProfile } from '@/hooks/usePortfolioData';
 import {
@@ -12,8 +11,9 @@ import {
 import { calculateReadingTime } from '@/lib/content';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
-
-const MotionButton = motion(Button);
+import BackButton from '@/components/shared/BackButton';
+import NotFoundState from '@/components/shared/NotFoundState';
+import MetadataBadge from '@/components/shared/MetadataBadge';
 
 export default function ThoughtDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -36,17 +36,11 @@ export default function ThoughtDetail() {
 
   if (!thought) {
     return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
-          <p className="mt-4 text-muted-foreground">
-            {notFoundMessage}
-          </p>
-          <Button asChild className="mt-8 rounded-full">
-            <Link to="/thoughts">{t.thoughts.backToThoughts}</Link>
-          </Button>
-        </div>
-      </div>
+      <NotFoundState
+        message={notFoundMessage}
+        backTo="/thoughts"
+        backLabel={t.thoughts.backToThoughts}
+      />
     );
   }
 
@@ -66,39 +60,15 @@ export default function ThoughtDetail() {
           transition={{ duration: 0.6 }}
           className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-8 shadow-[0_45px_85px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
         >
-          <MotionButton
-            asChild
-            variant="ghost"
-            className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
-            whileHover={prefersReducedMotion ? undefined : { x: -5 }}
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            <Link to="/thoughts">
-              <ArrowLeft className="h-4 w-4" aria-hidden />
-              {t.thoughts.backToThoughts}
-            </Link>
-          </MotionButton>
+          <BackButton to="/thoughts" label={t.thoughts.backToThoughts} />
 
           <div className="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            <motion.span
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <Calendar className="h-3 w-3" aria-hidden />
+            <MetadataBadge icon={Calendar}>
               {formattedDate}
-            </motion.span>
-            <motion.span
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <BookOpen className="h-3 w-3" aria-hidden />
+            </MetadataBadge>
+            <MetadataBadge icon={BookOpen}>
               {readingTime} {t.thoughts.minutesRead}
-            </motion.span>
+            </MetadataBadge>
           </div>
 
           <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
@@ -109,16 +79,9 @@ export default function ThoughtDetail() {
 
           <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
             {thought.tags.map((tag) => (
-              <motion.span
-                key={`${thought.slug}-${tag}`}
-                className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                <Tag className="h-3 w-3" aria-hidden />
+              <MetadataBadge key={`${thought.slug}-${tag}`} icon={Tag}>
                 {tag}
-              </motion.span>
+              </MetadataBadge>
             ))}
           </div>
 
