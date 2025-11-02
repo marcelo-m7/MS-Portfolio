@@ -20,8 +20,6 @@ Portfolio pessoal e site profissional de [@marcelo-m7](https://github.com/marcel
 - [Testing](#testing)
 - [Build](#build)
 - [Deployment](#deployment)
-- [Architecture & Stack](#architecture--stack)
-- [Database](#database)
 - [Language handling](#language-handling)
 - [Contributing](#contributing)
 - [License / Contact](#license--contact)
@@ -29,6 +27,8 @@ Portfolio pessoal e site profissional de [@marcelo-m7](https://github.com/marcel
 ## Overview
 
 SPA built with Vite + React + TypeScript, styled with Tailwind and shadcn/ui, data-driven via a `cv.json` source with optional Supabase backend. CI runs lint, tests, and build on every push/PR.
+
+Quick docs: browse the full docs index at [docs/README.md](./docs/README.md).
 
 ## Setup
 
