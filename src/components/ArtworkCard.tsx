@@ -10,9 +10,9 @@ interface ArtworkCardProps {
     slug: string;
     title: string;
     description: string;
-    media: string[];
+    media: string[] | Array<{ media_url?: string | null }>;
     year: number;
-    materials: string[];
+    materials: string[] | Array<{ material?: string | null }>;
     url3d?: string;
   };
   index: number;
@@ -20,6 +20,14 @@ interface ArtworkCardProps {
 
 const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
   const prefersReducedMotion = useReducedMotion();
+
+  // Normalize media and materials to strings
+  const mediaUrls = Array.isArray(artwork.media)
+    ? artwork.media.map(m => typeof m === 'string' ? m : m.media_url).filter(Boolean) as string[]
+    : [];
+  const materials = Array.isArray(artwork.materials)
+    ? artwork.materials.map(m => typeof m === 'string' ? m : m.material).filter(Boolean) as string[]
+    : [];
 
   return (
     <motion.div
@@ -43,14 +51,14 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
         >
           <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 flex-none">
             <img
-              src={artwork.media?.[0]}
+              src={mediaUrls[0]}
               loading="lazy"
               decoding="async"
               alt={`${artwork.title} – Arte Digital`}
               className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                console.error(`Failed to load artwork image: ${artwork.media?.[0]}`);
+                console.error(`Failed to load artwork image: ${mediaUrls[0]}`);
                 target.style.display = 'none';
               }}
             />
@@ -76,7 +84,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
             </p>
 
             <div className="flex flex-wrap gap-2 mt-auto">
-              {artwork.materials.map((material: string) => (
+              {materials.map((material: string) => (
                 <span
                   key={material}
                   className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
