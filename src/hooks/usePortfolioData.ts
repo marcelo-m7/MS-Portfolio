@@ -26,13 +26,31 @@ import {
 } from '@/lib/api/queries';
 import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/markdownLoader';
 
-// Fallback to cv.json when Supabase is unavailable
-let cvData: Record<string, unknown> | null = null;
-async function loadCvData() {
-  if (cvData) return cvData;
-  const response = await fetch('/data/cv.json');
-  cvData = await response.json() as Record<string, unknown>;
-  return cvData;
+// Shared cvData cache - only load once across all hooks
+let cvDataCache: Record<string, unknown> | null = null;
+let cvDataPromise: Promise<Record<string, unknown>> | null = null;
+
+async function loadCvData(): Promise<Record<string, unknown>> {
+  // Return cached data if available
+  if (cvDataCache) return cvDataCache;
+  
+  // Return existing promise if already loading
+  if (cvDataPromise) return cvDataPromise;
+  
+  // Create new loading promise
+  cvDataPromise = fetch('/data/cv.json')
+    .then(response => response.json())
+    .then((data: unknown) => {
+      cvDataCache = data as Record<string, unknown>;
+      cvDataPromise = null;
+      return cvDataCache;
+    })
+    .catch(error => {
+      cvDataPromise = null;
+      throw error;
+    });
+  
+  return cvDataPromise;
 }
 
 // Stale time: 5 minutes (data is considered fresh for 5 min)

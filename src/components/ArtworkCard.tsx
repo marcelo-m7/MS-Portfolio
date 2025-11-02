@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 
 const MotionLink = motion(Link);
 
@@ -18,7 +18,7 @@ interface ArtworkCardProps {
   index: number;
 }
 
-const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
+const ArtworkCard: React.FC<ArtworkCardProps> = memo(({ artwork, index }) => {
   const prefersReducedMotion = useReducedMotion();
 
   // Normalize media and materials to strings
@@ -111,6 +111,8 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
       </div>
     </motion.div>
   );
-};
+});
+
+ArtworkCard.displayName = 'ArtworkCard';
 
 export default ArtworkCard;

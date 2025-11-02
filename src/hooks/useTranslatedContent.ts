@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useCurrentLanguage } from './useCurrentLanguage';
 import { translateText, translateTexts } from '@/lib/translateService';
 import type { SupportedLanguage } from '@/lib/language';
@@ -63,10 +63,16 @@ export function useTranslatedTexts(
     originalTexts.map((t) => t || '')
   );
 
-  useEffect(() => {
-    // Filter out empty texts
-    const validTexts = originalTexts.map((t) => t || '');
+  // Memoize validTexts to avoid recreating on every render
+  // Using join to create a stable dependency key
+  const textsKey = originalTexts.join('|');
+  const validTexts = useMemo(
+    () => originalTexts.map((t) => t || ''),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [textsKey]
+  );
 
+  useEffect(() => {
     // If current language is the same as source, return originals
     if (currentLang === sourceLang) {
       setTranslatedTexts(validTexts);
@@ -92,7 +98,7 @@ export function useTranslatedTexts(
     return () => {
       cancelled = true;
     };
-  }, [JSON.stringify(originalTexts), currentLang, sourceLang]);
+  }, [validTexts, currentLang, sourceLang]);
 
   return translatedTexts;
 }
@@ -101,13 +107,20 @@ export function useTranslatedTexts(
  * Hook to translate an object with multiple text fields
  * Useful for translating project/artwork objects
  */
-export function useTranslatedObject<T extends Record<string, any>>(
+export function useTranslatedObject<T extends Record<string, unknown>>(
   obj: T | undefined | null,
   fieldsToTranslate: Array<keyof T>,
   sourceLang: SupportedLanguage = 'pt'
 ): T | null {
   const currentLang = useCurrentLanguage();
   const [translatedObj, setTranslatedObj] = useState<T | null>(obj || null);
+
+  // Memoize fieldsToTranslate key to avoid effect re-runs
+  // Using join to create a stable dependency key
+  const fieldsKey = useMemo(
+    () => fieldsToTranslate.join(','),
+    [fieldsToTranslate.join(',')]
+  );
 
   useEffect(() => {
     if (!obj) {
@@ -144,7 +157,8 @@ export function useTranslatedObject<T extends Record<string, any>>(
           const newObj = { ...obj };
           fieldsToTranslate.forEach((field, index) => {
             if (typeof obj[field] === 'string') {
-              newObj[field] = translated[index] as any;
+              // Safe cast since we verified the field is a string
+              (newObj[field] as string) = translated[index];
             }
           });
           setTranslatedObj(newObj);
@@ -158,7 +172,7 @@ export function useTranslatedObject<T extends Record<string, any>>(
     return () => {
       cancelled = true;
     };
-  }, [obj, currentLang, sourceLang, JSON.stringify(fieldsToTranslate)]);
+  }, [obj, currentLang, sourceLang, fieldsKey, fieldsToTranslate]);
 
   return translatedObj;
 }
