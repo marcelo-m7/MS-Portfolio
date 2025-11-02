@@ -7,6 +7,8 @@ import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
 import SeriesCard from '@/components/SeriesCard';
 import { LoadingPortfolioGrid } from '@/components/LoadingStates';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 type CVProject = {
   slug: string;
@@ -48,8 +50,10 @@ type PortfolioEntry =
   | (CVSeries & { type: 'series' });
 
 export default function Portfolio() {
-  const [filter, setFilter] = useState<string>('Todos');
+  const t = useTranslations();
+  const [filter, setFilter] = useState<string>(t.portfolio.filterAll);
   const prefersReducedMotion = useReducedMotion();
+  const pageSubtitle = useTranslatedText('Projetos, arte digital e séries criativas do ecossistema Monynha');
   const { data: dbProjects, isLoading: loadingProjects } = useProjects();
   const { data: dbArtworks, isLoading: loadingArtworks } = useArtworks();
   const { data: dbSeries, isLoading: loadingSeries } = useSeries();
@@ -142,21 +146,21 @@ export default function Portfolio() {
 
   const categories = useMemo(() => {
     const base = [
-      'Todos',
+      t.portfolio.filterAll,
       ...projects.map((p) => p.category),
-      'Arte Digital',
-      'Série Criativa',
+      t.portfolio.filterDigitalArt,
+      t.portfolio.filterCreativeSeries,
     ];
     return Array.from(new Set(base));
-  }, [projects]);
+  }, [projects, t]);
 
   const filteredItems = useMemo<PortfolioEntry[]>(() => {
     let items: Array<CVProject | CVArtwork | CVSeries> = [];
-    if (filter === 'Todos') {
+    if (filter === t.portfolio.filterAll) {
       items = [...projects, ...artworks, ...seriesEntries];
-    } else if (filter === 'Arte Digital') {
+    } else if (filter === t.portfolio.filterDigitalArt) {
       items = artworks;
-    } else if (filter === 'Série Criativa') {
+    } else if (filter === t.portfolio.filterCreativeSeries) {
       items = seriesEntries;
     } else {
       items = projects.filter((p) => p.category === filter);
@@ -170,7 +174,7 @@ export default function Portfolio() {
       // Otherwise it's a project
       return { ...item, type: 'project' } as PortfolioEntry;
     });
-  }, [artworks, filter, projects, seriesEntries]);
+  }, [artworks, filter, projects, seriesEntries, t]);
 
   return (
     <div className="px-6 py-8">
@@ -185,7 +189,7 @@ export default function Portfolio() {
             Portfolio
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Projetos, arte digital e séries criativas do ecossistema Monynha
+            {pageSubtitle}
           </p>
         </motion.div>
 

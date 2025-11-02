@@ -53,6 +53,44 @@ export interface Translations {
   };
   portfolio: {
     filterAll: string;
+    filterDigitalArt: string;
+    filterCreativeSeries: string;
+    pageSubtitle: string;
+  };
+  projectDetail: {
+    stack: string;
+    technologies: string;
+    tools: string;
+    objective: string;
+    solution: string;
+    results: string;
+    visitSite: string;
+    viewSource: string;
+  };
+  artDetail: {
+    materials: string;
+    dimensions: string;
+    year: string;
+    description: string;
+  };
+  seriesDetail: {
+    works: string;
+    totalWorks: string;
+    period: string;
+    description: string;
+  };
+  about: {
+    experience: string;
+    skills: string;
+    education: string;
+    certifications: string;
+  };
+  thoughts: {
+    publishedOn: string;
+    lastUpdate: string;
+    backToThoughts: string;
+    readingTime: string;
+    minutesRead: string;
   };
 }
 
@@ -103,6 +141,44 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
     portfolio: {
       filterAll: 'Todos',
+      filterDigitalArt: 'Arte Digital',
+      filterCreativeSeries: 'Série Criativa',
+      pageSubtitle: 'Projetos, arte digital e séries criativas do ecossistema Monynha',
+    },
+    projectDetail: {
+      stack: 'Stack',
+      technologies: 'Tecnologias',
+      tools: 'Ferramentas',
+      objective: 'Objetivo',
+      solution: 'Solução',
+      results: 'Resultados',
+      visitSite: 'Visitar Site',
+      viewSource: 'Ver Código',
+    },
+    artDetail: {
+      materials: 'Materiais',
+      dimensions: 'Dimensões',
+      year: 'Ano',
+      description: 'Descrição',
+    },
+    seriesDetail: {
+      works: 'Obras',
+      totalWorks: 'Total de Obras',
+      period: 'Período',
+      description: 'Descrição',
+    },
+    about: {
+      experience: 'Experiência',
+      skills: 'Habilidades',
+      education: 'Formação',
+      certifications: 'Certificações',
+    },
+    thoughts: {
+      publishedOn: 'Publicado em',
+      lastUpdate: 'Última atualização',
+      backToThoughts: 'Voltar aos Pensamentos',
+      readingTime: 'Tempo de leitura',
+      minutesRead: 'min de leitura',
     },
   },
   en: {
@@ -151,6 +227,44 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
     portfolio: {
       filterAll: 'All',
+      filterDigitalArt: 'Digital Art',
+      filterCreativeSeries: 'Creative Series',
+      pageSubtitle: 'Projects, digital art and creative series from the Monynha ecosystem',
+    },
+    projectDetail: {
+      stack: 'Stack',
+      technologies: 'Technologies',
+      tools: 'Tools',
+      objective: 'Objective',
+      solution: 'Solution',
+      results: 'Results',
+      visitSite: 'Visit Site',
+      viewSource: 'View Source',
+    },
+    artDetail: {
+      materials: 'Materials',
+      dimensions: 'Dimensions',
+      year: 'Year',
+      description: 'Description',
+    },
+    seriesDetail: {
+      works: 'Works',
+      totalWorks: 'Total Works',
+      period: 'Period',
+      description: 'Description',
+    },
+    about: {
+      experience: 'Experience',
+      skills: 'Skills',
+      education: 'Education',
+      certifications: 'Certifications',
+    },
+    thoughts: {
+      publishedOn: 'Published on',
+      lastUpdate: 'Last update',
+      backToThoughts: 'Back to Thoughts',
+      readingTime: 'Reading time',
+      minutesRead: 'min read',
     },
   },
   es: {
@@ -199,6 +313,44 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
     portfolio: {
       filterAll: 'Todos',
+      filterDigitalArt: 'Arte Digital',
+      filterCreativeSeries: 'Serie Creativa',
+      pageSubtitle: 'Proyectos, arte digital y series creativas del ecosistema Monynha',
+    },
+    projectDetail: {
+      stack: 'Stack',
+      technologies: 'Tecnologías',
+      tools: 'Herramientas',
+      objective: 'Objetivo',
+      solution: 'Solución',
+      results: 'Resultados',
+      visitSite: 'Visitar Sitio',
+      viewSource: 'Ver Código',
+    },
+    artDetail: {
+      materials: 'Materiales',
+      dimensions: 'Dimensiones',
+      year: 'Año',
+      description: 'Descripción',
+    },
+    seriesDetail: {
+      works: 'Obras',
+      totalWorks: 'Total de Obras',
+      period: 'Período',
+      description: 'Descripción',
+    },
+    about: {
+      experience: 'Experiencia',
+      skills: 'Habilidades',
+      education: 'Educación',
+      certifications: 'Certificaciones',
+    },
+    thoughts: {
+      publishedOn: 'Publicado el',
+      lastUpdate: 'Última actualización',
+      backToThoughts: 'Volver a Pensamientos',
+      readingTime: 'Tiempo de lectura',
+      minutesRead: 'min de lectura',
     },
   },
   fr: {
@@ -247,6 +399,44 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
     portfolio: {
       filterAll: 'Tous',
+      filterDigitalArt: 'Art Numérique',
+      filterCreativeSeries: 'Série Créative',
+      pageSubtitle: 'Projets, art numérique et séries créatives de l\'écosystème Monynha',
+    },
+    projectDetail: {
+      stack: 'Stack',
+      technologies: 'Technologies',
+      tools: 'Outils',
+      objective: 'Objectif',
+      solution: 'Solution',
+      results: 'Résultats',
+      visitSite: 'Visiter le Site',
+      viewSource: 'Voir le Code',
+    },
+    artDetail: {
+      materials: 'Matériaux',
+      dimensions: 'Dimensions',
+      year: 'Année',
+      description: 'Description',
+    },
+    seriesDetail: {
+      works: 'Œuvres',
+      totalWorks: 'Total des Œuvres',
+      period: 'Période',
+      description: 'Description',
+    },
+    about: {
+      experience: 'Expérience',
+      skills: 'Compétences',
+      education: 'Formation',
+      certifications: 'Certifications',
+    },
+    thoughts: {
+      publishedOn: 'Publié le',
+      lastUpdate: 'Dernière mise à jour',
+      backToThoughts: 'Retour aux Réflexions',
+      readingTime: 'Temps de lecture',
+      minutesRead: 'min de lecture',
     },
   },
 };
