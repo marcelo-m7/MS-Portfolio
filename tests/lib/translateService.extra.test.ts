@@ -1,7 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-// Note: we import lazily inside tests when we need a fresh singleton state
-
 const successResponse = (translated: string, original: string) => ({
   ok: true,
   json: async () => [[[translated, original, null, null, 1]]],
@@ -21,7 +19,6 @@ const errorResponse = () => ({
 describe('translateService - caching, dedupe and errors', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
-    // Clear localStorage cache between tests
     localStorage.clear()
   })
 
@@ -34,7 +31,7 @@ describe('translateService - caching, dedupe and errors', () => {
       .spyOn(globalThis as unknown as { fetch: typeof fetch }, 'fetch')
       .mockResolvedValue(successResponse('Hola', 'Hello'))
 
-    const { translateText, translationService } = await import('./translateService')
+    const { translateText, translationService } = await import('../../src/lib/translateService')
     translationService.clearCache()
 
     const p1 = translateText('Hello', 'es', 'en')
@@ -51,7 +48,7 @@ describe('translateService - caching, dedupe and errors', () => {
       .spyOn(globalThis as unknown as { fetch: typeof fetch }, 'fetch')
       .mockResolvedValue(errorResponse())
 
-    const { translateText, translationService } = await import('./translateService')
+    const { translateText, translationService } = await import('../../src/lib/translateService')
     translationService.clearCache()
 
     const original = 'Hello'
@@ -59,7 +56,6 @@ describe('translateService - caching, dedupe and errors', () => {
     expect(result).toBe(original)
     expect(fetchSpy).toHaveBeenCalledTimes(1)
 
-    // Second call will attempt again (not cached)
     const result2 = await translateText(original, 'es', 'en')
     expect(result2).toBe(original)
     expect(fetchSpy).toHaveBeenCalledTimes(2)
@@ -70,7 +66,7 @@ describe('translateService - caching, dedupe and errors', () => {
       .spyOn(globalThis as unknown as { fetch: typeof fetch }, 'fetch')
       .mockResolvedValue(malformedResponse())
 
-    const { translateText, translationService } = await import('./translateService')
+    const { translateText, translationService } = await import('../../src/lib/translateService')
     translationService.clearCache()
 
     const original = 'Hello'
@@ -78,7 +74,6 @@ describe('translateService - caching, dedupe and errors', () => {
     expect(result).toBe(original)
     expect(fetchSpy).toHaveBeenCalledTimes(1)
 
-    // Next call should use cache (no additional fetch)
     const result2 = await translateText(original, 'es', 'en')
     expect(result2).toBe(original)
     expect(fetchSpy).toHaveBeenCalledTimes(1)
@@ -89,13 +84,12 @@ describe('translateService - caching, dedupe and errors', () => {
       .spyOn(globalThis as unknown as { fetch: typeof fetch }, 'fetch')
       .mockResolvedValue(successResponse('Hola', 'Hello'))
 
-    const { translateText, translationService } = await import('./translateService')
+    const { translateText, translationService } = await import('../../src/lib/translateService')
     translationService.clearCache()
 
     await translateText('Hello', 'es', 'en')
     expect(fetchSpy).toHaveBeenCalledTimes(1)
 
-    // Cached hit
     await translateText('Hello', 'es', 'en')
     expect(fetchSpy).toHaveBeenCalledTimes(1)
 
