@@ -14,9 +14,7 @@ The `send-contact-email` Edge Function is deployed but needs the Resend API key 
 
 ### 1️⃣ Get Your Resend API Key
 
-You already have one: `re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1`
-
-But let's verify it's active:
+If you already have one, verify it's active. Otherwise, create a new API key.
 
 - Go to <https://resend.com/api-keys>
 - Check if the key is active
@@ -26,17 +24,17 @@ But let's verify it's active:
 
 #### Option A: Via Supabase Dashboard (Recommended)
 
-1. Go to: <https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba/settings/functions>
-2. Scroll to "Edge Function Secrets"
-3. Click "Add new secret"
-4. Fill in:
+1. Go to: <https://supabase.com/dashboard/project/YOUR_PROJECT_REF/settings/functions>
+1. Scroll to "Edge Function Secrets"
+1. Click "Add new secret"
+1. Fill in:
 
-   ```text
-   Name: RESEND_API_KEY
-   Value: re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1
-   ```
+```text
+Name: RESEND_API_KEY
+Value: re_your_resend_api_key
+```
 
-5. Click "Save"
+1. Click "Save"
 
 #### Option B: Via Supabase CLI
 
@@ -48,10 +46,10 @@ npm install -g supabase
 supabase login
 
 # Link to your project
-supabase link --project-ref pkjigvacvddcnlxhvvba
+supabase link --project-ref YOUR_PROJECT_REF
 
 # Set the secret
-supabase secrets set RESEND_API_KEY=re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1
+supabase secrets set RESEND_API_KEY=re_your_resend_api_key
 
 # Optional: Set other secrets
 supabase secrets set CONTACT_EMAIL_FROM=noreply@monynha.com
@@ -68,9 +66,9 @@ chmod +x test-edge-function.sh
 ./test-edge-function.sh
 
 # Or manually with curl
-curl -X POST https://pkjigvacvddcnlxhvvba.supabase.co/functions/v1/send-contact-email \
+curl -X POST https://YOUR_PROJECT_REF.supabase.co/functions/v1/send-contact-email \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBramlndmFjdmRkY25seGh2dmJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMjkzNDIsImV4cCI6MjA3NjcwNTM0Mn0.7OVF6Dbe6ByyU0rVDUXOHwUD3ZgkoQUI-7DxVDr5K8Y" \
+  -H "Authorization: Bearer YOUR_SUPABASE_ANON_KEY" \
   -d '{
     "name": "Test User",
     "email": "marcelo@monynha.com",
@@ -114,8 +112,8 @@ supabase secrets set CONTACT_EMAIL_FROM=onboarding@resend.dev
 
 - **Cause**: Wrong API key in Authorization header
 - **Solution**: Use Supabase anon key (not Resend key) in Authorization header
-- **Correct**: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` (Supabase key)
-- **Wrong**: `Bearer re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1` (Resend key)
+- **Correct**: `Bearer YOUR_SUPABASE_ANON_KEY` (Supabase key)
+- **Wrong**: `Bearer re_your_resend_api_key` (Resend key)
 
 ### Error: "Failed to send email"
 
@@ -174,8 +172,8 @@ Resend API Key:
 
 ## Quick Links
 
-- **Supabase Dashboard**: <https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba>
-- **Edge Function Settings**: <https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba/settings/functions>
+- **Supabase Dashboard**: <https://supabase.com/dashboard/project/YOUR_PROJECT_REF>
+- **Edge Function Settings**: <https://supabase.com/dashboard/project/YOUR_PROJECT_REF/settings/functions>
 - **Resend Dashboard**: <https://resend.com/overview>
 - **Resend API Keys**: <https://resend.com/api-keys>
 - **Resend Domains**: <https://resend.com/domains>

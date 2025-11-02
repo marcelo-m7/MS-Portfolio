@@ -1,22 +1,85 @@
-# Marcelo Santos - Portfolio
+# MS-Portfolio — Marcelo Santos
 
+[![CI](https://github.com/marcelo-m7/MS-Portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/marcelo-m7/MS-Portfolio/actions/workflows/ci.yml)
 [![Production](https://img.shields.io/badge/Production-Live-success)](https://marcelo.monynha.com)
 [![Supabase](https://img.shields.io/badge/Database-Supabase-green)](https://supabase.com)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1-purple)](https://vitejs.dev/)
 
-Portfolio pessoal e site profissional de Marcelo M7, fundador da Monynha Softwares. Construído como laboratório vivo para novas interações, acessibilidade avançada e componentes do design system interno.
+Portfolio pessoal e site profissional de Marcelo M7, fundador da Monynha Softwares. Este repositório é um laboratório vivo para interações modernas, acessibilidade, 3D e boas práticas de front-end.
 
-## 🚀 Tech Stack
+## Table of Contents
 
-- **Frontend**: React 18 + TypeScript + Vite
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Database**: Supabase (PostgreSQL)
-- **3D Graphics**: React Three Fiber
-- **Animations**: Framer Motion
-- **Routing**: React Router v6
+- [Overview](#overview)
+- [Setup](#setup)
+- [Development](#development)
+- [Testing](#testing)
+- [Build](#build)
+- [Deployment](#deployment)
+- [Architecture & Stack](#architecture--stack)
+- [Database](#database)
+- [Language handling](#language-handling)
+- [Contributing](#contributing)
+- [License / Contact](#license--contact)
 
-## 📁 Project Structure
+## Overview
+
+SPA built with Vite + React + TypeScript, styled with Tailwind and shadcn/ui, data-driven via a `cv.json` source with optional Supabase backend. CI runs lint, tests, and build on every push/PR.
+
+## Setup
+
+Prerequisites:
+
+- Node.js >= 20.19
+- npm >= 9
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Optional: create `.env` for Supabase (see [Database](#database)).
+
+## Development
+
+Start the dev server (port 8080):
+
+```bash
+npm run dev
+```
+
+## Testing
+
+Run unit tests (Vitest):
+
+```bash
+npm run test
+```
+
+With coverage:
+
+```bash
+npm run test -- --coverage
+```
+
+## Build
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+Preview the build locally:
+
+```bash
+npm run preview
+```
+
+## Deployment
+
+This is a static site. Deploy the `dist/` output to your hosting provider (e.g., Vercel, Netlify, Cloudflare Pages, Coolify). For PRs and non-main branches, CI includes a deployment preview validation step for configuration presence.
 
 ```text
 MS-Portfolio/
@@ -33,59 +96,19 @@ MS-Portfolio/
     └── migrations/     # Database schema & seed data
 ```
 
-## 🛠️ Development
+## Architecture & Stack
 
-### Prerequisites
+- Frontend: React 18 + TypeScript + Vite 7
+- Styling: Tailwind CSS + shadcn/ui
+- State/Async: TanStack Query (React Query)
+- 3D Graphics: Three.js / React Three Fiber
+- Animations: Framer Motion
+- Routing: React Router v6
+- Testing: Vitest + happy-dom
+- Linting: ESLint 9
+- CI/CD: GitHub Actions (`.github/workflows/ci.yml`)
 
-- Node.js 20.19+ or 22.12+ (Vite 7 requirement)
-- npm (primary package manager - enforced via .npmrc)
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory
-cd MS-Portfolio
-
-# Step 3: Install dependencies
-npm install
-
-# Step 4: Start the development server (port 8080)
-npm run dev
-```
-
-### Build for Production
-
-```bash
-# Build the project
-npm run build
-
-# Preview the production build locally
-npm run preview
-```
-
-### Run Tests
-
-```bash
-# Run Vitest unit tests
-npm run test
-
-# Run tests with coverage
-npm run test -- --coverage
-```
-
-## 📊 Database Architecture
-
-This project uses **Supabase** (PostgreSQL) with a multi-schema approach:
-
-- **`public` schema**: Shared tables across Monynha projects (e.g., `leads` table)
-- **`portfolio` schema**: Project-specific tables (15 tables for portfolio content)
-
-## Database & Backend
+## Database
 
 This project uses **Supabase** for backend persistence with **graceful degradation**:
 
@@ -124,24 +147,6 @@ This project uses **Supabase** for backend persistence with **graceful degradati
 
 All contact form submissions automatically include `project_source='portfolio'` to identify their origin.
 
-## 🚀 Deployment
-
-This project is configured for multiple deployment options:
-
-- **Coolify / Nixpacks** (recommended) - Automatic deployment with `nixpacks.toml`
-- **Static Hosting** (Vercel, Netlify, Cloudflare Pages, etc.) - Deploy the `dist/` folder
-
-### Quick Start
-
-```bash
-# Build the project
-npm run build
-```
-
-Output will be in the `dist/` folder ready for deployment.
-
-**📖 For complete deployment instructions, including Coolify/Nixpacks setup, see [DEPLOYMENT.md](./DEPLOYMENT.md)**
-
 ## Language handling
 
 The portfolio content is authored in Portuguese. The helper located at `src/lib/language.ts` keeps the `<html lang>` attribute in sync with the visitor preference stored in `localStorage` (`monynha-lang`) and broadcasts updates through the `monynha:languagechange` custom event. The `useCurrentLanguage` hook consumes that event so pages can reactively adjust locale-sensitive elements such as date formatting.
@@ -166,3 +171,13 @@ Project cards, portfolio thumbnails and extra pages consume the single source of
 4. Run `npm run build` to ensure the bundle stays under budget.
 
 Thoughts, artworks or series follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.
+
+## Contributing
+
+Issues and PRs are welcome. Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines, commit conventions, and local setup.
+
+## License / Contact
+
+MIT. © Marcelo Santos — [marcelo.monynha.com](https://marcelo.monynha.com)
+
+For opportunities or questions, reach me at: <mailto:marcelo@monynha.com>

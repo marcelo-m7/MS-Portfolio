@@ -589,52 +589,38 @@ const { data, error } = await supabase
 
 ### Current Migrations
 
-#### Public Schema
+This repository tracks the `portfolio` schema migrations used by the app. Shared resources like `public.leads` may be created and managed centrally outside this repo.
 
-1. **`20251023095136_create_leads_table.sql`**
-   - Creates `public.leads` table
-   - Sets up indexes and RLS policies
-
-2. **`20251023095521_create_portfolio_schema.sql`**
-   - Creates `portfolio` schema
-   - Grants permissions
-
-3. **`20251023095745_document_schema_strategy.sql`**
-   - Adds `project_source` column
-   - Documents schema usage
-
-#### Portfolio Schema
-
-4. **`20251023000001_create_core_tables.sql`**
+1. **`20251023000001_create_core_tables.sql`**
    - Creates `profile` table (singleton)
    - Creates `contact` table (singleton)
    - Creates `technologies` table (normalized)
    - Creates `update_updated_at_column()` trigger function
    - Sets up RLS policies and indexes
 
-5. **`20251023000002_create_projects.sql`**
+2. **`20251023000002_create_projects.sql`**
    - Creates `projects` table
    - Creates `project_stack` junction table
    - Links projects to technologies (many-to-many)
    - Indexes on slug, category, year, display_order
 
-6. **`20251023000003_create_artworks.sql`**
+3. **`20251023000003_create_artworks.sql`**
    - Creates `artworks` table
    - Creates `artwork_media` table (ordered media URLs)
    - Creates `artwork_materials` table (ordered materials list)
    - Cascade deletes on artwork removal
 
-7. **`20251023000004_create_series.sql`**
+4. **`20251023000004_create_series.sql`**
    - Creates `series` table (collections)
    - Creates `series_works` table (references work slugs)
    - Supports project + artwork references
 
-8. **`20251023000005_create_thoughts.sql`**
+5. **`20251023000005_create_thoughts.sql`**
    - Creates `thoughts` table (blog posts)
    - Creates `thought_tags` table (many-to-many)
    - Index on date for chronological queries
 
-9. **`20251023000006_create_experience_skills.sql`**
+6. **`20251023000006_create_experience_skills.sql`**
    - Creates `experience` table (work history)
    - Creates `experience_highlights` table (ordered list)
    - Creates `skills` table with level constraints
@@ -643,7 +629,7 @@ const { data, error } = await supabase
 
 All migrations are stored in:
 
-```
+```text
 supabase/migrations/
 ├── 20251023000001_create_core_tables.sql
 ├── 20251023000002_create_projects.sql
