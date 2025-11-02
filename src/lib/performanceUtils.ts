@@ -5,24 +5,29 @@
 
 import { useEffect, useRef } from 'react';
 
+// Performance thresholds (in milliseconds)
+const SLOW_RENDER_THRESHOLD = 16; // One frame at 60fps
+const SLOW_ASYNC_THRESHOLD = 100; // 100ms for async operations
+
 /**
  * Hook to measure component render time
- * Only active in development mode
+ * Only active when enabled parameter is true
  */
-export function useRenderTime(componentName: string, enabled = import.meta.env.DEV) {
+export function useRenderTime(componentName: string, enabled = false) {
   const renderCountRef = useRef(0);
   const lastRenderTimeRef = useRef(0);
   const startTime = performance.now();
 
   useEffect(() => {
+    // Skip if not enabled (allow runtime control)
     if (!enabled) return;
 
     const endTime = performance.now();
     const renderTime = endTime - startTime;
     renderCountRef.current += 1;
 
-    // Only log if render took longer than 16ms (one frame at 60fps)
-    if (renderTime > 16) {
+    // Only log if render took longer than threshold
+    if (renderTime > SLOW_RENDER_THRESHOLD) {
       console.warn(
         `⚠️ Slow render: ${componentName} took ${renderTime.toFixed(2)}ms (render #${renderCountRef.current})`
       );
@@ -37,10 +42,12 @@ export function useRenderTime(componentName: string, enabled = import.meta.env.D
  * Measure time for an async operation
  * @param operation - The async operation to measure
  * @param label - Label for the operation
+ * @param threshold - Optional custom threshold (defaults to 100ms)
  */
 export async function measureAsync<T>(
   operation: () => Promise<T>,
-  label: string
+  label: string,
+  threshold = SLOW_ASYNC_THRESHOLD
 ): Promise<T> {
   const startTime = performance.now();
   
@@ -48,7 +55,7 @@ export async function measureAsync<T>(
     const result = await operation();
     const duration = performance.now() - startTime;
     
-    if (import.meta.env.DEV && duration > 100) {
+    if (import.meta.env.DEV && duration > threshold) {
       console.warn(`⚠️ Slow async operation: ${label} took ${duration.toFixed(2)}ms`);
     }
     

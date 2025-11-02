@@ -5,6 +5,13 @@
 
 import { useEffect, useState } from 'react';
 
+// Breakpoint for mobile detection (in pixels)
+const MOBILE_BREAKPOINT = 768;
+
+// Performance thresholds
+const MIN_DEVICE_MEMORY_GB = 4;
+const MIN_CPU_CORES = 4;
+
 interface DeviceCapabilities {
   /** Whether the device can handle heavy 3D graphics */
   canHandle3D: boolean;
@@ -89,9 +96,9 @@ export function useDeviceCapabilities(): DeviceCapabilities {
       // 3. Device has low memory (< 4GB)
       // 4. Device has few CPU cores (< 4)
       // 5. Mobile device (detected by screen width)
-      const isMobile = window.innerWidth < 768;
-      const hasLowMemory = deviceMemory && deviceMemory < 4;
-      const hasFewCores = hardwareConcurrency && hardwareConcurrency < 4;
+      const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+      const hasLowMemory = deviceMemory && deviceMemory < MIN_DEVICE_MEMORY_GB;
+      const hasFewCores = hardwareConcurrency && hardwareConcurrency < MIN_CPU_CORES;
       const hasSlowConnection = effectiveType === '2g' || effectiveType === 'slow-2g';
 
       canHandle3D = canHandle3D && 
@@ -112,13 +119,10 @@ export function useDeviceCapabilities(): DeviceCapabilities {
 
     detectCapabilities();
 
-    // Re-check on resize (for responsive behavior)
+    // Re-check all capabilities on resize (not just mobile status)
     const handleResize = () => {
-      const isMobile = window.innerWidth < 768;
-      setCapabilities(prev => ({
-        ...prev,
-        canHandle3D: prev.canHandle3D && !isMobile,
-      }));
+      // Re-run full detection to re-evaluate all factors
+      detectCapabilities();
     };
 
     window.addEventListener('resize', handleResize);
