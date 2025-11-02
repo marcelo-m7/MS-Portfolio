@@ -21,11 +21,6 @@ export const staggerItemVariants: Variants = {
   visible: { opacity: 1, y: 0 },
 };
 
-// Card entrance animation
-export const cardEntranceVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
 
 // Spring transition configuration
 export const springTransition: Transition = {
