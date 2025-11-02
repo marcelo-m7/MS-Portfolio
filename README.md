@@ -6,27 +6,29 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1-purple)](https://vitejs.dev/)
 
-> Portfólio moderno, rápido e acessível — feito com Vite + React + TypeScript, animações 3D e suporte multilíngue. Um laboratório vivo de UX, performance e boas práticas.
+Portfolio pessoal e site profissional de [@marcelo-m7](https://github.com/marcelo-m7), fundador da Monynha Softwares. Este repositório é um laboratório vivo para interações modernas, acessibilidade, 3D e boas práticas de front-end.
 
-Live: [marcelo.monynha.com](https://marcelo.monynha.com)  
-Autor: [@marcelo-m7](https://github.com/marcelo-m7) — Founder @ Monynha Softwares
+## Table of Contents
 
----
+- [Overview](#overview)
+- [Setup](#setup)
+- [Development](#development)
+- [Testing](#testing)
+- [Build](#build)
+- [Deployment](#deployment)
+- [Architecture & Stack](#architecture--stack)
+- [Database](#database)
+- [Language handling](#language-handling)
+- [Contributing](#contributing)
+- [License / Contact](#license--contact)
 
-## ✨ Destaques
+## Overview
 
-- ⚡ Performance first: Vite, split de bundles e otimizações de SVG
-- 🧩 UI consistente: Tailwind + shadcn/ui
-- 🌐 Multilíngue: PT, EN, ES, FR (dinâmico via `cv.json` + cache de traduções)
-- 🧠 Resiliente: integra com Supabase e faz fallback automático para JSON
-- 🎨 3D & Motion: React Three Fiber + Framer Motion (respeita `prefers-reduced-motion`)
-- 🧪 Qualidade: CI com lint, testes (Vitest) e build a cada PR
+SPA built with Vite + React + TypeScript, styled with Tailwind and shadcn/ui, data-driven via a `cv.json` source with optional Supabase backend. CI runs lint, tests, and build on every push/PR.
 
----
+## Setup
 
-## 🚀 Comece rápido
-
-Pré-requisitos:
+Prerequisites:
 
 - Node.js >= 20.19
 - npm >= 9
@@ -133,44 +135,59 @@ VITE_SUPABASE_KEY=sua-anon-key
 VITE_SUPABASE_SCHEMA=portfolio
 ```
 
-2) (Opcional) E-mail de fallback do formulário de contato:
+3. (Optional) Configure email fallback for contact form:
+   - Deploy the `send-contact-email` Edge Function (see `EDGE_FUNCTION_SETUP.md`)
+   - Add `RESEND_API_KEY` secret in Supabase Dashboard
+4. Restart the dev server
 
-- Deploy da Edge Function `send-contact-email` (veja `EDGE_FUNCTION_SETUP.md`)
-- Configure o segredo `RESEND_API_KEY` no Supabase
+**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./SUPABASE.md)**  
+**📧 For Edge Function deployment and email configuration, see [EDGE_FUNCTION_SETUP.md](./EDGE_FUNCTION_SETUP.md)**
 
-Documentação completa: [SUPABASE.md](./SUPABASE.md) • [EDGE_FUNCTION_SETUP.md](./EDGE_FUNCTION_SETUP.md)
+### Database Schema (15 Tables)
 
-Schema (15 tabelas): `profile`, `contact`, `projects` (+ stack), `artworks` (+ media/materials), `series` (+ works), `thoughts` (+ tags), `experience` (+ highlights), `skills`.
+- `profile` - Portfolio owner profile (singleton)
+- `contact` - Contact form configuration (singleton)
+- `projects` + `project_stack` + `technologies` - Project portfolio with tech stack
+- `artworks` + `artwork_media` + `artwork_materials` - Art portfolio with media files
+- `series` + `series_works` - Collections of related projects/artworks
+- `thoughts` + `thought_tags` - Blog posts/articles with tags
+- `experience` + `experience_highlights` - Work history with achievements
+- `skills` - Technical skills with proficiency levels
 
----
+All contact form submissions automatically include `project_source='portfolio'` to identify their origin.
 
-## 🧪 Qualidade
+## Language handling
 
-- Testes: `npm run test` (Vitest)
-- Lint/Typecheck: `npm run lint`
-- CI: build + lint + tests a cada push/PR
+The portfolio content is authored in Portuguese. The helper located at `src/lib/language.ts` keeps the `<html lang>` attribute in sync with the visitor preference stored in `localStorage` (`monynha-lang`) and broadcasts updates through the `monynha:languagechange` custom event. The `useCurrentLanguage` hook consumes that event so pages can reactively adjust locale-sensitive elements such as date formatting.
 
----
+When introducing new locales, extend the `SUPPORTED_LANGUAGES` tuple inside `src/lib/language.ts` and provide translated copy for the pages and JSON datasets under `public/data/`.
 
-## 🤝 Contribuindo
+To change the language programmatically you can call:
 
-PRs e issues são bem-vindos. Leia o [CONTRIBUTING.md](./CONTRIBUTING.md) para convenções de commit e setup local.
+```ts
+import { setLanguage } from '@/lib/language';
 
-Se este projeto te ajudou, deixa uma ⭐ para apoiar!
+setLanguage('pt');
+```
 
----
+## Adding new projects to `cv.json`
 
-## 📬 Conecte-se
+Project cards, portfolio thumbnails and extra pages consume the single source of truth located at `public/data/cv.json`.
 
-- 🌐 Site (Live): [marcelo.monynha.com](https://marcelo.monynha.com)
-- � LinkedIn: [linkedin.com/in/marcelo-m7](https://www.linkedin.com/in/marcelo-m7)
-- 🐙 GitHub: [github.com/marcelo-m7](https://github.com/marcelo-m7)
-- ✉️ E-mail: <mailto:marcelo@monynha.com>
+1. Duplicate an existing entry inside the `projects` array and adjust the fields (`name`, `summary`, `stack`, `url`, `category`, `year`).
+2. Create a **vector** thumbnail (SVG only) under `public/images/`. Make sure to include a descriptive `<title>` element for accessibility and keep the canvas 16:9 (640x360 works well).
+3. Reference the SVG through the `thumbnail` property (e.g. `"thumbnail": "/images/novo-projeto.svg"`).
+4. Run `npm run build` to ensure the bundle stays under budget.
 
-Feito com ❤️ em Faro, Portugal — por Marcelo M7 (Monynha Softwares).
+Thoughts, artworks or series follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.
 
----
+## Contributing
 
-## 📄 Licença
+Issues and PRs are welcome. Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines, commit conventions, and local setup.
 
-MIT — © Marcelo Santos. Veja detalhes neste arquivo.
+## License / Contact
+
+MIT. © Marcelo Santos — [marcelo.monynha.com](https://marcelo.monynha.com)
+
+For opportunities or questions, reach me at: <mailto:marcelo@monynha.com>
+
