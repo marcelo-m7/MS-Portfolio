@@ -53,11 +53,13 @@ async function loadCvData(): Promise<Record<string, unknown>> {
   return cvDataPromise;
 }
 
-// Stale time: 5 minutes (data is considered fresh for 5 min)
-const STALE_TIME = 5 * 60 * 1000;
+// Stale time: 15 minutes (data is considered fresh for 15 min)
+// Portfolio content changes infrequently, so longer cache improves performance
+const STALE_TIME = 15 * 60 * 1000;
 
-// Cache time: 10 minutes (data stays in cache for 10 min after becoming stale)
-const CACHE_TIME = 10 * 60 * 1000;
+// Cache time: 30 minutes (data stays in cache for 30 min after becoming stale)
+// Reduces API calls and improves loading speed for repeat visits
+const CACHE_TIME = 30 * 60 * 1000;
 
 /**
  * Hook to fetch all projects with tech stack
