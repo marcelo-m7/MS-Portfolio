@@ -63,8 +63,8 @@ const CACHE_TIME = 30 * 60 * 1000;
 
 // Default query options for all portfolio data hooks
 const DEFAULT_QUERY_OPTIONS = {
-  ...DEFAULT_QUERY_OPTIONS,
-  
+  staleTime: STALE_TIME,
+  gcTime: CACHE_TIME,
   refetchOnWindowFocus: false, // Don't refetch when window regains focus
   refetchOnMount: false, // Don't refetch on component mount if data exists
   retry: 1, // Only retry once on failure
