@@ -62,8 +62,8 @@ supabase secrets set CONTACT_EMAIL_TO=marcelo@monynha.com
 
 ```bash
 # On WSL/Linux/Mac
-chmod +x test-edge-function.sh
-./test-edge-function.sh
+chmod +x tests/test-edge-function.sh
+./tests/test-edge-function.sh
 
 # Or manually with curl
 curl -X POST https://YOUR_PROJECT_REF.supabase.co/functions/v1/send-contact-email \
@@ -166,7 +166,7 @@ Resend API Key:
 
 1. ✅ Set `RESEND_API_KEY` in Supabase secrets
 2. ✅ Verify sending domain in Resend (or use test domain)
-3. ✅ Test the function with `test-edge-function.sh`
+3. ✅ Test the function with `tests/test-edge-function.sh`
 4. ✅ Test the contact form on your website
 5. ✅ Check email inbox to confirm delivery
 
