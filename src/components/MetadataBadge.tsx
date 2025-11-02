@@ -5,10 +5,17 @@ interface MetadataBadgeProps {
   icon?: LucideIcon;
   children: React.ReactNode;
   className?: string;
+  iconSize?: 'sm' | 'md';
 }
 
-export default function MetadataBadge({ icon: Icon, children, className = '' }: MetadataBadgeProps) {
+export default function MetadataBadge({ 
+  icon: Icon, 
+  children, 
+  className = '',
+  iconSize = 'md'
+}: MetadataBadgeProps) {
   const prefersReducedMotion = useReducedMotion();
+  const iconSizeClass = iconSize === 'sm' ? 'h-3 w-3' : 'h-4 w-4';
   
   return (
     <motion.span
@@ -17,7 +24,7 @@ export default function MetadataBadge({ icon: Icon, children, className = '' }: 
       whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
-      {Icon && <Icon className="h-4 w-4" aria-hidden />}
+      {Icon && <Icon className={iconSizeClass} aria-hidden />}
       {children}
     </motion.span>
   );

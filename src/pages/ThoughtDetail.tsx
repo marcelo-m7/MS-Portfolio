@@ -57,10 +57,10 @@ export default function ThoughtDetail() {
       <BackButton to="/thoughts" label={t.thoughts.backToThoughts} />
 
       <div className="flex flex-wrap items-center gap-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-        <MetadataBadge icon={Calendar} className="text-xs">
+        <MetadataBadge icon={Calendar} className="text-xs" iconSize="sm">
           {formattedDate}
         </MetadataBadge>
-        <MetadataBadge icon={BookOpen} className="text-xs">
+        <MetadataBadge icon={BookOpen} className="text-xs" iconSize="sm">
           {readingTime} {t.thoughts.minutesRead}
         </MetadataBadge>
       </div>
@@ -73,7 +73,7 @@ export default function ThoughtDetail() {
 
       <div className="mt-6 flex flex-wrap gap-2" aria-label="Etiquetas desta reflexão">
         {thought.tags.map((tag) => (
-          <MetadataBadge key={`${thought.slug}-${tag}`} icon={Tag} className="text-xs">
+          <MetadataBadge key={`${thought.slug}-${tag}`} icon={Tag} className="text-xs" iconSize="sm">
             {tag}
           </MetadataBadge>
         ))}
