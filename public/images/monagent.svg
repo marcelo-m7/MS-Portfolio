@@ -1,170 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img">
-  <title>Monagent - Sistema de automação com agentes IA</title>
-  <defs>
-    <!-- Agent gradient -->
-    <linearGradient id="monagentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#22D3EE" />
-      <stop offset="50%" stop-color="#0EA5E9" />
-      <stop offset="100%" stop-color="#7C3AED" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Background -->
-  <rect width="640" height="360" rx="32" fill="#020617" />
-  
-  <!-- Decorative elements -->
-  <circle cx="140" cy="110" r="120" fill="#22D3EE" opacity="0.08"/>
-  <circle cx="500" cy="250" r="140" fill="#7C3AED" opacity="0.08"/>
-  
-  <!-- Main container -->
-  <rect x="48" y="52" width="544" height="256" rx="24" 
-        fill="rgba(15,23,42,0.7)" 
-        stroke="url(#monagentGradient)" 
-        stroke-width="2"/>
-  
-  <!-- Agent nodes network -->
-  <g>
-    <!-- Connection lines -->
-    <g stroke="url(#monagentGradient)" stroke-width="2" opacity="0.5">
-      <path d="M 200 140 L 280 120" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 280 120 L 360 140" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 360 140 L 440 120" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 200 140 L 280 200" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 280 200 L 360 140" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 360 140 L 440 200" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 280 120 L 280 200" stroke-dasharray="4 4" fill="none"/>
-      <path d="M 360 140 L 440 120" stroke-dasharray="4 4" fill="none"/>
-    </g>
-    
-    <!-- Central orchestrator -->
-    <g transform="translate(360, 140)">
-      <circle cx="0" cy="0" r="35" 
-              fill="rgba(14,165,233,0.3)" 
-              stroke="#0EA5E9" 
-              stroke-width="3"/>
-      <circle cx="0" cy="0" r="24" 
-              fill="url(#monagentGradient)"/>
-      <text x="0" y="7" 
-            text-anchor="middle" 
-            font-family="'Space Grotesk', sans-serif" 
-            font-size="18" 
-            font-weight="700" 
-            fill="#FFFFFF">
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><title>Monagent - Sistema de automação com agentes IA</title><defs><linearGradient id="a" x1="0%" x2="100%" y1="0%" y2="100%"><stop offset="0%" stop-color="#22d3ee"/><stop offset="50%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs><rect width="640" height="360" fill="#020617" rx="32"/><circle cx="140" cy="110" r="120" fill="#22d3ee" opacity=".08"/><circle cx="500" cy="250" r="140" fill="#7c3aed" opacity=".08"/><rect width="544" height="256" x="48" y="52" fill="rgba(15,23,42,0.7)" stroke="url(#a)" stroke-width="2" rx="24"/><g fill="none" stroke="url(#a)" stroke-dasharray="4 4" stroke-width="2" opacity=".5"><path d="m200 140 80-20"/><path d="m280 120 80 20"/><path d="m360 140 80-20"/><path d="m200 140 80 60"/><path d="m280 200 80-60"/><path d="m360 140 80 60"/><path d="M280 120v80"/><path d="m360 140 80-20"/></g><g transform="translate(360 140)"><circle r="35" fill="rgba(14,165,233,0.3)" stroke="#0ea5e9" stroke-width="3"/><circle r="24" fill="url(#a)"/><text y="7" fill="#fff" font-family="'Space Grotesk', sans-serif" font-size="18" font-weight="700" text-anchor="middle">
         AI
-      </text>
-    </g>
-    
-    <!-- Agent 1 (top left) -->
-    <g transform="translate(200, 140)">
-      <circle cx="0" cy="0" r="26" 
-              fill="rgba(34,211,238,0.3)" 
-              stroke="#22D3EE" 
-              stroke-width="2.5"/>
-      <circle cx="0" cy="0" r="16" fill="#22D3EE"/>
-      <text x="0" y="5" 
-            text-anchor="middle" 
-            font-family="'Space Grotesk', sans-serif" 
-            font-size="14" 
-            font-weight="700" 
-            fill="#020617">
+      </text></g><g transform="translate(200 140)"><circle r="26" fill="rgba(34,211,238,0.3)" stroke="#22d3ee" stroke-width="2.5"/><circle r="16" fill="#22d3ee"/><text y="5" fill="#020617" font-family="'Space Grotesk', sans-serif" font-size="14" font-weight="700" text-anchor="middle">
         1
-      </text>
-    </g>
-    
-    <!-- Agent 2 (top) -->
-    <g transform="translate(280, 120)">
-      <circle cx="0" cy="0" r="24" 
-              fill="rgba(14,165,233,0.3)" 
-              stroke="#0EA5E9" 
-              stroke-width="2.5"/>
-      <circle cx="0" cy="0" r="14" fill="#0EA5E9"/>
-      <text x="0" y="5" 
-            text-anchor="middle" 
-            font-family="'Space Grotesk', sans-serif" 
-            font-size="13" 
-            font-weight="700" 
-            fill="#020617">
+      </text></g><g transform="translate(280 120)"><circle r="24" fill="rgba(14,165,233,0.3)" stroke="#0ea5e9" stroke-width="2.5"/><circle r="14" fill="#0ea5e9"/><text y="5" fill="#020617" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" text-anchor="middle">
         2
-      </text>
-    </g>
-    
-    <!-- Agent 3 (top right) -->
-    <g transform="translate(440, 120)">
-      <circle cx="0" cy="0" r="24" 
-              fill="rgba(124,58,237,0.3)" 
-              stroke="#7C3AED" 
-              stroke-width="2.5"/>
-      <circle cx="0" cy="0" r="14" fill="#7C3AED"/>
-      <text x="0" y="5" 
-            text-anchor="middle" 
-            font-family="'Space Grotesk', sans-serif" 
-            font-size="13" 
-            font-weight="700" 
-            fill="#FFFFFF">
+      </text></g><g transform="translate(440 120)"><circle r="24" fill="rgba(124,58,237,0.3)" stroke="#7c3aed" stroke-width="2.5"/><circle r="14" fill="#7c3aed"/><text y="5" fill="#fff" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" text-anchor="middle">
         3
-      </text>
-    </g>
-    
-    <!-- Agent 4 (bottom left) -->
-    <g transform="translate(280, 200)">
-      <circle cx="0" cy="0" r="22" 
-              fill="rgba(34,211,238,0.3)" 
-              stroke="#22D3EE" 
-              stroke-width="2"/>
-      <circle cx="0" cy="0" r="12" fill="#22D3EE"/>
-      <text x="0" y="5" 
-            text-anchor="middle" 
-            font-family="'Space Grotesk', sans-serif" 
-            font-size="12" 
-            font-weight="700" 
-            fill="#020617">
+      </text></g><g transform="translate(280 200)"><circle r="22" fill="rgba(34,211,238,0.3)" stroke="#22d3ee" stroke-width="2"/><circle r="12" fill="#22d3ee"/><text y="5" fill="#020617" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" text-anchor="middle">
         4
-      </text>
-    </g>
-    
-    <!-- Agent 5 (bottom right) -->
-    <g transform="translate(440, 200)">
-      <circle cx="0" cy="0" r="22" 
-              fill="rgba(124,58,237,0.3)" 
-              stroke="#7C3AED" 
-              stroke-width="2"/>
-      <circle cx="0" cy="0" r="12" fill="#7C3AED"/>
-      <text x="0" y="5" 
-            text-anchor="middle" 
-            font-family="'Space Grotesk', sans-serif" 
-            font-size="12" 
-            font-weight="700" 
-            fill="#FFFFFF">
+      </text></g><g transform="translate(440 200)"><circle r="22" fill="rgba(124,58,237,0.3)" stroke="#7c3aed" stroke-width="2"/><circle r="12" fill="#7c3aed"/><text y="5" fill="#fff" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" text-anchor="middle">
         5
-      </text>
-    </g>
-  </g>
-  
-  <!-- Automation flow indicators -->
-  <g opacity="0.4">
-    <circle cx="240" cy="130" r="3" fill="#22D3EE"/>
-    <circle cx="320" cy="110" r="3" fill="#0EA5E9"/>
-    <circle cx="400" cy="130" r="3" fill="#7C3AED"/>
-    <circle cx="320" cy="170" r="3" fill="#0EA5E9"/>
-  </g>
-  
-  <!-- Project title -->
-  <text x="320" y="275" 
-        text-anchor="middle" 
-        fill="url(#monagentGradient)" 
-        font-family="'Space Grotesk', 'Inter', sans-serif" 
-        font-size="44" 
-        font-weight="700">
+      </text></g><g opacity=".4"><circle cx="240" cy="130" r="3" fill="#22d3ee"/><circle cx="320" cy="110" r="3" fill="#0ea5e9"/><circle cx="400" cy="130" r="3" fill="#7c3aed"/><circle cx="320" cy="170" r="3" fill="#0ea5e9"/></g><text x="320" y="275" fill="url(#a)" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="44" font-weight="700" text-anchor="middle">
     Monagent
-  </text>
-  
-  <!-- Subtitle -->
-  <text x="320" y="310" 
-        text-anchor="middle" 
-        fill="#94A3B8" 
-        font-family="'Inter', sans-serif" 
-        font-size="16" 
-        font-weight="500">
+  </text><text x="320" y="310" fill="#94a3b8" font-family="'Inter', sans-serif" font-size="16" font-weight="500" text-anchor="middle">
     Sistema de Agentes IA
-  </text>
-</svg>
+  </text></svg>

@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import LiquidEther from './LiquidEther';
 import { LanguageMetadata } from './LanguageMetadata';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useThemePalette } from '@/hooks/useThemePalette';
+
+// Lazy load LiquidEther to avoid loading Three.js on every page
+const LiquidEther = lazy(() => import('./LiquidEther'));
 
 export default function Layout() {
   useScrollToTop();
@@ -16,6 +19,7 @@ export default function Layout() {
       {/* LiquidEther Background */}
       <div className="hidden md:block">
         <div className="fixed inset-0 w-full h-full -z-20">
+         <Suspense fallback={null}>
           <LiquidEther
             // Removed key={location.pathname} to prevent remounting and state reset on route changes
             colors={themeColors}
@@ -36,6 +40,7 @@ export default function Layout() {
             autoResumeDelay={3000}
             autoRampDuration={0.6}
           />
+         </Suspense>
         </div>
       </div>
       

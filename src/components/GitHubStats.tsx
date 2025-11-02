@@ -4,6 +4,7 @@
  */
 
 import { Star, GitFork, Clock } from 'lucide-react';
+import { memo } from 'react';
 import { useGitHubRepoStats } from '@/hooks/useGitHubStats';
 import { formatStarCount, formatRelativeTime } from '@/lib/githubApi';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -13,7 +14,7 @@ interface GitHubStatsProps {
   compact?: boolean;
 }
 
-export function GitHubStats({ repoUrl, compact = false }: GitHubStatsProps) {
+export const GitHubStats = memo(function GitHubStats({ repoUrl, compact = false }: GitHubStatsProps) {
   const { data: stats, isLoading, isError } = useGitHubRepoStats(repoUrl);
 
   if (!repoUrl) {
@@ -69,4 +70,4 @@ export function GitHubStats({ repoUrl, compact = false }: GitHubStatsProps) {
         ))}
     </div>
   );
-}
+});

@@ -176,8 +176,8 @@ VITE_SUPABASE_SCHEMA=portfolio
    - Add `RESEND_API_KEY` secret in Supabase Dashboard
 4. Restart the dev server
 
-**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./SUPABASE.md)**  
-**📧 For Edge Function deployment and email configuration, see [EDGE_FUNCTION_SETUP.md](./EDGE_FUNCTION_SETUP.md)**
+**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./docs/SUPABASE.md)**  
+**📧 For Edge Function deployment and email configuration, see [EDGE_FUNCTION_SETUP.md](./docs/EDGE_FUNCTION_SETUP.md)**
 
 ### Database Schema (15 Tables)
 
@@ -221,9 +221,15 @@ Project cards, portfolio thumbnails and extra pages consume the single source of
 
 **Blog posts** are now managed via Markdown files (see [Adding Blog Posts](#-adding-blog-posts) section above).
 
+## 📚 Documentation
+
+- Full project documentation lives in [`./docs/`](./docs/)
+- AI agent quickstart: [`AGENTS.md`](./AGENTS.md)
+- Detailed rules for AI agents: [`AI_RULES.md`](./AI_RULES.md)
+
 ## Contributing
 
-Issues and PRs are welcome. Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines, commit conventions, and local setup.
+Issues and PRs are welcome. Please see [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for guidelines, commit conventions, and local setup.
 
 ## License / Contact
 
