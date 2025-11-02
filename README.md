@@ -6,7 +6,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1-purple)](https://vitejs.dev/)
 
-Portfolio pessoal e site profissional de Marcelo M7, fundador da Monynha Softwares. Este repositório é um laboratório vivo para interações modernas, acessibilidade, 3D e boas práticas de front-end.
+Portfolio pessoal e site profissional de [@marcelo-m7](https://github.com/marcelo-m7), fundador da Monynha Softwares. Este repositório é um laboratório vivo para interações modernas, acessibilidade, 3D e boas práticas de front-end.
 
 ## Table of Contents
 
@@ -181,3 +181,4 @@ Issues and PRs are welcome. Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for 
 MIT. © Marcelo Santos — [marcelo.monynha.com](https://marcelo.monynha.com)
 
 For opportunities or questions, reach me at: <mailto:marcelo@monynha.com>
+
