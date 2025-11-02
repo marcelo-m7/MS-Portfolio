@@ -17,25 +17,28 @@ The `send-contact-email` Edge Function is deployed but needs the Resend API key 
 You already have one: `re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1`
 
 But let's verify it's active:
-- Go to https://resend.com/api-keys
+
+- Go to <https://resend.com/api-keys>
 - Check if the key is active
 - If needed, create a new API key
 
 ### 2️⃣ Add Key to Supabase
 
-**Option A: Via Supabase Dashboard (Recommended)**
+#### Option A: Via Supabase Dashboard (Recommended)
 
-1. Go to: https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba/settings/functions
+1. Go to: <https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba/settings/functions>
 2. Scroll to "Edge Function Secrets"
 3. Click "Add new secret"
 4. Fill in:
-   ```
+
+   ```text
    Name: RESEND_API_KEY
    Value: re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1
    ```
+
 5. Click "Save"
 
-**Option B: Via Supabase CLI**
+#### Option B: Via Supabase CLI
 
 ```bash
 # Install Supabase CLI if not installed
@@ -76,6 +79,7 @@ curl -X POST https://pkjigvacvddcnlxhvvba.supabase.co/functions/v1/send-contact-
 ```
 
 **Expected Success Response:**
+
 ```json
 {
   "success": true,
@@ -88,12 +92,13 @@ curl -X POST https://pkjigvacvddcnlxhvvba.supabase.co/functions/v1/send-contact-
 
 In Resend, you need a verified sending domain:
 
-1. Go to https://resend.com/domains
+1. Go to <https://resend.com/domains>
 2. Either:
    - **Option A**: Verify `monynha.com` by adding DNS records
    - **Option B**: Use Resend's test domain `onboarding@resend.dev` for testing
 
 If using test domain, update the Edge Function secret:
+
 ```bash
 supabase secrets set CONTACT_EMAIL_FROM=onboarding@resend.dev
 ```
@@ -101,26 +106,30 @@ supabase secrets set CONTACT_EMAIL_FROM=onboarding@resend.dev
 ## Troubleshooting
 
 ### Error: "Email service not configured"
+
 - **Cause**: `RESEND_API_KEY` not set in Supabase
 - **Solution**: Follow Step 2 above
 
 ### Error: "Invalid JWT"
+
 - **Cause**: Wrong API key in Authorization header
 - **Solution**: Use Supabase anon key (not Resend key) in Authorization header
 - **Correct**: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` (Supabase key)
 - **Wrong**: `Bearer re_VUmH6mTe_NSsCiB2JpMeCX77jqWYr6Do1` (Resend key)
 
 ### Error: "Failed to send email"
+
 - **Cause**: Sending domain not verified in Resend
 - **Solution**: Verify domain or use `onboarding@resend.dev`
 
 ### Error: "Missing required fields"
+
 - **Cause**: Request missing name, email, or message
 - **Solution**: Ensure all required fields are in request body
 
 ## Architecture Clarification
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                     Contact Form Flow                        │
 └─────────────────────────────────────────────────────────────┘
@@ -165,8 +174,8 @@ Resend API Key:
 
 ## Quick Links
 
-- **Supabase Dashboard**: https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba
-- **Edge Function Settings**: https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba/settings/functions
-- **Resend Dashboard**: https://resend.com/overview
-- **Resend API Keys**: https://resend.com/api-keys
-- **Resend Domains**: https://resend.com/domains
+- **Supabase Dashboard**: <https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba>
+- **Edge Function Settings**: <https://supabase.com/dashboard/project/pkjigvacvddcnlxhvvba/settings/functions>
+- **Resend Dashboard**: <https://resend.com/overview>
+- **Resend API Keys**: <https://resend.com/api-keys>
+- **Resend Domains**: <https://resend.com/domains>

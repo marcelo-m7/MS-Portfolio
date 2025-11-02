@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingThoughtCard } from '@/components/LoadingStates';
 import { useThoughts } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
@@ -17,8 +17,8 @@ export default function Thoughts() {
   const { data: thoughts = [], isLoading } = useThoughts();
 
   return (
-    <div className="py-0 px-6">
-      <div className="container mx-auto max-w-5xl">
+    <div className="py-8 px-6">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -35,37 +35,25 @@ export default function Thoughts() {
             </Link>
           </Button>
 
-          <header className="mb-12 text-center">
-            <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
+          <header className="mb-16 text-center">
+            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Pensamentos
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.
             </p>
           </header>
 
           {isLoading ? (
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-2 items-stretch">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex h-full flex-col rounded-2xl border border-border/70 bg-card/90 p-8 shadow-md">
-                  <div className="mb-6 flex gap-3">
-                    <Skeleton className="h-6 w-32 rounded-full" />
-                    <Skeleton className="h-6 w-24 rounded-full" />
-                  </div>
-                  <Skeleton className="h-9 w-3/4 mb-4" />
-                  <Skeleton className="h-20 w-full mb-6" />
-                  <div className="flex gap-2 mb-6">
-                    <Skeleton className="h-6 w-20 rounded-full" />
-                    <Skeleton className="h-6 w-24 rounded-full" />
-                  </div>
-                  <Skeleton className="h-10 w-48 rounded-2xl mt-auto" />
-                </div>
+                <LoadingThoughtCard key={i} />
               ))}
             </div>
           ) : (
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-2 items-stretch">
               {thoughts.map((thought, index) => {
               const formattedDate = new Intl.DateTimeFormat(locale, {
                 day: '2-digit',

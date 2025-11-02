@@ -1,4 +1,5 @@
 # MS-Portfolio Project Audit
+
 **Date**: 2025-01-26  
 **Version**: 2.0.0  
 **Stack**: Vite 7.1 + React 18 + TypeScript 5.8 + Supabase + Tailwind CSS + Three.js
@@ -19,24 +20,28 @@
 
 ## 🔴 Critical Fixes (High Priority)
 
-### 1. **Bundle Size Optimization** 
+### 1. **Bundle Size Optimization**
+
 **Priority**: 🔴 CRITICAL  
 **Effort**: 2-3 hours  
 **Impact**: User experience, performance metrics, SEO
 
 **Issue**: Main bundle is 1,138 KB (323 KB gzipped) - triggers Rollup warning
-```
+
+```text
 dist/assets/index-_RLvxogX.js  1,138.08 kB │ gzip: 323.36 kB
 (!) Some chunks are larger than 500 kB after minification
 ```
 
 **Root Causes**:
+
 - Three.js library (~600 KB) bundled entirely
 - React Three Fiber + Drei dependencies (~200 KB)
 - All Radix UI components loaded upfront (~150 KB)
 - No manual chunking strategy configured
 
 **Solution**:
+
 ```typescript
 // vite.config.ts - Add manual chunks
 build: {
@@ -58,7 +63,8 @@ build: {
 }
 ```
 
-**Expected Result**: 
+**Expected Result**:
+
 - Main bundle reduced to ~300 KB
 - Three.js isolated in separate chunk (only loaded on pages using LiquidEther/Art3DPreview)
 - Improved initial load time by ~40%
@@ -66,17 +72,20 @@ build: {
 ---
 
 ### 2. **Deno Type Errors in Edge Function**
+
 **Priority**: 🔴 CRITICAL (for development experience)  
 **Effort**: 10 minutes  
 **Impact**: TypeScript compilation, IDE errors
 
 **Issue**: 4 compile errors in `supabase/functions/send-contact-email/index.ts`:
-```
+
+```text
 Line 30: Cannot find name 'Deno'
 Line 40-42: Cannot find name 'Deno' (3 occurrences)
 ```
 
 **Solution**: Add Deno types to Edge Function:
+
 ```typescript
 // supabase/functions/send-contact-email/index.ts
 /// <reference types="https://deno.land/x/types/index.d.ts" />
@@ -98,16 +107,19 @@ Line 40-42: Cannot find name 'Deno' (3 occurrences)
 ---
 
 ### 3. **Markdown Linting Errors (Documentation Quality)**
+
 **Priority**: 🟡 MEDIUM-HIGH  
 **Effort**: 20-30 minutes  
 **Impact**: Documentation consistency, GitHub rendering
 
 **Issue**: 26+ markdown linting errors across:
+
 - `EDGE_FUNCTION_SETUP.md` (18 errors)
-- `README.md` (8 errors)  
+- `README.md` (8 errors)
 - Edge Function docs
 
 **Errors**:
+
 - MD032: Lists not surrounded by blank lines
 - MD034: Bare URLs (should use markdown links)
 - MD036: Bold text used as headings
@@ -115,6 +127,7 @@ Line 40-42: Cannot find name 'Deno' (3 occurrences)
 - MD022: Headings not surrounded by blank lines
 
 **Solution**: Run markdownlint-cli and fix automatically:
+
 ```powershell
 npm install -D markdownlint-cli
 npx markdownlint --fix "**/*.md"
@@ -129,16 +142,19 @@ Manual fixes for complex cases (bare URLs, heading structure).
 ## 🟡 Improvements (Medium Priority)
 
 ### 4. **Test Coverage Expansion**
+
 **Priority**: 🟡 MEDIUM  
 **Effort**: 3-4 hours  
 **Impact**: Code reliability, regression prevention
 
 **Current Coverage**:
+
 - ✅ `contactService.test.ts` (3 tests)
 - ✅ `contactLead.test.ts` (6 tests)
 - ❌ No tests for: hooks, components, pages, utilities
 
 **Missing Critical Tests**:
+
 1. **`usePortfolioData.ts` hooks** (5 hooks: useProfile, useProjects, useExperience, useSkills, useThoughts)
    - Test DB → fallback to cv.json flow
    - Verify React Query caching
@@ -155,6 +171,7 @@ Manual fixes for complex cases (bare URLs, heading structure).
    - `<ProjectCard>` - render with mock data, test links
 
 **Solution**: Add Vitest + React Testing Library tests:
+
 ```typescript
 // src/hooks/usePortfolioData.test.ts
 describe('useProjects', () => {
@@ -169,6 +186,7 @@ describe('useProjects', () => {
 ---
 
 ### 5. **Error Boundary Implementation**
+
 **Priority**: 🟡 MEDIUM  
 **Effort**: 1-2 hours  
 **Impact**: User experience, error tracking
@@ -176,12 +194,14 @@ describe('useProjects', () => {
 **Issue**: No `ErrorBoundary` component found in codebase. If React throws during rendering, entire app crashes with white screen.
 
 **Current Error Handling**:
+
 - ✅ API errors caught in query hooks
 - ✅ Console.error logs throughout (20+ instances)
 - ❌ No UI fallback for component errors
 - ❌ No error reporting to monitoring service
 
 **Solution**: Add React Error Boundary:
+
 ```tsx
 // src/components/ErrorBoundary.tsx
 import { Component, ReactNode } from 'react';
@@ -233,6 +253,7 @@ export class ErrorBoundary extends Component<Props, State> {
 ```
 
 Wrap routes in `App.tsx`:
+
 ```tsx
 <ErrorBoundary>
   <Routes>
@@ -248,11 +269,13 @@ Wrap routes in `App.tsx`:
 ---
 
 ### 6. **Console.log Cleanup**
+
 **Priority**: 🟡 MEDIUM  
 **Effort**: 30 minutes  
 **Impact**: Production bundle size, security
 
 **Issue**: 20+ `console.error`/`console.warn` statements in production code:
+
 - `src/pages/Contact.tsx` (2 instances)
 - `src/lib/api/queries.ts` (10 instances)
 - `src/lib/contactService.ts` (2 instances)
@@ -261,11 +284,13 @@ Wrap routes in `App.tsx`:
 - `src/lib/supabaseClient.ts` (1 instance)
 
 **Problems**:
+
 - Logs exposed in production browser console (security risk for internal errors)
 - No structured logging (can't filter/aggregate)
 - No error tracking integration
 
 **Solution**: Create logging utility:
+
 ```typescript
 // src/lib/logger.ts
 const isDev = import.meta.env.DEV;
@@ -285,6 +310,7 @@ export const logger = {
 ```
 
 Replace all `console.*` with `logger.*`:
+
 ```typescript
 // Before
 console.error('Error fetching projects:', error);
@@ -298,11 +324,13 @@ logger.error('Error fetching projects:', error);
 ---
 
 ### 7. **Loading States Inconsistency**
+
 **Priority**: 🟡 MEDIUM  
 **Effort**: 2 hours  
 **Impact**: User experience consistency
 
 **Issue**: Loading states implemented inconsistently:
+
 - ✅ `Thoughts.tsx` - Skeleton components with proper layout
 - ✅ `ThoughtDetail.tsx` - Skeleton for title/content
 - ✅ `Home.tsx` - Skeleton for profile location badge
@@ -313,6 +341,7 @@ logger.error('Error fetching projects:', error);
 **Current Pattern**: Mixed use of `<Skeleton>` vs. conditional rendering
 
 **Solution**: Standardize loading UI across all pages:
+
 ```tsx
 // Portfolio.tsx - Add loading state
 const { data: dbProjects, isLoading } = useProjects();
@@ -335,6 +364,7 @@ if (isLoading) {
 ```
 
 **Create reusable loading components**:
+
 ```tsx
 // src/components/LoadingCard.tsx
 export const LoadingProjectCard = () => (
@@ -357,15 +387,18 @@ export const LoadingProjectCard = () => (
 ---
 
 ### 8. **TypeScript `any` Type Usage**
+
 **Priority**: 🟡 MEDIUM (code quality)  
 **Effort**: 1 hour  
 **Impact**: Type safety, IDE autocomplete
 
 **Issue**: Search found 3 instances of `any` type usage (grep results show `any\s+` pattern):
+
 - Likely in query hooks or utility functions
 - Reduces TypeScript benefits (type safety, intellisense)
 
 **Solution**: Replace with proper types:
+
 ```typescript
 // Before
 const handleData = (data: any) => { ... }
@@ -376,6 +409,7 @@ const handleData = (data: CVProject[]) => { ... }
 ```
 
 Use TypeScript utility types for complex cases:
+
 ```typescript
 type ApiResponse<T> = {
   data: T | null;
@@ -392,6 +426,7 @@ const fetchProjects = async (): Promise<ApiResponse<CVProject[]>> => { ... }
 ## 🟢 Customizations (Medium-Low Priority)
 
 ### 9. **Visual Asset Redesign (ASSET_REDESIGN_TODO.md)**
+
 **Priority**: 🟢 LOW-MEDIUM  
 **Effort**: 8-12 hours (design + implementation)  
 **Impact**: Brand consistency, visual appeal
@@ -399,17 +434,20 @@ const fetchProjects = async (): Promise<ApiResponse<CVProject[]>> => { ... }
 **Status**: Documented in `ASSET_REDESIGN_TODO.md` (151 lines, 0% complete)
 
 **Scope**:
+
 - **Core Branding** (3 files): placeholder.svg, favicon.svg, og-image.svg
 - **Project Thumbnails** (14 SVGs): All project thumbnails need redesign with brand colors
 - **Artwork Thumbnails** (2 files): artleo-hero.svg, artleo-3d.svg
 
 **Design System** (already defined in ASSET_REDESIGN_TODO.md):
+
 - Color Palette: Purple (#7c3aed) + Cyan (#0ea5e9) + Pink (#d946ef)
 - Typography: Space Grotesk + Inter + JetBrains Mono
 - Geometric shapes, gradients, 1.5rem border radius
 - WCAG AA contrast compliance
 
 **Current Asset Quality**:
+
 - ✅ Boteco.pt thumbnail: Custom SVG with brand colors (recent addition)
 - ⚠️ Other thumbnails: Need consistency with brand palette
 - ❌ Placeholder.svg: Generic gray with camera icon (not branded)
@@ -421,23 +459,27 @@ const fetchProjects = async (): Promise<ApiResponse<CVProject[]>> => { ... }
 ---
 
 ### 10. **Hardcoded Portuguese Strings**
+
 **Priority**: 🟢 LOW  
 **Effort**: 2-3 hours  
 **Impact**: i18n completeness, maintainability
 
 **Issue**: Found 8 hardcoded Portuguese strings outside translation system:
+
 1. `src/pages/Portfolio.tsx` - Filter label `'Todos'` (line 50, 143, 153)
 2. `src/pages/Home.tsx` - Button text `'Ver Todos os Projetos'` (line 257)
 3. `src/pages/ThoughtDetail.tsx` - Link text `'Ver todos os pensamentos'` (line 68)
 4. `src/lib/translations.ts` - Footer `'Todos os direitos reservados.'` (line 85)
 
 **Current i18n System**:
+
 - ✅ Event-based with `monynha:languagechange` custom events
 - ✅ `useCurrentLanguage()` hook
 - ✅ `src/lib/translations.ts` with structured keys
 - ❌ Not all strings extracted to translation files
 
 **Solution**: Move to translation system:
+
 ```typescript
 // src/lib/translations.ts - Add missing keys
 export const translations = {
@@ -470,6 +512,7 @@ export const translations = {
 ```
 
 Usage in components:
+
 ```tsx
 const lang = useCurrentLanguage();
 const t = useTranslations();
@@ -482,11 +525,13 @@ const t = useTranslations();
 ---
 
 ### 11. **Accessibility Enhancements**
+
 **Priority**: 🟢 LOW  
 **Effort**: 2-3 hours  
 **Impact**: WCAG compliance, screen reader support
 
-**Current Status**: 
+**Current Status**:
+
 - ✅ Good use of `aria-label` (20+ instances)
 - ✅ Semantic HTML (`<nav>`, `<main>`, `<section>`)
 - ✅ `role="alert"` on error messages
@@ -496,7 +541,9 @@ const t = useTranslations();
 - ❌ No keyboard navigation testing
 
 **Issues Found**:
+
 1. **Hardcoded Portuguese in ARIA labels**:
+
    ```tsx
    <div aria-label="Etiquetas desta reflexão">  {/* Line 105, Thoughts.tsx */}
    <Button aria-label="Select language">  {/* Should be translated */}
@@ -512,6 +559,7 @@ const t = useTranslations();
 **Solutions**:
 
 **A. Translate ARIA labels**:
+
 ```typescript
 // translations.ts
 ariaLabels: {
@@ -526,6 +574,7 @@ ariaLabels: {
 ```
 
 **B. Add skip navigation**:
+
 ```tsx
 // Layout.tsx
 <a
@@ -541,6 +590,7 @@ ariaLabels: {
 ```
 
 **C. Focus management**:
+
 ```tsx
 // App.tsx or Layout.tsx
 import { useEffect } from 'react';
@@ -564,6 +614,7 @@ const ScrollToTop = () => {
 ---
 
 ### 12. **GitHub Stats Component Optimization**
+
 **Priority**: 🟢 LOW  
 **Effort**: 30 minutes  
 **Impact**: Performance, API rate limits
@@ -571,12 +622,15 @@ const ScrollToTop = () => {
 **Issue**: `useGitHubStats` hook fetches data on every mount, no rate limit handling visible in UI.
 
 **Current Implementation**:
+
 - Uses React Query for caching (good)
 - Console.warn for rate limit exceeded
 - No VITE_GITHUB_TOKEN in .env (using unauthenticated API - 60 req/hour limit)
 
 **Improvements**:
+
 1. **Add rate limit UI feedback**:
+
    ```tsx
    // src/components/GitHubStats.tsx
    if (error?.message.includes('rate limit')) {
@@ -593,6 +647,7 @@ const ScrollToTop = () => {
    ```
 
 2. **Increase cache time** (reduce API calls):
+
    ```typescript
    // src/hooks/useGitHubStats.ts
    const query = useQuery({
@@ -604,6 +659,7 @@ const ScrollToTop = () => {
    ```
 
 3. **Add GitHub token setup docs**:
+
    ```markdown
    // README.md or .env.example
    VITE_GITHUB_TOKEN=ghp_xxxxxxxxxxxx  # Optional: increases rate limit to 5000/hour
@@ -616,6 +672,7 @@ const ScrollToTop = () => {
 ## 🔵 New Features (Low Priority)
 
 ### 13. **Analytics Integration**
+
 **Priority**: 🔵 LOW  
 **Effort**: 1-2 hours  
 **Impact**: User insights, performance metrics
@@ -623,6 +680,7 @@ const ScrollToTop = () => {
 **Current State**: No analytics detected
 
 **Recommendations**:
+
 1. **Privacy-focused option**: Plausible Analytics or Fathom
    - No cookies, GDPR compliant
    - Lightweight script (~1 KB)
@@ -632,6 +690,7 @@ const ScrollToTop = () => {
    - More comprehensive event tracking
 
 **Implementation** (Plausible example):
+
 ```tsx
 // src/lib/analytics.ts
 export const trackPageView = (url: string) => {
@@ -665,6 +724,7 @@ const AnalyticsTracker = () => {
 ```
 
 **Events to Track**:
+
 - Page views
 - Project card clicks
 - Contact form submissions
@@ -677,11 +737,13 @@ const AnalyticsTracker = () => {
 ---
 
 ### 14. **Image Optimization Pipeline**
+
 **Priority**: 🔵 LOW  
 **Effort**: 2 hours (setup) + ongoing  
 **Impact**: Performance, SEO
 
 **Current State**:
+
 - ✅ All thumbnails are SVG (optimal for vector graphics)
 - ✅ `loading="lazy"` on images
 - ❌ No raster image optimization (if added in future)
@@ -690,6 +752,7 @@ const AnalyticsTracker = () => {
 **Issue**: Current `cv.json` references SVG thumbnails, but if raster images (PNG/JPG) are added for artwork/photos, they won't be optimized.
 
 **Solution**: Add vite-plugin-imagetools:
+
 ```typescript
 // vite.config.ts
 import { imagetools } from 'vite-plugin-imagetools';
@@ -714,6 +777,7 @@ export default defineConfig({
 ```
 
 Usage:
+
 ```tsx
 import thumbnailWebP from './image.jpg?thumbnail&format=webp';
 import thumbnailAvif from './image.jpg?thumbnail&format=avif';
@@ -731,6 +795,7 @@ import thumbnailFallback from './image.jpg?thumbnail';
 ---
 
 ### 15. **Progressive Web App (PWA)**
+
 **Priority**: 🔵 LOW  
 **Effort**: 3-4 hours  
 **Impact**: Mobile UX, offline access
@@ -738,12 +803,14 @@ import thumbnailFallback from './image.jpg?thumbnail';
 **Current State**: Not a PWA (no manifest.json, no service worker)
 
 **Benefits**:
+
 - Installable on mobile/desktop
 - Offline mode for cached pages
 - Better mobile engagement
 - App-like experience
 
 **Implementation**: Use vite-plugin-pwa:
+
 ```typescript
 // vite.config.ts
 import { VitePWA } from 'vite-plugin-pwa';
@@ -795,6 +862,7 @@ export default defineConfig({
 ---
 
 ### 16. **Search Functionality**
+
 **Priority**: 🔵 LOW  
 **Effort**: 4-6 hours  
 **Impact**: Content discoverability
@@ -804,6 +872,7 @@ export default defineConfig({
 **Proposal**: Add fuzzy search for projects/artworks/thoughts:
 
 **A. Simple client-side search**:
+
 ```tsx
 // src/components/Search.tsx
 import { Command } from '@/components/ui/command';
@@ -841,7 +910,8 @@ export const Search = () => {
 
 **B. Advanced option**: Integrate MiniSearch or Fuse.js for fuzzy matching
 
-**UI Placement**: 
+**UI Placement**:
+
 - Navbar search icon (opens modal with Cmd+K shortcut)
 - Portfolio page filter section
 
@@ -850,6 +920,7 @@ export const Search = () => {
 ---
 
 ### 17. **RSS Feed for Thoughts**
+
 **Priority**: 🔵 LOW  
 **Effort**: 2 hours  
 **Impact**: Content distribution, SEO
@@ -893,6 +964,7 @@ fs.writeFileSync('./public/rss.xml', feed.rss2());
 ```
 
 Add to build script:
+
 ```json
 // package.json
 "scripts": {
@@ -902,6 +974,7 @@ Add to build script:
 ```
 
 Link in HTML:
+
 ```html
 <link rel="alternate" type="application/rss+xml" title="Pensamentos" href="/rss.xml" />
 ```
@@ -937,6 +1010,7 @@ Link in HTML:
 ## 🚀 Recommended Implementation Order
 
 ### Sprint 1: Performance & Reliability (Week 1)
+
 1. ✅ **Bundle Size Optimization** (Day 1-2)
 2. ✅ **Deno Type Errors** (Day 2)
 3. ✅ **Error Boundary** (Day 3)
@@ -948,6 +1022,7 @@ Link in HTML:
 ---
 
 ### Sprint 2: Code Quality & Testing (Week 2)
+
 1. ✅ **Test Coverage** (Day 1-3)
 2. ✅ **TypeScript `any` Cleanup** (Day 3)
 3. ✅ **Markdown Linting** (Day 4)
@@ -958,6 +1033,7 @@ Link in HTML:
 ---
 
 ### Sprint 3: Branding & Localization (Week 3-4)
+
 1. ✅ **Asset Redesign** (Phase 1: Core branding) (Day 1-3)
 2. ✅ **Hardcoded Strings** (Day 4)
 3. ✅ **Asset Redesign** (Phase 2: Project thumbnails) (Day 5-8)
@@ -968,6 +1044,7 @@ Link in HTML:
 ---
 
 ### Sprint 4: New Features (Week 5-6) [Optional]
+
 1. ✅ **Analytics Integration** (Day 1)
 2. ✅ **PWA Setup** (Day 2-3)
 3. ✅ **Search Functionality** (Day 4-5)
@@ -981,6 +1058,7 @@ Link in HTML:
 ## 📈 Metrics to Track
 
 ### Performance Metrics
+
 - **Bundle Size**: Target reduction from 1,138 KB → ~600 KB (47% reduction)
 - **First Contentful Paint (FCP)**: Target < 1.5s
 - **Largest Contentful Paint (LCP)**: Target < 2.5s
@@ -988,12 +1066,14 @@ Link in HTML:
 - **Time to Interactive (TTI)**: Target < 3.5s
 
 ### Quality Metrics
+
 - **Test Coverage**: Target 80%+ (currently ~5% - only contact service tested)
 - **TypeScript Errors**: Target 0 (currently 4 - all in Edge Function)
 - **Linting Warnings**: Target 0 critical (currently 8 non-critical)
 - **Accessibility Score**: Target 100 (Lighthouse)
 
 ### Development Metrics
+
 - **Build Time**: Currently 15.73s (monitor after chunking changes)
 - **Test Execution Time**: Currently 1.62s (will increase with more tests)
 
@@ -1002,21 +1082,25 @@ Link in HTML:
 ## 🛠️ Tools & Dependencies to Consider
 
 ### Performance
+
 - ✅ Already using: React.lazy, Suspense, useMemo
 - 🔧 Add: vite-plugin-compression (Brotli/Gzip)
 - 🔧 Add: vite-bundle-analyzer
 
 ### Testing
+
 - ✅ Already using: Vitest
 - 🔧 Add: @testing-library/react, @testing-library/user-event
 - 🔧 Add: vitest-ui (interactive test UI)
 
 ### Quality
+
 - 🔧 Add: husky (pre-commit hooks)
 - 🔧 Add: lint-staged (run linters on staged files)
 - 🔧 Add: markdownlint-cli
 
 ### Features
+
 - 🔧 Add: vite-plugin-pwa (PWA support)
 - 🔧 Add: feed (RSS generation)
 - 🔧 Add: fuse.js or minisearch (client-side search)
@@ -1027,6 +1111,7 @@ Link in HTML:
 ## 📝 Notes & Observations
 
 ### Strengths
+
 ✅ **Excellent architecture**: Clean separation of concerns, Layout wrapper pattern  
 ✅ **Modern stack**: Vite 7, React 18, TypeScript 5.8, latest dependencies  
 ✅ **Database strategy**: Multi-schema Supabase with graceful fallback to cv.json  
@@ -1035,6 +1120,7 @@ Link in HTML:
 ✅ **Comprehensive documentation**: copilot-instructions.md, SUPABASE.md, EDGE_FUNCTION_SETUP.md  
 
 ### Areas for Improvement
+
 ⚠️ **Bundle size**: Main chunk exceeds recommended 500 KB limit  
 ⚠️ **Test coverage**: Only 2 test files (contact service), missing component/hook tests  
 ⚠️ **Error handling**: No ErrorBoundary, console.error logs exposed in production  
@@ -1042,6 +1128,7 @@ Link in HTML:
 ⚠️ **Localization**: Some hardcoded Portuguese strings outside translation system  
 
 ### Technical Debt
+
 📋 **ASSET_REDESIGN_TODO.md**: 151-line document with 0% completion (asset redesign backlog)  
 📋 **Edge Function types**: Deno type errors (non-blocking but affects DX)  
 📋 **Markdown linting**: 26+ errors across documentation files  
@@ -1052,24 +1139,28 @@ Link in HTML:
 ## 🎯 Success Criteria
 
 ### Must Have (Critical)
+
 - ✅ Bundle size reduced below 600 KB
 - ✅ Zero TypeScript compile errors
 - ✅ Error Boundary implemented with graceful fallbacks
 - ✅ All production console logs replaced with structured logger
 
 ### Should Have (High Priority)
+
 - ✅ Test coverage > 70%
 - ✅ Consistent loading states across all pages
 - ✅ All hardcoded strings moved to translation system
 - ✅ Markdown documentation passing linters
 
 ### Nice to Have (Medium Priority)
+
 - ✅ Asset redesign (Phase 1: Core branding)
 - ✅ Analytics integration
 - ✅ WCAG AA accessibility compliance
 - ✅ PWA capabilities
 
 ### Future Considerations (Low Priority)
+
 - ✅ Asset redesign (Phase 2: All thumbnails)
 - ✅ Advanced search functionality
 - ✅ RSS feed for thoughts

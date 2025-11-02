@@ -3,6 +3,7 @@
 This document explains how to connect to and use Supabase in the MS-Portfolio project.
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Database Schema Strategy](#database-schema-strategy)
 - [Setup & Configuration](#setup--configuration)
@@ -17,6 +18,7 @@ This document explains how to connect to and use Supabase in the MS-Portfolio pr
 MS-Portfolio uses Supabase for backend persistence, primarily for storing contact form submissions. The integration is **optional** — the application gracefully handles missing credentials and falls back to alternative methods when Supabase is unavailable.
 
 ### Key Features
+
 - ✅ Optional persistence (app works without Supabase)
 - ✅ Multi-project database with schema isolation
 - ✅ Row Level Security (RLS) enabled
@@ -28,16 +30,21 @@ MS-Portfolio uses Supabase for backend persistence, primarily for storing contac
 The database uses a **multi-project architecture** with two types of schemas:
 
 ### 1. `public` Schema (Shared)
+
 Contains tables shared across all Monynha projects:
+
 - `leads` - Contact form submissions from all projects
 - Future shared tables (users, analytics, etc.)
 
 ### 2. `portfolio` Schema (Project-Specific)
+
 Contains tables specific to MS-Portfolio:
+
 - Currently empty
 - Future tables: project metadata, artwork data, series info
 
 ### Why This Approach?
+
 - **Resource Efficiency**: Single database for multiple projects
 - **Data Isolation**: Project-specific data in dedicated schemas
 - **Shared Resources**: Common tables (like leads) in `public` schema
@@ -133,6 +140,7 @@ CREATE POLICY "Allow authenticated reads" ON public.leads
 ```
 
 **Field Descriptions:**
+
 - `id` - Unique identifier (auto-generated UUID)
 - `name` - Contact's full name
 - `email` - Contact's email address
@@ -147,6 +155,7 @@ CREATE POLICY "Allow authenticated reads" ON public.leads
 The `portfolio` schema contains project-specific tables for MS-Portfolio content. All tables have RLS enabled with public read access.
 
 #### Tables Overview
+
 - **`profile`** - Portfolio owner profile (singleton)
 - **`contact`** - Contact page configuration (singleton)
 - **`technologies`** - Normalized technology names
@@ -183,6 +192,7 @@ CREATE TABLE portfolio.profile (
 ```
 
 **Usage:**
+
 ```sql
 -- Insert or update profile (singleton pattern)
 INSERT INTO portfolio.profile (name, headline, location, bio, avatar)
@@ -195,6 +205,7 @@ ON CONFLICT (id) DO UPDATE SET
 -- Retrieve profile
 SELECT * FROM portfolio.profile LIMIT 1;
 ```
+
 </details>
 
 <details>
@@ -238,12 +249,14 @@ CREATE TABLE portfolio.project_stack (
 ```
 
 **Indexes:**
+
 - `idx_projects_slug` (unique)
 - `idx_projects_category`
 - `idx_projects_year`
 - `idx_projects_display_order`
 
 **Usage:**
+
 ```sql
 -- Get project with tech stack
 SELECT 
@@ -263,6 +276,7 @@ SELECT slug, name, category, year, status
 FROM portfolio.projects 
 ORDER BY display_order, year DESC;
 ```
+
 </details>
 
 <details>
@@ -299,6 +313,7 @@ CREATE TABLE portfolio.artwork_materials (
 ```
 
 **Usage:**
+
 ```sql
 -- Get artwork with media and materials
 SELECT 
@@ -310,6 +325,7 @@ SELECT
 FROM portfolio.artworks a
 WHERE a.slug = 'artleo';
 ```
+
 </details>
 
 <details>
@@ -339,6 +355,7 @@ CREATE TABLE portfolio.series_works (
 ```
 
 **Usage:**
+
 ```sql
 -- Get series with works (resolve slugs in application)
 SELECT 
@@ -352,6 +369,7 @@ LEFT JOIN portfolio.series_works sw ON s.id = sw.series_id
 WHERE s.slug = 'creative-systems'
 GROUP BY s.id;
 ```
+
 </details>
 
 <details>
@@ -380,6 +398,7 @@ CREATE TABLE portfolio.thought_tags (
 ```
 
 **Usage:**
+
 ```sql
 -- Get thought with tags
 SELECT 
@@ -396,6 +415,7 @@ FROM portfolio.thoughts
 ORDER BY date DESC
 LIMIT 10;
 ```
+
 </details>
 
 <details>
@@ -424,6 +444,7 @@ CREATE TABLE portfolio.experience_highlights (
 ```
 
 **Usage:**
+
 ```sql
 -- Get experience with highlights
 SELECT 
@@ -434,6 +455,7 @@ LEFT JOIN portfolio.experience_highlights eh ON e.id = eh.experience_id
 GROUP BY e.id
 ORDER BY e.display_order;
 ```
+
 </details>
 
 <details>
@@ -452,6 +474,7 @@ CREATE TABLE portfolio.skills (
 ```
 
 **Usage:**
+
 ```sql
 -- Get skills by category
 SELECT category, json_agg(json_build_object('name', name, 'level', level) ORDER BY display_order) as skills
@@ -459,6 +482,7 @@ FROM portfolio.skills
 GROUP BY category
 ORDER BY category;
 ```
+
 </details>
 - User preferences specific to portfolio
 
@@ -516,6 +540,7 @@ const result = await submitContactLead(
 ```
 
 **How it works:**
+
 1. Tries to save to Supabase (`public.leads` table)
 2. Automatically adds `project_source: 'portfolio'`
 3. If Supabase fails, calls the fallback function
@@ -565,6 +590,7 @@ const { data, error } = await supabase
 ### Current Migrations
 
 #### Public Schema
+
 1. **`20251023095136_create_leads_table.sql`**
    - Creates `public.leads` table
    - Sets up indexes and RLS policies
@@ -578,6 +604,7 @@ const { data, error } = await supabase
    - Documents schema usage
 
 #### Portfolio Schema
+
 4. **`20251023000001_create_core_tables.sql`**
    - Creates `profile` table (singleton)
    - Creates `contact` table (singleton)
@@ -615,6 +642,7 @@ const { data, error } = await supabase
 ### Migration Files Location
 
 All migrations are stored in:
+
 ```
 supabase/migrations/
 ├── 20251023000001_create_core_tables.sql
@@ -639,6 +667,7 @@ supabase db push
 ```
 
 If using Supabase Dashboard:
+
 1. Go to **SQL Editor**
 2. Write your migration SQL
 3. Run it
@@ -651,6 +680,7 @@ If using Supabase Dashboard:
 **Future State:** Data will be migrated to portfolio schema tables
 
 **Migration Plan:**
+
 1. ✅ **Phase 1 (Complete)**: Create database schema
 2. **Phase 2**: Create migration scripts to populate DB from cv.json
 3. **Phase 3**: Create API layer (Supabase client hooks)
@@ -658,6 +688,7 @@ If using Supabase Dashboard:
 5. **Phase 5**: Add CMS/admin interface for content management
 
 **Benefits of Migration:**
+
 - Real-time updates without redeployment
 - Add analytics (views, likes, shares)
 - Search and filtering on server side
@@ -675,6 +706,7 @@ npm run test
 ```
 
 **Key test scenarios:**
+
 - ✅ Normalizes and trims input data
 - ✅ Saves successfully when Supabase is available
 - ✅ Calls fallback when Supabase fails
@@ -695,6 +727,7 @@ npm run dev
 ```
 
 Verify in Supabase Dashboard:
+
 1. Go to **Table Editor**
 2. Select `public.leads`
 3. Filter by `project_source = 'portfolio'`
@@ -706,6 +739,7 @@ Verify in Supabase Dashboard:
 **Symptom**: Console warning in development mode
 
 **Solution**:
+
 1. Check `.env` file exists in project root
 2. Verify environment variable names:
    - `VITE_SUPABASE_URL`
@@ -718,11 +752,13 @@ Verify in Supabase Dashboard:
 **Symptom**: Contact form shows error after submission
 
 **Possible causes:**
+
 1. **RLS Policy Issue**: Ensure anonymous inserts are allowed
 2. **Network Issue**: Check Supabase project status
 3. **Invalid Data**: Check browser console for validation errors
 
 **Debug steps:**
+
 ```typescript
 // Add logging in src/pages/Contact.tsx
 console.log('Supabase client:', supabase);
@@ -822,6 +858,7 @@ const { data } = await supabase
 ## Questions?
 
 If you encounter issues not covered here:
+
 1. Check the [Supabase Discord](https://discord.supabase.com)
 2. Review `src/lib/contactLead.ts` for implementation details
 3. Check `src/lib/contactLead.test.ts` for usage examples

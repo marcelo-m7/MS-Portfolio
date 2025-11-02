@@ -5,6 +5,7 @@ This Edge Function sends contact form submissions via email when database persis
 ## Purpose
 
 When a user submits the contact form on MS-Portfolio:
+
 1. **Primary**: Direct insert into `public.leads` table (Supabase database)
 2. **Fallback**: If database insert fails → call this Edge Function to send email
 
@@ -25,7 +26,7 @@ CONTACT_EMAIL_TO=marcelo@monynha.com
 
 ### Getting a Resend API Key
 
-1. Sign up at https://resend.com (free tier: 3,000 emails/month)
+1. Sign up at <https://resend.com> (free tier: 3,000 emails/month)
 2. Verify your sending domain or use Resend's test domain
 3. Generate an API key from Dashboard → API Keys
 4. Add the key to Supabase secrets
@@ -53,6 +54,7 @@ Body:
 ## Response Format
 
 ### Success (200)
+
 ```json
 {
   "success": true,
@@ -62,6 +64,7 @@ Body:
 ```
 
 ### Error (400/500)
+
 ```json
 {
   "success": false,
@@ -113,6 +116,7 @@ supabase functions deploy send-contact-email
 ## Email Template
 
 The function sends a beautifully formatted HTML email with:
+
 - Gradient header with portfolio branding
 - All form fields clearly displayed
 - Reply-to set to submitter's email
@@ -140,6 +144,7 @@ const result = await submitContactLead(
 ## Monitoring
 
 View function logs in Supabase Dashboard:
+
 - Dashboard → Edge Functions → send-contact-email → Logs
 - Check invocation count, errors, and execution time
 

@@ -26,12 +26,12 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.4 }}
-      className="group"
+      className="group h-full flex flex-col"
     >
-      <div className="rounded-2xl border border-border/70 bg-card/90 overflow-hidden shadow-md transition-shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-lg">
+      <div className="rounded-2xl border border-border/70 bg-card/90 overflow-hidden shadow-md transition-shadow focus-within:outline-none focus-within:ring-2 focus-within:ring-secondary focus-within:ring-offset-2 focus-within:ring-offset-background group-hover:shadow-lg flex flex-col h-full">
         <MotionLink
           to={`/art/${artwork.slug}`}
-          className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background flex-1 flex flex-col"
           style={{ transformStyle: 'preserve-3d' }}
           whileHover={
             prefersReducedMotion
@@ -41,7 +41,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
           whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
           transition={{ type: 'spring', stiffness: 200, damping: 22 }}
         >
-          <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20">
+          <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 flex-none">
             <motion.img
               src={artwork.media?.[0]}
               width={640}
@@ -60,21 +60,21 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
             </div>
           </div>
 
-          <div className="p-6 flex flex-col gap-4">
-            <div className="flex items-start justify-between mb-3">
-              <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors">
+          <div className="p-6 flex flex-col gap-4 flex-1">
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <h3 className="text-2xl font-display font-bold group-hover:text-primary transition-colors flex-1 min-w-0 line-clamp-2">
                 {artwork.title}
               </h3>
-              <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground whitespace-nowrap ml-2">
+              <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground whitespace-nowrap flex-none">
                 Arte Digital
               </span>
             </div>
 
-            <p className="text-muted-foreground flex-1 text-sm leading-relaxed">
+            <p className="text-muted-foreground flex-1 text-sm leading-relaxed line-clamp-3">
               {artwork.description}
             </p>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mt-auto">
               {artwork.materials.map((material: string) => (
                 <span
                   key={material}
@@ -87,7 +87,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
           </div>
         </MotionLink>
         {artwork.url3d && (
-          <div className="p-6 pt-0">
+          <div className="p-6 pt-0 flex-none">
             <a
               href={artwork.url3d}
               target="_blank"

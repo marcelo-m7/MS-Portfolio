@@ -11,6 +11,7 @@ import {
 } from "./lib/language";
 import type { SupportedLanguage } from "./lib/language";
 import Layout from "./components/Layout"; // Import the new Layout component
+import { ErrorBoundary } from "./components/ErrorBoundary"; // Import ErrorBoundary
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
@@ -51,30 +52,32 @@ const App = () => {
       <TooltipProvider>
         <Sonner />
         <BrowserRouter>
-          <Suspense
-            fallback={
-              <div className="flex min-h-[50vh] items-center justify-center">
-                <span className="animate-pulse text-sm text-muted-foreground">
-                  Carregando…
-                </span>
-              </div>
-            }
-          >
-            <Routes>
-              <Route path="/" element={<Layout />}> {/* Use Layout as the parent route */}
-                <Route index element={<Home />} />
-                <Route path="portfolio" element={<Portfolio />} />
-                <Route path="portfolio/:slug" element={<ProjectDetail />} /> {/* New route for project details */}
-                <Route path="about" element={<About />} />
-                <Route path="thoughts" element={<Thoughts />} />
-                <Route path="thoughts/:slug" element={<ThoughtDetail />} />
-                <Route path="series/:slug" element={<SeriesDetail />} />
-                <Route path="art/:slug" element={<ArtDetail />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense
+              fallback={
+                <div className="flex min-h-[50vh] items-center justify-center">
+                  <span className="animate-pulse text-sm text-muted-foreground">
+                    Carregando…
+                  </span>
+                </div>
+              }
+            >
+              <Routes>
+                <Route path="/" element={<Layout />}> {/* Use Layout as the parent route */}
+                  <Route index element={<Home />} />
+                  <Route path="portfolio" element={<Portfolio />} />
+                  <Route path="portfolio/:slug" element={<ProjectDetail />} /> {/* New route for project details */}
+                  <Route path="about" element={<About />} />
+                  <Route path="thoughts" element={<Thoughts />} />
+                  <Route path="thoughts/:slug" element={<ThoughtDetail />} />
+                  <Route path="series/:slug" element={<SeriesDetail />} />
+                  <Route path="art/:slug" element={<ArtDetail />} />
+                  <Route path="contact" element={<Contact />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </Suspense>
+          </ErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

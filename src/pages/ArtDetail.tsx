@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Maximize2, Orbit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingArtDetail } from '@/components/LoadingStates';
 import { useArtwork } from '@/hooks/usePortfolioData';
 import {
   Dialog,
@@ -49,28 +49,7 @@ export default function ArtDetail() {
   };
 
   if (isLoading) {
-    return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-4xl">
-          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-md backdrop-blur-xl">
-            <Skeleton className="h-10 w-48 rounded-full mb-8" />
-            <div className="space-y-4 mb-8">
-              <Skeleton className="h-8 w-3/4" />
-              <div className="flex gap-3">
-                <Skeleton className="h-6 w-24 rounded-full" />
-                <Skeleton className="h-6 w-32 rounded-full" />
-              </div>
-            </div>
-            <Skeleton className="h-96 w-full rounded-lg mb-6" />
-            <Skeleton className="h-32 w-full mb-6" />
-            <div className="grid grid-cols-2 gap-4">
-              <Skeleton className="h-24 w-full rounded-lg" />
-              <Skeleton className="h-24 w-full rounded-lg" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingArtDetail />;
   }
 
   if (!artwork) {

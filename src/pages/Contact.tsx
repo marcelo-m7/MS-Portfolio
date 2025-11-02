@@ -9,6 +9,7 @@ import { useContact } from '@/hooks/usePortfolioData';
 import { LINKS } from '../lib/siteLinks';
 import { submitContactLead } from '@/lib/contactLead';
 import { supabase } from '@/lib/supabaseClient';
+import { logger } from '@/lib/logger';
 import type { ContactLeadPayload } from '@/lib/contactLead';
 
 const createInitialFormState = (): ContactLeadPayload => ({
@@ -55,14 +56,10 @@ export default function Contact() {
           );
 
           if (error) {
-            if (import.meta.env.DEV) {
-              console.error(
-                'Falha ao enviar email de fallback. Motivo original:',
-                reason,
-                'Erro do fallback:',
-                error,
-              );
-            }
+            logger.error('Falha ao enviar email de fallback', {
+              component: 'Contact',
+              metadata: { originalReason: reason }
+            }, error);
             throw error;
           }
         },
@@ -75,9 +72,7 @@ export default function Contact() {
       );
       setFormData(createInitialFormState());
     } catch (error) {
-      if (import.meta.env.DEV) {
-        console.error('Erro ao processar mensagem de contato:', error);
-      }
+      logger.error('Erro ao processar mensagem de contato', { component: 'Contact' }, error);
       toast.error(contactInfo?.error_message || 'Não foi possível enviar sua mensagem. Tente novamente.');
     } finally {
       setIsSubmitting(false);

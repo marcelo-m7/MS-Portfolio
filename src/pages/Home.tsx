@@ -168,7 +168,7 @@ export default function Home() {
 
       {/* Featured Projects */}
       <section className="py-24 px-6">
-        <div className="container mx-auto">
+        <div className="container mx-auto max-w-7xl">
           <motion.div
             initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
             whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -176,15 +176,15 @@ export default function Home() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
               Projetos em Destaque
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Seleção dos melhores trabalhos do ecossistema Monynha
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
             {loadingProjects
               ? Array.from({ length: 3 }).map((_, i) => (
                   <Skeleton key={i} className="h-40 w-full rounded-2xl" />

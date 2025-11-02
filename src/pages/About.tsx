@@ -1,7 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { MapPin, Briefcase, Award } from 'lucide-react';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useProfile, useExperience, useSkills } from '@/hooks/usePortfolioData';
+import { 
+  LoadingProfile, 
+  LoadingExperience, 
+  LoadingSkills 
+} from '@/components/LoadingStates';
 
 export default function About() {
   const prefersReducedMotion = useReducedMotion();
@@ -10,7 +14,7 @@ export default function About() {
   const { data: skills = [], isLoading: isLoadingSkills } = useSkills();
 
   return (
-    <div className="px-6">
+    <div className="py-8 px-6">
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -18,10 +22,10 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
             Sobre Mim
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-muted-foreground leading-relaxed">
             Conheça a história e experiência
           </p>
         </motion.div>
@@ -34,15 +38,7 @@ export default function About() {
           className="glass mb-12 p-8 md:p-12"
         >
           {isLoadingProfile ? (
-            <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
-              <Skeleton className="h-32 w-32 shrink-0 rounded-2xl" />
-              <div className="flex-1 space-y-4 text-center md:text-left w-full">
-                <Skeleton className="h-9 w-64 mx-auto md:mx-0" />
-                <Skeleton className="h-6 w-48 mx-auto md:mx-0" />
-                <Skeleton className="h-5 w-40 mx-auto md:mx-0" />
-                <Skeleton className="h-20 w-full" />
-              </div>
-            </div>
+            <LoadingProfile />
           ) : profile ? (
             <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
               <div className="relative h-32 w-32 shrink-0 rounded-2xl bg-gradient-to-br from-primary via-secondary to-accent p-1 shadow-md">
@@ -87,25 +83,7 @@ export default function About() {
           </div>
           
           {isLoadingExperience ? (
-            <div className="space-y-6">
-              {Array.from({ length: 2 }).map((_, i) => (
-                <div key={i} className="glass p-6 space-y-4">
-                  <div className="flex flex-col md:flex-row md:items-start md:justify-between">
-                    <div className="space-y-2">
-                      <Skeleton className="h-6 w-48" />
-                      <Skeleton className="h-5 w-40" />
-                      <Skeleton className="h-4 w-32" />
-                    </div>
-                    <Skeleton className="h-4 w-32 mt-2 md:mt-0" />
-                  </div>
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                  </div>
-                </div>
-              ))}
-            </div>
+            <LoadingExperience count={2} />
           ) : (
             <div className="space-y-6">
               {experience.map((exp, index) => (
@@ -161,17 +139,7 @@ export default function About() {
           </div>
           
           {isLoadingSkills ? (
-            <div className="grid md:grid-cols-2 gap-4">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="glass flex items-center justify-between p-4">
-                  <div className="space-y-2">
-                    <Skeleton className="h-5 w-32" />
-                    <Skeleton className="h-4 w-24" />
-                  </div>
-                  <Skeleton className="h-6 w-20 rounded-full" />
-                </div>
-              ))}
-            </div>
+            <LoadingSkills count={6} />
           ) : (
             <div className="grid md:grid-cols-2 gap-4">
               {skills.map((skill, index) => (

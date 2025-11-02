@@ -1,12 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { Tables as DBTables } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
 import SeriesCard from '@/components/SeriesCard';
+import { LoadingPortfolioGrid } from '@/components/LoadingStates';
 
 type CVProject = {
   slug: string;
@@ -168,18 +168,18 @@ export default function Portfolio() {
   }, [artworks, filter, projects, seriesEntries]);
 
   return (
-    <div className="px-6">
-      <div className="container mx-auto max-w-6xl">
+    <div className="px-6 py-8">
+      <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
             Portfolio
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             Projetos, arte digital e séries criativas do ecossistema Monynha
           </p>
         </motion.div>
@@ -189,7 +189,7 @@ export default function Portfolio() {
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 10 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="flex flex-wrap gap-3 justify-center mb-12"
+          className="flex flex-wrap gap-3 justify-center mb-16"
         >
           {categories.map((category) => (
             <Button
@@ -208,35 +208,37 @@ export default function Portfolio() {
         </motion.div>
 
         {/* Dynamic Content Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {(loadingProjects || loadingArtworks || loadingSeries) &&
-            Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={`s-${i}`} className="h-80 w-full rounded-2xl" />
-            ))}
-          {!loadingProjects && !loadingArtworks && !loadingSeries && filteredItems.map((item, index) => {
-            if (item.type === 'project') {
-              return <ProjectCard key={`project-${item.slug}`} project={item} index={index} />;
-            }
-            if (item.type === 'artwork') {
-              return <ArtworkCard key={`artwork-${item.slug}`} artwork={item} index={index} />;
-            }
-            if (item.type === 'series') {
-              return <SeriesCard key={`series-${item.slug}`} series={item} index={index} />;
-            }
-            return null;
-          })}
-        </div>
+        {(loadingProjects || loadingArtworks || loadingSeries) ? (
+          <LoadingPortfolioGrid count={6} />
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+              {filteredItems.map((item, index) => {
+                if (item.type === 'project') {
+                  return <ProjectCard key={`project-${item.slug}`} project={item} index={index} />;
+                }
+                if (item.type === 'artwork') {
+                  return <ArtworkCard key={`artwork-${item.slug}`} artwork={item} index={index} />;
+                }
+                if (item.type === 'series') {
+                  return <SeriesCard key={`series-${item.slug}`} series={item} index={index} />;
+                }
+                return null;
+              })}
+            </div>
 
-        {filteredItems.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <p className="text-muted-foreground text-lg">
-              Nenhum item encontrado nesta categoria.
-            </p>
-          </motion.div>
+            {filteredItems.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-16"
+              >
+                <p className="text-muted-foreground text-lg">
+                  Nenhum item encontrado nesta categoria.
+                </p>
+              </motion.div>
+            )}
+          </>
         )}
       </div>
     </div>
