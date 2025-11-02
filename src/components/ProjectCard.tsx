@@ -151,7 +151,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="mt-auto flex flex-wrap items-center gap-3 border-t border-border/60 bg-background/50 flex-none">
+      <CardFooter className="mt-auto flex flex-wrap items-center justify-center gap-3 border-t border-border/60 bg-background/50 flex-none">
         <Button
           variant="outline"
           size="sm"

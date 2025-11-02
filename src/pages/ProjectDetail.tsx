@@ -249,7 +249,7 @@ export default function ProjectDetail() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3 pt-2">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
               <Button
                 asChild
                 variant="outline"
