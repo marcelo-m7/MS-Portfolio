@@ -194,9 +194,12 @@ export default function ProjectDetail() {
                 alt={`Thumbnail do projeto ${dbProject.name}`}
                 loading="lazy"
                 decoding="async"
-                width={1280}
-                height={720}
-                className="h-auto w-full object-cover"
+                className="h-auto w-full object-contain"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  console.error(`Failed to load project thumbnail: ${dbProject.thumbnail}`);
+                  target.style.display = 'none';
+                }}
               />
             </motion.div>
           )}

@@ -53,15 +53,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       className="group flex flex-col h-full overflow-hidden border-border/70 bg-card/90 shadow-md backdrop-blur"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
-        <motion.img
+        <img
           src={project.thumbnail}
-          width={640}
-          height={360}
           loading="lazy"
           decoding="async"
           alt={`Thumbnail do projeto ${project.name}`}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-          whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
+          className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            console.error(`Failed to load image: ${project.thumbnail}`);
+            target.style.display = 'none';
+          }}
         />
         <div className="absolute top-4 right-4 flex gap-2">
           <Badge

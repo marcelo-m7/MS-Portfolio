@@ -42,16 +42,17 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
           transition={{ type: 'spring', stiffness: 200, damping: 22 }}
         >
           <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-primary/20 via-secondary/15 to-accent/20 flex-none">
-            <motion.img
+            <img
               src={artwork.media?.[0]}
-              width={640}
-              height={360}
               loading="lazy"
               decoding="async"
               alt={`${artwork.title} – Arte Digital`}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              transition={{ duration: 0.3 }}
+              className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                console.error(`Failed to load artwork image: ${artwork.media?.[0]}`);
+                target.style.display = 'none';
+              }}
             />
             <div className="absolute top-4 right-4">
               <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs font-medium">

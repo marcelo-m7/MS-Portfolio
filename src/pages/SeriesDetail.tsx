@@ -164,9 +164,12 @@ export default function SeriesDetail() {
                         alt={`Arte ${work.title}`}
                         loading="lazy"
                         decoding="async"
-                        width={640}
-                        height={360}
-                        className="h-40 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="h-40 w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          console.error(`Failed to load thumbnail: ${work.thumbnail}`);
+                          target.style.display = 'none';
+                        }}
                       />
                     </div>
                   )}

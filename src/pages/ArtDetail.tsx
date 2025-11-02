@@ -131,16 +131,17 @@ export default function ArtDetail() {
                 whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
                 whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
               >
-                <MotionImg
+                <img
                   src={media}
                   alt={`${artwork.title} — visual ${index + 1}`}
                   loading="lazy"
                   decoding="async"
-                  width={640}
-                  height={360}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
+                  className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    console.error(`Failed to load media: ${media}`);
+                    target.style.display = 'none';
+                  }}
                 />
                 <div className="pointer-events-none absolute inset-0 flex items-end justify-end bg-gradient-to-t from-background/70 via-background/20 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground">
