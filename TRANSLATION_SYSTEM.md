@@ -1,13 +1,13 @@
 # Automatic Translation System
 
-This portfolio implements an automatic translation mechanism that uses Google Translate API in the background to translate dynamic content while providing instant UI updates.
+This portfolio implements an automatic translation mechanism that uses **Google Translate's free web service** in the background to translate dynamic content while providing instant UI updates.
 
 ## Overview
 
 The translation system has two layers:
 
 1. **Static UI Translations** - Pre-translated UI elements (navigation, buttons, labels) in `src/lib/translations.ts`
-2. **Dynamic Content Translation** - Automatic translation of content from `cv.json` (projects, bio, thoughts) using Google Translate API
+2. **Dynamic Content Translation** - Automatic translation of content from `cv.json` (projects, bio, thoughts) using **Google Translate's free web endpoint** (no API key required)
 
 ## Supported Languages
 
@@ -41,7 +41,7 @@ function MyComponent() {
 
 ### 3. Dynamic Content Translation (Background)
 
-Content from `cv.json` is automatically translated using Google Translate API:
+Content from `cv.json` is automatically translated using Google Translate's free web service:
 
 ```typescript
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
@@ -54,48 +54,43 @@ function ProfileComponent({ profile }) {
 
 **Process:**
 1. Component initially shows Portuguese content (source language)
-2. Translation service makes API call in background
+2. Translation service makes request to Google Translate's free endpoint in background
 3. Content updates smoothly when translation completes
 4. Result is cached in localStorage for instant re-use
 5. No visible loading states or flickering
+6. **No API key required** - uses Google's free web interface
 
 ### 4. Caching Strategy
 
 - Translations are cached in localStorage with key `monynha-translate-cache`
-- Cache version: `1.0` (automatic invalidation on version change)
-- Structure: `sourceText::targetLang` → `translatedText`
-- Prevents redundant API calls
+- Cache version: `2.0` (automatic invalidation on version change)
+- Structure: `cacheKey` → `translatedText`
+- Prevents redundant requests
 - Persists across sessions and page reloads
 
 ### 5. Request Deduplication
 
 If multiple components request translation of the same text simultaneously:
-- Only ONE API call is made
+- Only ONE request is made
 - All components receive the same result
-- Prevents API quota waste
+- Prevents unnecessary network traffic
 
 ## Configuration
 
-### Google Translate API Key
+### No API Key Required! 🎉
 
-Add your API key to `.env`:
+The translation system now uses **Google Translate's free web endpoint** - no API key setup needed!
 
-```bash
-VITE_GOOGLE_TRANSLATE_API_KEY=your_api_key_here
-```
-
-**How to get an API key:**
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing
-3. Enable "Cloud Translation API"
-4. Go to "Credentials" → "Create Credentials" → "API Key"
-5. Copy the key to your `.env` file
+**How it works:**
+- Uses the same endpoint as Google Translate Extension (`client=gtx`)
+- Makes simple GET requests to `translate.googleapis.com/translate_a/single`
+- Completely free and unlimited (subject to Google's fair use)
+- No authentication or credentials required
 
 **Graceful Degradation:**
-- If no API key is configured, the app works normally
-- Content displays in Portuguese (source language)
+- If Google's service is unavailable, content displays in Portuguese (source language)
 - No errors or broken functionality
-- Console warning: "Google Translate API key not configured"
+- Console warning: "Translation failed" (only in dev mode)
 
 ## SEO & Accessibility
 
@@ -166,7 +161,7 @@ const translatedProject = useTranslatedObject(
 ```typescript
 import { translationService } from '@/lib/translateService';
 
-// Check if API is configured
+// Check if service is available (always true now - no API key needed!)
 translationService.isAvailable(); // boolean
 
 // Clear cache
@@ -179,7 +174,7 @@ await translationService.translate({
   sourceLang: 'en'
 });
 
-// Translate batch
+// Translate batch (uses concurrent requests)
 await translationService.translateBatch(
   ['Hello', 'World'],
   'pt',
@@ -197,18 +192,21 @@ npm run test
 
 Tests verify:
 - ✅ Same-language translations return immediately
-- ✅ API calls are made with correct parameters
+- ✅ Requests are made with correct parameters
 - ✅ Translations are cached properly
 - ✅ Errors are handled gracefully
 - ✅ Pending requests are deduplicated
+- ✅ Free service is always available (no API key check)
 
 ## Performance
 
 - **Initial load**: UI in Portuguese, instant
 - **Language switch**: UI updates instantly, content translates in background
 - **Subsequent switches**: Instant from cache
-- **API quota**: Minimal usage due to caching and deduplication
+- **Network usage**: Minimal, only uncached content (~0.5-1KB per translation)
 - **Bundle size**: ~3KB for translation service (gzipped)
+- **No API quota limits**: Free Google Translate web endpoint
+- **No authentication overhead**: Direct HTTP requests
 
 ## Validation Steps
 

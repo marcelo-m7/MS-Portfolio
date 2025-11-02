@@ -10,7 +10,7 @@ Vite + React + TypeScript portfolio site with Tailwind, shadcn/ui, React Router 
 - `public/data/cv.json` — **single source of truth** for all content (projects, artworks, series, thoughts)
 - `src/lib/language.ts` — language system broadcasting `monynha:languagechange` custom events
 - `src/lib/translations.ts` — static UI translations (nav, buttons, labels) for 4 languages
-- `src/lib/translateService.ts` — Google Translate API integration for dynamic content
+- `src/lib/translateService.ts` — **Free Google Translate web endpoint** integration (no API key required)
 - `src/lib/supabaseClient.ts` + `src/lib/contactLead.ts` — Supabase integration with graceful undefined handling
 - `src/lib/logger.ts` — structured logging (suppresses log/info in production, preserves warn/error)
 
@@ -37,9 +37,9 @@ Vite + React + TypeScript portfolio site with Tailwind, shadcn/ui, React Router 
 - **Supported**: `['pt', 'en', 'es', 'fr']` (Portuguese, English, Spanish, French)
 - **Two-layer translation**:
   1. **Static UI** (`src/lib/translations.ts`): Pre-translated nav/buttons/labels via `useTranslations()` hook
-  2. **Dynamic content** (`src/lib/translateService.ts`): Auto-translates `cv.json` content via Google Translate API in background
-- **Caching**: Translations stored in localStorage (`monynha-translate-cache`) with version `1.0`
-- **Request deduplication**: Multiple components requesting same text → single API call
+  2. **Dynamic content** (`src/lib/translateService.ts`): Auto-translates `cv.json` content via **Google Translate's free web endpoint** (no API key required)
+- **Caching**: Translations stored in localStorage (`monynha-translate-cache`) with version `2.0`
+- **Request deduplication**: Multiple components requesting same text → single request
 
 Example usage:
 ```typescript

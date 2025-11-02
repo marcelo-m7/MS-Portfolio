@@ -70,8 +70,8 @@ class TranslationService {
   }
 
   /**
-   * Translate text using Google Translate API
-   * Returns cached translation if available, otherwise makes API call
+   * Translate text using Google Translate Free Web Service
+   * Returns cached translation if available, otherwise makes request
    */
   async translate({
     text,
@@ -89,11 +89,6 @@ class TranslationService {
       return cached;
     }
 
-    // Return original if no API key
-    if (!this.apiKey) {
-      return text;
-    }
-
     // Check if there's already a pending request for this translation
     const requestKey = this.getCacheKey(text, targetLang);
     const pending = this.pendingRequests.get(requestKey);
@@ -101,7 +96,7 @@ class TranslationService {
       return pending;
     }
 
-    // Make API call
+    // Make translation request
     const translationPromise = this.fetchTranslation(text, targetLang, sourceLang);
     this.pendingRequests.set(requestKey, translationPromise);
 
@@ -123,27 +118,44 @@ class TranslationService {
     targetLang: string,
     sourceLang: string
   ): Promise<string> {
-    const url = `${API_ENDPOINT}?key=${this.apiKey!}`;
+    // Build URL with query parameters for Google Translate free endpoint
+    const params = new URLSearchParams({
+      client: 'gtx',           // Google Translate Extension client
+      sl: sourceLang,          // Source language
+      tl: targetLang,          // Target language
+      dt: 't',                 // Return translation
+      q: text,                 // Text to translate
+    });
+    
+    const url = `${TRANSLATE_ENDPOINT}?${params.toString()}`;
     
     const response = await fetch(url, {
-      method: 'POST',
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
-      body: JSON.stringify({
-        q: text,
-        target: targetLang,
-        source: sourceLang,
-        format: 'text',
-      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Translation API error: ${response.status} ${response.statusText}`);
+      throw new Error(`Translation request failed: ${response.status} ${response.statusText}`);
     }
 
-    const data = (await response.json()) as TranslateResponse;
-    return data.data.translations[0]?.translatedText || text;
+    const data = await response.json();
+    
+    // Parse the response structure from Google Translate free API
+    // Response format: [[[translated_text, original_text, null, null, confidence], ...], ...]
+    if (Array.isArray(data) && data[0] && Array.isArray(data[0])) {
+      const translations = data[0]
+        .filter((item: unknown[]) => Array.isArray(item) && item[0])
+        .map((item: unknown[]) => item[0] as string);
+      
+      if (translations.length > 0) {
+        return translations.join('');
+      }
+    }
+    
+    // Fallback to original text if parsing fails
+    return text;
   }
 
   /**
@@ -172,8 +184,9 @@ class TranslationService {
       }
     }
 
-    // Translate remaining texts
-    if (textsToTranslate.length > 0 && this.apiKey) {
+    // Translate remaining texts one by one
+    // (Free endpoint doesn't support batch, but we can do it concurrently)
+    if (textsToTranslate.length > 0) {
       try {
         const translations = await Promise.all(
           textsToTranslate.map(({ text }) =>
@@ -192,11 +205,6 @@ class TranslationService {
           results[index] = results[index] || text;
         });
       }
-    } else if (textsToTranslate.length > 0) {
-      // No API key, use original texts
-      textsToTranslate.forEach(({ text, index }) => {
-        results[index] = text;
-      });
     }
 
     return results;
@@ -212,9 +220,10 @@ class TranslationService {
 
   /**
    * Check if translation service is available
+   * Free service is always available (no API key needed)
    */
   isAvailable(): boolean {
-    return this.apiKey !== null;
+    return true;
   }
 }
 
