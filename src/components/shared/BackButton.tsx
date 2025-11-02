@@ -26,7 +26,7 @@ export default function BackButton({ to, label }: BackButtonProps) {
     <MotionButton
       asChild
       variant="ghost"
-      className="mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
+      className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
       whileHover={prefersReducedMotion ? undefined : { x: -5 }}
       whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
