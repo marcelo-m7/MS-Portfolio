@@ -19,30 +19,20 @@ import {
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
 import { GitHubStats } from '@/components/GitHubStats';
+import type { PortfolioProject } from '@/lib/api/transformers';
 
 const MotionCard = motion(Card);
 
 interface ProjectCardProps {
-  project: {
-    slug: string;
-    name: string;
-    summary: string;
-    stack: string[];
-    url?: string | null;
-    domain?: string | null;
-    repoUrl: string;
-    thumbnail: string;
-    category: string;
-    status?: string;
-    visibility?: string;
-    year: number;
-  };
+  project: PortfolioProject;
   index: number;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
   const prefersReducedMotion = useReducedMotion();
-  const liveLink = project.url ?? undefined;
+  const liveLink = project.liveDemoUrl ?? undefined;
+  const thumbnail = project.thumbnail ?? '';
+  const category = project.category ?? 'Projeto';
 
   return (
     <MotionCard
@@ -54,12 +44,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
         <motion.img
-          src={project.thumbnail}
+          src={thumbnail}
           width={640}
           height={360}
           loading="lazy"
           decoding="async"
-          alt={`Thumbnail do projeto ${project.name}`}
+          alt={`Thumbnail do projeto ${project.title}`}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           whileHover={prefersReducedMotion ? undefined : { scale: 1.04 }}
         />
@@ -68,7 +58,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             variant="outline"
             className="border-border/70 bg-background/70 px-3 py-1 text-xs font-semibold tracking-wide uppercase"
           >
-            {project.year}
+            {project.year ?? '—'}
           </Badge>
         </div>
       </div>
@@ -78,11 +68,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           <div className="flex-1">
             <Link
               to={`/portfolio/${project.slug}`}
-              aria-label={`Abrir detalhes do projeto ${project.name}`}
+              aria-label={`Abrir detalhes do projeto ${project.title}`}
               className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <CardTitle className="font-display text-2xl font-semibold transition-colors group-hover:text-primary">
-                {project.name}
+                {project.title}
               </CardTitle>
             </Link>
           </div>
@@ -90,7 +80,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             variant="outline"
             className="border-secondary/60 bg-secondary/15 text-xs font-medium text-secondary"
           >
-            {project.category}
+            {category}
           </Badge>
         </div>
 
@@ -124,10 +114,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
       <CardContent className="flex flex-col gap-4 pt-0">
         <Separator className="bg-border/70" />
-        
+
         {/* GitHub Stats */}
-        <GitHubStats repoUrl={project.repoUrl} compact />
-        
+        <GitHubStats repoUrl={project.githubUrl} compact />
+
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground/80">
           <span className="inline-flex items-center gap-2">
             <Globe className="h-4 w-4 text-secondary" aria-hidden />
@@ -135,12 +125,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
           </span>
           <span className="inline-flex items-center gap-2">
             <Layers className="h-4 w-4 text-primary" aria-hidden />
-            {project.category}
+            {category}
           </span>
         </div>
 
         <div className="flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
+          {project.technologies.map((tech) => (
             <span
               key={tech}
               className="rounded-xl border border-border/60 bg-background/70 px-3 py-1 text-[0.7rem] font-medium text-foreground/85"
@@ -152,23 +142,25 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       </CardContent>
 
       <CardFooter className="mt-auto flex flex-wrap items-center gap-3 border-t border-border/60 bg-background/50">
-        <Button
-          variant="outline"
-          size="sm"
-          asChild
-          className="border-border/70 text-xs font-semibold"
-        >
-          <a
-            href={project.repoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Acessar repositório ${project.name} no GitHub`}
-            className="inline-flex items-center gap-2"
+        {project.githubUrl && (
+          <Button
+            variant="outline"
+            size="sm"
+            asChild
+            className="border-border/70 text-xs font-semibold"
           >
-            <Github className="h-4 w-4" aria-hidden />
-            Ver Repositório
-          </a>
-        </Button>
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Acessar repositório ${project.title} no GitHub`}
+              className="inline-flex items-center gap-2"
+            >
+              <Github className="h-4 w-4" aria-hidden />
+              Ver Repositório
+            </a>
+          </Button>
+        )}
 
         {liveLink && (
           <Button
@@ -177,13 +169,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
             asChild
             className="border border-secondary/40 text-xs font-semibold"
           >
-            <a
-              href={liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Visitar domínio de ${project.name}`}
-              className="inline-flex items-center gap-2"
-            >
+              <a
+                href={liveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Visitar domínio de ${project.title}`}
+                className="inline-flex items-center gap-2"
+              >
               <ExternalLink className="h-4 w-4" aria-hidden />
               Acessar Online
             </a>

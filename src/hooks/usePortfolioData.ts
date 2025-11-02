@@ -11,7 +11,7 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   fetchProjects,
-  fetchProjectBySlug,
+  fetchProjectData,
   fetchArtworks,
   fetchArtworkBySlug,
   fetchSeries,
@@ -24,6 +24,10 @@ import {
   fetchSkills,
   fetchTechnologies,
 } from '@/lib/api/queries';
+import {
+  mapCvProjectToPortfolioProject,
+  type CvProjectLike,
+} from '@/lib/api/transformers';
 
 // Fallback to cv.json when Supabase is unavailable
 let cvData: Record<string, unknown> | null = null;
@@ -49,11 +53,14 @@ export function useProjects() {
     queryKey: ['projects'],
     queryFn: async () => {
       const dbData = await fetchProjects();
-      if (dbData) return dbData;
-      
+      if (dbData && dbData.length > 0) return dbData;
+
       // Fallback to cv.json
       const cv = await loadCvData();
-      return cv.projects || [];
+      const projects = Array.isArray(cv.projects)
+        ? (cv.projects as CvProjectLike[]).map(mapCvProjectToPortfolioProject)
+        : [];
+      return projects;
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -68,8 +75,8 @@ export function useProject(slug: string | undefined) {
     queryKey: ['project', slug],
     queryFn: async () => {
       if (!slug) return null;
-      
-      const dbData = await fetchProjectBySlug(slug);
+
+      const dbData = await fetchProjectData({ slug });
       // Return data from Supabase (no JSON fallback)
       return dbData;
     },

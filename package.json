@@ -23,7 +23,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "sync:portfolio": "node ./scripts/sync-portfolio-projects.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

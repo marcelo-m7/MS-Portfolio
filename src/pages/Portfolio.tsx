@@ -7,22 +7,7 @@ import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
 import SeriesCard from '@/components/SeriesCard';
-
-type CVProject = {
-  slug: string;
-  name: string;
-  summary: string;
-  stack: string[];
-  url?: string | null;
-  domain?: string | null;
-  repoUrl: string;
-  thumbnail: string;
-  category: string;
-  status?: string;
-  visibility?: string;
-  year: number;
-  fullDescription?: string;
-};
+import type { PortfolioProject } from '@/lib/api/transformers';
 
 type CVArtwork = {
   slug: string;
@@ -42,7 +27,7 @@ type CVSeries = {
 };
 
 type PortfolioEntry =
-  | (CVProject & { type: 'project' })
+  | (PortfolioProject & { type: 'project' })
   | (CVArtwork & { type: 'artwork' })
   | (CVSeries & { type: 'series' });
 
@@ -53,26 +38,8 @@ export default function Portfolio() {
   const { data: dbArtworks, isLoading: loadingArtworks } = useArtworks();
   const { data: dbSeries, isLoading: loadingSeries } = useSeries();
 
-  // Map DB-shaped data to the UI shapes expected by the existing cards
-  type DBProject = DBTables<'projects'> & {
-    technologies?: Array<{ name: string | null; category: string | null }>;
-  };
-  const projects = useMemo<CVProject[]>(() => {
-    return (dbProjects as DBProject[] | undefined ?? []).map((p) => ({
-      slug: p.slug,
-      name: p.name,
-      summary: p.summary,
-      stack: (p.technologies ?? []).map((t) => t?.name).filter(Boolean) as string[],
-      url: p.url ?? null,
-      domain: p.domain ?? null,
-      repoUrl: p.repo_url ?? '',
-      thumbnail: p.thumbnail ?? '',
-      category: p.category ?? 'Projeto',
-      status: p.status ?? undefined,
-      visibility: p.visibility ?? undefined,
-      year: p.year ?? 0,
-      fullDescription: p.full_description ?? undefined,
-    }));
+  const projects = useMemo<PortfolioProject[]>(() => {
+    return (dbProjects as PortfolioProject[] | undefined) ?? [];
   }, [dbProjects]);
 
   type DBArtwork = DBTables<'artworks'> & {
@@ -141,7 +108,7 @@ export default function Portfolio() {
   const categories = useMemo(() => {
     const base = [
       'Todos',
-      ...projects.map((p) => p.category),
+      ...projects.map((p) => p.category).filter((category): category is string => !!category),
       'Arte Digital',
       'Série Criativa',
     ];
@@ -149,7 +116,7 @@ export default function Portfolio() {
   }, [projects]);
 
   const filteredItems = useMemo<PortfolioEntry[]>(() => {
-    let items: Array<CVProject | CVArtwork | CVSeries> = [];
+    let items: Array<PortfolioProject | CVArtwork | CVSeries> = [];
     if (filter === 'Todos') {
       items = [...projects, ...artworks, ...seriesEntries];
     } else if (filter === 'Arte Digital') {

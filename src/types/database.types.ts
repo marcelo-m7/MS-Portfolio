@@ -286,6 +286,99 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_projects: {
+        Row: {
+          cached_at: string | null
+          category: string | null
+          created_at: string | null
+          description: string | null
+          domain: string | null
+          github_created_at: string | null
+          github_forks: number | null
+          github_last_push: string | null
+          github_open_issues: number | null
+          github_repo_full_name: string | null
+          github_repo_id: number | null
+          github_repo_name: string | null
+          github_stars: number | null
+          github_topics: string[] | null
+          github_updated_at: string | null
+          github_url: string | null
+          github_watchers: number | null
+          id: string | null
+          live_demo_url: string | null
+          slug: string | null
+          status: string | null
+          summary: string | null
+          technologies: string[] | null
+          thumbnail: string | null
+          title: string | null
+          updated_at: string | null
+          visibility: string | null
+          year: number | null
+        }
+        Insert: {
+          cached_at?: string | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          github_created_at?: string | null
+          github_forks?: number | null
+          github_last_push?: string | null
+          github_open_issues?: number | null
+          github_repo_full_name?: string | null
+          github_repo_id?: number | null
+          github_repo_name?: string | null
+          github_stars?: number | null
+          github_topics?: string[] | null
+          github_updated_at?: string | null
+          github_url?: string | null
+          github_watchers?: number | null
+          id?: string | null
+          live_demo_url?: string | null
+          slug?: string | null
+          status?: string | null
+          summary?: string | null
+          technologies?: string[] | null
+          thumbnail?: string | null
+          title?: string | null
+          updated_at?: string | null
+          visibility?: string | null
+          year?: number | null
+        }
+        Update: {
+          cached_at?: string | null
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          domain?: string | null
+          github_created_at?: string | null
+          github_forks?: number | null
+          github_last_push?: string | null
+          github_open_issues?: number | null
+          github_repo_full_name?: string | null
+          github_repo_id?: number | null
+          github_repo_name?: string | null
+          github_stars?: number | null
+          github_topics?: string[] | null
+          github_updated_at?: string | null
+          github_url?: string | null
+          github_watchers?: number | null
+          id?: string | null
+          live_demo_url?: string | null
+          slug?: string | null
+          status?: string | null
+          summary?: string | null
+          technologies?: string[] | null
+          thumbnail?: string | null
+          title?: string | null
+          updated_at?: string | null
+          visibility?: string | null
+          year?: number | null
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           category: string | null

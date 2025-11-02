@@ -10,6 +10,8 @@ import {
   Globe,
   Shield,
   GitBranch,
+  Star,
+  GitFork,
 } from 'lucide-react';
 import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -18,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Skeleton } from '@/components/ui/skeleton';
+import { GitHubStats } from '@/components/GitHubStats';
 import {
   languageToLocale,
   useCurrentLanguage,
@@ -27,6 +30,7 @@ import {
   getStatusBadgeClasses,
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
+import { formatRelativeTime, formatStarCount } from '@/lib/githubApi';
 
 const MotionButton = motion(Button);
 
@@ -56,7 +60,7 @@ export default function ProjectDetail() {
     if (typeof document === 'undefined' || !dbProject) return;
 
     const previousTitle = document.title;
-    document.title = `${dbProject.name} · Portfólio Monynha Softwares`;
+    document.title = `${dbProject.title} · Portfólio Monynha Softwares`;
 
     const descriptionSelector = 'meta[name="description"]';
     const existingMeta = document.querySelector<HTMLMetaElement>(
@@ -74,7 +78,7 @@ export default function ProjectDetail() {
 
     meta.setAttribute(
       'content',
-      `${dbProject.name} – ${dbProject.summary}`,
+      `${dbProject.title} – ${dbProject.summary}`,
     );
 
     return () => {
@@ -132,12 +136,29 @@ export default function ProjectDetail() {
     );
   }
 
-  const formattedYear = new Intl.DateTimeFormat(locale, {
-    year: 'numeric',
-  }).format(new Date(`${dbProject.year}-01-01`));
+  const formattedYear = dbProject.year
+    ? new Intl.DateTimeFormat(locale, {
+        year: 'numeric',
+      }).format(new Date(`${dbProject.year}-01-01`))
+    : '—';
 
-  const liveLink = dbProject.url ?? undefined;
-  const stack = (dbProject.technologies ?? []).map((t) => t.name).filter(Boolean) as string[];
+  const liveLink = dbProject.liveDemoUrl ?? undefined;
+  const stack = dbProject.technologies ?? [];
+  const cachedAt = dbProject.cachedAt ? new Date(dbProject.cachedAt) : null;
+  const cachedAtLabel = cachedAt
+    ? new Intl.DateTimeFormat(locale, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      }).format(cachedAt)
+    : null;
+  const githubLastPushLabel = dbProject.githubLastPush
+    ? formatRelativeTime(dbProject.githubLastPush)
+    : null;
+  const storedGithubStats = [
+    { icon: Star, label: 'Stars', value: dbProject.githubStars },
+    { icon: GitFork, label: 'Forks', value: dbProject.githubForks },
+    { icon: Github, label: 'Watchers', value: dbProject.githubWatchers },
+  ].filter((stat) => typeof stat.value === 'number');
 
   return (
     <div className="px-6">
@@ -173,7 +194,7 @@ export default function ProjectDetail() {
               </span>
               <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-sm font-medium normal-case">
                 <Layers className="h-4 w-4" aria-hidden />
-                {dbProject.category}
+                {dbProject.category ?? 'Projeto'}
               </span>
               {dbProject.status && (
                 <Badge
@@ -197,7 +218,7 @@ export default function ProjectDetail() {
               )}
             </div>
             <h1 className="text-4xl font-display font-semibold text-foreground">
-              {dbProject.name}
+              {dbProject.title}
             </h1>
             <p className="mt-4 text-lg text-muted-foreground/90">{dbProject.summary}</p>
           </motion.section>
@@ -210,7 +231,7 @@ export default function ProjectDetail() {
             >
               <img
                 src={dbProject.thumbnail}
-                alt={`Thumbnail do projeto ${dbProject.name}`}
+                alt={`Thumbnail do projeto ${dbProject.title}`}
                 loading="lazy"
                 decoding="async"
                 width={1280}
@@ -221,12 +242,12 @@ export default function ProjectDetail() {
           )}
 
           {/* Full Description */}
-          {dbProject.full_description && (
+          {dbProject.description && (
             <motion.article
               variants={itemVariants}
               className="mt-10 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground"
             >
-              <ReactMarkdown>{dbProject.full_description}</ReactMarkdown>
+              <ReactMarkdown>{dbProject.description}</ReactMarkdown>
             </motion.article>
           )}
 
@@ -247,7 +268,7 @@ export default function ProjectDetail() {
               </div>
               <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
                 <Layers className="h-4 w-4 text-primary" aria-hidden />
-                <span>{dbProject.category}</span>
+                <span>{dbProject.category ?? 'Projeto'}</span>
               </div>
             </div>
 
@@ -255,36 +276,83 @@ export default function ProjectDetail() {
 
             <div>
               <h2 className="text-2xl font-display font-bold mb-4">Tecnologias Utilizadas</h2>
-              <div className="flex flex-wrap gap-2">
-                {stack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
-                  >
-                    <Code2 className="h-3 w-3" aria-hidden />
-                    {tech}
-                  </span>
-                ))}
-              </div>
+              {stack.length > 0 ? (
+                <div className="flex flex-wrap gap-2">
+                  {stack.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
+                    >
+                      <Code2 className="h-3 w-3" aria-hidden />
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground/90">
+                  Stack em curadoria — acompanhe atualizações no repositório.
+                </p>
+              )}
             </div>
 
+            {dbProject.githubUrl && (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-2xl font-display font-bold">Atividade no GitHub</h2>
+                  <GitHubStats repoUrl={dbProject.githubUrl} />
+                </div>
+                {storedGithubStats.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {storedGithubStats.map(({ icon: Icon, label, value }) => (
+                      <span
+                        key={label}
+                        className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground"
+                      >
+                        <Icon className="h-3 w-3" aria-hidden />
+                        <span>
+                          {label}: {typeof value === 'number' ? formatStarCount(value) : value}
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                )}
+                {dbProject.githubTopics.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {dbProject.githubTopics.map((topic) => (
+                      <Badge key={topic} variant="outline" className="border-border/60 bg-background/60 text-xs font-medium">
+                        #{topic}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                <p className="text-xs text-muted-foreground/80">
+                  {githubLastPushLabel && (
+                    <span>Último push público: {githubLastPushLabel}. </span>
+                  )}
+                  {cachedAtLabel && <span>Cache atualizado em {cachedAtLabel}.</span>}
+                </p>
+              </div>
+            )}
+
             <div className="flex flex-wrap gap-3 pt-2">
-              <Button
-                asChild
-                variant="outline"
-                className="rounded-full border-border/70"
-              >
-                <a
-                  href={dbProject.repo_url ?? '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Abrir repositório ${dbProject.name} no GitHub`}
-                  className="inline-flex items-center gap-2"
+              {dbProject.githubUrl && (
+                <Button
+                  asChild
+                  variant="outline"
+                  className="rounded-full border-border/70"
                 >
-                  <Github className="h-4 w-4" aria-hidden />
-                  Ver Repositório
-                </a>
-              </Button>
+                  <a
+                    href={dbProject.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Abrir repositório ${dbProject.title} no GitHub`}
+                    className="inline-flex items-center gap-2"
+                  >
+                    <Github className="h-4 w-4" aria-hidden />
+                    Ver Repositório
+                  </a>
+                </Button>
+              )}
               {liveLink && (
                 <Button
                   asChild
@@ -295,7 +363,7 @@ export default function ProjectDetail() {
                     href={liveLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Visitar domínio de ${dbProject.name}`}
+                    aria-label={`Visitar domínio de ${dbProject.title}`}
                     className="inline-flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" aria-hidden />

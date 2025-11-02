@@ -11,14 +11,14 @@
 
 import { supabase } from '../supabaseClient';
 import type { Tables as DBTables } from '@/types/database.types';
+import {
+  normalizePortfolioProject,
+  normalizePortfolioProjects,
+  type PortfolioProject,
+} from './transformers';
 
 // Row type aliases from public views (generated types)
-type Project = DBTables<'projects'>;
-type ProjectStack = DBTables<'project_stack'>;
-type Technology = DBTables<'technologies'>;
-type ProjectWithStack = Project & {
-  technologies: Array<{ name: string | null; category: string | null }>;
-};
+type PortfolioProjectRow = DBTables<'portfolio_projects'>;
 type ArtworkRow = DBTables<'artworks'>;
 type ArtworkMedia = DBTables<'artwork_media'>;
 type ArtworkMaterial = DBTables<'artwork_materials'>;
@@ -48,47 +48,19 @@ const notNull = <T>(v: T | null | undefined): v is T => v != null;
 /**
  * Fetch all projects with their technology stack
  */
-export async function fetchProjects(): Promise<ProjectWithStack[] | null> {
+export async function fetchProjects(): Promise<PortfolioProject[] | null> {
   if (!supabase) return null;
 
   try {
-    // Fetch projects
-    const { data: projects, error: projectsError } = await supabase
-      .from('projects')
+    const { data, error } = await supabase
+      .from('portfolio_projects')
       .select('*')
-      .order('display_order', { ascending: true });
+      .order('year', { ascending: false })
+      .order('title', { ascending: true });
 
-    if (projectsError) throw projectsError;
-    if (!projects) return null;
+    if (error) throw error;
 
-    // Fetch project_stack and technologies separately (views may not have FKs for embedded selects)
-    const [{ data: stackData, error: stackError }, { data: techData, error: techError }] = await Promise.all([
-      supabase.from('project_stack').select('*').order('display_order', { ascending: true }),
-      supabase.from('technologies').select('*'),
-    ] as const);
-
-    if (stackError) throw stackError;
-    if (techError) throw techError;
-
-    // Map technologies to projects
-    const projectsWithStack: ProjectWithStack[] = (projects ?? [])
-      .filter((p): p is Project => !!p && !!p.id)
-      .map((project) => {
-        const techs = (stackData ?? [])
-          .filter((s: ProjectStack) => s?.project_id === project.id)
-          .map((s) => s?.technology_id)
-          .filter(notNull)
-          .map((tid) => (techData ?? [])?.find((t: Technology) => t?.id === tid))
-          .filter(notNull)
-          .map((t) => ({ name: t.name ?? null, category: t.category ?? null }));
-
-        return {
-          ...project,
-          technologies: techs,
-        };
-      });
-
-    return projectsWithStack;
+    return normalizePortfolioProjects(data as PortfolioProjectRow[] | null | undefined);
   } catch (error) {
     console.error('Error fetching projects:', error);
     return null;
@@ -98,39 +70,45 @@ export async function fetchProjects(): Promise<ProjectWithStack[] | null> {
 /**
  * Fetch a single project by slug with technologies
  */
-export async function fetchProjectBySlug(slug: string): Promise<ProjectWithStack | null> {
+export async function fetchProjectBySlug(slug: string): Promise<PortfolioProject | null> {
+  return fetchProjectData({ slug });
+}
+
+/**
+ * Fetch project data by slug or GitHub repo identifier
+ */
+export async function fetchProjectData(params: {
+  slug?: string;
+  githubRepoFullName?: string;
+}): Promise<PortfolioProject | null> {
   if (!supabase) return null;
 
   try {
-    const { data: project, error: projectError } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('slug', slug)
-      .single();
+    if (params.slug) {
+      const { data, error } = await supabase
+        .from('portfolio_projects')
+        .select('*')
+        .eq('slug', params.slug)
+        .maybeSingle();
 
-    if (projectError) throw projectError;
-    if (!project) return null;
+      if (error) throw error;
+      return normalizePortfolioProject(data as PortfolioProjectRow | null | undefined);
+    }
 
-    // Fetch technologies for this project
-    const [{ data: stackData, error: stackError }, { data: techData, error: techError }] = await Promise.all([
-      supabase.from('project_stack').select('*').eq('project_id', project.id).order('display_order', { ascending: true }),
-      supabase.from('technologies').select('*'),
-    ] as const);
+    if (params.githubRepoFullName) {
+      const { data, error } = await supabase
+        .from('portfolio_projects')
+        .select('*')
+        .eq('github_repo_full_name', params.githubRepoFullName)
+        .maybeSingle();
 
-    if (stackError) throw stackError;
-    if (techError) throw techError;
+      if (error) throw error;
+      return normalizePortfolioProject(data as PortfolioProjectRow | null | undefined);
+    }
 
-    const technologies = (stackData ?? [])
-      .map((s: ProjectStack) => (techData ?? [])?.find((t: Technology) => t?.id === s?.technology_id))
-      .filter(notNull)
-      .map((t) => ({ name: t.name ?? null, category: t.category ?? null }));
-
-    return {
-      ...project,
-      technologies,
-    };
+    throw new Error('fetchProjectData requires either slug or githubRepoFullName.');
   } catch (error) {
-    console.error(`Error fetching project ${slug}:`, error);
+    console.error('Error fetching project data:', error);
     return null;
   }
 }
