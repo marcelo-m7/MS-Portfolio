@@ -137,7 +137,11 @@ export default function ProjectDetail() {
   }).format(new Date(`${dbProject.year}-01-01`));
 
   const liveLink = dbProject.url ?? undefined;
-  const stack = (dbProject.technologies ?? []).map((t) => t.name).filter(Boolean) as string[];
+  
+  // Support both Supabase (technologies array) and cv.json (stack array)
+  const stack = dbProject.technologies 
+    ? (dbProject.technologies ?? []).map((t) => t.name).filter(Boolean) as string[]
+    : (dbProject.stack ?? []) as string[];
 
   return (
     <div className="px-6">

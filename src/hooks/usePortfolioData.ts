@@ -70,8 +70,12 @@ export function useProject(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchProjectBySlug(slug);
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      const projects = (cv.projects as Array<Record<string, unknown>>) || [];
+      return projects.find((p) => p.slug === slug) || null;
     },
     enabled: !!slug,
     staleTime: STALE_TIME,
@@ -87,8 +91,11 @@ export function useArtworks() {
     queryKey: ['artworks'],
     queryFn: async () => {
       const dbData = await fetchArtworks();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+      
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.artworks || [];
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -105,8 +112,12 @@ export function useArtwork(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchArtworkBySlug(slug);
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      const artworks = (cv.artworks as Array<Record<string, unknown>>) || [];
+      return artworks.find((a) => a.slug === slug) || null;
     },
     enabled: !!slug,
     staleTime: STALE_TIME,
@@ -122,8 +133,11 @@ export function useSeries() {
     queryKey: ['series'],
     queryFn: async () => {
       const dbData = await fetchSeries();
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      return cv.series || [];
     },
     staleTime: STALE_TIME,
     gcTime: CACHE_TIME,
@@ -140,8 +154,12 @@ export function useSeriesDetail(slug: string | undefined) {
       if (!slug) return null;
       
       const dbData = await fetchSeriesBySlug(slug);
-      // Return data from Supabase (no JSON fallback)
-      return dbData;
+      if (dbData) return dbData;
+
+      // Fallback to cv.json
+      const cv = await loadCvData();
+      const series = (cv.series as Array<Record<string, unknown>>) || [];
+      return series.find((s) => s.slug === slug) || null;
     },
     enabled: !!slug,
     staleTime: STALE_TIME,
