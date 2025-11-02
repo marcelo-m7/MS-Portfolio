@@ -1,17 +1,19 @@
 /**
- * Google Translate API integration for automatic content translation
+ * Google Translate Free Web Service integration for automatic content translation
+ * Uses Google Translate's free web endpoint (no API key required)
  * Runs silently in the background, caches results for performance
  */
 
 import type { SupportedLanguage } from './language';
 
 const CACHE_KEY_PREFIX = 'monynha-translate-cache';
-const CACHE_VERSION = '1.0';
-const API_ENDPOINT = 'https://translation.googleapis.com/language/translate/v2';
+const CACHE_VERSION = '2.0'; // Updated version for new free service
+// Google Translate free web endpoint
+const TRANSLATE_ENDPOINT = 'https://translate.googleapis.com/translate_a/single';
 
 interface TranslationCache {
   version: string;
-  translations: Record<string, Record<string, string>>; // sourceText -> targetLang -> translatedText
+  translations: Record<string, string>; // cacheKey -> translatedText
 }
 
 interface TranslateRequest {
@@ -20,33 +22,12 @@ interface TranslateRequest {
   sourceLang?: SupportedLanguage;
 }
 
-interface TranslateResponse {
-  data: {
-    translations: Array<{
-      translatedText: string;
-      detectedSourceLanguage?: string;
-    }>;
-  };
-}
-
 class TranslationService {
   private cache: TranslationCache;
-  private apiKey: string | null = null;
   private pendingRequests: Map<string, Promise<string>> = new Map();
 
   constructor() {
     this.cache = this.loadCache();
-    this.apiKey = this.getApiKey();
-  }
-
-  private getApiKey(): string | null {
-    // Try to get API key from environment variable
-    const key = import.meta.env.VITE_GOOGLE_TRANSLATE_API_KEY;
-    if (!key) {
-      console.warn('Google Translate API key not configured. Translation will be disabled.');
-      return null;
-    }
-    return key;
   }
 
   private loadCache(): TranslationCache {
