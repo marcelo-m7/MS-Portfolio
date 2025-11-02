@@ -4,44 +4,30 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import { LanguageMetadata } from './LanguageMetadata';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
-import { useThemePalette } from '@/hooks/useThemePalette';
 import { useDeviceCapabilities } from '@/hooks/useDeviceCapabilities';
 
-// Lazy load LiquidEther to avoid loading Three.js on every page
-const LiquidEther = lazy(() => import('./LiquidEther'));
+// Lazy load Galaxy background for better performance
+const Galaxy = lazy(() => import('./Galaxy'));
 
 export default function Layout() {
   useScrollToTop();
-  const themeColors = useThemePalette();
   const { canHandle3D } = useDeviceCapabilities();
 
   return (
     <div className="relative flex flex-col min-h-[100dvh]">
       <LanguageMetadata />
-      {/* LiquidEther Background - Only load on capable devices */}
+      {/* Galaxy Background - Optimized for performance */}
       {canHandle3D && (
         <div className="hidden md:block">
           <div className="fixed inset-0 w-full h-full -z-20">
             <Suspense fallback={null}>
-              <LiquidEther
-                // Removed key={location.pathname} to prevent remounting and state reset on route changes
-                colors={themeColors}
-                mouseForce={20}
-                cursorSize={100}
-                isViscous={false}
-                viscous={30}
-                iterationsViscous={32}
-                iterationsPoisson={32}
-                dt={0.014}
-                BFECC={true}
-                resolution={0.5}
-                isBounce={false}
-                autoDemo={true}
-                autoSpeed={0.5}
-                autoIntensity={2.2}
-                takeoverDuration={0.25}
-                autoResumeDelay={3000}
-                autoRampDuration={0.6}
+              <Galaxy
+                mouseRepulsion
+                mouseInteraction
+                density={1.5}
+                glowIntensity={0.5}
+                saturation={0.8}
+                hueShift={240}
               />
             </Suspense>
           </div>
