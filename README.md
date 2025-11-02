@@ -110,16 +110,48 @@ MS-Portfolio/
 
 ## 🌍 Conteúdo & Idiomas
 
-- Fonte única de conteúdo: `public/data/cv.json` (projetos, séries, artes, pensamentos)
+- **Projetos, séries, artes**: `public/data/cv.json`
+- **Blog posts (Pensamentos)**: Markdown files in `public/content/blog/` (see [Adding Blog Posts](#-adding-blog-posts) below)
 - Idiomas e eventos: `src/lib/language.ts` (evento `monynha:languagechange`)
 - Traduções dinâmicas: `src/lib/translateService.ts` (endpoint web do Google Translate com cache em `localStorage`)
 
-Adicionar conteúdo:
+### Adding Content (Projects, Art, Series):
 
 1) Edite `public/data/cv.json`  
 2) Adicione uma miniatura SVG em `public/images/` com `<title>`  
 3) Referencie no JSON (ex.: `"thumbnail": "/images/meu-projeto.svg"`)  
 4) Rode `npm run build` para verificar orçamento de bundle
+
+### 📝 Adding Blog Posts
+
+Blog posts are written in Markdown with YAML frontmatter. To add a new post:
+
+1. Create a new `.md` file in `public/content/blog/`:
+
+```markdown
+---
+title: "Your Post Title"
+date: "2025-11-02"
+author: "Marcelo Santos"
+tags: ["tag1", "tag2", "tag3"]
+excerpt: "A short summary of your post (1-2 sentences)."
+---
+
+Your markdown content goes here...
+```
+
+2. Add the slug (filename without `.md`) to the `BLOG_POSTS` array in `src/lib/markdownLoader.ts`:
+
+```typescript
+const BLOG_POSTS = [
+  'design-tecnologia-inclusiva',
+  'your-new-post-slug',  // Add here
+];
+```
+
+3. Build and verify: `npm run build`
+
+**Note**: Blog posts support full Markdown syntax including code blocks, lists, links, and emphasis.
 
 ---
 
@@ -150,11 +182,13 @@ VITE_SUPABASE_SCHEMA=portfolio
 - `projects` + `project_stack` + `technologies` - Project portfolio with tech stack
 - `artworks` + `artwork_media` + `artwork_materials` - Art portfolio with media files
 - `series` + `series_works` - Collections of related projects/artworks
-- `thoughts` + `thought_tags` - Blog posts/articles with tags
+- `thoughts` + `thought_tags` - Blog posts/articles with tags *(legacy: now using Markdown files)*
 - `experience` + `experience_highlights` - Work history with achievements
 - `skills` - Technical skills with proficiency levels
 
 All contact form submissions automatically include `project_source='portfolio'` to identify their origin.
+
+**Note**: The blog (Thoughts) now sources content from Markdown files in `public/content/blog/` instead of the database. The database tables are maintained for backwards compatibility but are not actively used for new blog posts.
 
 ## Language handling
 
@@ -179,7 +213,9 @@ Project cards, portfolio thumbnails and extra pages consume the single source of
 3. Reference the SVG through the `thumbnail` property (e.g. `"thumbnail": "/images/novo-projeto.svg"`).
 4. Run `npm run build` to ensure the bundle stays under budget.
 
-Thoughts, artworks or series follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.
+**Artworks and series** follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.
+
+**Blog posts** are now managed via Markdown files (see [Adding Blog Posts](#-adding-blog-posts) section above).
 
 ## Contributing
 

@@ -33,6 +33,8 @@ interface BlogPostFrontmatter {
 const BLOG_POSTS = [
   'design-tecnologia-inclusiva',
   'por-tras-da-monynha',
+  'como-construi-meu-portfolio',
+  'react-query-gerenciamento-estado',
 ];
 
 /**
