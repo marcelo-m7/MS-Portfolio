@@ -24,6 +24,7 @@ import {
   fetchSkills,
   fetchTechnologies,
 } from '@/lib/api/queries';
+import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/markdownLoader';
 
 // Fallback to cv.json when Supabase is unavailable
 let cvData: Record<string, unknown> | null = null;
@@ -169,15 +170,21 @@ export function useSeriesDetail(slug: string | undefined) {
 
 /**
  * Hook to fetch all thoughts (blog posts)
+ * Now loads from markdown files instead of database/cv.json
  */
 export function useThoughts() {
   return useQuery({
     queryKey: ['thoughts'],
     queryFn: async () => {
+      // Try database first (for backwards compatibility)
       const dbData = await fetchThoughts();
       if (dbData) return dbData;
       
-      // Fallback to cv.json
+      // Load from markdown files
+      const markdownPosts = await getAllBlogPosts();
+      if (markdownPosts && markdownPosts.length > 0) return markdownPosts;
+      
+      // Final fallback to cv.json
       const cv = await loadCvData();
       return cv.thoughts || [];
     },
@@ -188,6 +195,7 @@ export function useThoughts() {
 
 /**
  * Hook to fetch a single thought by slug
+ * Now loads from markdown files instead of database/cv.json
  */
 export function useThought(slug: string | undefined) {
   return useQuery({
@@ -195,10 +203,15 @@ export function useThought(slug: string | undefined) {
     queryFn: async () => {
       if (!slug) return null;
       
+      // Try database first (for backwards compatibility)
       const dbData = await fetchThoughtBySlug(slug);
       if (dbData) return dbData;
       
-      // Fallback to cv.json
+      // Load from markdown file
+      const markdownPost = await getBlogPostBySlug(slug);
+      if (markdownPost) return markdownPost;
+      
+      // Final fallback to cv.json
       const cv = await loadCvData();
       const thoughts = (cv.thoughts as Array<Record<string, unknown>>) || [];
       return thoughts.find((t) => t.slug === slug) || null;
