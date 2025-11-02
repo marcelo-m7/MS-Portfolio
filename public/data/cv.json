@@ -25,8 +25,8 @@
         "Flutter",
         "React"
       ],
-      "url": "https://monynha.com",
-      "domain": "monynha.com",
+      "url": "https://app.boteco.pro",
+      "domain": "app.boteco.pro",
       "repoUrl": "https://github.com/Monynha-Softwares/BotecoPro",
       "thumbnail": "/images/botecopro.svg",
       "category": "Soluções Empresariais",
@@ -172,9 +172,9 @@
     },
     {
       "slug": "infra-hub",
-      "name": "Infra Hub (Monynha Online)",
-      "summary": "Hub central da infraestrutura Monynha Online, baseado em Coolify.",
-      "fullDescription": "Infra Hub orquestra pipelines, monitorização e deploys automatizados com Coolify e contêineres isolados. A camada de observabilidade garante estabilidade para experiências públicas e privadas do ecossistema Monynha.",
+      "name": "Monynha Online",
+      "summary": "Hub central da infraestrutura Monynha, baseado em Coolify.",
+      "fullDescription": "Monynha Online orquestra pipelines, monitorização e deploys automatizados com Coolify e contêineres isolados. A camada de observabilidade garante estabilidade para experiências públicas e privadas do ecossistema Monynha.",
       "stack": [
         "Coolify",
         "Containers",
@@ -193,7 +193,7 @@
       "slug": "open-webui",
       "name": "Open WebUI",
       "summary": "Instância Open WebUI para IA local e web.",
-      "fullDescription": "A instância Open WebUI da Monynha facilita experimentação segura com modelos locais e serviços hospedados. O ambiente é integrado ao Infra Hub e segue políticas de privacidade para treino e teste de agentes.",
+      "fullDescription": "A instância Open WebUI da Monynha facilita experimentação segura com modelos locais e serviços hospedados. O ambiente é integrado ao Monynha Online e segue políticas de privacidade para treino e teste de agentes.",
       "stack": [
         "Open WebUI",
         "LLMs",
