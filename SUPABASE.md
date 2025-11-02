@@ -721,22 +721,44 @@ If using Supabase Dashboard:
 
 ## Data Population & Verification
 
-Seed migrations are included for initial data:
+Seed migrations are included for initial data (current seeds as of 2025‑11‑02):
 
-- Technologies: 26 rows
-- Projects: 12 rows + ~40 project_stack links
+- Technologies: 26 seeded (cloud currently 29 after additions)
+- Projects: 12 rows + 39 project_stack links
 - Contact: 1 singleton row
-- Series/Artworks/Thoughts: placeholders exist (to be populated)
+- Series/Artworks/Thoughts: series=1, artworks=1 (media=2, materials=3), thoughts=2 (tags=10)
 
 ### Verify via SQL (Dashboard → SQL Editor)
 
 ```sql
--- Basic counts
+-- Counts
 SELECT
   (SELECT count(*) FROM portfolio.technologies)      AS technologies,
   (SELECT count(*) FROM portfolio.projects)          AS projects,
   (SELECT count(*) FROM portfolio.project_stack)     AS project_stack,
-  (SELECT count(*) FROM portfolio.contact)           AS contact;
+  (SELECT count(*) FROM portfolio.contact)           AS contact,
+  (SELECT count(*) FROM portfolio.series)            AS series,
+  (SELECT count(*) FROM portfolio.series_works)      AS series_works,
+  (SELECT count(*) FROM portfolio.artworks)          AS artworks,
+  (SELECT count(*) FROM portfolio.artwork_media)     AS artwork_media,
+  (SELECT count(*) FROM portfolio.artwork_materials) AS artwork_materials,
+  (SELECT count(*) FROM portfolio.thoughts)          AS thoughts,
+  (SELECT count(*) FROM portfolio.thought_tags)      AS thought_tags;
+
+-- Per-project stacks (MonAgent should list 3, including Python)
+SELECT p.slug, COUNT(ps.technology_id)::int AS tech_count
+FROM portfolio.projects p
+LEFT JOIN portfolio.project_stack ps ON p.id = ps.project_id
+GROUP BY p.slug
+ORDER BY p.slug;
+
+-- MonAgent stack details
+SELECT t.name
+FROM portfolio.project_stack ps
+JOIN portfolio.projects p ON p.id = ps.project_id
+JOIN portfolio.technologies t ON t.id = ps.technology_id
+WHERE p.slug = 'monagent'
+ORDER BY ps.display_order, t.name;
 
 -- Spot-check a project with its stack
 SELECT p.slug, p.name,
@@ -744,7 +766,7 @@ SELECT p.slug, p.name,
 FROM portfolio.projects p
 LEFT JOIN portfolio.project_stack ps ON ps.project_id = p.id
 LEFT JOIN portfolio.technologies t ON t.id = ps.technology_id
-WHERE p.slug = 'boteco-pro'
+WHERE p.slug = 'botecopro'
 GROUP BY p.id;
 ```
 

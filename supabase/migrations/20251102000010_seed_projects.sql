@@ -457,19 +457,4 @@ WHERE NOT EXISTS (
   WHERE ps.project_id = proj.id AND ps.technology_id = techs.id
 );
 
--- ============================================
--- Verification Queries
--- ============================================
--- After migration, verify counts:
--- SELECT COUNT(*) FROM portfolio.projects; -- Expected: 12
--- SELECT COUNT(*) FROM portfolio.project_stack; -- Expected: 40
--- 
--- Verify project-technology relationships:
--- SELECT 
---   p.name as project,
---   array_agg(t.name ORDER BY ps.display_order) as technologies
--- FROM portfolio.projects p
--- LEFT JOIN portfolio.project_stack ps ON p.id = ps.project_id
--- LEFT JOIN portfolio.technologies t ON ps.technology_id = t.id
--- GROUP BY p.name
--- ORDER BY p.display_order;
+-- SELECT COUNT(*) FROM portfolio.project_stack; -- Expected: 39
