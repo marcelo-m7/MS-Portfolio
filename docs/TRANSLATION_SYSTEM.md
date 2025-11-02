@@ -79,24 +79,26 @@ If multiple components request translation of the same text simultaneously:
 
 ### No API Key Required! 🎉
 
-The translation system now uses **Google Translate's free web endpoint** - no API key setup needed!
+The translation system uses **Google Translate's free web endpoint** — no API key setup needed.
 
-**How it works:**
-- Uses the same endpoint as Google Translate Extension (`client=gtx`)
-- Makes simple GET requests to `translate.googleapis.com/translate_a/single`
-- Completely free and unlimited (subject to Google's fair use)
-- No authentication or credentials required
+How it works:
 
-**Graceful Degradation:**
-- If Google's service is unavailable, content displays in Portuguese (source language)
-- No errors or broken functionality
-- Console warning: "Translation failed" (only in dev mode)
+- Uses the same endpoint as Google Translate extension (`client=gtx`)
+- GET requests to `https://translate.googleapis.com/translate_a/single`
+- Free and anonymous (subject to Google's fair use)
+- No credentials required
+
+Graceful degradation:
+
+- If the service is unavailable, content stays in Portuguese (source language)
+- No user-visible errors (only dev console warnings)
 
 ## SEO & Accessibility
 
 ### HTML Lang Attribute
 
 Automatically updated on language change:
+
 ```html
 <html lang="pt">  <!-- Updates to en, es, or fr -->
 ```
@@ -184,19 +186,20 @@ await translationService.translateBatch(
 
 ## Testing
 
-The translation system includes unit tests:
+The translation system includes unit tests (Vitest):
 
 ```bash
-npm run test
+npm run test:coverage
 ```
 
 Tests verify:
+
 - ✅ Same-language translations return immediately
 - ✅ Requests are made with correct parameters
-- ✅ Translations are cached properly
-- ✅ Errors are handled gracefully
-- ✅ Pending requests are deduplicated
-- ✅ Free service is always available (no API key check)
+- ✅ Translations are cached with versioned key (`monynha-translate-cache`, v2.0)
+- ✅ Errors are handled gracefully and do not break UI
+- ✅ Pending requests are deduplicated across components
+- ✅ Free service is always available (no API key checks)
 
 ## Performance
 
@@ -249,7 +252,7 @@ Tests verify:
 
 ## Architecture
 
-```
+```text
 User Action (Select Language)
     ↓
 setLanguage() → localStorage
@@ -277,10 +280,10 @@ Components update:
 
 ### Content not translating
 
-1. **Check API key**: Ensure `VITE_GOOGLE_TRANSLATE_API_KEY` is set in `.env`
-2. **Check browser console**: Look for errors or warnings
-3. **Clear cache**: `localStorage.removeItem('monynha-translate-cache')`
-4. **Check network tab**: Verify API calls are being made
+1. Check browser console for warnings (dev only)
+2. Clear cache: `localStorage.removeItem('monynha-translate-cache')`
+3. Check network tab for requests to `translate.googleapis.com`
+4. If blocked by network/security policy, translation will gracefully fall back to PT
 
 ### Translations incorrect
 
@@ -290,10 +293,7 @@ Components update:
 
 ### API quota exceeded
 
-1. Google Translate has usage limits
-2. Check your Google Cloud Console for quota
-3. Consider upgrading plan if needed
-4. Cache helps minimize API calls
+This system uses the free web endpoint and does not require a Cloud project. If rate-limited by Google, translations will temporarily fall back to PT and retry later. Caching minimizes repeated requests.
 
 ## Future Enhancements
 

@@ -789,19 +789,24 @@ Then call `GET http://127.0.0.1:54321/rest/v1/technologies?select=id` and count 
 
 ### Unit Tests
 
-Tests are in `src/lib/contactLead.test.ts` using Vitest:
+Tests live under `tests/lib/` and run with Vitest:
 
 ```bash
-npm run test
+npm run test:coverage
 ```
 
-**Key test scenarios:**
+Relevant suites:
+
+- `tests/lib/contactLead.test.ts` — normalization + persistence behavior
+- `tests/lib/contactService.test.ts` — end-to-end contact flow with Edge Function fallback
+
+Key scenarios covered:
 
 - ✅ Normalizes and trims input data
 - ✅ Saves successfully when Supabase is available
-- ✅ Calls fallback when Supabase fails
+- ✅ Falls back to Edge Function (`send-contact-email`) on persistence failure
 - ✅ Handles missing Supabase client gracefully
-- ✅ Includes `project_source` in all submissions
+- ✅ Includes `project_source='portfolio'` in all submissions
 
 ### Manual Testing
 
@@ -821,6 +826,14 @@ Verify in Supabase Dashboard:
 1. Go to **Table Editor**
 2. Select `public.leads`
 3. Filter by `project_source = 'portfolio'`
+
+You can also use helper scripts under `tests/`:
+
+```powershell
+node .\tests\test-connectivity.js
+```
+
+This verifies Supabase connectivity, a simple portfolio query, a `public.leads` insert (RLS-aware), and a JOIN example.
 
 ## Troubleshooting
 

@@ -32,8 +32,11 @@ npm run dev
 Useful scripts:
 
 ```bash
-npm run lint     # ESLint
-npm run test     # Vitest
+npm run lint        # ESLint + typecheck
+npm run lint:fix    # ESLint with --fix
+npm run test        # Vitest
+npm run test:watch  # Watch mode
+npm run test:coverage # Vitest with coverage (CI)
 npm run build    # Production build
 npm run preview  # Preview built site
 ```
@@ -61,9 +64,11 @@ git checkout -b feat/short-description
 
 ## Testing
 
-- Unit tests with Vitest.
+- Unit tests with Vitest. Tests live under `tests/lib/`.
 - Mock external clients (Supabase, network requests).
 - Add tests for new logic; maintain coverage where practical.
+- CI runs `npm run test:coverage` and uploads coverage artifacts.
+  - Global setup at `tests/setup.ts` silences expected console noise; set `VERBOSE_TEST_LOGS=true` to see all logs.
 
 ## Docs & Linting
 
