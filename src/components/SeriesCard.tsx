@@ -11,13 +11,18 @@ interface SeriesCardProps {
     title: string;
     description: string;
     year: number;
-    works: string[];
+    works: string[] | Array<{ work_slug?: string | null }>;
   };
   index: number;
 }
 
 const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
   const prefersReducedMotion = useReducedMotion();
+
+  // Normalize works to string array
+  const worksCount = Array.isArray(series.works)
+    ? series.works.map(w => typeof w === 'string' ? w : w.work_slug).filter(Boolean).length
+    : 0;
 
   return (
     <motion.div
@@ -63,9 +68,9 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
             </p>
 
             <div className="flex flex-wrap gap-2 mt-auto">
-              {series.works.length > 0 && (
+              {worksCount > 0 && (
                 <span className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80">
-                  {series.works.length} obras
+                  {worksCount} obras
                 </span>
               )}
             </div>

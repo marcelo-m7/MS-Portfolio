@@ -28,16 +28,17 @@ type CVArtwork = {
   slug: string;
   title: string;
   description: string;
-  media: string[];
-  materials: string[];
+  media: string[] | Array<{ media_url?: string | null }>;
+  materials: string[] | Array<{ material?: string | null }>;
   year: number;
+  url3d?: string;
 };
 
 type CVSeries = {
   slug: string;
   title: string;
   description: string;
-  works: string[];
+  works: string[] | Array<{ work_slug?: string | null }>;
   year: number;
 };
 
@@ -85,9 +86,10 @@ export default function Portfolio() {
       slug: a.slug!,
       title: a.title!,
       description: a.description ?? '',
-      media: (a.media ?? []).map((m) => m.media_url).filter(Boolean) as string[],
-      materials: (a.materials ?? []).map((m) => m.material).filter(Boolean) as string[],
+      media: a.media ?? [],
+      materials: a.materials ?? [],
       year: a.year ?? 0,
+      url3d: a.url_3d ?? undefined,
     }));
   }, [dbArtworks]);
 
@@ -99,7 +101,7 @@ export default function Portfolio() {
       slug: s.slug!,
       title: s.title!,
       description: s.description ?? '',
-      works: (s.works ?? []).map((w) => w.work_slug).filter(Boolean) as string[],
+      works: s.works ?? [],
       year: s.year ?? 0,
     }));
   }, [dbSeries]);
@@ -161,8 +163,11 @@ export default function Portfolio() {
     }
 
     return items.map((item) => {
+      // Check for materials property (unique to artwork)
       if ('materials' in item) return { ...item, type: 'artwork' } as PortfolioEntry;
+      // Check for works property (unique to series)
       if ('works' in item) return { ...item, type: 'series' } as PortfolioEntry;
+      // Otherwise it's a project
       return { ...item, type: 'project' } as PortfolioEntry;
     });
   }, [artworks, filter, projects, seriesEntries]);
