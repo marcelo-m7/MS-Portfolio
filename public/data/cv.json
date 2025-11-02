@@ -243,6 +243,51 @@
       ]
     },
     {
+      "role": "Full-Stack Developer Intern",
+      "org": "Kobu Agency",
+      "start": "2024-02",
+      "end": "2024-06",
+      "location": "Faro, Portugal",
+      "highlights": [
+        "Desenvolvi um assistente virtual para geração de leads usando Python (FAISS, LangChain, Flask, OpenAI, Pickle).",
+        "Construí frontend responsivo com JavaScript, CSS/SCSS, PHP e Node.js.",
+        "Melhorei a recuperação de dados e a interação com clientes orientada por IA."
+      ]
+    },
+    {
+      "role": "LLM Evaluator (Freelancer)",
+      "org": "Outlier.ai",
+      "start": "2024-07",
+      "end": "2024-12",
+      "location": "Remoto",
+      "highlights": [
+        "Avaliei e classifiquei respostas geradas por IA para melhorar performance e alinhamento de LLMs.",
+        "Contribuí para o fine-tuning de sistemas avançados de linguagem natural."
+      ]
+    },
+    {
+      "role": "Commercial Assistant",
+      "org": "Worten - Equipamentos para o Lar S.A.",
+      "start": "2022-02",
+      "end": "2022-10",
+      "location": "Lisboa, Portugal",
+      "highlights": [
+        "Gestão de parcerias comerciais e de marketing, catálogo de produtos e relacionamento com fornecedores.",
+        "Suporte às operações de loja e atendimento de tickets e reclamações."
+      ]
+    },
+    {
+      "role": "Business Manager",
+      "org": "Bar do Jonas e Comida Caseira",
+      "start": "2019-05",
+      "end": "2020-10",
+      "location": "Vitória, Brasil",
+      "highlights": [
+        "Gestão de operações, fornecedores, controlo de inventário e processos administrativos.",
+        "Continuidade remota como Gestor Administrativo após mudança para Portugal."
+      ]
+    },
+    {
       "role": "Estudante de Engenharia de Software",
       "org": "Universidade do Algarve (LESTI)",
       "start": "2021-09",
@@ -256,6 +301,51 @@
     }
   ],
   "skills": [
+    {
+      "name": "Python",
+      "category": "Backend / IA",
+      "level": "Avançado"
+    },
+    {
+      "name": "LangChain",
+      "category": "IA / LLMs",
+      "level": "Intermédio"
+    },
+    {
+      "name": "FAISS",
+      "category": "IA / Vector DB",
+      "level": "Intermédio"
+    },
+    {
+      "name": "Flask / FastAPI",
+      "category": "Backend",
+      "level": "Intermédio"
+    },
+    {
+      "name": "SQL Server",
+      "category": "Base de Dados",
+      "level": "Intermédio"
+    },
+    {
+      "name": "Node.js / TypeScript",
+      "category": "Backend",
+      "level": "Avançado"
+    },
+    {
+      "name": "React / Vite / Tailwind",
+      "category": "Frontend",
+      "level": "Avançado"
+    },
+    {
+      "name": "GitHub Actions",
+      "category": "DevOps",
+      "level": "Intermédio"
+    },
+    {
+      "name": "Docker",
+      "category": "DevOps",
+      "level": "Avançado"
+    },
     {
       "name": "Next.js",
       "category": "Frontend",
