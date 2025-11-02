@@ -17,8 +17,6 @@ interface Star {
   size: number;
   vx: number;
   vy: number;
-  baseX: number;
-  baseY: number;
 }
 
 export default function Galaxy({
@@ -42,17 +40,13 @@ export default function Galaxy({
   const initStars = useCallback((width: number, height: number) => {
     const stars: Star[] = [];
     for (let i = 0; i < starCount; i++) {
-      const x = Math.random() * width;
-      const y = Math.random() * height;
       stars.push({
-        x,
-        y,
+        x: Math.random() * width,
+        y: Math.random() * height,
         z: Math.random(),
         size: Math.random() * 2 + 0.5,
         vx: (Math.random() - 0.5) * 0.05,
         vy: (Math.random() - 0.5) * 0.05,
-        baseX: x,
-        baseY: y,
       });
     }
     starsRef.current = stars;
@@ -103,11 +97,7 @@ export default function Galaxy({
     window.addEventListener('resize', resizeCanvas);
 
     // Animation loop
-    let lastTime = 0;
-    const animate = (currentTime: number) => {
-      const deltaTime = currentTime - lastTime;
-      lastTime = currentTime;
-
+    const animate = () => {
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 
