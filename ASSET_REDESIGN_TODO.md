@@ -1,12 +1,15 @@
 # Visual Asset Redesign - Task Tracker
 
 ## Project Overview
+
 Redesign all images, placeholders, icons, and SVG assets to align with Monynha Softwares' visual identity and color palette.
 
 ## Design Guidelines
 
 ### Color Palette (HSL)
+
 **Light Theme:**
+
 - Primary: `243 75% 59%` (#7c3aed - Purple)
 - Secondary: `199 89% 48%` (#0ea5e9 - Cyan/Blue)
 - Accent: `281 66% 60%` (#d946ef - Pink/Magenta)
@@ -14,6 +17,7 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
 - Foreground: `222 47% 11%` (Dark blue-gray)
 
 **Dark Theme:**
+
 - Primary: `244 63% 68%` (Lighter purple)
 - Secondary: `199 89% 60%` (Brighter cyan)
 - Accent: `281 66% 68%` (Brighter pink)
@@ -21,11 +25,13 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
 - Foreground: `210 40% 96%` (Off-white)
 
 ### Typography
+
 - Display: Space Grotesk
 - Body: Inter
 - Monospace: JetBrains Mono
 
 ### Design Principles
+
 - **Geometric & Modern**: Use clean geometric shapes (circles, rounded rectangles, diamonds)
 - **Gradients**: Utilize linear gradients between primary → secondary → accent
 - **Consistent Border Radius**: Use `1.5rem` (24px) for cards, `1rem` for medium elements
@@ -35,6 +41,7 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
 - **Theme Support**: Assets should work in both light and dark modes
 
 ### Visual Language
+
 - Abstract geometric patterns representing technology and creativity
 - Fluid shapes suggesting innovation and flexibility
 - Grid patterns for technical/infrastructure projects
@@ -45,6 +52,7 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
 ## Asset Inventory
 
 ### Core Branding Assets
+
 - [x] `public/favicon.svg` - Current: Monynha "M" logo with gradient
 - [x] `public/og-image.svg` - Current: Social media preview with profile info
 - [x] `public/placeholder.svg` - Current: Generic gray placeholder with camera icon
@@ -52,6 +60,7 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
 - [x] `public/avatar.png` - Current: Profile photo PNG version
 
 ### Project Thumbnail SVGs (10 projects)
+
 - [x] `public/images/botecopro.svg` - BotecoPro (Restaurant Management with AI)
 - [x] `public/images/facodi.svg` - FACODI (Digital Community Education)
 - [x] `public/images/monynha-tech.svg` - MonynhaTech (Technical Blog)
@@ -64,12 +73,14 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
 - [x] `public/images/marcelo-portfolio.svg` - Marcelo Portfolio (This site)
 
 ### Artwork Thumbnails
+
 - [x] `public/images/artleo-hero.svg` - Art Leo hero image
 - [x] `public/images/artleo-3d.svg` - Art Leo 3D preview
 
 ## Redesign Tasks
 
 ### Phase 1: Core Branding (High Priority)
+
 - [ ] Redesign `public/placeholder.svg`
   - Add geometric pattern with brand colors
   - Include subtle gradient overlays
@@ -89,7 +100,9 @@ Redesign all images, placeholders, icons, and SVG assets to align with Monynha S
   - Ensure 1200x630 aspect ratio (Twitter/OG standard)
 
 ### Phase 2: Project Thumbnails (High Priority)
+
 Each thumbnail should:
+
 - Use consistent 640x360 aspect ratio
 - Incorporate project-specific visual metaphors
 - Apply brand color palette
@@ -97,29 +110,35 @@ Each thumbnail should:
 - Work in both light and dark themes
 
 **Business/Enterprise Projects:**
+
 - [ ] `botecopro.svg` - Restaurant/bar theme with modern POS/management visuals
 - [ ] `facodi.svg` - Education/learning theme with community elements
 - [ ] `monynha-com.svg` - Corporate/institutional with professional look
 
 **Technical/Infrastructure Projects:**
+
 - [ ] `infra-hub.svg` - Server/infrastructure with network patterns
 - [ ] `monadocs.svg` - Documentation theme with organized content visuals
 - [ ] `monynha-tech.svg` - Blog/content with technical elements
 - [ ] `open-webui.svg` - AI interface with modern UI elements
 
 **Creative/AI Projects:**
+
 - [ ] `artleo.svg` - 3D/artistic with creative elements
 - [ ] `assistina.svg` - AI assistant with conversational/chat visuals
 - [ ] `monagent.svg` - AI agent with automation theme (if exists)
 
 **Portfolio:**
+
 - [ ] `marcelo-portfolio.svg` - Personal portfolio with creative showcase theme
 
 ### Phase 3: Artwork Assets
+
 - [ ] `artleo-hero.svg` - Hero image for Art Leo project
 - [ ] `artleo-3d.svg` - 3D preview/thumbnail
 
 ### Phase 4: Optimization & Validation
+
 - [ ] Optimize all SVGs with SVGO or similar tool
 - [ ] Validate WCAG AA contrast ratios for all assets
 - [ ] Test rendering in both light and dark themes
@@ -128,12 +147,14 @@ Each thumbnail should:
 - [ ] Test on actual devices/browsers
 
 ### Phase 5: Documentation
+
 - [ ] Create asset usage guidelines
 - [ ] Document color palette specifications
 - [ ] Add examples for future asset creation
 - [ ] Update README with asset information (if needed)
 
 ## Success Criteria
+
 ✅ All assets use consistent brand color palette  
 ✅ Unified visual language across all thumbnails  
 ✅ Accessible contrast ratios (WCAG AA)  
@@ -144,6 +165,7 @@ Each thumbnail should:
 ✅ Clear visual hierarchy and readability  
 
 ## Notes
+
 - Keep avatar images as they are (personal photos)
 - Maintain lucide-react icons in components (no changes needed)
 - MonynhaLogo component is already well-designed (may minor tweaks only)

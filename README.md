@@ -18,7 +18,7 @@ Portfolio pessoal e site profissional de Marcelo M7, fundador da Monynha Softwar
 
 ## 📁 Project Structure
 
-```
+```text
 MS-Portfolio/
 ├── src/
 │   ├── components/     # UI components (shadcn + custom)
