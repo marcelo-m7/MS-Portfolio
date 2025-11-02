@@ -29,7 +29,9 @@ interface BlogPostFrontmatter {
 }
 
 // Blog post slugs (file names without .md extension)
-// This list must be manually maintained to work client-side
+// NOTE: This list must be manually maintained for client-side operation.
+// TODO: Consider implementing a build-time script to auto-generate this list
+// from the filesystem for better maintainability.
 const BLOG_POSTS = [
   'design-tecnologia-inclusiva',
   'por-tras-da-monynha',
@@ -70,8 +72,7 @@ async function fetchMarkdownPost(slug: string): Promise<BlogPost | null> {
 }
 
 /**
- * Get all blog posts
- * Fetches all markdown files and parses their frontmatter
+ * Get all blog posts (sorted by date, newest first)
  */
 export async function getAllBlogPosts(): Promise<BlogPost[]> {
   const posts = await Promise.all(
@@ -89,11 +90,4 @@ export async function getAllBlogPosts(): Promise<BlogPost[]> {
  */
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
   return fetchMarkdownPost(slug);
-}
-
-/**
- * Get blog posts sorted by date (newest first)
- */
-export async function getBlogPostsSortedByDate(): Promise<BlogPost[]> {
-  return getAllBlogPosts();
 }

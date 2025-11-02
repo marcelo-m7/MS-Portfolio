@@ -94,6 +94,7 @@ export default defineConfig(({ mode }) => ({
           // Markdown and content
           'vendor-content': [
             'react-markdown',
+            'gray-matter',
           ],
           // Supabase client
           'vendor-supabase': [
