@@ -1,7 +1,7 @@
 import { useState, Suspense, lazy } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Maximize2, Orbit } from 'lucide-react';
+import { ExternalLink, Maximize2, Orbit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LoadingArtDetail } from '@/components/LoadingStates';
 import { useArtwork } from '@/hooks/usePortfolioData';
@@ -18,6 +18,11 @@ import {
 } from '@/hooks/useCurrentLanguage';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+import NotFoundMessage from '@/components/NotFoundMessage';
+import BackButton from '@/components/BackButton';
+import MetadataBadge from '@/components/MetadataBadge';
+import { useImageErrorHandler } from '@/hooks/useImageErrorHandler';
+import DetailPageContainer from '@/components/DetailPageContainer';
 
 const MotionButton = motion(Button);
 const MotionImg = motion.img;
@@ -39,9 +44,9 @@ export default function ArtDetail() {
   const [isMediaOpen, setIsMediaOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState<string | null>(null);
   const [is3DOpen, setIs3DOpen] = useState(false);
+  const handleImageError = useImageErrorHandler();
   
   // Translate content
-  const notFoundMessage = useTranslatedText('Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais.');
   const translatedDescription = useTranslatedText(artwork?.description ?? '');
 
   // Extract arrays from database objects
@@ -61,71 +66,37 @@ export default function ArtDetail() {
 
   if (!artwork) {
     return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
-          <p className="mt-4 text-muted-foreground">
-            {notFoundMessage}
-          </p>
-          <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">{t.nav.portfolio}</Link>
-          </Button>
-        </div>
-      </div>
+      <NotFoundMessage 
+        message="Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais."
+        backTo="/portfolio"
+        backLabel={t.nav.portfolio}
+      />
     );
   }
 
   return (
-    <div className="py-0 px-6">
-      <div className="container mx-auto max-w-4xl">
-        <motion.div
-          initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
-          animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
-        >
-          <MotionButton
-            asChild
-            variant="ghost"
-            className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
-            whileHover={prefersReducedMotion ? undefined : { x: -5 }}
-            whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            <Link to="/portfolio">
-              <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar ao Portfolio
-            </Link>
-          </MotionButton>
+    <>
+      <DetailPageContainer maxWidth="default">
+        <BackButton to="/portfolio" label="Voltar ao Portfolio" />
 
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-            <motion.span
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
-                new Date(`${artwork.year}-01-01`),
-              )}
-            </motion.span>
-            <motion.span
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1"
-              whileHover={prefersReducedMotion ? undefined : { scale: 1.05 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.95 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              {materials.join(' • ')}
-            </motion.span>
-          </div>
+        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          <MetadataBadge>
+            {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
+              new Date(`${artwork.year}-01-01`),
+            )}
+          </MetadataBadge>
+          <MetadataBadge>
+            {materials.join(' • ')}
+          </MetadataBadge>
+        </div>
 
-          <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
-            {artwork.title}
-          </h1>
+        <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
+          {artwork.title}
+        </h1>
 
-          <p className="mt-4 text-lg text-muted-foreground/90">{translatedDescription}</p>
+        <p className="mt-4 text-lg text-muted-foreground/90">{translatedDescription}</p>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
             {mediaUrls.map((media, index) => (
               <motion.button
                 key={`${media}-${index}`}
@@ -144,11 +115,7 @@ export default function ArtDetail() {
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    console.error(`Failed to load media: ${media}`);
-                    target.style.display = 'none';
-                  }}
+                  onError={handleImageError}
                 />
                 <div className="pointer-events-none absolute inset-0 flex items-end justify-end bg-gradient-to-t from-background/70 via-background/20 to-transparent p-4 opacity-0 transition group-hover:opacity-100">
                   <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-xs font-medium text-muted-foreground">
@@ -160,41 +127,40 @@ export default function ArtDetail() {
             ))}
           </div>
 
-          {artwork.url_3d && (
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <MotionButton
-                type="button"
-                onClick={() => setIs3DOpen(true)}
-                className="inline-flex items-center gap-2 rounded-full"
-                disabled={!canRender3DPreview}
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                <Orbit className="h-4 w-4" aria-hidden />
-                {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
-              </MotionButton>
-              <motion.a
-                href={artwork.url_3d}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                Abrir em Nova Aba
-                <ExternalLink className="h-4 w-4" aria-hidden />
-              </motion.a>
-              {!canRender3DPreview && (
-                <p className="text-sm text-muted-foreground/80">
-                  A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
-                </p>
-              )}
-            </div>
-          )}
-        </motion.div>
-      </div>
+        {artwork.url_3d && (
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <MotionButton
+              type="button"
+              onClick={() => setIs3DOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full"
+              disabled={!canRender3DPreview}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <Orbit className="h-4 w-4" aria-hidden />
+              {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
+            </MotionButton>
+            <motion.a
+              href={artwork.url_3d}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              Abrir em Nova Aba
+              <ExternalLink className="h-4 w-4" aria-hidden />
+            </motion.a>
+            {!canRender3DPreview && (
+              <p className="text-sm text-muted-foreground/80">
+                A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
+              </p>
+            )}
+          </div>
+        )}
+      </DetailPageContainer>
 
       <Dialog open={isMediaOpen} onOpenChange={setIsMediaOpen}>
         <DialogContent className="max-w-4xl border border-border/60 bg-card/90 backdrop-blur-xl">
@@ -254,6 +220,6 @@ export default function ArtDetail() {
           </DialogContent>
         </Dialog>
       )}
-    </div>
+    </>
   );
 }

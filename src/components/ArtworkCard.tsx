@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ExternalLink } from 'lucide-react';
 import React, { memo } from 'react';
+import { useImageErrorHandler } from '@/hooks/useImageErrorHandler';
 
 const MotionLink = motion(Link);
 
@@ -20,6 +21,7 @@ interface ArtworkCardProps {
 
 const ArtworkCard: React.FC<ArtworkCardProps> = memo(({ artwork, index }) => {
   const prefersReducedMotion = useReducedMotion();
+  const handleImageError = useImageErrorHandler();
 
   // Normalize media and materials to strings
   const mediaUrls = Array.isArray(artwork.media)
@@ -57,14 +59,7 @@ const ArtworkCard: React.FC<ArtworkCardProps> = memo(({ artwork, index }) => {
               fetchpriority={(index < 3 ? "high" : "low") as "high" | "low"}
               alt={`${artwork.title} – Arte Digital`}
               className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                // Only log errors in development to reduce console noise
-                if (import.meta.env.DEV) {
-                  console.error(`Failed to load artwork image: ${mediaUrls[0]}`);
-                }
-                target.style.display = 'none';
-              }}
+              onError={handleImageError}
             />
             <div className="absolute top-4 right-4">
               <span className="rounded-full border border-border/60 bg-background/70 px-3 py-1 text-xs font-medium">
