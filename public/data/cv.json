@@ -226,6 +226,25 @@
       "status": "Produção",
       "visibility": "Pública",
       "year": 2025
+    },
+    {
+      "slug": "monagent",
+      "name": "MonAgent",
+      "summary": "Sistema de agentes AI para automação e processamento inteligente de tarefas.",
+      "fullDescription": "MonAgent é uma plataforma experimental de agentes autônomos baseada em LLMs. O sistema permite orquestração de múltiplos agentes especializados, processamento paralelo de contextos e integração com ferramentas externas através de Model Context Protocol (MCP).",
+      "stack": [
+        "Python",
+        "LangChain",
+        "OpenAI"
+      ],
+      "url": null,
+      "domain": null,
+      "repoUrl": "https://github.com/Monynha-Softwares/MonAgent",
+      "thumbnail": "/images/monagent.svg",
+      "category": "IA",
+      "status": "Desenvolvimento",
+      "visibility": "Interna",
+      "year": 2024
     }
   ],
   "experience": [
