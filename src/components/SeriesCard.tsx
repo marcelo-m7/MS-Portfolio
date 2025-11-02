@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ExternalLink, Layers } from 'lucide-react';
-import React, { memo } from 'react';
+import React from 'react';
 
 const MotionLink = motion(Link);
 
@@ -16,7 +16,7 @@ interface SeriesCardProps {
   index: number;
 }
 
-const SeriesCard: React.FC<SeriesCardProps> = memo(({ series, index }) => {
+const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
   const prefersReducedMotion = useReducedMotion();
 
   // Normalize works to string array
@@ -88,8 +88,6 @@ const SeriesCard: React.FC<SeriesCardProps> = memo(({ series, index }) => {
       </div>
     </motion.div>
   );
-});
-
-SeriesCard.displayName = 'SeriesCard';
+};
 
 export default SeriesCard;

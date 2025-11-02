@@ -1,4 +1,4 @@
-import { useState, Suspense, lazy, useMemo } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ExternalLink, Maximize2, Orbit } from 'lucide-react';
@@ -44,15 +44,9 @@ export default function ArtDetail() {
   const notFoundMessage = useTranslatedText('Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais.');
   const translatedDescription = useTranslatedText(artwork?.description ?? '');
 
-  // Memoize extracted arrays to avoid recreating on every render
-  const mediaUrls = useMemo(
-    () => artwork?.media?.map(m => m.media_url) ?? [],
-    [artwork?.media]
-  );
-  const materials = useMemo(
-    () => artwork?.materials?.map(m => m.material) ?? [],
-    [artwork?.materials]
-  );
+  // Extract arrays from database objects
+  const mediaUrls = artwork?.media?.map(m => m.media_url) ?? [];
+  const materials = artwork?.materials?.map(m => m.material) ?? [];
 
   const canRender3DPreview = Boolean(artwork?.url_3d && Art3DPreviewLazy);
 

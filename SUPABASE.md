@@ -10,6 +10,7 @@ This document explains how to connect to and use Supabase in the MS-Portfolio pr
 - [Database Schema](#database-schema)
 - [Usage in Code](#usage-in-code)
 - [Migrations](#migrations)
+- [Data Population & Verification](#data-population--verification)
 - [Testing](#testing)
 - [Troubleshooting](#troubleshooting)
 
@@ -38,10 +39,16 @@ Contains tables shared across all Monynha projects:
 
 ### 2. `portfolio` Schema (Project-Specific)
 
-Contains tables specific to MS-Portfolio:
+Contains tables specific to MS-Portfolio (created via migrations in this repo):
 
-- Currently empty
-- Future tables: project metadata, artwork data, series info
+- `profile` (singleton)
+- `contact` (singleton)
+- `technologies`
+- `projects`, `project_stack`
+- `artworks`, `artwork_media`, `artwork_materials`
+- `series`, `series_works`
+- `thoughts`, `thought_tags`
+- `experience`, `experience_highlights`, `skills`
 
 ### Why This Approach?
 
@@ -84,25 +91,21 @@ The key package is `@supabase/supabase-js` (v2.58.0+).
 
 ### 3. Run Migrations
 
-Migrations are applied automatically when you use the Supabase dashboard or CLI. Current migrations:
-
-1. `create_leads_table` - Creates the shared leads table
-2. `create_portfolio_schema` - Creates the portfolio schema
-3. `document_schema_strategy` - Adds `project_source` column
-
-**To apply migrations manually** (if needed):
+Migrations are applied automatically with the CLI. To run locally:
 
 ```bash
-# Install Supabase CLI
-npm install -g supabase
+# Start local stack and apply migrations
+npx supabase start
+```
 
-# Login
+To apply to a cloud project:
+
+```bash
+# Login and link to your Supabase project (one-time)
 supabase login
+supabase link --project-ref <your-project-ref>
 
-# Link to your project
-supabase link --project-ref your-project-ref
-
-# Apply migrations
+# Push all local migrations to the linked project
 supabase db push
 ```
 
@@ -591,6 +594,10 @@ const { data, error } = await supabase
 
 This repository tracks the `portfolio` schema migrations used by the app. Shared resources like `public.leads` may be created and managed centrally outside this repo.
 
+0. **`20251023000000_create_portfolio_schema.sql`**
+  - Creates the `portfolio` schema
+  - Grants base usage/select defaults to `anon`/`authenticated`
+
 1. **`20251023000001_create_core_tables.sql`**
    - Creates `profile` table (singleton)
    - Creates `contact` table (singleton)
@@ -625,18 +632,47 @@ This repository tracks the `portfolio` schema migrations used by the app. Shared
    - Creates `experience_highlights` table (ordered list)
    - Creates `skills` table with level constraints
 
+7. **`20251102000007_seed_profile_experience_skills.sql`**
+   - Seeds initial profile, experience, and skills
+
+8. **`20251102000008_fix_url_references.sql`**
+   - Fixes URL/domain reference fields
+
+9. **`20251102000009_seed_technologies.sql`**
+   - Seeds 26 normalized technologies
+
+10. **`20251102000010_seed_projects.sql`**
+  - Seeds 12 projects and ~40 `project_stack` rows
+
+11. **`20251102000011_seed_contact.sql`**
+  - Seeds contact singleton row
+
+12. **`20251102000012_seed_series_artworks.sql`**
+  - Placeholder for series/artworks seed (currently empty)
+
+13. **`20251102000013_seed_thoughts.sql`**
+  - Placeholder for thoughts seed (currently empty)
+
 ### Migration Files Location
 
 All migrations are stored in:
 
 ```text
 supabase/migrations/
+├── 20251023000000_create_portfolio_schema.sql
 ├── 20251023000001_create_core_tables.sql
 ├── 20251023000002_create_projects.sql
 ├── 20251023000003_create_artworks.sql
 ├── 20251023000004_create_series.sql
 ├── 20251023000005_create_thoughts.sql
-└── 20251023000006_create_experience_skills.sql
+├── 20251023000006_create_experience_skills.sql
+├── 20251102000007_seed_profile_experience_skills.sql
+├── 20251102000008_fix_url_references.sql
+├── 20251102000009_seed_technologies.sql
+├── 20251102000010_seed_projects.sql
+├── 20251102000011_seed_contact.sql
+├── 20251102000012_seed_series_artworks.sql
+└── 20251102000013_seed_thoughts.sql
 ```
 
 ### Creating New Migrations
@@ -682,6 +718,52 @@ If using Supabase Dashboard:
 - Multi-language support via DB
 
 ## Testing
+
+## Data Population & Verification
+
+Seed migrations are included for initial data:
+
+- Technologies: 26 rows
+- Projects: 12 rows + ~40 project_stack links
+- Contact: 1 singleton row
+- Series/Artworks/Thoughts: placeholders exist (to be populated)
+
+### Verify via SQL (Dashboard → SQL Editor)
+
+```sql
+-- Basic counts
+SELECT
+  (SELECT count(*) FROM portfolio.technologies)      AS technologies,
+  (SELECT count(*) FROM portfolio.projects)          AS projects,
+  (SELECT count(*) FROM portfolio.project_stack)     AS project_stack,
+  (SELECT count(*) FROM portfolio.contact)           AS contact;
+
+-- Spot-check a project with its stack
+SELECT p.slug, p.name,
+  json_agg(t.name ORDER BY ps.display_order) AS stack
+FROM portfolio.projects p
+LEFT JOIN portfolio.project_stack ps ON ps.project_id = p.id
+LEFT JOIN portfolio.technologies t ON t.id = ps.technology_id
+WHERE p.slug = 'boteco-pro'
+GROUP BY p.id;
+```
+
+### Verify via REST (local dev)
+
+When using the local REST API for the `portfolio` schema, include the `Accept-Profile: portfolio` header.
+
+Example fetch headers:
+
+```ts
+const headers = {
+  apikey: ANON_KEY,
+  Authorization: `Bearer ${ANON_KEY}`,
+  'Accept-Profile': 'portfolio',
+  Prefer: 'count=exact',
+};
+```
+
+Then call `GET http://127.0.0.1:54321/rest/v1/technologies?select=id` and count the array length.
 
 ### Unit Tests
 

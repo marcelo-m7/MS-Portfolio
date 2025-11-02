@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
 import type { Tables as DBTables } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
@@ -176,10 +176,6 @@ export default function Portfolio() {
     });
   }, [artworks, filter, projects, seriesEntries, t]);
 
-  const handleFilterChange = useCallback((category: string) => {
-    setFilter(category);
-  }, []);
-
   return (
     <div className="px-6 py-8">
       <div className="container mx-auto max-w-7xl">
@@ -208,7 +204,7 @@ export default function Portfolio() {
             <Button
               key={category}
               variant={filter === category ? 'default' : 'outline'}
-              onClick={() => handleFilterChange(category)}
+              onClick={() => setFilter(category)}
               className={`border-border/70 transition ${
                 filter === category
                   ? 'bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground'
