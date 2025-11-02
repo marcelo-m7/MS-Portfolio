@@ -186,22 +186,36 @@ class TranslationService {
 
   /**
    * Translate multiple texts in batch (more efficient)
+   * Uses request deduplication and concurrent translation
    */
   async translateBatch(
     texts: string[],
     targetLang: SupportedLanguage,
     sourceLang: SupportedLanguage = 'pt'
   ): Promise<string[]> {
+    // Return original texts immediately if translating to the same language
     if (sourceLang === targetLang) {
       return texts;
     }
 
-    const results: string[] = [];
+    // Return empty array for empty input
+    if (!texts || texts.length === 0) {
+      return [];
+    }
+
+    const results: string[] = new Array(texts.length);
     const textsToTranslate: Array<{ text: string; index: number }> = [];
 
     // Check cache for each text
     for (let i = 0; i < texts.length; i++) {
       const text = texts[i];
+      
+      // Handle empty/null texts
+      if (!text || text.trim() === '') {
+        results[i] = text || '';
+        continue;
+      }
+
       const cached = this.getCachedTranslation(text, targetLang);
       if (cached) {
         results[i] = cached;
@@ -210,25 +224,37 @@ class TranslationService {
       }
     }
 
-    // Translate remaining texts one by one
-    // (Free endpoint doesn't support batch, but we can do it concurrently)
+    // Translate remaining texts concurrently with a limit to avoid overwhelming the API
     if (textsToTranslate.length > 0) {
       try {
-        const translations = await Promise.all(
-          textsToTranslate.map(({ text }) =>
-            this.translate({ text, targetLang, sourceLang })
-          )
-        );
+        // Batch requests in groups of 5 to avoid rate limiting
+        const batchSize = 5;
+        const batches = [];
+        
+        for (let i = 0; i < textsToTranslate.length; i += batchSize) {
+          batches.push(textsToTranslate.slice(i, i + batchSize));
+        }
 
-        // Fill in results
-        textsToTranslate.forEach(({ index }, i) => {
-          results[index] = translations[i];
-        });
+        // Process batches sequentially, but items within each batch concurrently
+        for (const batch of batches) {
+          const translations = await Promise.all(
+            batch.map(({ text }) =>
+              this.translate({ text, targetLang, sourceLang })
+            )
+          );
+
+          // Fill in results
+          batch.forEach(({ index }, i) => {
+            results[index] = translations[i];
+          });
+        }
       } catch (error) {
         console.error('Batch translation failed:', error);
         // Fill in missing translations with original text
         textsToTranslate.forEach(({ text, index }) => {
-          results[index] = results[index] || text;
+          if (!results[index]) {
+            results[index] = text;
+          }
         });
       }
     }
