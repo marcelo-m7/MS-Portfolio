@@ -34,12 +34,6 @@ export const springTransition: Transition = {
   damping: 20,
 };
 
-// Standard hover scale animation
-export const hoverScaleVariants = {
-  rest: { scale: 1 },
-  hover: { scale: 1.05 },
-  tap: { scale: 0.95 },
-};
 
 // Back button hover animation
 export const backButtonHover = { x: -5 };
