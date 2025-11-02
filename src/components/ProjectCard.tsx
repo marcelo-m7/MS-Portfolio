@@ -19,6 +19,7 @@ import {
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
 import { GitHubStats } from '@/components/GitHubStats';
+import { useImageErrorHandler } from '@/hooks/useImageErrorHandler';
 
 const MotionCard = motion(Card);
 
@@ -43,6 +44,7 @@ interface ProjectCardProps {
 const ProjectCard: React.FC<ProjectCardProps> = memo(({ project, index }) => {
   const prefersReducedMotion = useReducedMotion();
   const liveLink = project.url ?? undefined;
+  const handleImageError = useImageErrorHandler();
 
   return (
     <MotionCard
@@ -60,14 +62,7 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({ project, index }) => {
           fetchpriority={(index < 3 ? "high" : "low") as "high" | "low"}
           alt={`Thumbnail do projeto ${project.name}`}
           className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            // Only log errors in development to reduce console noise
-            if (import.meta.env.DEV) {
-              console.error(`Failed to load image: ${project.thumbnail}`);
-            }
-            target.style.display = 'none';
-          }}
+          onError={handleImageError}
         />
         <div className="absolute top-4 right-4 flex gap-2">
           <Badge

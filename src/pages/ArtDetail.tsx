@@ -75,27 +75,28 @@ export default function ArtDetail() {
   }
 
   return (
-    <DetailPageContainer maxWidth="default">
-      <BackButton to="/portfolio" label="Voltar ao Portfolio" />
+    <>
+      <DetailPageContainer maxWidth="default">
+        <BackButton to="/portfolio" label="Voltar ao Portfolio" />
 
-      <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-        <MetadataBadge>
-          {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
-            new Date(`${artwork.year}-01-01`),
-          )}
-        </MetadataBadge>
-        <MetadataBadge>
-          {materials.join(' • ')}
-        </MetadataBadge>
-      </div>
+        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          <MetadataBadge>
+            {new Intl.DateTimeFormat(locale, { year: 'numeric' }).format(
+              new Date(`${artwork.year}-01-01`),
+            )}
+          </MetadataBadge>
+          <MetadataBadge>
+            {materials.join(' • ')}
+          </MetadataBadge>
+        </div>
 
-          <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
-            {artwork.title}
-          </h1>
+        <h1 className="mt-6 text-4xl font-display font-semibold text-foreground">
+          {artwork.title}
+        </h1>
 
-          <p className="mt-4 text-lg text-muted-foreground/90">{translatedDescription}</p>
+        <p className="mt-4 text-lg text-muted-foreground/90">{translatedDescription}</p>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
             {mediaUrls.map((media, index) => (
               <motion.button
                 key={`${media}-${index}`}
@@ -126,41 +127,40 @@ export default function ArtDetail() {
             ))}
           </div>
 
-          {artwork.url_3d && (
-            <div className="mt-10 flex flex-wrap items-center gap-4">
-              <MotionButton
-                type="button"
-                onClick={() => setIs3DOpen(true)}
-                className="inline-flex items-center gap-2 rounded-full"
-                disabled={!canRender3DPreview}
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                <Orbit className="h-4 w-4" aria-hidden />
-                {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
-              </MotionButton>
-              <motion.a
-                href={artwork.url_3d}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
-                whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                Abrir em Nova Aba
-                <ExternalLink className="h-4 w-4" aria-hidden />
-              </motion.a>
-              {!canRender3DPreview && (
-                <p className="text-sm text-muted-foreground/80">
-                  A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
-                </p>
-              )}
-            </div>
-          )}
-        </motion.div>
-      </div>
+        {artwork.url_3d && (
+          <div className="mt-10 flex flex-wrap items-center gap-4">
+            <MotionButton
+              type="button"
+              onClick={() => setIs3DOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full"
+              disabled={!canRender3DPreview}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              <Orbit className="h-4 w-4" aria-hidden />
+              {canRender3DPreview ? 'Explorar Experiência 3D' : 'Pré-visualização Indisponível'}
+            </MotionButton>
+            <motion.a
+              href={artwork.url_3d}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm text-muted-foreground transition hover:border-primary/60 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
+              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            >
+              Abrir em Nova Aba
+              <ExternalLink className="h-4 w-4" aria-hidden />
+            </motion.a>
+            {!canRender3DPreview && (
+              <p className="text-sm text-muted-foreground/80">
+                A visualização interativa está desativada nesta build. Defina VITE_ENABLE_ART_3D="true" para ativar.
+              </p>
+            )}
+          </div>
+        )}
+      </DetailPageContainer>
 
       <Dialog open={isMediaOpen} onOpenChange={setIsMediaOpen}>
         <DialogContent className="max-w-4xl border border-border/60 bg-card/90 backdrop-blur-xl">
@@ -220,6 +220,6 @@ export default function ArtDetail() {
           </DialogContent>
         </Dialog>
       )}
-    </div>
+    </>
   );
 }
