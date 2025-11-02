@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Github, Globe, Layers, ExternalLink } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 
 import {
   Card,
@@ -40,7 +40,7 @@ interface ProjectCardProps {
   index: number;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
+const ProjectCard: React.FC<ProjectCardProps> = memo(({ project, index }) => {
   const prefersReducedMotion = useReducedMotion();
   const liveLink = project.url ?? undefined;
 
@@ -192,6 +192,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       </CardFooter>
     </MotionCard>
   );
-};
+});
+
+ProjectCard.displayName = 'ProjectCard';
 
 export default ProjectCard;

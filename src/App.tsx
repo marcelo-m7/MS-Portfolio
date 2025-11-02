@@ -2,7 +2,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, useMemo } from "react";
 import {
   detectInitialLanguage,
   getStorageKey,
@@ -24,9 +24,9 @@ const ArtDetail = lazy(() => import("./pages/ArtDetail"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
-
 const App = () => {
+  // Memoize queryClient to avoid creating new instance on every render
+  const queryClient = useMemo(() => new QueryClient(), []);
   useEffect(() => {
     const initialLang = detectInitialLanguage();
     setLanguage(initialLang);
