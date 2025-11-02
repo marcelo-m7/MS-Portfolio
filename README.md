@@ -82,6 +82,64 @@ npm run lint
 
 ---
 
+## Testing
+
+This project uses Vitest for unit tests and also includes a few manual helper scripts.
+
+### Unit tests
+
+- Run all tests:
+
+```powershell
+npm run test
+```
+
+- With coverage (used in CI):
+
+```powershell
+npm run test:coverage
+```
+
+### Manual test scripts
+
+These scripts live under `tests/` to keep the repo root clean.
+
+- Connectivity and Supabase sanity checks:
+  - Script: `tests/test-connectivity.js`
+  - What it does: verifies Supabase connection, reads basic data from the `portfolio` schema, attempts a test insert into `public.leads` (RLS-aware), and runs a JOIN sample.
+  - Run (PowerShell):
+
+```powershell
+node .\tests\test-connectivity.js
+```
+
+Tip: you can override credentials with env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_KEY`.
+
+- Free Google Translate endpoint demo:
+  - Script: `tests/test-free-translation.js`
+  - What it does: makes a few translation requests to the free web endpoint and prints results.
+  - Run (PowerShell, Node 20+):
+
+```powershell
+node .\tests\test-free-translation.js
+```
+
+Or paste into your browser DevTools console to run in-page.
+
+- Supabase Edge Function email test:
+  - Script: `tests/test-edge-function.sh`
+  - What it does: posts a payload to the `send-contact-email` Edge Function.
+  - Run (bash):
+
+```bash
+chmod +x tests/test-edge-function.sh
+./tests/test-edge-function.sh
+```
+
+Windows: run via WSL or Git Bash. Update the URL/key inside the script as needed.
+
+---
+
 ## 🏗️ Arquitetura em 1 minuto
 
 - Frontend: React 18 + TypeScript + Vite 7
@@ -119,12 +177,12 @@ MS-Portfolio/
 - Idiomas e eventos: `src/lib/language.ts` (evento `monynha:languagechange`)
 - Traduções dinâmicas: `src/lib/translateService.ts` (endpoint web do Google Translate com cache em `localStorage`)
 
-### Adding Content (Projects, Art, Series):
+### Adding Content (Projects, Art, Series)
 
-1) Edite `public/data/cv.json`  
-2) Adicione uma miniatura SVG em `public/images/` com `<title>`  
-3) Referencie no JSON (ex.: `"thumbnail": "/images/meu-projeto.svg"`)  
-4) Rode `npm run build` para verificar orçamento de bundle
+1. Edite `public/data/cv.json`  
+1. Adicione uma miniatura SVG em `public/images/` com `<title>`  
+1. Referencie no JSON (ex.: `"thumbnail": "/images/meu-projeto.svg"`)  
+1. Rode `npm run build` para verificar orçamento de bundle
 
 ### 📝 Adding Blog Posts
 
@@ -144,7 +202,7 @@ excerpt: "A short summary of your post (1-2 sentences)."
 Your markdown content goes here...
 ```
 
-2. Add the slug (filename without `.md`) to the `BLOG_POSTS` array in `src/lib/markdownLoader.ts`:
+1. Add the slug (filename without `.md`) to the `BLOG_POSTS` array in `src/lib/markdownLoader.ts`:
 
 ```typescript
 const BLOG_POSTS = [
@@ -153,7 +211,7 @@ const BLOG_POSTS = [
 ];
 ```
 
-3. Build and verify: `npm run build`
+1. Build and verify: `npm run build`
 
 **Note**: Blog posts support full Markdown syntax including code blocks, lists, links, and emphasis.
 
@@ -163,7 +221,7 @@ const BLOG_POSTS = [
 
 Integra com **Supabase** e faz graceful fallback para `cv.json` quando indisponível.
 
-1) Crie `.env` com:
+1. Crie `.env` com:
 
 ```bash
 VITE_SUPABASE_URL=https://seu-projeto.supabase.co
@@ -171,10 +229,10 @@ VITE_SUPABASE_KEY=sua-anon-key
 VITE_SUPABASE_SCHEMA=portfolio
 ```
 
-3. (Optional) Configure email fallback for contact form:
+1. (Optional) Configure email fallback for contact form:
    - Deploy the `send-contact-email` Edge Function (see `EDGE_FUNCTION_SETUP.md`)
    - Add `RESEND_API_KEY` secret in Supabase Dashboard
-4. Restart the dev server
+1. Restart the dev server
 
 **📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./docs/SUPABASE.md)**  
 **📧 For Edge Function deployment and email configuration, see [EDGE_FUNCTION_SETUP.md](./docs/EDGE_FUNCTION_SETUP.md)**
