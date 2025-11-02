@@ -46,7 +46,7 @@ export default defineConfig(({ mode }) => ({
             'react-dom',
             'react-router-dom',
           ],
-          // Three.js and 3D graphics (only used in LiquidEther and Art3DPreview)
+          // Three.js and 3D graphics (only used in Art3DPreview)
           'vendor-three': [
             'three',
             '@react-three/fiber',
