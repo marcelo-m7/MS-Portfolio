@@ -1,12 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { useEffect, useMemo, useState } from 'react';
 import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { Tables as DBTables } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard';
 import ArtworkCard from '@/components/ArtworkCard';
 import SeriesCard from '@/components/SeriesCard';
+import { LoadingPortfolioGrid } from '@/components/LoadingStates';
 
 type CVProject = {
   slug: string;
@@ -208,35 +208,37 @@ export default function Portfolio() {
         </motion.div>
 
         {/* Dynamic Content Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {(loadingProjects || loadingArtworks || loadingSeries) &&
-            Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={`s-${i}`} className="h-80 w-full rounded-2xl" />
-            ))}
-          {!loadingProjects && !loadingArtworks && !loadingSeries && filteredItems.map((item, index) => {
-            if (item.type === 'project') {
-              return <ProjectCard key={`project-${item.slug}`} project={item} index={index} />;
-            }
-            if (item.type === 'artwork') {
-              return <ArtworkCard key={`artwork-${item.slug}`} artwork={item} index={index} />;
-            }
-            if (item.type === 'series') {
-              return <SeriesCard key={`series-${item.slug}`} series={item} index={index} />;
-            }
-            return null;
-          })}
-        </div>
+        {(loadingProjects || loadingArtworks || loadingSeries) ? (
+          <LoadingPortfolioGrid count={6} />
+        ) : (
+          <>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredItems.map((item, index) => {
+                if (item.type === 'project') {
+                  return <ProjectCard key={`project-${item.slug}`} project={item} index={index} />;
+                }
+                if (item.type === 'artwork') {
+                  return <ArtworkCard key={`artwork-${item.slug}`} artwork={item} index={index} />;
+                }
+                if (item.type === 'series') {
+                  return <SeriesCard key={`series-${item.slug}`} series={item} index={index} />;
+                }
+                return null;
+              })}
+            </div>
 
-        {filteredItems.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-center py-12"
-          >
-            <p className="text-muted-foreground text-lg">
-              Nenhum item encontrado nesta categoria.
-            </p>
-          </motion.div>
+            {filteredItems.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-12"
+              >
+                <p className="text-muted-foreground text-lg">
+                  Nenhum item encontrado nesta categoria.
+                </p>
+              </motion.div>
+            )}
+          </>
         )}
       </div>
     </div>

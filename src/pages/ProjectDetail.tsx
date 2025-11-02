@@ -17,7 +17,7 @@ import { useProject } from '@/hooks/usePortfolioData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingProjectDetail } from '@/components/LoadingStates';
 import {
   languageToLocale,
   useCurrentLanguage,
@@ -89,30 +89,7 @@ export default function ProjectDetail() {
 
   // Loading state
   if (isLoading) {
-    return (
-      <div className="px-6">
-        <div className="container mx-auto max-w-4xl">
-          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl">
-            <Skeleton className="mb-8 h-10 w-48 rounded-full" />
-            <div className="mb-10 space-y-4">
-              <div className="flex gap-3">
-                <Skeleton className="h-8 w-24 rounded-full" />
-                <Skeleton className="h-8 w-32 rounded-full" />
-              </div>
-              <Skeleton className="h-12 w-3/4" />
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-5/6" />
-            </div>
-            <Skeleton className="h-64 w-full rounded-2xl" />
-            <div className="mt-10 space-y-4">
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-full" />
-              <Skeleton className="h-6 w-4/5" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingProjectDetail />;
   }
 
   // 404 state

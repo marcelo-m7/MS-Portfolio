@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, Tag } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingThoughtDetail } from '@/components/LoadingStates';
 import { useThought, useProfile } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
@@ -24,36 +24,7 @@ export default function ThoughtDetail() {
   const isLoading = isLoadingThought || isLoadingProfile;
 
   if (isLoading) {
-    return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-3xl">
-          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-8 shadow-md backdrop-blur-xl">
-            <Skeleton className="h-10 w-48 rounded-full mb-6" />
-            <div className="flex gap-3 mb-6">
-              <Skeleton className="h-6 w-32 rounded-full" />
-              <Skeleton className="h-6 w-24 rounded-full" />
-            </div>
-            <Skeleton className="h-10 w-3/4 mb-4" />
-            <Skeleton className="h-20 w-full mb-6" />
-            <div className="flex gap-2 mb-8">
-              <Skeleton className="h-6 w-20 rounded-full" />
-              <Skeleton className="h-6 w-24 rounded-full" />
-            </div>
-            <Skeleton className="h-48 w-full mb-6" />
-            <div className="rounded-[var(--radius)] border border-border/60 bg-background/60 p-6">
-              <Skeleton className="h-4 w-24 mb-4" />
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-12 w-12 rounded-full" />
-                <div className="space-y-2">
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-3 w-48" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingThoughtDetail />;
   }
 
   if (!thought) {

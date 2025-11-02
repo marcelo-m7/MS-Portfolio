@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Layers, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingSeriesDetail } from '@/components/LoadingStates';
 import { useSeriesDetail, useArtworks, useProjects } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
@@ -74,28 +74,7 @@ export default function SeriesDetail() {
   }, [artworks, projects]);
 
   if (isLoading) {
-    return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-5xl">
-          <div className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-md backdrop-blur-xl">
-            <Skeleton className="h-10 w-48 rounded-full mb-8" />
-            <div className="space-y-4 mb-8">
-              <div className="flex gap-3">
-                <Skeleton className="h-6 w-32 rounded-full" />
-                <Skeleton className="h-6 w-24 rounded-full" />
-              </div>
-              <Skeleton className="h-10 w-3/4" />
-              <Skeleton className="h-20 w-full" />
-            </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-64 w-full rounded-2xl" />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <LoadingSeriesDetail />;
   }
 
   if (!series) {

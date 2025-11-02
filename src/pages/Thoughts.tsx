@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, Calendar, BookOpen, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { LoadingThoughtCard } from '@/components/LoadingStates';
 import { useThoughts } from '@/hooks/usePortfolioData';
 import {
   languageToLocale,
@@ -49,19 +49,7 @@ export default function Thoughts() {
           {isLoading ? (
             <div className="grid gap-8 md:grid-cols-2">
               {Array.from({ length: 4 }).map((_, i) => (
-                <div key={i} className="flex h-full flex-col rounded-2xl border border-border/70 bg-card/90 p-8 shadow-md">
-                  <div className="mb-6 flex gap-3">
-                    <Skeleton className="h-6 w-32 rounded-full" />
-                    <Skeleton className="h-6 w-24 rounded-full" />
-                  </div>
-                  <Skeleton className="h-9 w-3/4 mb-4" />
-                  <Skeleton className="h-20 w-full mb-6" />
-                  <div className="flex gap-2 mb-6">
-                    <Skeleton className="h-6 w-20 rounded-full" />
-                    <Skeleton className="h-6 w-24 rounded-full" />
-                  </div>
-                  <Skeleton className="h-10 w-48 rounded-2xl mt-auto" />
-                </div>
+                <LoadingThoughtCard key={i} />
               ))}
             </div>
           ) : (
