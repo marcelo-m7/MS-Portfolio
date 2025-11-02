@@ -1,7 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
-  ArrowLeft,
   ExternalLink,
   Calendar,
   Code2,
@@ -29,8 +28,11 @@ import {
 } from '@/lib/projectStyles';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
-
-const MotionButton = motion(Button);
+import NotFoundMessage from '@/components/NotFoundMessage';
+import BackButton from '@/components/BackButton';
+import MetadataBadge from '@/components/MetadataBadge';
+import { useImageErrorHandler } from '@/hooks/useImageErrorHandler';
+import { staggerContainerVariants, staggerItemVariants } from '@/lib/animations';
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -39,26 +41,11 @@ export default function ProjectDetail() {
   const locale = languageToLocale(language);
   const t = useTranslations();
   const { data: dbProject, isLoading } = useProject(slug);
+  const handleImageError = useImageErrorHandler();
   
   // Translate content (always call hooks, even if data not yet loaded)
-  const notFoundMessage = useTranslatedText('Este projeto não existe ou foi movido. Volte ao portfolio para descobrir outros trabalhos.');
   const translatedSummary = useTranslatedText(dbProject?.summary ?? '');
   const translatedDescription = useTranslatedText(dbProject?.full_description ?? dbProject?.fullDescription ?? '');
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
 
   useEffect(() => {
     if (typeof document === 'undefined' || !dbProject) return;
@@ -103,17 +90,11 @@ export default function ProjectDetail() {
   // 404 state
   if (!dbProject) {
     return (
-      <div className="py-0 px-6">
-        <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
-          <p className="mt-4 text-muted-foreground">
-            {notFoundMessage}
-          </p>
-          <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">{t.nav.portfolio}</Link>
-          </Button>
-        </div>
-      </div>
+      <NotFoundMessage 
+        message="Este projeto não existe ou foi movido. Volte ao portfolio para descobrir outros trabalhos."
+        backTo="/portfolio"
+        backLabel={t.nav.portfolio}
+      />
     );
   }
 
@@ -132,38 +113,24 @@ export default function ProjectDetail() {
     <div className="px-6">
       <div className="container mx-auto max-w-4xl">
         <motion.div
-          variants={containerVariants}
+          variants={staggerContainerVariants}
           initial={prefersReducedMotion ? undefined : 'hidden'}
           animate={prefersReducedMotion ? undefined : 'visible'}
           className="rounded-[var(--radius)] border border-border/60 bg-card/80 p-10 shadow-[0_45px_90px_-70px_hsl(var(--primary)/0.3)] backdrop-blur-xl"
         >
-          <motion.div variants={itemVariants}>
-            <MotionButton
-              asChild
-              variant="ghost"
-              className="mb-8 inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-4 py-2 text-sm text-muted-foreground transition hover:text-primary"
-              whileHover={prefersReducedMotion ? undefined : { x: -5 }}
-              whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            >
-              <Link to="/portfolio">
-                <ArrowLeft className="h-4 w-4" aria-hidden />
-                Voltar ao Portfolio
-              </Link>
-            </MotionButton>
+          <motion.div variants={staggerItemVariants}>
+            <BackButton to="/portfolio" label="Voltar ao Portfolio" />
           </motion.div>
 
           {/* Overview Section */}
-          <motion.section variants={itemVariants} className="mb-10 space-y-4">
+          <motion.section variants={staggerItemVariants} className="mb-10 space-y-4">
             <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-sm font-medium normal-case">
-                <Calendar className="h-4 w-4" aria-hidden />
+              <MetadataBadge icon={Calendar} className="text-sm font-medium normal-case">
                 {formattedYear}
-              </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-sm font-medium normal-case">
-                <Layers className="h-4 w-4" aria-hidden />
+              </MetadataBadge>
+              <MetadataBadge icon={Layers} className="text-sm font-medium normal-case">
                 {dbProject.category}
-              </span>
+              </MetadataBadge>
               {dbProject.status && (
                 <Badge
                   className={cn(
@@ -194,7 +161,7 @@ export default function ProjectDetail() {
           {/* Project Thumbnail */}
           {dbProject.thumbnail && (
             <motion.div
-              variants={itemVariants}
+              variants={staggerItemVariants}
               className="mt-8 overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20"
             >
               <img
@@ -203,11 +170,7 @@ export default function ProjectDetail() {
                 loading="lazy"
                 decoding="async"
                 className="h-auto w-full object-contain"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  console.error(`Failed to load project thumbnail: ${dbProject.thumbnail}`);
-                  target.style.display = 'none';
-                }}
+                onError={handleImageError}
               />
             </motion.div>
           )}
@@ -215,7 +178,7 @@ export default function ProjectDetail() {
           {/* Full Description */}
           {dbProject.full_description && (
             <motion.article
-              variants={itemVariants}
+              variants={staggerItemVariants}
               className="mt-10 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground"
             >
               <ReactMarkdown>{translatedDescription}</ReactMarkdown>
@@ -223,7 +186,7 @@ export default function ProjectDetail() {
           )}
 
           {/* Project Metadata */}
-          <motion.section variants={itemVariants} className="mt-10 space-y-6">
+          <motion.section variants={staggerItemVariants} className="mt-10 space-y-6">
             <div className="grid gap-4 sm:grid-cols-2 text-sm text-muted-foreground/90">
               <div className="flex items-center gap-2 rounded-[var(--radius)] border border-border/60 bg-background/60 px-4 py-3">
                 <Globe className="h-4 w-4 text-secondary" aria-hidden />

@@ -1,0 +1,46 @@
+import { Variants, Transition } from 'framer-motion';
+
+/**
+ * Shared animation configurations to reduce duplication across components
+ */
+
+// Standard stagger container animation
+export const staggerContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+// Standard item animation (used in stagger containers)
+export const staggerItemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
+// Card entrance animation
+export const cardEntranceVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+// Spring transition configuration
+export const springTransition: Transition = {
+  type: 'spring',
+  stiffness: 300,
+  damping: 20,
+};
+
+// Standard hover scale animation
+export const hoverScaleVariants = {
+  rest: { scale: 1 },
+  hover: { scale: 1.05 },
+  tap: { scale: 0.95 },
+};
+
+// Back button hover animation
+export const backButtonHover = { x: -5 };
+export const backButtonTap = { scale: 0.98 };
