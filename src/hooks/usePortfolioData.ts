@@ -39,11 +39,11 @@ async function loadCvData(): Promise<Record<string, unknown>> {
   
   // Create new loading promise
   cvDataPromise = fetch('/data/cv.json')
-    .then(response => response.json() as Promise<Record<string, unknown>>)
-    .then(data => {
-      cvDataCache = data;
+    .then(response => response.json())
+    .then((data: unknown) => {
+      cvDataCache = data as Record<string, unknown>;
       cvDataPromise = null;
-      return data;
+      return cvDataCache;
     })
     .catch(error => {
       cvDataPromise = null;

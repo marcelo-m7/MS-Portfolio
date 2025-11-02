@@ -64,10 +64,12 @@ export function useTranslatedTexts(
   );
 
   // Memoize validTexts to avoid recreating on every render
+  // Using join to create a stable dependency key
+  const textsKey = originalTexts.join('|');
   const validTexts = useMemo(
     () => originalTexts.map((t) => t || ''),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [originalTexts.length, ...originalTexts]
+    [textsKey]
   );
 
   useEffect(() => {
@@ -114,10 +116,10 @@ export function useTranslatedObject<T extends Record<string, unknown>>(
   const [translatedObj, setTranslatedObj] = useState<T | null>(obj || null);
 
   // Memoize fieldsToTranslate key to avoid effect re-runs
+  // Using join to create a stable dependency key
   const fieldsKey = useMemo(
     () => fieldsToTranslate.join(','),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [fieldsToTranslate.length, ...fieldsToTranslate]
+    [fieldsToTranslate.join(',')]
   );
 
   useEffect(() => {
@@ -155,7 +157,8 @@ export function useTranslatedObject<T extends Record<string, unknown>>(
           const newObj = { ...obj };
           fieldsToTranslate.forEach((field, index) => {
             if (typeof obj[field] === 'string') {
-              newObj[field] = translated[index] as T[keyof T];
+              // Safe cast since we verified the field is a string
+              (newObj[field] as string) = translated[index];
             }
           });
           setTranslatedObj(newObj);
