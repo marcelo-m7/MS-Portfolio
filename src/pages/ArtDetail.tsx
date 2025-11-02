@@ -16,6 +16,8 @@ import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 const MotionButton = motion(Button);
 const MotionImg = motion.img;
@@ -32,10 +34,15 @@ export default function ArtDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const t = useTranslations();
   const { data: artwork, isLoading } = useArtwork(slug ?? '');
   const [isMediaOpen, setIsMediaOpen] = useState(false);
   const [activeMedia, setActiveMedia] = useState<string | null>(null);
   const [is3DOpen, setIs3DOpen] = useState(false);
+  
+  // Translate content
+  const notFoundMessage = useTranslatedText('Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais.');
+  const translatedDescription = useTranslatedText(artwork?.description ?? '');
 
   // Extract arrays from database objects
   const mediaUrls = artwork?.media?.map(m => m.media_url) ?? [];
@@ -56,12 +63,12 @@ export default function ArtDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Obra não encontrada</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
           <p className="mt-4 text-muted-foreground">
-            Esta peça artística não existe ou foi movida. Volte ao portfolio para descobrir outras experiências digitais.
+            {notFoundMessage}
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver Portfolio</Link>
+            <Link to="/portfolio">{t.nav.portfolio}</Link>
           </Button>
         </div>
       </div>
@@ -116,7 +123,7 @@ export default function ArtDetail() {
             {artwork.title}
           </h1>
 
-          <p className="mt-4 text-lg text-muted-foreground/90">{artwork.description}</p>
+          <p className="mt-4 text-lg text-muted-foreground/90">{translatedDescription}</p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {mediaUrls.map((media, index) => (

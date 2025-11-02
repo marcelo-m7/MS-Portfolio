@@ -27,6 +27,8 @@ import {
   getStatusBadgeClasses,
   getVisibilityBadgeClasses,
 } from '@/lib/projectStyles';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 const MotionButton = motion(Button);
 
@@ -35,7 +37,13 @@ export default function ProjectDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const t = useTranslations();
   const { data: dbProject, isLoading } = useProject(slug);
+  
+  // Translate content (always call hooks, even if data not yet loaded)
+  const notFoundMessage = useTranslatedText('Este projeto não existe ou foi movido. Volte ao portfolio para descobrir outros trabalhos.');
+  const translatedSummary = useTranslatedText(dbProject?.summary ?? '');
+  const translatedDescription = useTranslatedText(dbProject?.full_description ?? dbProject?.fullDescription ?? '');
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -97,12 +105,12 @@ export default function ProjectDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Projeto não encontrado</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
           <p className="mt-4 text-muted-foreground">
-            Este projeto não existe ou foi movido. Volte ao portfolio para descobrir outros trabalhos.
+            {notFoundMessage}
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver Portfolio</Link>
+            <Link to="/portfolio">{t.nav.portfolio}</Link>
           </Button>
         </div>
       </div>
@@ -180,7 +188,7 @@ export default function ProjectDetail() {
             <h1 className="text-4xl font-display font-semibold text-foreground">
               {dbProject.name}
             </h1>
-            <p className="mt-4 text-lg text-muted-foreground/90">{dbProject.summary}</p>
+            <p className="mt-4 text-lg text-muted-foreground/90">{translatedSummary}</p>
           </motion.section>
 
           {/* Project Thumbnail */}
@@ -210,7 +218,7 @@ export default function ProjectDetail() {
               variants={itemVariants}
               className="mt-10 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground"
             >
-              <ReactMarkdown>{dbProject.full_description}</ReactMarkdown>
+              <ReactMarkdown>{translatedDescription}</ReactMarkdown>
             </motion.article>
           )}
 
@@ -238,7 +246,7 @@ export default function ProjectDetail() {
             <Separator className="bg-border/70" />
 
             <div>
-              <h2 className="text-2xl font-display font-bold mb-4">Tecnologias Utilizadas</h2>
+              <h2 className="text-2xl font-display font-bold mb-4">{t.projectDetail.technologies}</h2>
               <div className="flex flex-wrap gap-2">
                 {stack.map((tech) => (
                   <span
@@ -266,7 +274,7 @@ export default function ProjectDetail() {
                   className="inline-flex items-center gap-2"
                 >
                   <Github className="h-4 w-4" aria-hidden />
-                  Ver Repositório
+                  {t.projectDetail.viewSource}
                 </a>
               </Button>
               {liveLink && (
@@ -283,7 +291,7 @@ export default function ProjectDetail() {
                     className="inline-flex items-center gap-2"
                   >
                     <ExternalLink className="h-4 w-4" aria-hidden />
-                    Acessar Online
+                    {t.projectDetail.visitSite}
                   </a>
                 </Button>
               )}

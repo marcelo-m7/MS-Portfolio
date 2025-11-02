@@ -9,6 +9,8 @@ import {
   languageToLocale,
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 const MotionButton = motion(Button);
 
@@ -36,9 +38,15 @@ export default function SeriesDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const t = useTranslations();
   const { data: series, isLoading: isLoadingSeries } = useSeriesDetail(slug);
   const { data: artworks = [], isLoading: isLoadingArtworks } = useArtworks();
   const { data: projects = [], isLoading: isLoadingProjects } = useProjects();
+  
+  // Translate content
+  const notFoundMessage = useTranslatedText('Esta série não existe ou foi movida. Volte ao portfolio para descobrir outros projetos.');
+  const translatedDescription = useTranslatedText((series?.description as string) ?? '');
+  const comingSoonMessage = useTranslatedText('Novas obras para esta série serão adicionadas em breve.');
 
   const isLoading = isLoadingSeries || isLoadingArtworks || isLoadingProjects;
 
@@ -81,12 +89,12 @@ export default function SeriesDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Série não encontrada</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
           <p className="mt-4 text-muted-foreground">
-            A coleção que procuras não está disponível. Volte ao portfolio e explore outras experiências criativas.
+            {notFoundMessage}
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/portfolio">Ver Portfolio</Link>
+            <Link to="/portfolio">{t.nav.portfolio}</Link>
           </Button>
         </div>
       </div>
@@ -148,7 +156,7 @@ export default function SeriesDetail() {
             {series.title}
           </h1>
 
-          <p className="mt-4 text-lg text-muted-foreground/90">{series.description}</p>
+          <p className="mt-4 text-lg text-muted-foreground/90">{translatedDescription}</p>
 
           <div className="mt-10 grid gap-6 md:grid-cols-2">
             {works.map((work, index) => {
@@ -217,7 +225,7 @@ export default function SeriesDetail() {
             })}
             {works.length === 0 && (
               <div className="col-span-full rounded-[var(--radius)] border border-border/60 bg-background/60 p-8 text-center text-sm text-muted-foreground">
-                Novas obras para esta série serão adicionadas em breve.
+                {comingSoonMessage}
               </div>
             )}
           </div>

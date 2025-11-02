@@ -9,12 +9,17 @@ import {
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 import { calculateReadingTime } from '@/lib/content';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 export default function Thoughts() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const t = useTranslations();
   const { data: thoughts = [], isLoading } = useThoughts();
+  
+  const pageSubtitle = useTranslatedText('Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.');
 
   return (
     <div className="py-8 px-6">
@@ -31,18 +36,18 @@ export default function Thoughts() {
           >
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" aria-hidden />
-              Voltar para o Início
+              {t.common.backToHome}
             </Link>
           </Button>
 
           <header className="mb-16 text-center">
             <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Pensamentos
+                {t.nav.thoughts}
               </span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.
+              {pageSubtitle}
             </p>
           </header>
 
@@ -78,7 +83,7 @@ export default function Thoughts() {
                     </span>
                     <span className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-3 py-1">
                       <BookOpen className="h-3 w-3" aria-hidden />
-                      {readingTime} min
+                      {readingTime} {t.thoughts.minutesRead}
                     </span>
                   </div>
 

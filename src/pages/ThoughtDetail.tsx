@@ -10,6 +10,8 @@ import {
   useCurrentLanguage,
 } from '@/hooks/useCurrentLanguage';
 import { calculateReadingTime } from '@/lib/content';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 const MotionButton = motion(Button);
 
@@ -18,8 +20,13 @@ export default function ThoughtDetail() {
   const prefersReducedMotion = useReducedMotion();
   const language = useCurrentLanguage();
   const locale = languageToLocale(language);
+  const t = useTranslations();
   const { data: thought, isLoading: isLoadingThought } = useThought(slug ?? '');
   const { data: profile, isLoading: isLoadingProfile } = useProfile();
+  
+  // Translate content
+  const notFoundMessage = useTranslatedText('Não encontramos esta reflexão. Volte para a coleção de pensamentos e explore outras ideias.');
+  const translatedContent = useTranslatedText((thought?.body as string) ?? '');
 
   const isLoading = isLoadingThought || isLoadingProfile;
 
@@ -31,12 +38,12 @@ export default function ThoughtDetail() {
     return (
       <div className="py-0 px-6">
         <div className="container mx-auto max-w-3xl text-center">
-          <h1 className="text-4xl font-display font-bold text-primary">Conteúdo não encontrado</h1>
+          <h1 className="text-4xl font-display font-bold text-primary">{t.common.notFound}</h1>
           <p className="mt-4 text-muted-foreground">
-            Não encontramos esta reflexão. Volte para a coleção de pensamentos e explore outras ideias.
+            {notFoundMessage}
           </p>
           <Button asChild className="mt-8 rounded-full">
-            <Link to="/thoughts">Ver todos os pensamentos</Link>
+            <Link to="/thoughts">{t.thoughts.backToThoughts}</Link>
           </Button>
         </div>
       </div>
@@ -69,7 +76,7 @@ export default function ThoughtDetail() {
           >
             <Link to="/thoughts">
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Voltar para os Pensamentos
+              {t.thoughts.backToThoughts}
             </Link>
           </MotionButton>
 
@@ -90,7 +97,7 @@ export default function ThoughtDetail() {
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
             >
               <BookOpen className="h-3 w-3" aria-hidden />
-              {readingTime} min
+              {readingTime} {t.thoughts.minutesRead}
             </motion.span>
           </div>
 
@@ -116,7 +123,7 @@ export default function ThoughtDetail() {
           </div>
 
           <article className="mt-8 space-y-6 text-base leading-relaxed text-foreground/90 prose prose-invert prose-p:text-foreground/90 prose-strong:text-foreground">
-            <ReactMarkdown>{thought.body}</ReactMarkdown>
+            <ReactMarkdown>{translatedContent}</ReactMarkdown>
           </article>
 
           {profile && (

@@ -30,6 +30,16 @@ export interface Translations {
   contact: {
     title: string;
     subtitle: string;
+    contactInfo: string;
+    availability: string;
+    availabilityDefault: string;
+    sendMessage: string;
+    nameLabel: string;
+    emailLabel: string;
+    companyLabel: string;
+    projectLabel: string;
+    messageLabel: string;
+    optional: string;
     namePlaceholder: string;
     emailPlaceholder: string;
     companyPlaceholder: string;
@@ -38,6 +48,7 @@ export interface Translations {
     sendButton: string;
     sending: string;
     successMessage: string;
+    emailFallbackMessage: string;
     errorMessage: string;
   };
   footer: {
@@ -118,14 +129,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
     contact: {
       title: 'Vamos Conversar',
       subtitle: 'Entre em contato e vamos criar algo incrível juntos.',
+      contactInfo: 'Informações de Contato',
+      availability: 'Disponibilidade',
+      availabilityDefault: 'Disponível para projetos e colaborações.',
+      sendMessage: 'Enviar Mensagem',
+      nameLabel: 'Nome',
+      emailLabel: 'Email',
+      companyLabel: 'Empresa',
+      projectLabel: 'Projeto',
+      messageLabel: 'Mensagem',
+      optional: 'opcional',
       namePlaceholder: 'Seu nome',
-      emailPlaceholder: 'Seu email',
-      companyPlaceholder: 'Sua empresa (opcional)',
-      projectPlaceholder: 'Tipo de projeto (opcional)',
-      messagePlaceholder: 'Conte-me sobre seu projeto...',
+      emailPlaceholder: 'seu@email.com',
+      companyPlaceholder: 'Onde você trabalha',
+      projectPlaceholder: 'Sobre o que vamos falar?',
+      messagePlaceholder: 'Escreva sua mensagem aqui...',
       sendButton: 'Enviar Mensagem',
       sending: 'Enviando...',
       successMessage: 'Mensagem enviada com sucesso!',
+      emailFallbackMessage: 'Recebemos sua mensagem por email! Entraremos em contato em breve. 📬',
       errorMessage: 'Não foi possível enviar sua mensagem. Tente novamente.',
     },
     footer: {
@@ -204,14 +226,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
     contact: {
       title: 'Let\'s Talk',
       subtitle: 'Get in touch and let\'s create something amazing together.',
+      contactInfo: 'Contact Information',
+      availability: 'Availability',
+      availabilityDefault: 'Available for projects and collaborations.',
+      sendMessage: 'Send Message',
+      nameLabel: 'Name',
+      emailLabel: 'Email',
+      companyLabel: 'Company',
+      projectLabel: 'Project',
+      messageLabel: 'Message',
+      optional: 'optional',
       namePlaceholder: 'Your name',
-      emailPlaceholder: 'Your email',
-      companyPlaceholder: 'Your company (optional)',
-      projectPlaceholder: 'Project type (optional)',
-      messagePlaceholder: 'Tell me about your project...',
+      emailPlaceholder: 'your@email.com',
+      companyPlaceholder: 'Where you work',
+      projectPlaceholder: 'What are we going to talk about?',
+      messagePlaceholder: 'Write your message here...',
       sendButton: 'Send Message',
       sending: 'Sending...',
       successMessage: 'Message sent successfully!',
+      emailFallbackMessage: 'We received your message via email! We\'ll get in touch soon. 📬',
       errorMessage: 'Could not send your message. Please try again.',
     },
     footer: {
@@ -290,14 +323,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
     contact: {
       title: 'Hablemos',
       subtitle: 'Ponte en contacto y creemos algo increíble juntos.',
+      contactInfo: 'Información de Contacto',
+      availability: 'Disponibilidad',
+      availabilityDefault: 'Disponible para proyectos y colaboraciones.',
+      sendMessage: 'Enviar Mensaje',
+      nameLabel: 'Nombre',
+      emailLabel: 'Email',
+      companyLabel: 'Empresa',
+      projectLabel: 'Proyecto',
+      messageLabel: 'Mensaje',
+      optional: 'opcional',
       namePlaceholder: 'Tu nombre',
-      emailPlaceholder: 'Tu email',
-      companyPlaceholder: 'Tu empresa (opcional)',
-      projectPlaceholder: 'Tipo de proyecto (opcional)',
-      messagePlaceholder: 'Cuéntame sobre tu proyecto...',
+      emailPlaceholder: 'tu@email.com',
+      companyPlaceholder: 'Dónde trabajas',
+      projectPlaceholder: '¿De qué vamos a hablar?',
+      messagePlaceholder: 'Escribe tu mensaje aquí...',
       sendButton: 'Enviar Mensaje',
       sending: 'Enviando...',
       successMessage: '¡Mensaje enviado con éxito!',
+      emailFallbackMessage: '¡Recibimos tu mensaje por email! Te contactaremos pronto. 📬',
       errorMessage: 'No se pudo enviar tu mensaje. Inténtalo de nuevo.',
     },
     footer: {
@@ -376,14 +420,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
     contact: {
       title: 'Parlons-en',
       subtitle: 'Contactez-moi et créons quelque chose d\'incroyable ensemble.',
+      contactInfo: 'Informations de Contact',
+      availability: 'Disponibilité',
+      availabilityDefault: 'Disponible pour des projets et collaborations.',
+      sendMessage: 'Envoyer un Message',
+      nameLabel: 'Nom',
+      emailLabel: 'Email',
+      companyLabel: 'Entreprise',
+      projectLabel: 'Projet',
+      messageLabel: 'Message',
+      optional: 'facultatif',
       namePlaceholder: 'Votre nom',
-      emailPlaceholder: 'Votre email',
-      companyPlaceholder: 'Votre entreprise (facultatif)',
-      projectPlaceholder: 'Type de projet (facultatif)',
-      messagePlaceholder: 'Parlez-moi de votre projet...',
+      emailPlaceholder: 'votre@email.com',
+      companyPlaceholder: 'Où travaillez-vous',
+      projectPlaceholder: 'De quoi allons-nous parler ?',
+      messagePlaceholder: 'Écrivez votre message ici...',
       sendButton: 'Envoyer le Message',
       sending: 'Envoi en cours...',
       successMessage: 'Message envoyé avec succès !',
+      emailFallbackMessage: 'Nous avons reçu votre message par email ! Nous vous contacterons bientôt. 📬',
       errorMessage: 'Impossible d\'envoyer votre message. Veuillez réessayer.',
     },
     footer: {

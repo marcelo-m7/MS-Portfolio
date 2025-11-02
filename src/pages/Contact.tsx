@@ -11,6 +11,8 @@ import { submitContactLead } from '@/lib/contactLead';
 import { supabase } from '@/lib/supabaseClient';
 import { logger } from '@/lib/logger';
 import type { ContactLeadPayload } from '@/lib/contactLead';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 const createInitialFormState = (): ContactLeadPayload => ({
   name: '',
@@ -25,6 +27,9 @@ export default function Contact() {
   const [formData, setFormData] = useState(createInitialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: contactInfo } = useContact();
+  const t = useTranslations();
+  const translatedNote = useTranslatedText((contactInfo?.note as string) ?? '');
+  const translatedAvailability = useTranslatedText((contactInfo?.availability as string) ?? '');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,13 +72,13 @@ export default function Contact() {
 
       toast.success(
         result === 'saved'
-          ? (contactInfo?.success_message || 'Mensagem enviada com sucesso!')
-          : 'Recebemos sua mensagem por email! Entraremos em contato em breve. 📬',
+          ? (contactInfo?.success_message || t.contact.successMessage)
+          : t.contact.emailFallbackMessage,
       );
       setFormData(createInitialFormState());
     } catch (error) {
       logger.error('Erro ao processar mensagem de contato', { component: 'Contact' }, error);
-      toast.error(contactInfo?.error_message || 'Não foi possível enviar sua mensagem. Tente novamente.');
+      toast.error(contactInfo?.error_message || t.contact.errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -89,10 +94,10 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
-            Vamos Conversar
+            {t.contact.title}
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            {contactInfo?.note || 'Entre em contato e vamos criar algo incrível juntos.'}
+            {translatedNote || t.contact.subtitle}
           </p>
         </motion.div>
 
@@ -106,7 +111,7 @@ export default function Contact() {
           >
             <div className="glass p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Informações de Contato
+                {t.contact.contactInfo}
               </h2>
 
               <div className="space-y-6">
@@ -120,7 +125,7 @@ export default function Contact() {
                     <Mail className="text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground/60">Email</p>
+                    <p className="text-sm text-muted-foreground/60">{t.contact.emailLabel}</p>
                     <p className="font-medium">{contactInfo?.email || LINKS.email.replace('mailto:','')}</p>
                   </div>
                 </motion.a>
@@ -162,9 +167,9 @@ export default function Contact() {
             </div>
 
             <div className="glass p-8">
-              <h3 className="font-display font-bold mb-3">Disponibilidade</h3>
+              <h3 className="font-display font-bold mb-3">{t.contact.availability}</h3>
               <p className="text-muted-foreground">
-                {contactInfo?.availability || 'Disponível para projetos e colaborações.'}
+                {translatedAvailability || t.contact.availabilityDefault}
               </p>
             </div>
           </motion.div>
@@ -177,14 +182,14 @@ export default function Contact() {
           >
             <form onSubmit={handleSubmit} className="glass p-8">
               <h2 className="text-2xl font-display font-bold mb-6">
-                Enviar Mensagem
+                {t.contact.sendMessage}
               </h2>
 
               <div className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Nome
+                      {t.contact.nameLabel}
                     </label>
                     <Input
                       id="name"
@@ -195,12 +200,12 @@ export default function Contact() {
                       }
                       required
                       className="rounded-2xl"
-                      placeholder="Seu nome"
+                      placeholder={t.contact.namePlaceholder}
                     />
                   </div>
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium mb-2">
-                      Empresa <span className="text-muted-foreground">(opcional)</span>
+                      {t.contact.companyLabel} <span className="text-muted-foreground">({t.contact.optional})</span>
                     </label>
                     <Input
                       id="company"
@@ -210,7 +215,7 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, company: e.target.value }))
                       }
                       className="rounded-2xl"
-                      placeholder="Onde você trabalha"
+                      placeholder={t.contact.companyPlaceholder}
                     />
                   </div>
                 </div>
@@ -218,7 +223,7 @@ export default function Contact() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email
+                      {t.contact.emailLabel}
                     </label>
                     <Input
                       id="email"
@@ -229,12 +234,12 @@ export default function Contact() {
                       }
                       required
                       className="rounded-2xl"
-                      placeholder="seu@email.com"
+                      placeholder={t.contact.emailPlaceholder}
                     />
                   </div>
                   <div>
                     <label htmlFor="project" className="block text-sm font-medium mb-2">
-                      Projeto <span className="text-muted-foreground">(opcional)</span>
+                      {t.contact.projectLabel} <span className="text-muted-foreground">({t.contact.optional})</span>
                     </label>
                     <Input
                       id="project"
@@ -244,14 +249,14 @@ export default function Contact() {
                         setFormData((prev) => ({ ...prev, project: e.target.value }))
                       }
                       className="rounded-2xl"
-                      placeholder="Sobre o que vamos falar?"
+                      placeholder={t.contact.projectPlaceholder}
                     />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Mensagem
+                    {t.contact.messageLabel}
                   </label>
                   <Textarea
                     id="message"
@@ -262,7 +267,7 @@ export default function Contact() {
                     required
                     rows={6}
                     className="rounded-2xl resize-none"
-                    placeholder="Escreva sua mensagem aqui..."
+                    placeholder={t.contact.messagePlaceholder}
                   />
                 </div>
 
@@ -272,11 +277,11 @@ export default function Contact() {
                   className="w-full rounded-2xl bg-primary py-6 text-lg hover:bg-primary/90"
                 >
                   {isSubmitting ? (
-                    'Enviando...'
+                    t.contact.sending
                   ) : (
                     <>
                       <Send className="mr-2" size={20} />
-                      Enviar Mensagem
+                      {t.contact.sendButton}
                     </>
                   )}
                 </Button>

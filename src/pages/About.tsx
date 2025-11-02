@@ -6,12 +6,19 @@ import {
   LoadingExperience, 
   LoadingSkills 
 } from '@/components/LoadingStates';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 export default function About() {
   const prefersReducedMotion = useReducedMotion();
+  const t = useTranslations();
   const { data: profile, isLoading: isLoadingProfile } = useProfile();
   const { data: experience = [], isLoading: isLoadingExperience } = useExperience();
   const { data: skills = [], isLoading: isLoadingSkills } = useSkills();
+  
+  // Translate profile content
+  const translatedBio = useTranslatedText(profile?.bio ?? '');
+  const pageSubtitle = useTranslatedText('Conheça a história e experiência');
 
   return (
     <div className="py-8 px-6">
@@ -23,10 +30,10 @@ export default function About() {
           className="text-center mb-16"
         >
           <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
-            Sobre Mim
+            {t.nav.about}
           </h1>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            Conheça a história e experiência
+            {pageSubtitle}
           </p>
         </motion.div>
 
@@ -63,7 +70,7 @@ export default function About() {
                   <span>{profile.location}</span>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
-                  {profile.bio}
+                  {translatedBio}
                 </p>
               </div>
             </div>
@@ -79,7 +86,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Briefcase className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Experiência</h2>
+            <h2 className="text-3xl font-display font-bold">{t.about.experience}</h2>
           </div>
           
           {isLoadingExperience ? (
@@ -135,7 +142,7 @@ export default function About() {
         >
           <div className="flex items-center gap-3 mb-6">
             <Award className="text-primary" size={28} />
-            <h2 className="text-3xl font-display font-bold">Competências</h2>
+            <h2 className="text-3xl font-display font-bold">{t.about.skills}</h2>
           </div>
           
           {isLoadingSkills ? (
