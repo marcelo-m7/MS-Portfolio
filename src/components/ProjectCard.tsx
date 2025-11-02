@@ -57,11 +57,15 @@ const ProjectCard: React.FC<ProjectCardProps> = memo(({ project, index }) => {
           src={project.thumbnail}
           loading="lazy"
           decoding="async"
+          fetchpriority={index < 3 ? "high" : "low"}
           alt={`Thumbnail do projeto ${project.name}`}
           className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.04]"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
-            console.error(`Failed to load image: ${project.thumbnail}`);
+            // Only log errors in development to reduce console noise
+            if (import.meta.env.DEV) {
+              console.error(`Failed to load image: ${project.thumbnail}`);
+            }
             target.style.display = 'none';
           }}
         />

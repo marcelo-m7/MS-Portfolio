@@ -54,11 +54,15 @@ const ArtworkCard: React.FC<ArtworkCardProps> = memo(({ artwork, index }) => {
               src={mediaUrls[0]}
               loading="lazy"
               decoding="async"
+              fetchpriority={index < 3 ? "high" : "low"}
               alt={`${artwork.title} – Arte Digital`}
               className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                console.error(`Failed to load artwork image: ${mediaUrls[0]}`);
+                // Only log errors in development to reduce console noise
+                if (import.meta.env.DEV) {
+                  console.error(`Failed to load artwork image: ${mediaUrls[0]}`);
+                }
                 target.style.display = 'none';
               }}
             />
