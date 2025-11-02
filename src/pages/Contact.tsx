@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Mail, Github, Linkedin, Send } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -26,7 +26,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: contactInfo } = useContact();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -77,7 +77,7 @@ export default function Contact() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData, contactInfo]);
 
   return (
     <div className="px-6">
