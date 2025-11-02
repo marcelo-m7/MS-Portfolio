@@ -145,11 +145,3 @@
     Monynha Online
   </text>
 </svg>
-    <circle cx="500" cy="180" r="22" fill="#7C3AED" />
-    <circle cx="240" cy="240" r="18" fill="#0EA5E9" opacity="0.75" />
-    <circle cx="420" cy="250" r="18" fill="#7C3AED" opacity="0.75" />
-  </g>
-  <text x="50%" y="85%" text-anchor="middle" fill="#bae6fd" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="38" font-weight="600">
-    Infra Hub
-  </text>
-</svg>

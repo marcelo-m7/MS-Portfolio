@@ -125,13 +125,3 @@
     Interface IA Local
   </text>
 </svg>
-    </g>
-    <g transform="translate(240 88)" stroke="rgba(56,189,248,0.6)" stroke-width="6" stroke-linecap="round">
-      <path d="M0 0 L 60 24 L 120 -12" fill="none" />
-      <path d="M0 40 L 60 64 L 120 28" fill="none" opacity="0.6" />
-    </g>
-  </g>
-  <text x="50%" y="86%" text-anchor="middle" fill="#cbd5f5" font-family="'Space Grotesk', 'Inter', sans-serif" font-size="40" font-weight="600">
-    Open WebUI
-  </text>
-</svg>
