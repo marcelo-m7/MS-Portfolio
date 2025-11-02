@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { motion, useReducedMotion } from 'framer-motion';
+import { useMemo } from 'react';
 import { useProfile, useContact } from '@/hooks/usePortfolioData';
 import { LINKS } from '../lib/siteLinks';
 import { useTranslations } from '@/hooks/useTranslations';
@@ -13,7 +14,8 @@ export default function Footer() {
   const { data: contact } = useContact();
   const t = useTranslations();
 
-  const socialLinks = [
+  // Memoize socialLinks to prevent recreation on every render
+  const socialLinks = useMemo(() => [
     {
       icon: Github,
       href: LINKS.github,
@@ -32,15 +34,16 @@ export default function Footer() {
       label: 'Email',
       colorClass: 'hover:text-accent',
     },
-  ];
+  ], [contact?.email]);
 
-  const navLinks = [
+  // Memoize navLinks to prevent recreation on every render
+  const navLinks = useMemo(() => [
     { href: '/', label: t.nav.home },
     { href: '/portfolio', label: t.nav.portfolio },
     { href: '/about', label: t.nav.about },
     { href: '/thoughts', label: t.nav.thoughts },
     { href: '/contact', label: t.nav.contact },
-  ];
+  ], [t]);
 
   return (
     <footer className="bg-card/80 backdrop-blur-xl border-t border-border/60 py-12 px-6">

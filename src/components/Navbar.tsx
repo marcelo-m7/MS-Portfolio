@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import { useProfile } from '@/hooks/usePortfolioData';
@@ -22,20 +22,23 @@ export default function Navbar() {
     setIsOpen(false);
   }, [location.pathname]);
 
-  const navLinks = [
+  // Memoize navLinks to prevent recreation on every render
+  const navLinks = useMemo(() => [
     { href: '/', label: t.nav.home },
     { href: '/portfolio', label: t.nav.portfolio },
     { href: '/about', label: t.nav.about },
     { href: '/thoughts', label: t.nav.thoughts },
     { href: '/contact', label: t.nav.contact },
-  ];
+  ], [t]);
 
-  const isActive = (path: string) => location.pathname === path;
+  // Memoize isActive check
+  const isActive = useCallback((path: string) => location.pathname === path, [location.pathname]);
 
-  const menuVariants = {
+  // Memoize menuVariants to prevent recreation on every render
+  const menuVariants = useMemo(() => ({
     hidden: { opacity: 0, y: -20, transition: { duration: 0.3 } },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-  };
+  }), []);
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">

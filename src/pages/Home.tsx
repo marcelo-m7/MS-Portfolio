@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useProfile, useProjects, useThoughts } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -18,7 +19,8 @@ export default function Home() {
   const translatedBio = useTranslatedText(profile?.bio);
   const translatedHeadline = useTranslatedText(profile?.headline);
 
-  const containerVariants = {
+  // Memoize animation variants to prevent recreation on every render
+  const containerVariants = useMemo(() => ({
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -26,12 +28,12 @@ export default function Home() {
         staggerChildren: 0.1,
       },
     },
-  };
+  }), []);
 
-  const itemVariants = {
+  const itemVariants = useMemo(() => ({
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-  };
+  }), []);
 
   return (
     <div>

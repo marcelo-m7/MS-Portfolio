@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
 import type { Tables as DBTables } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
@@ -154,6 +154,11 @@ export default function Portfolio() {
     return Array.from(new Set(base));
   }, [projects, t]);
 
+  // Memoize filter change handler to prevent unnecessary re-renders
+  const handleFilterChange = useCallback((category: string) => {
+    setFilter(category);
+  }, []);
+
   const filteredItems = useMemo<PortfolioEntry[]>(() => {
     let items: Array<CVProject | CVArtwork | CVSeries> = [];
     if (filter === t.portfolio.filterAll) {
@@ -204,7 +209,7 @@ export default function Portfolio() {
             <Button
               key={category}
               variant={filter === category ? 'default' : 'outline'}
-              onClick={() => setFilter(category)}
+              onClick={() => handleFilterChange(category)}
               className={`border-border/70 transition ${
                 filter === category
                   ? 'bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground'

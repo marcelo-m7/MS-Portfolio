@@ -25,6 +25,8 @@ interface TranslateRequest {
 class TranslationService {
   private cache: TranslationCache;
   private pendingRequests: Map<string, Promise<string>> = new Map();
+  private saveCacheTimer: ReturnType<typeof setTimeout> | null = null;
+  private cacheDirty = false;
 
   constructor() {
     this.cache = this.loadCache();
@@ -48,9 +50,27 @@ class TranslationService {
   private saveCache(): void {
     try {
       localStorage.setItem(CACHE_KEY_PREFIX, JSON.stringify(this.cache));
+      this.cacheDirty = false;
     } catch (error) {
       console.error('Failed to save translation cache:', error);
     }
+  }
+
+  /**
+   * Debounced cache save - batches multiple saves together
+   * Reduces localStorage write operations significantly
+   */
+  private debouncedSaveCache(): void {
+    this.cacheDirty = true;
+    if (this.saveCacheTimer) {
+      clearTimeout(this.saveCacheTimer);
+    }
+    this.saveCacheTimer = setTimeout(() => {
+      if (this.cacheDirty) {
+        this.saveCache();
+      }
+      this.saveCacheTimer = null;
+    }, 1000); // Save after 1 second of inactivity
   }
 
   private getCacheKey(text: string, targetLang: string): string {
@@ -66,7 +86,7 @@ class TranslationService {
   private setCachedTranslation(text: string, targetLang: string, translation: string): void {
     const cacheKey = this.getCacheKey(text, targetLang);
     this.cache.translations[cacheKey] = translation;
-    this.saveCache();
+    this.debouncedSaveCache();
   }
 
   /**
@@ -214,8 +234,27 @@ class TranslationService {
    * Clear translation cache
    */
   clearCache(): void {
+    if (this.saveCacheTimer) {
+      clearTimeout(this.saveCacheTimer);
+      this.saveCacheTimer = null;
+    }
     this.cache = { version: CACHE_VERSION, translations: {} };
-    this.saveCache();
+    this.cacheDirty = false;
+    this.saveCache(); // Immediate save for clear
+  }
+
+  /**
+   * Force save any pending cache changes
+   * Useful before page unload
+   */
+  flushCache(): void {
+    if (this.saveCacheTimer) {
+      clearTimeout(this.saveCacheTimer);
+      this.saveCacheTimer = null;
+    }
+    if (this.cacheDirty) {
+      this.saveCache();
+    }
   }
 
   /**
@@ -229,6 +268,13 @@ class TranslationService {
 
 // Singleton instance
 export const translationService = new TranslationService();
+
+// Flush cache before page unload to ensure all translations are saved
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeunload', () => {
+    translationService.flushCache();
+  });
+}
 
 /**
  * Translate a single text string

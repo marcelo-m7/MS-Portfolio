@@ -25,8 +25,23 @@ const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
-  // Memoize queryClient to avoid creating new instance on every render
-  const queryClient = useMemo(() => new QueryClient(), []);
+  // Memoize queryClient with optimized configuration to avoid creating new instance on every render
+  const queryClient = useMemo(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        // Increase stale time to reduce refetches (portfolio content changes infrequently)
+        staleTime: 15 * 60 * 1000, // 15 minutes
+        // Keep unused data in cache for longer
+        // Note: gcTime replaced cacheTime in React Query v5
+        gcTime: 30 * 60 * 1000, // 30 minutes
+        // Reduce refetch frequency to improve performance
+        refetchOnWindowFocus: false, // Don't refetch when window regains focus
+        refetchOnMount: false, // Don't refetch on component mount if data exists
+        // Only retry failed requests once to avoid excessive network calls
+        retry: 1,
+      },
+    },
+  }), []);
   useEffect(() => {
     const initialLang = detectInitialLanguage();
     setLanguage(initialLang);
