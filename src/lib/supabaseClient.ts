@@ -12,9 +12,12 @@ if (!supabaseUrl || !supabaseAnonKey) {
   });
 }
 
-// Create client without schema lock - we'll use .schema() method in queries
+// Create client with portfolio schema as default
+// This allows queries to use .from('table_name') without schema prefix
 export const supabase = supabaseUrl && supabaseAnonKey
-  ? createClient<Database>(supabaseUrl, supabaseAnonKey)
+  ? createClient(supabaseUrl, supabaseAnonKey, {
+      db: { schema: supabaseSchema || 'portfolio' }
+    })
   : undefined;
 
 // Export the schema for use in queries (portfolio is our main schema)

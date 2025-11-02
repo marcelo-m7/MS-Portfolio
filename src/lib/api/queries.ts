@@ -53,7 +53,7 @@ export async function fetchProjects(): Promise<ProjectWithStack[] | null> {
   if (!supabase) return null;
 
   try {
-    // Fetch projects
+    // Fetch projects (using portfolio schema configured in client)
     const { data: projects, error: projectsError } = await supabase
       .from('projects')
       .select('*')
@@ -146,7 +146,7 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
     const { data: artworks, error: artworksError } = await supabase
       .from('artworks')
       .select('*')
-      .order('display_order', { ascending: true });
+      .order('display_order', { ascending: true});
 
     if (artworksError) throw artworksError;
     if (!artworks) return null;
@@ -163,7 +163,7 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
     const { data: materialsData, error: materialsError } = await supabase
       .from('artwork_materials')
       .select('*')
-      .order('display_order', { ascending: true });
+      .order('display_order', { ascending: true});
 
     if (materialsError) throw materialsError;
 
@@ -247,7 +247,7 @@ export async function fetchSeries(): Promise<Series[] | null> {
     const { data: worksData, error: worksError } = await supabase
       .from('series_works')
       .select('*')
-      .order('display_order', { ascending: true });
+      .order('display_order', { ascending: true});
 
     if (worksError) throw worksError;
 
@@ -287,7 +287,7 @@ export async function fetchSeriesBySlug(slug: string): Promise<Series | null> {
       .from('series_works')
       .select('*')
       .eq('series_id', series.id)
-      .order('display_order', { ascending: true });
+      .order('display_order', { ascending: true});
 
     if (worksError) throw worksError;
 
@@ -435,7 +435,7 @@ export async function fetchExperience(): Promise<Experience[] | null> {
     const { data: highlightsData, error: highlightsError } = await supabase
       .from('experience_highlights')
       .select('*')
-      .order('display_order', { ascending: true });
+      .order('display_order', { ascending: true});
 
     if (highlightsError) throw highlightsError;
 
@@ -468,7 +468,7 @@ export async function fetchSkills() {
     const { data, error } = await supabase
       .from('skills')
       .select('*')
-      .order('display_order', { ascending: true });
+      .order('display_order', { ascending: true});
 
     if (error) throw error;
     return data;
@@ -488,7 +488,7 @@ export async function fetchTechnologies() {
     const { data, error } = await supabase
       .from('technologies')
       .select('*')
-      .order('name', { ascending: true });
+      .order('name', { ascending: true});
 
     if (error) throw error;
     return data;
