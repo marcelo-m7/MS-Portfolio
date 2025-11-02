@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import BaseCard, { CardThumbnail, CardContent, CardFooterLink } from '@/components/shared/BaseCard';
 
 interface ArtworkCardProps {
@@ -14,7 +14,7 @@ interface ArtworkCardProps {
   index: number;
 }
 
-const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
+const ArtworkCard: React.FC<ArtworkCardProps> = memo(({ artwork, index }) => {
   // Normalize media and materials to strings
   const mediaUrls = Array.isArray(artwork.media)
     ? artwork.media.map(m => typeof m === 'string' ? m : m.media_url).filter(Boolean) as string[]
@@ -56,6 +56,8 @@ const ArtworkCard: React.FC<ArtworkCardProps> = ({ artwork, index }) => {
       </CardContent>
     </BaseCard>
   );
-};
+});
+
+ArtworkCard.displayName = 'ArtworkCard';
 
 export default ArtworkCard;

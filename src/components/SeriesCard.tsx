@@ -1,5 +1,5 @@
 import { Layers } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 import BaseCard, { CardThumbnail, CardContent, CardFooterLink } from '@/components/shared/BaseCard';
 
 interface SeriesCardProps {
@@ -13,7 +13,7 @@ interface SeriesCardProps {
   index: number;
 }
 
-const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
+const SeriesCard: React.FC<SeriesCardProps> = memo(({ series, index }) => {
   // Normalize works to string array
   const worksCount = Array.isArray(series.works)
     ? series.works.map(w => typeof w === 'string' ? w : w.work_slug).filter(Boolean).length
@@ -45,6 +45,8 @@ const SeriesCard: React.FC<SeriesCardProps> = ({ series, index }) => {
       </CardContent>
     </BaseCard>
   );
-};
+});
+
+SeriesCard.displayName = 'SeriesCard';
 
 export default SeriesCard;
