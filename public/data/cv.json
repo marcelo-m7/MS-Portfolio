@@ -43,7 +43,7 @@
       "year": 2025
     },
     {
-      "name": "Boteco Pro",
+      "name": "BotecoPro",
       "summary": "Aplicativo de gestão para bares e restaurantes, desenvolvido em Flutter e Supabase.",
       "stack": ["Flutter", "Supabase", "PostgreSQL"],
       "url": "https://boteco.monynha.online",
