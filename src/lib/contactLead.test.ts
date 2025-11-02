@@ -22,10 +22,19 @@ const createSupabaseMock = (
 
     return {
       error: (options.error ?? null) as unknown,
+      data: null,
     };
   });
 
-  const insert = vi.fn(() => ({ select }));
+  // Make builder thenable so it can be awaited directly (browser path)
+  const builder = {
+    select,
+    then: (resolve: (value: { error: unknown; data: null }) => void) => {
+      resolve({ error: (options.error ?? null) as unknown, data: null });
+    },
+  };
+
+  const insert = vi.fn(() => builder);
   const from = vi.fn(() => ({ insert }));
   const schema = vi.fn(() => ({ from }));
 
