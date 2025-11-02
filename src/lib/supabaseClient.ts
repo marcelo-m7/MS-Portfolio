@@ -1,14 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/types/database.types';
+import { logger } from './logger';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_KEY as string | undefined;
 const supabaseSchema = import.meta.env.VITE_SUPABASE_SCHEMA as string | undefined;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  if (import.meta.env.DEV) {
-    console.warn('Supabase credentials are not defined. Email submissions will be disabled.');
-  }
+  logger.warn('Supabase credentials are not defined. Email submissions will be disabled.', {
+    component: 'supabaseClient',
+  });
 }
 
 // Create client without schema lock - we'll use .schema() method in queries

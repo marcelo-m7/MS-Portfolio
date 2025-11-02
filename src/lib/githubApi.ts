@@ -2,6 +2,7 @@
  * GitHub API integration for fetching repository statistics
  * Uses GitHub REST API v3 (no authentication required for public repos)
  */
+import { logger } from './logger';
 
 export interface GitHubRepoStats {
   stars: number;
@@ -65,9 +66,11 @@ export async function fetchGitHubRepoStats(repoUrl: string): Promise<GitHubRepoS
 
     if (!response.ok) {
       if (response.status === 404) {
-        console.warn(`GitHub repository not found: ${repoUrl}`);
+        logger.warn(`GitHub repository not found: ${repoUrl}`, { component: 'githubApi' });
       } else if (response.status === 403) {
-        console.warn('GitHub API rate limit exceeded. Consider adding VITE_GITHUB_TOKEN.');
+        logger.warn('GitHub API rate limit exceeded. Consider adding VITE_GITHUB_TOKEN.', {
+          component: 'githubApi',
+        });
       }
       return null;
     }
@@ -85,7 +88,7 @@ export async function fetchGitHubRepoStats(repoUrl: string): Promise<GitHubRepoS
       description: data.description ?? null,
     };
   } catch (error) {
-    console.error(`Error fetching GitHub stats for ${repoUrl}:`, error);
+    logger.error(`Error fetching GitHub stats for ${repoUrl}`, { component: 'githubApi' }, error);
     return null;
   }
 }

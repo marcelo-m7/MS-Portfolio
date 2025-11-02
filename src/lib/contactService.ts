@@ -4,6 +4,7 @@ import type {
   SupabaseClient,
 } from '@supabase/supabase-js';
 import { supabase } from './supabaseClient';
+import { logger } from './logger';
 
 export interface ContactFormData {
   name: string;
@@ -110,16 +111,12 @@ export const submitContact = async (
     return { status: 'stored', leadId };
   }
 
-  if (import.meta.env.DEV) {
-    console.error('Failed to persist lead to Supabase:', error);
-  }
+  logger.error('Failed to persist lead to Supabase', { component: 'contactService' }, error);
 
   const fallback = await sendFallbackEmail(payload, client);
 
   if (fallback.error) {
-    if (import.meta.env.DEV) {
-      console.error('Fallback email dispatch failed:', fallback.error);
-    }
+    logger.error('Fallback email dispatch failed', { component: 'contactService' }, fallback.error);
 
     throw new ContactSubmissionError('Não foi possível enviar sua mensagem.', {
       persistError: error,

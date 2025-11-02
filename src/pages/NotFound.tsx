@@ -2,16 +2,17 @@ import { Link, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { logger } from '@/lib/logger';
 
 const NotFound = () => {
   const location = useLocation();
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    console.error(
-      '404 Error: User attempted to access non-existent route:',
-      location.pathname,
-    );
+    logger.error('404 Error: User attempted to access non-existent route', {
+      component: 'NotFound',
+      metadata: { pathname: location.pathname }
+    });
   }, [location.pathname]);
 
   return (
@@ -30,15 +31,16 @@ const NotFound = () => {
           O caminho <span className="font-mono text-primary">{location.pathname}</span> não existe. Volte à página inicial para continuar a explorar o universo Monynha.
         </p>
         <div className="mt-8 flex justify-center">
-          <Button
-            asChild
-            className="rounded-full"
+          <motion.div
+            initial={false}
             whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
             whileTap={prefersReducedMotion ? undefined : { scale: 0.98 }}
             transition={{ type: 'spring', stiffness: 300, damping: 20 }}
           >
-            <Link to="/">Voltar para o Início</Link>
-          </Button>
+            <Button asChild className="rounded-full">
+              <Link to="/">Voltar para o Início</Link>
+            </Button>
+          </motion.div>
         </div>
       </motion.div>
     </div>

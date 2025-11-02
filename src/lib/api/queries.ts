@@ -10,6 +10,7 @@
  */
 
 import { supabase } from '../supabaseClient';
+import { logger } from '../logger';
 import type { Tables as DBTables } from '@/types/database.types';
 
 // Row type aliases from public views (generated types)
@@ -90,7 +91,7 @@ export async function fetchProjects(): Promise<ProjectWithStack[] | null> {
 
     return projectsWithStack;
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    logger.error('Error fetching projects', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -130,7 +131,7 @@ export async function fetchProjectBySlug(slug: string): Promise<ProjectWithStack
       technologies,
     };
   } catch (error) {
-    console.error(`Error fetching project ${slug}:`, error);
+    logger.error(`Error fetching project ${slug}`, { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -177,7 +178,7 @@ export async function fetchArtworks(): Promise<Artwork[] | null> {
 
     return artworksWithDetails;
   } catch (error) {
-    console.error('Error fetching artworks:', error);
+    logger.error('Error fetching artworks', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -222,7 +223,7 @@ export async function fetchArtworkBySlug(slug: string): Promise<Artwork | null> 
       materials: materialsData || [],
     };
   } catch (error) {
-    console.error(`Error fetching artwork ${slug}:`, error);
+    logger.error(`Error fetching artwork ${slug}`, { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -260,7 +261,7 @@ export async function fetchSeries(): Promise<Series[] | null> {
 
     return seriesWithWorks;
   } catch (error) {
-    console.error('Error fetching series:', error);
+    logger.error('Error fetching series', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -295,7 +296,7 @@ export async function fetchSeriesBySlug(slug: string): Promise<Series | null> {
       works: worksData || [],
     };
   } catch (error) {
-    console.error(`Error fetching series ${slug}:`, error);
+    logger.error(`Error fetching series ${slug}`, { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -336,7 +337,7 @@ export async function fetchThoughts(): Promise<Thought[] | null> {
 
     return thoughtsWithTags;
   } catch (error) {
-    console.error('Error fetching thoughts:', error);
+    logger.error('Error fetching thoughts', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -370,7 +371,7 @@ export async function fetchThoughtBySlug(slug: string): Promise<Thought | null> 
   tags: (tagsData ?? []).map((t: ThoughtTag) => t?.tag).filter(notNull) || [],
     };
   } catch (error) {
-    console.error(`Error fetching thought ${slug}:`, error);
+    logger.error(`Error fetching thought ${slug}`, { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -390,7 +391,7 @@ export async function fetchProfile() {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    logger.error('Error fetching profile', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -410,7 +411,7 @@ export async function fetchContact() {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('Error fetching contact:', error);
+    logger.error('Error fetching contact', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -452,7 +453,7 @@ export async function fetchExperience(): Promise<Experience[] | null> {
 
     return experienceWithHighlights;
   } catch (error) {
-    console.error('Error fetching experience:', error);
+    logger.error('Error fetching experience', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -472,7 +473,7 @@ export async function fetchSkills() {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('Error fetching skills:', error);
+    logger.error('Error fetching skills', { component: 'api/queries' }, error);
     return null;
   }
 }
@@ -492,7 +493,7 @@ export async function fetchTechnologies() {
     if (error) throw error;
     return data;
   } catch (error) {
-    console.error('Error fetching technologies:', error);
+    logger.error('Error fetching technologies', { component: 'api/queries' }, error);
     return null;
   }
 }
