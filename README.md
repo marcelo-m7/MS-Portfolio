@@ -10,17 +10,22 @@ Portfolio pessoal e site profissional de Marcelo M7, fundador da Monynha Softwar
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Setup](#setup)
-- [Development](#development)
-- [Testing](#testing)
-- [Build](#build)
-- [Deployment](#deployment)
-- [Architecture & Stack](#architecture--stack)
-- [Database](#database)
-- [Language handling](#language-handling)
-- [Contributing](#contributing)
-- [License / Contact](#license--contact)
+- [MS-Portfolio — Marcelo Santos](#ms-portfolio--marcelo-santos)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Setup](#setup)
+  - [Development](#development)
+  - [Testing](#testing)
+  - [Build](#build)
+  - [Deployment](#deployment)
+  - [Architecture \& Stack](#architecture--stack)
+  - [Database](#database)
+    - [Quick Setup](#quick-setup)
+    - [Database Schema (15 Tables)](#database-schema-15-tables)
+  - [Language handling](#language-handling)
+  - [Adding new projects to `cv.json`](#adding-new-projects-to-cvjson)
+  - [Contributing](#contributing)
+  - [License / Contact](#license--contact)
 
 ## Overview
 
