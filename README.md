@@ -8,6 +8,10 @@
 
 Portfolio pessoal e site profissional de [@marcelo-m7](https://github.com/marcelo-m7), fundador da Monynha Softwares. Este repositório é um laboratório vivo para interações modernas, acessibilidade, 3D e boas práticas de front-end.
 
+![Portfolio Preview - 3D Fluid Background](./public/preview.svg)
+
+> Experiência imersiva com animações 3D em WebGL, design responsivo e suporte multilíngue (PT, EN, ES, FR)
+
 ## Table of Contents
 
 - [Overview](#overview)

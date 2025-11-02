@@ -1,0 +1,102 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>MS-Portfolio Preview - 3D Fluid Background with Interactive Hero</title>
+  
+  <!-- Background gradient mimicking fluid simulation -->
+  <defs>
+    <linearGradient id="fluidGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#ec4899;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.3" />
+    </linearGradient>
+    
+    <radialGradient id="fluidGlow1" cx="30%" cy="40%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0" />
+    </radialGradient>
+    
+    <radialGradient id="fluidGlow2" cx="70%" cy="60%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:0" />
+    </radialGradient>
+    
+    <radialGradient id="fluidGlow3" cx="50%" cy="80%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0" />
+    </radialGradient>
+    
+    <filter id="blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="60" />
+    </filter>
+  </defs>
+  
+  <!-- Dark background -->
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  
+  <!-- Fluid simulation layers -->
+  <ellipse cx="360" cy="250" rx="300" ry="200" fill="url(#fluidGlow1)" filter="url(#blur)" opacity="0.8">
+    <animate attributeName="cy" values="250;280;250" dur="8s" repeatCount="indefinite"/>
+    <animate attributeName="rx" values="300;320;300" dur="6s" repeatCount="indefinite"/>
+  </ellipse>
+  
+  <ellipse cx="840" cy="380" rx="280" ry="220" fill="url(#fluidGlow2)" filter="url(#blur)" opacity="0.7">
+    <animate attributeName="cx" values="840;820;840" dur="7s" repeatCount="indefinite"/>
+    <animate attributeName="ry" values="220;240;220" dur="5s" repeatCount="indefinite"/>
+  </ellipse>
+  
+  <ellipse cx="600" cy="500" rx="320" ry="180" fill="url(#fluidGlow3)" filter="url(#blur)" opacity="0.6">
+    <animate attributeName="rx" values="320;340;320" dur="9s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="500;480;500" dur="7s" repeatCount="indefinite"/>
+  </ellipse>
+  
+  <!-- Overlay gradient for depth -->
+  <rect width="1200" height="630" fill="url(#fluidGrad1)" opacity="0.4"/>
+  
+  <!-- Content overlay - Hero text -->
+  <text x="600" y="240" font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="700" fill="#ffffff" text-anchor="middle" letter-spacing="-1">
+    MS-Portfolio
+  </text>
+  
+  <text x="600" y="300" font-family="system-ui, -apple-system, sans-serif" font-size="24" font-weight="400" fill="#d1d5db" text-anchor="middle" letter-spacing="0.5">
+    Marcelo Santos
+  </text>
+  
+  <text x="600" y="360" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="400" fill="#9ca3af" text-anchor="middle">
+    3D · Performance · Acessibilidade
+  </text>
+  
+  <!-- Feature badges -->
+  <g transform="translate(600, 430)" opacity="0.9">
+    <!-- Vite badge -->
+    <g transform="translate(-200, 0)">
+      <rect x="-40" y="-15" width="80" height="30" rx="15" fill="#646cff" opacity="0.2"/>
+      <text x="0" y="5" font-family="system-ui" font-size="14" font-weight="600" fill="#646cff" text-anchor="middle">Vite</text>
+    </g>
+    
+    <!-- React badge -->
+    <g transform="translate(-80, 0)">
+      <rect x="-40" y="-15" width="80" height="30" rx="15" fill="#61dafb" opacity="0.2"/>
+      <text x="0" y="5" font-family="system-ui" font-size="14" font-weight="600" fill="#61dafb" text-anchor="middle">React</text>
+    </g>
+    
+    <!-- Three.js badge -->
+    <g transform="translate(40, 0)">
+      <rect x="-50" y="-15" width="100" height="30" rx="15" fill="#ffffff" opacity="0.2"/>
+      <text x="0" y="5" font-family="system-ui" font-size="14" font-weight="600" fill="#ffffff" text-anchor="middle">Three.js</text>
+    </g>
+    
+    <!-- Supabase badge -->
+    <g transform="translate(170, 0)">
+      <rect x="-60" y="-15" width="120" height="30" rx="15" fill="#3ecf8e" opacity="0.2"/>
+      <text x="0" y="5" font-family="system-ui" font-size="14" font-weight="600" fill="#3ecf8e" text-anchor="middle">Supabase</text>
+    </g>
+  </g>
+  
+  <!-- Footer info -->
+  <text x="600" y="560" font-family="system-ui" font-size="14" fill="#6b7280" text-anchor="middle">
+    Portfolio moderno com animações 3D, multilíngue e acessível
+  </text>
+  
+  <text x="600" y="590" font-family="system-ui" font-size="12" fill="#4b5563" text-anchor="middle">
+    marcelo.monynha.com
+  </text>
+</svg>
