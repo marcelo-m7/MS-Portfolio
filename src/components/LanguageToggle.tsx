@@ -12,6 +12,8 @@ import { useCurrentLanguage } from '@/hooks/useCurrentLanguage';
 const languages: { code: SupportedLanguage; label: string; flag: string }[] = [
   { code: 'pt', label: 'Português', flag: '🇵🇹' },
   { code: 'en', label: 'English', flag: '🇬🇧' },
+  { code: 'es', label: 'Español', flag: '🇪🇸' },
+  { code: 'fr', label: 'Français', flag: '🇫🇷' },
 ];
 
 export function LanguageToggle() {

@@ -4,12 +4,19 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useProfile, useProjects, useThoughts } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslations } from '@/hooks/useTranslations';
+import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
   const { data: profile, isLoading: loadingProfile } = useProfile();
   const { data: projects, isLoading: loadingProjects } = useProjects();
   const { data: thoughts, isLoading: loadingThoughts } = useThoughts();
+  const t = useTranslations();
+  
+  // Translate dynamic content from cv.json
+  const translatedBio = useTranslatedText(profile?.bio);
+  const translatedHeadline = useTranslatedText(profile?.headline);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -75,7 +82,7 @@ export default function Home() {
                   aria-hidden
                 />
               ) : (
-                profile?.headline
+                translatedHeadline
               )}
             </motion.p>
 
@@ -89,7 +96,7 @@ export default function Home() {
                   aria-hidden
                 />
               ) : (
-                profile?.bio
+                translatedBio
               )}
             </motion.p>
 
@@ -104,7 +111,7 @@ export default function Home() {
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
-                  Explorar Portfolio
+                  {t.home.explorePortfolio}
                   <ArrowRight className="ml-2" />
                 </Link>
               </Button>
@@ -116,7 +123,7 @@ export default function Home() {
                 className="border-2 border-border/70 bg-card/60 px-10 hover:border-primary/70 hover:text-primary"
               >
                 <Link to="/contact">
-                  Entre em Contato
+                  {t.home.getInTouch}
                 </Link>
               </Button>
             </motion.div>
@@ -254,7 +261,7 @@ export default function Home() {
           >
             <Button asChild variant="outline" size="lg" className="border-border/70">
               <Link to="/portfolio">
-                Ver Todos os Projetos
+                {t.home.viewAllProjects}
                 <ArrowRight className="ml-2" />
               </Link>
             </Button>

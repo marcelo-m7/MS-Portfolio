@@ -2,7 +2,7 @@ const STORAGE_KEY = 'monynha-lang';
 const LANGUAGE_EVENT = 'monynha:languagechange';
 const DEFAULT_LANGUAGE = 'pt' as const;
 
-export const SUPPORTED_LANGUAGES = ['pt', 'en'] as const;
+export const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'fr'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const isBrowser = () => typeof window !== 'undefined' && typeof document !== 'undefined';

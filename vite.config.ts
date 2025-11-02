@@ -100,6 +100,8 @@ export default defineConfig(({ mode }) => ({
   },
   test: {
     globals: true,
-    environment: "node",
+    // Using happy-dom instead of node to provide DOM APIs (window, localStorage, document)
+    // required by translation components and LanguageMetadata component
+    environment: "happy-dom",
   },
 }));

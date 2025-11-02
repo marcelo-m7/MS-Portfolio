@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import LiquidEther from './LiquidEther';
+import { LanguageMetadata } from './LanguageMetadata';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useThemePalette } from '@/hooks/useThemePalette';
 
@@ -11,6 +12,7 @@ export default function Layout() {
 
   return (
     <div className="relative flex flex-col min-h-[100dvh]">
+      <LanguageMetadata />
       {/* LiquidEther Background */}
       <div className="hidden md:block">
         <div className="fixed inset-0 w-full h-full -z-20">
