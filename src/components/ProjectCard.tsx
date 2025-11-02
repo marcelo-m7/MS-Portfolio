@@ -50,7 +50,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
       transition={{ delay: index * 0.08, duration: 0.45 }}
-      className="group h-full overflow-hidden border-border/70 bg-card/90 shadow-md backdrop-blur"
+      className="group flex flex-col h-full overflow-hidden border-border/70 bg-card/90 shadow-md backdrop-blur"
     >
       <div className="relative aspect-[16/9] w-full overflow-hidden bg-gradient-to-br from-primary/25 via-secondary/20 to-accent/25">
         <motion.img
@@ -73,28 +73,28 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
       </div>
 
-      <CardHeader className="space-y-3">
+      <CardHeader className="space-y-3 flex-none">
         <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <Link
               to={`/portfolio/${project.slug}`}
               aria-label={`Abrir detalhes do projeto ${project.name}`}
               className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
-              <CardTitle className="font-display text-2xl font-semibold transition-colors group-hover:text-primary">
+              <CardTitle className="font-display text-2xl font-semibold transition-colors group-hover:text-primary truncate">
                 {project.name}
               </CardTitle>
             </Link>
           </div>
           <Badge
             variant="outline"
-            className="border-secondary/60 bg-secondary/15 text-xs font-medium text-secondary"
+            className="border-secondary/60 bg-secondary/15 text-xs font-medium text-secondary flex-none"
           >
             {project.category}
           </Badge>
         </div>
 
-        <p className="text-sm leading-relaxed text-muted-foreground/90">
+        <p className="text-sm leading-relaxed text-muted-foreground/90 line-clamp-3">
           {project.summary}
         </p>
 
@@ -122,7 +122,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
       </CardHeader>
 
-      <CardContent className="flex flex-col gap-4 pt-0">
+      <CardContent className="flex flex-col gap-4 pt-0 flex-1">
         <Separator className="bg-border/70" />
         
         {/* GitHub Stats */}
@@ -130,10 +130,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground/80">
           <span className="inline-flex items-center gap-2">
-            <Globe className="h-4 w-4 text-secondary" aria-hidden />
-            {project.domain ?? 'Domínio interno'}
+            <Globe className="h-4 w-4 text-secondary flex-none" aria-hidden />
+            <span className="truncate">{project.domain ?? 'Domínio interno'}</span>
           </span>
-          <span className="inline-flex items-center gap-2">
+          <span className="inline-flex items-center gap-2 flex-none">
             <Layers className="h-4 w-4 text-primary" aria-hidden />
             {project.category}
           </span>
@@ -151,7 +151,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         </div>
       </CardContent>
 
-      <CardFooter className="mt-auto flex flex-wrap items-center gap-3 border-t border-border/60 bg-background/50">
+      <CardFooter className="mt-auto flex flex-wrap items-center gap-3 border-t border-border/60 bg-background/50 flex-none">
         <Button
           variant="outline"
           size="sm"

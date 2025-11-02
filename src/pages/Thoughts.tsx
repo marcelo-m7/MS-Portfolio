@@ -17,8 +17,8 @@ export default function Thoughts() {
   const { data: thoughts = [], isLoading } = useThoughts();
 
   return (
-    <div className="py-0 px-6">
-      <div className="container mx-auto max-w-5xl">
+    <div className="py-8 px-6">
+      <div className="container mx-auto max-w-6xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
@@ -35,25 +35,25 @@ export default function Thoughts() {
             </Link>
           </Button>
 
-          <header className="mb-12 text-center">
-            <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
+          <header className="mb-16 text-center">
+            <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Pensamentos
               </span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Reflexões curtas sobre tecnologia, acessibilidade e arte digital direto do laboratório Monynha.
             </p>
           </header>
 
           {isLoading ? (
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-2 items-stretch">
               {Array.from({ length: 4 }).map((_, i) => (
                 <LoadingThoughtCard key={i} />
               ))}
             </div>
           ) : (
-            <div className="grid gap-8 md:grid-cols-2">
+            <div className="grid gap-8 grid-cols-1 md:grid-cols-2 items-stretch">
               {thoughts.map((thought, index) => {
               const formattedDate = new Intl.DateTimeFormat(locale, {
                 day: '2-digit',

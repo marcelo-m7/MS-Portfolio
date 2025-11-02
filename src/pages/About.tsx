@@ -14,7 +14,7 @@ export default function About() {
   const { data: skills = [], isLoading: isLoadingSkills } = useSkills();
 
   return (
-    <div className="px-6">
+    <div className="py-8 px-6">
       <div className="container mx-auto max-w-5xl">
         <motion.div
           initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
@@ -22,10 +22,10 @@ export default function About() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-6xl font-display font-bold mb-4">
+          <h1 className="text-5xl md:text-6xl font-display font-bold mb-6">
             Sobre Mim
           </h1>
-          <p className="text-xl text-muted-foreground">
+          <p className="text-xl text-muted-foreground leading-relaxed">
             Conheça a história e experiência
           </p>
         </motion.div>

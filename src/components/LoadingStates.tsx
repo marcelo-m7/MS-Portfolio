@@ -53,7 +53,7 @@ export const LoadingSeriesCard = () => (
 );
 
 export const LoadingPortfolioGrid = ({ count = 6 }: { count?: number }) => (
-  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
     {Array.from({ length: count }).map((_, i) => (
       <LoadingProjectCard key={i} />
     ))}
