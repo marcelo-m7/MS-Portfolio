@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, memo } from 'react';
 import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
 import type { Tables as DBTables } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,31 @@ import SeriesCard from '@/components/SeriesCard';
 import { LoadingPortfolioGrid } from '@/components/LoadingStates';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+
+// Memoized filter button component to prevent re-renders
+const FilterButton = memo(({ 
+  category, 
+  isActive, 
+  onClick 
+}: { 
+  category: string; 
+  isActive: boolean; 
+  onClick: () => void;
+}) => (
+  <Button
+    variant={isActive ? 'default' : 'outline'}
+    onClick={onClick}
+    className={`border-border/70 transition ${
+      isActive
+        ? 'bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground'
+        : 'hover:border-primary/60 hover:text-primary'
+    }`}
+  >
+    {category}
+  </Button>
+));
+
+FilterButton.displayName = 'FilterButton';
 
 type CVProject = {
   slug: string;
@@ -206,18 +231,12 @@ export default function Portfolio() {
           className="flex flex-wrap gap-3 justify-center mb-16"
         >
           {categories.map((category) => (
-            <Button
+            <FilterButton
               key={category}
-              variant={filter === category ? 'default' : 'outline'}
+              category={category}
+              isActive={filter === category}
               onClick={() => handleFilterChange(category)}
-              className={`border-border/70 transition ${
-                filter === category
-                  ? 'bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground'
-                  : 'hover:border-primary/60 hover:text-primary'
-              }`}
-            >
-              {category}
-            </Button>
+            />
           ))}
         </motion.div>
 

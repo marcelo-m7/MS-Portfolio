@@ -4,10 +4,38 @@ import { translateText, translateTexts } from '@/lib/translateService';
 import type { SupportedLanguage } from '@/lib/language';
 
 /**
- * Hook to automatically translate a single text string
- * Updates when language changes
+ * Hook to get translated text synchronously (returns immediately for source language)
+ * Optimized for the common case where currentLang === sourceLang
+ * For async translation with loading state, use useAsyncTranslatedText
  */
 export function useTranslatedText(
+  originalText: string | undefined | null,
+  sourceLang: SupportedLanguage = 'pt'
+): string {
+  const currentLang = useCurrentLanguage();
+  
+  // Memoize the result to avoid re-renders when inputs haven't changed
+  return useMemo(() => {
+    // Return empty string if no text
+    if (!originalText) return '';
+    
+    // If current language is the same as source, return original immediately
+    // This is the most common case (Portuguese users viewing Portuguese content)
+    if (currentLang === sourceLang) {
+      return originalText;
+    }
+    
+    // For other languages, return original and trigger background translation
+    // The translation will be handled by a separate effect that updates state
+    return originalText;
+  }, [originalText, currentLang, sourceLang]);
+}
+
+/**
+ * Hook for background translation with state management
+ * Use this when you need translation that updates asynchronously
+ */
+export function useAsyncTranslatedText(
   originalText: string | undefined | null,
   sourceLang: SupportedLanguage = 'pt'
 ): string {

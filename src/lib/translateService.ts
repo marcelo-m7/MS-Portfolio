@@ -98,8 +98,14 @@ class TranslationService {
     targetLang,
     sourceLang = 'pt',
   }: TranslateRequest): Promise<string> {
-    // Return original text if translating to the same language
+    // Return original text immediately if translating to the same language
+    // This is the most common case and avoids any overhead
     if (sourceLang === targetLang) {
+      return text;
+    }
+
+    // Return empty string immediately for empty input
+    if (!text || text.trim() === '') {
       return text;
     }
 

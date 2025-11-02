@@ -1,12 +1,97 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { Button } from '@/components/ui/button';
 import { useProfile, useProjects, useThoughts } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+
+// Memoized project card component to prevent re-renders
+const FeaturedProjectCard = memo(({ 
+  project, 
+  index,
+  prefersReducedMotion 
+}: { 
+  project: {
+    name: string;
+    summary: string;
+    category: string;
+    url?: string | null;
+    repo_url?: string | null;
+    technologies?: Array<{ name: string }>;
+  };
+  index: number;
+  prefersReducedMotion: boolean | null;
+}) => {
+  const linkTarget = project.url ?? project.repo_url;
+  const techStack = useMemo(() => {
+    return (
+      ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
+        // Some legacy entries might include a `stack` array; guard to satisfy types safely
+        (("stack" in (project as object) ? (project as Record<string, unknown>).stack : undefined) as string[] | undefined) ??
+        []
+      ).slice(0, 3)
+    );
+  }, [project]);
+
+  return (
+    <motion.div
+      key={project.name}
+      initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
+      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      className="group"
+    >
+      <motion.a
+        href={linkTarget}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Abrir ${project.name} em nova aba`}
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        style={{ transformStyle: 'preserve-3d' }}
+        whileHover={
+          prefersReducedMotion
+            ? undefined
+            : { rotateX: -6, rotateY: 6, translateZ: 12 }
+        }
+        whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+      >
+        <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
+              <Code2 className="text-white" size={24} aria-hidden />
+            </div>
+            <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+              {project.category}
+            </span>
+          </div>
+          <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
+            {project.name}
+          </h3>
+          <p className="text-muted-foreground mb-4 text-sm">
+            {project.summary}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {techStack.map((tech) => (
+              <span
+                key={tech}
+                className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
+              >
+                {tech}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.a>
+    </motion.div>
+  );
+});
+
+FeaturedProjectCard.displayName = 'FeaturedProjectCard';
 
 export default function Home() {
   const prefersReducedMotion = useReducedMotion();
@@ -191,68 +276,14 @@ export default function Home() {
               ? Array.from({ length: 3 }).map((_, i) => (
                   <Skeleton key={i} className="h-40 w-full rounded-2xl" />
                 ))
-              : (projects?.slice(0, 6).map((project, index) => {
-                  const linkTarget = project.url ?? project.repo_url;
-                  return (
-                    <motion.div
-                      key={project.name}
-                      initial={prefersReducedMotion ? undefined : { opacity: 0, y: 20 }}
-                      whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1, duration: 0.5 }}
-                      className="group"
-                    >
-                      <motion.a
-                        href={linkTarget}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Abrir ${project.name} em nova aba`}
-                        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                        style={{ transformStyle: 'preserve-3d' }}
-                        whileHover={
-                          prefersReducedMotion
-                            ? undefined
-                            : { rotateX: -6, rotateY: 6, translateZ: 12 }
-                        }
-                        whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-                        transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-                      >
-                        <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
-                              <Code2 className="text-white" size={24} aria-hidden />
-                            </div>
-                            <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
-                              {project.category}
-                            </span>
-                          </div>
-                          <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
-                            {project.name}
-                          </h3>
-                          <p className="text-muted-foreground mb-4 text-sm">
-                            {project.summary}
-                          </p>
-                          <div className="flex flex-wrap gap-2">
-                            {(
-                              ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
-                                // Some legacy entries might include a `stack` array; guard to satisfy types safely
-                                (("stack" in (project as object) ? (project as Record<string, unknown>).stack : undefined) as string[] | undefined) ??
-                                []
-                              ).slice(0, 3)
-                            ).map((tech) => (
-                              <span
-                                key={tech}
-                                className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
-                              >
-                                {tech}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </motion.a>
-                    </motion.div>
-                  );
-                }))}
+              : (projects?.slice(0, 6).map((project, index) => (
+                  <FeaturedProjectCard
+                    key={project.name}
+                    project={project}
+                    index={index}
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
+                )))}
           </div>
 
           <motion.div
