@@ -23,6 +23,8 @@ interface DeviceCapabilities {
   hardwareConcurrency?: number;
   /** Whether user prefers reduced data usage */
   saveData: boolean;
+  /** Whether the current viewport matches the mobile breakpoint */
+  isMobile: boolean;
 }
 
 /**
@@ -35,6 +37,7 @@ export function useDeviceCapabilities(): DeviceCapabilities {
       canHandle3D: true, // Assume capable initially
       hasDiscreteGPU: false,
       saveData: false,
+      isMobile: false,
     };
   });
 
@@ -95,18 +98,16 @@ export function useDeviceCapabilities(): DeviceCapabilities {
       // 2. Connection is slow (2g/slow-2g)
       // 3. Device has low memory (< 4GB)
       // 4. Device has few CPU cores (< 4)
-      // 5. Mobile device (detected by screen width)
-      const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+      const isMobile = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`).matches;
       const hasLowMemory = deviceMemory && deviceMemory < MIN_DEVICE_MEMORY_GB;
       const hasFewCores = hardwareConcurrency && hardwareConcurrency < MIN_CPU_CORES;
       const hasSlowConnection = effectiveType === '2g' || effectiveType === 'slow-2g';
 
-      canHandle3D = canHandle3D && 
-        !saveData && 
-        !hasSlowConnection && 
+      canHandle3D = canHandle3D &&
+        !saveData &&
+        !hasSlowConnection &&
         !hasLowMemory &&
-        !hasFewCores &&
-        !isMobile;
+        !hasFewCores;
 
       setCapabilities({
         canHandle3D,
@@ -114,6 +115,7 @@ export function useDeviceCapabilities(): DeviceCapabilities {
         deviceMemory,
         hardwareConcurrency,
         saveData,
+        isMobile,
       });
     }
 
