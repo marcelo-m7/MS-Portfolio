@@ -1,28 +1,29 @@
-## Multi-stage Dockerfile to build and server the Vite-based static site
-#
-# Build stage (Node) -> Production stage (Nginx)
+## Multi-stage Dockerfile: Build with Node, serve with Python's http.server
+## Usage: docker build -f Dockerfile.python -t ms-portfolio-py .
+
+### Build stage (Node) - builds the static `dist` folder
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-# Install only production dependencies then build the site
 ENV NODE_ENV=production
 COPY package*.json ./
 COPY package-lock.json ./
 RUN npm ci --silent
 
-# Copy source, build
+# Copy source and build
 COPY . .
 RUN npm run build
 
-## Production image
-FROM nginx:stable-alpine AS production
-LABEL maintainer="marcelo-m7 <marce@example.com>"
-EXPOSE 80
+### Production stage (Python) - lightweight image serving static files
+FROM python:3.12-slim
+WORKDIR /app
+LABEL maintainer="marcelo-m7 <marcelo@monynha.com>"
 
-# Copy static assets from build stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy built static files from builder
+COPY --from=builder /app/dist ./dist
 
-# Copy a custom Nginx config with SPA-fallback and caching rules
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Expose a port commonly used for simple Python servers
+EXPOSE 8080
 
-CMD ["nginx", "-g", "daemon off;"]
+# Serve the `dist` directory using the builtin http.server
+CMD ["python", "-m", "http.server", "8080", "--directory", "dist", "--bind", "0.0.0.0"]
