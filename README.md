@@ -34,8 +34,8 @@ Quick docs: browse the full docs index at [docs/README.md](./docs/README.md).
 
 Prerequisites:
 
-- Node.js >= 20.19
-- npm >= 9
+- Node.js >= 22
+- npm >= 10
 
 Instale dependências:
 
@@ -70,11 +70,37 @@ npm run test
 npm run lint
 ```
 
+## Use Bun (opcional)
+
+Se preferir usar o Bun como runtime / package manager, este repositório oferece scripts de suporte para instalação e execução rápida:
+
+```powershell
+# Instala o bun (detecção de plataforma automática)
+npm run bun:install
+
+# Instala dependências usando bun
+npm run bootstrap:bun
+
+# Executa o servidor de desenvolvimento via bun
+npm run dev:bun
+```
+
+Os scripts principais adicionados são:
+
+- `bun:check` — Verifica se `bun` está disponível no PATH
+- `bun:install` — Executa o instalador oficial do bun (plataforma detectada automaticamente)
+- `bootstrap:bun` — Garante que bun esteja instalado e, em seguida, executa `bun install`
+- `dev:bun`, `build:bun`, `preview:bun` — Run scripts via Bun runtime
+
+Se `bun` não for compatível em alguma plataforma, utilize os scripts padrão `npm run dev` e `npm run build`.
+
+
 ---
 
 ## 🧰 Scripts úteis
 
 - `npm run dev` — servidor de desenvolvimento
+- `npm run server` — alias para iniciar o servidor de desenvolvimento (mesma função de `dev`)
 - `npm run build` — build de produção
 - `npm run preview` — serve o build localmente
 - `npm run test` — Vitest (use `--coverage` para cobertura)
@@ -118,7 +144,7 @@ Tip: you can override credentials with env vars `VITE_SUPABASE_URL` and `VITE_SU
 - Free Google Translate endpoint demo:
   - Script: `tests/test-free-translation.js`
   - What it does: makes a few translation requests to the free web endpoint and prints results.
-  - Run (PowerShell, Node 20+):
+  - Run (PowerShell, Node 22+):
 
 ```powershell
 node .\tests\test-free-translation.js

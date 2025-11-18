@@ -19,8 +19,8 @@ For questions or to propose work directly, contact: [marcelo@monynha.com](mailto
 
 Prerequisites:
 
-- Node.js >= 20.19
-- npm >= 9
+- Node.js >= 22
+- npm >= 10
 
 Install and run:
 
