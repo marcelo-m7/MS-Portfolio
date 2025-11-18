@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Monynha-Softwares/MS-Portfolio.git"
+    "url": "https://github.com/marcelo-m7/MS-Portfolio.git"
   },
   "engines": {
     "node": ">=20.19.0",
