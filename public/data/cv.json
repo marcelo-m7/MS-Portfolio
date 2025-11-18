@@ -21,9 +21,11 @@
       "summary": "Sistema de gestão para bares e restaurantes com IA integrada para otimizar operações e melhorar a eficiência do negócio.",
       "fullDescription": "BotecoPro centraliza operações de bares e restaurantes com automação de pedidos, gestão de estoque e dashboards em tempo real. A camada de IA recomenda ações preventivas, reduz desperdícios e empodera equipas a oferecer experiências consistentes em cada serviço.",
       "stack": [
-        "Supabase",
+        "Reflex (Django)",
+        "Python",
         "Flutter",
-        "React"
+        "PostgreSQL",
+        "Clerk Auth"
       ],
       "url": "https://app.boteco.pt",
       "domain": "app.boteco.pt",
@@ -31,8 +33,8 @@
       "thumbnail": "/images/botecopro.svg",
       "category": "Soluções Empresariais",
       "status": "Desenvolvimento",
-      "visibility": "Interna",
-      "year": 2025
+      "visibility": "Pública",
+      "year": 2023
     },
     {
       "slug": "boteco-pt",
@@ -52,7 +54,7 @@
       "repoUrl": "https://github.com/marcelo-m7/boteco.pt",
       "thumbnail": "/images/boteco-pt.svg",
       "category": "Institucional",
-      "status": "Produção",
+      "status": "Desenvolvimento",
       "visibility": "Pública",
       "year": 2025
     },
@@ -62,36 +64,37 @@
       "summary": "Faculdade Comunitária Digital — plataforma de educação comunitária aberta e gratuita, com foco em inclusão social.",
       "fullDescription": "FACODI democratiza o acesso a cursos superiores por meio de trilhas interativas, conteúdos revisados por especialistas e ferramentas de apoio comunitário. A plataforma prioriza acessibilidade, conectividade de baixa largura de banda e governança colaborativa.",
       "stack": [
-        "Next.js",
-        "Supabase",
-        "Payload CMS"
+        "Pute Markdonwn",
+        "Hugo Framework",
+        "ViteJs",
+        "Tailwind CSS"
       ],
       "url": "https://facodi.pt",
       "domain": "facodi.pt",
       "repoUrl": "https://github.com/Monynha-Softwares/facodi.pt",
       "thumbnail": "/images/facodi.svg",
       "category": "Educação",
-      "status": "Produção",
+      "status": "Desenvolvimento",
       "visibility": "Pública",
       "year": 2025
     },
     {
-      "slug": "monynhatech",
+      "slug": "monynha-tech",
       "name": "MonynhaTech",
       "summary": "Blog técnico e centro de documentação multilíngue da empresa.",
       "fullDescription": "MonynhaTech concentra notas técnicas, tutoriais e a visão de arquitetura dos produtos Monynha. A curadoria em múltiplos idiomas garante que equipas globais acompanhem decisões, padrões de design e integrações com a stack oficial.",
       "stack": [
         "Next.js",
         "Payload CMS",
-        "Internacionalização"
+        "i18n"
       ],
       "url": "https://monynha.tech",
       "domain": "monynha.tech",
       "repoUrl": "https://github.com/Monynha-Softwares/MonynhaTech",
       "thumbnail": "/images/monynha-tech.svg",
-      "category": "Documentação",
-      "status": "MVP",
-      "visibility": "Interna",
+      "category": "Draft",
+      "status": "Draft",
+      "visibility": "Public",
       "year": 2025
     },
     {
@@ -109,24 +112,27 @@
       "repoUrl": "https://github.com/Monynha-Softwares/artleo-creative-spaces",
       "thumbnail": "/images/artleo.svg",
       "category": "Arte Digital",
-      "status": "Produção",
+      "status": "MVP",
       "visibility": "Pública",
       "year": 2025
     },
     {
-      "slug": "assistina",
-      "name": "AssisTina",
+      "slug": "Kobu Assistent",
+      "name": "Kobu Assistent",
       "summary": "Assistente virtual por IA para atendimento e automação de processos.",
-      "fullDescription": "AssisTina combina modelos de linguagem, fluxos de automação e integrações omnicanal para responder clientes com rapidez e empatia. A solução aprende com feedback humano e mantém trilhas auditáveis para governança responsável de IA.",
+      "fullDescription": "Kobu Assistent combina modelos de linguagem, fluxos de automação e integrações omnicanal para responder clientes com rapidez e empatia. A solução aprende com feedback humano e mantém trilhas auditáveis para governança responsável de IA.",
       "stack": [
-        "LLMs",
-        "WhatsApp API",
-        "Dashboards"
+        "LangChain",
+        "Flask",
+        "OpenAI",
+        "FAISS",
+        "Pickle",
+        "Python"
       ],
       "url": null,
       "domain": null,
-      "repoUrl": "https://github.com/Monynha-Softwares/AssisTina",
-      "thumbnail": "/images/assistina.svg",
+      "repoUrl": "https://github.com/Monynha-Softwares/Kobu-Assistent",
+      "thumbnail": "/images/kobu-assistent.svg",
       "category": "IA Conversacional",
       "status": "Desenvolvimento",
       "visibility": "Interna",
