@@ -1,11 +1,11 @@
 ## Multi-stage Dockerfile: Build with Node, serve with Python's http.server
-## Usage: docker build -f Dockerfile.python -t ms-portfolio-py .
+## Usage: docker build -t ms-portfolio-py .
 
 ### Build stage (Node) - builds the static `dist` folder
 FROM node:22-alpine AS builder
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 COPY package*.json ./
 COPY package-lock.json ./
 RUN npm ci --silent
