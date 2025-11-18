@@ -9,12 +9,15 @@ import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
 // Memoized project card component to prevent re-renders
+const MotionLink = motion(Link);
+
 const FeaturedProjectCard = memo(({ 
   project, 
   index,
   prefersReducedMotion 
 }: { 
   project: {
+    slug: string;
     name: string;
     summary: string;
     category: string;
@@ -25,7 +28,9 @@ const FeaturedProjectCard = memo(({
   index: number;
   prefersReducedMotion: boolean | null;
 }) => {
-  const linkTarget = project.url ?? project.repo_url;
+  // Prefer internal project detail route; fallback to external domain if slug not present
+  const detailPath = project.slug ? `/portfolio/${encodeURIComponent(String(project.slug))}` : undefined;
+  const linkTarget = detailPath ?? (project.url ?? project.repo_url);
   const techStack = useMemo(() => {
     return (
       ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
@@ -45,22 +50,21 @@ const FeaturedProjectCard = memo(({
       transition={{ delay: index * 0.1, duration: 0.5 }}
       className="group"
     >
-      <motion.a
-        href={linkTarget}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Abrir ${project.name} em nova aba`}
-        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        style={{ transformStyle: 'preserve-3d' }}
-        whileHover={
-          prefersReducedMotion
-            ? undefined
-            : { rotateX: -6, rotateY: 6, translateZ: 12 }
-        }
-        whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
-        transition={{ type: 'spring', stiffness: 200, damping: 22 }}
-      >
-        <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+      {detailPath ? (
+        <MotionLink
+          to={detailPath}
+          aria-label={`Abrir detalhes do projeto ${project.name}`}
+          className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          style={{ transformStyle: 'preserve-3d' }}
+          whileHover={
+            prefersReducedMotion
+              ? undefined
+              : { rotateX: -6, rotateY: 6, translateZ: 12 }
+          }
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+        >
+          <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
           <div className="flex items-start justify-between mb-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
               <Code2 className="text-white" size={24} aria-hidden />
@@ -85,8 +89,52 @@ const FeaturedProjectCard = memo(({
               </span>
             ))}
           </div>
-        </div>
-      </motion.a>
+          </div>
+        </MotionLink>
+      ) : (
+        <motion.a
+          href={linkTarget}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Abrir ${project.name} em nova aba`}
+          className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          style={{ transformStyle: 'preserve-3d' }}
+          whileHover={
+            prefersReducedMotion
+              ? undefined
+              : { rotateX: -6, rotateY: 6, translateZ: 12 }
+          }
+          whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+        >
+          <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
+                <Code2 className="text-white" size={24} aria-hidden />
+              </div>
+              <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                {project.category}
+              </span>
+            </div>
+            <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
+              {project.name}
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              {project.summary}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </motion.a>
+      )}
     </motion.div>
   );
 });
