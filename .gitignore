@@ -32,3 +32,5 @@ bun.lockb
 
 # Keep package-lock.json (npm)
 !package-lock.json
+.env*
+.env.local
