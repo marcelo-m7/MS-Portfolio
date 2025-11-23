@@ -14,7 +14,7 @@ This document summarizes the application structure, routing, data flow, and key 
 ## Routing & Layout
 
 - Root: `src/App.tsx` defines routes and lazy-loading.
-- Layout: `src/components/Layout.tsx` wraps all pages with `Navbar`, `Footer`, and desktop-only `LiquidEther` background.
+- Layout: `src/components/Layout.tsx` wraps all pages with `Navbar`, `Footer`, and desktop-only `Galaxy` background.
 - Pages (lazy): `src/pages/`
   - `Home`, `Portfolio`, `ProjectDetail`, `ArtDetail`, `SeriesDetail`, `Thoughts`, `ThoughtDetail`, `About`, `Contact`, `NotFound`
 - Nested routes:
@@ -26,7 +26,7 @@ This document summarizes the application structure, routing, data flow, and key 
 - Content source: `public/data/cv.json` (projects, artworks, series, thoughts)
 - Images: `public/images/` (SVG only, include `<title>`)
 - Hooks: `src/hooks/usePortfolioData.ts` provides `useProjects()`, `useArtwork()`, `useSeries()`, `useThoughts()`
-  - Stale time: 5–15 min; Cache time: 10–30 min
+  - Stale time: 15 min; Cache time: 30 min (configured in `src/lib/queryClient.tsx`)
   - Deduplicated fetch for `cv.json`
 - Future: migrate read paths from JSON to Supabase queries progressively.
 
@@ -56,10 +56,11 @@ This document summarizes the application structure, routing, data flow, and key 
 
 ## Performance
 
-- Heavy visuals are lazy and desktop-only (`LiquidEther`)
+- Heavy visuals are lazy and desktop-only (`Galaxy`)
 - SVG optimization (SVGO) and DNS prefetch/preconnect
 - Web Vitals tracked via `src/lib/webVitals.ts`
 - Component memoization (`React.memo`) for cards and list items
+- Centralized `QueryClient` with optimized caching strategies.
 
 ## Testing
 

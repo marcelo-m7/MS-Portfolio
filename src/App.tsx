@@ -1,8 +1,7 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useEffect, lazy, Suspense, useMemo } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import {
   detectInitialLanguage,
   getStorageKey,
@@ -12,6 +11,7 @@ import {
 import type { SupportedLanguage } from "./lib/language";
 import Layout from "./components/Layout"; // Import the new Layout component
 import { ErrorBoundary } from "./components/ErrorBoundary"; // Import ErrorBoundary
+import { QueryClientProvider, queryClient } from "./lib/queryClient"; // Import centralized QueryClient and Provider
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
@@ -25,23 +25,6 @@ const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const App = () => {
-  // Memoize queryClient with optimized configuration to avoid creating new instance on every render
-  const queryClient = useMemo(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        // Increase stale time to reduce refetches (portfolio content changes infrequently)
-        staleTime: 15 * 60 * 1000, // 15 minutes
-        // Keep unused data in cache for longer
-        // Note: gcTime replaced cacheTime in React Query v5
-        gcTime: 30 * 60 * 1000, // 30 minutes
-        // Reduce refetch frequency to improve performance
-        refetchOnWindowFocus: false, // Don't refetch when window regains focus
-        refetchOnMount: false, // Don't refetch on component mount if data exists
-        // Only retry failed requests once to avoid excessive network calls
-        retry: 1,
-      },
-    },
-  }), []);
   useEffect(() => {
     const initialLang = detectInitialLanguage();
     setLanguage(initialLang);

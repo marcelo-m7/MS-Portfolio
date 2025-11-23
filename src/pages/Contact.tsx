@@ -7,14 +7,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { useContact } from '@/hooks/usePortfolioData';
 import { LINKS } from '../lib/siteLinks';
-import { submitContactLead } from '@/lib/contactLead';
-import { supabase } from '@/lib/supabaseClient';
+import { submitContact } from '@/lib/contactService'; // Import submitContact
 import { logger } from '@/lib/logger';
-import type { ContactLeadPayload } from '@/lib/contactLead';
+import type { ContactFormData } from '@/lib/contactService'; // Use ContactFormData
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
 
-const createInitialFormState = (): ContactLeadPayload => ({
+const createInitialFormState = (): ContactFormData => ({
   name: '',
   email: '',
   company: '',
@@ -36,42 +35,10 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const result = await submitContactLead(
-        supabase,
-        formData,
-        async (payload, reason) => {
-          if (!supabase) {
-            throw reason instanceof Error
-              ? reason
-              : new Error('Supabase client is not configured.');
-          }
-
-          const { error } = await supabase.functions.invoke(
-            'send-contact-email',
-            {
-              body: {
-                name: payload.name,
-                email: payload.email,
-                message: payload.message,
-                company: payload.company,
-                project: payload.project,
-                to: 'marcelo@monynha.com',
-              },
-            },
-          );
-
-          if (error) {
-            logger.error('Falha ao enviar email de fallback', {
-              component: 'Contact',
-              metadata: { originalReason: reason }
-            }, error);
-            throw error;
-          }
-        },
-      );
+      const result = await submitContact(formData); // Use submitContact directly
 
       toast.success(
-        result === 'saved'
+        result.status === 'stored'
           ? (contactInfo?.success_message || t.contact.successMessage)
           : t.contact.emailFallbackMessage,
       );
