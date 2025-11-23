@@ -11,7 +11,7 @@ import {
 import type { SupportedLanguage } from "./lib/language";
 import Layout from "./components/Layout"; // Import the new Layout component
 import { ErrorBoundary } from "./components/ErrorBoundary"; // Import ErrorBoundary
-import { QueryClientProvider, queryClient } from "./lib/queryClient"; // Import centralized QueryClient and Provider
+import { QueryProvider, queryClient } from "./lib/queryClient"; // Corrected: Import QueryProvider (custom) and queryClient
 
 const Home = lazy(() => import("./pages/Home"));
 const Portfolio = lazy(() => import("./pages/Portfolio"));
@@ -46,7 +46,7 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryProvider client={queryClient}> {/* Use the custom QueryProvider */}
       <TooltipProvider>
         <Sonner />
         <BrowserRouter>
@@ -78,7 +78,7 @@ const App = () => {
           </ErrorBoundary>
         </BrowserRouter>
       </TooltipProvider>
-    </QueryClientProvider>
+    </QueryProvider>
   );
 };
 
