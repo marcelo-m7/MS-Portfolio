@@ -1,4 +1,4 @@
-import { Variants, Transition } from 'framer-motion';
+import { Variants } from 'framer-motion';
 
 /**
  * Shared animation configurations to reduce duplication across components
@@ -20,14 +20,3 @@ export const staggerItemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 },
 };
-
-
-// Spring transition configuration
-export const springTransition: Transition = {
-  type: 'spring',
-  stiffness: 300,
-  damping: 20,
-};
-
-
-// Back button hover animation
