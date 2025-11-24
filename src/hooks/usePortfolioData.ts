@@ -39,7 +39,7 @@ async function loadCvData(): Promise<Record<string, unknown>> {
   
   // Create new loading promise
   // Use Vite base URL so the JSON is fetched correctly when the app is served from a subpath
-  const base = (import.meta as any).env?.BASE_URL || '/';
+  const base = import.meta.env.BASE_URL || '/';
   const cvUrl = base.endsWith('/') ? `${base}data/cv.json` : `${base}/data/cv.json`;
 
   cvDataPromise = fetch(cvUrl)
