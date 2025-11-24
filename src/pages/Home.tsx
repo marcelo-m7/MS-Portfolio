@@ -22,6 +22,7 @@ const FeaturedProjectCard = memo(({
     url?: string | null;
     repo_url?: string | null;
     technologies?: Array<{ name: string }>;
+    year: number; // Ensure year is part of the project type
   };
   index: number;
   prefersReducedMotion: boolean | null;
@@ -62,9 +63,14 @@ const FeaturedProjectCard = memo(({
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
                 <Code2 className="text-white" size={24} aria-hidden />
               </div>
-              <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
-                {project.category}
-              </span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                  {project.category}
+                </span>
+                <span className="text-xs font-medium px-3 py-1 rounded-full border border-border/60 bg-background/70 text-muted-foreground">
+                  {project.year}
+                </span>
+              </div>
             </div>
             <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
               {project.name}
