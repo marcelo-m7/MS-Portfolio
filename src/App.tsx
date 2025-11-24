@@ -1,6 +1,6 @@
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
 import {
   detectInitialLanguage,
@@ -49,7 +49,7 @@ const App = () => {
     <QueryProvider client={queryClient}> {/* Use the custom QueryProvider */}
       <TooltipProvider>
         <Sonner />
-        <BrowserRouter>
+        <HashRouter>
           <ErrorBoundary>
             <Suspense
               fallback={
@@ -76,7 +76,7 @@ const App = () => {
               </Routes>
             </Suspense>
           </ErrorBoundary>
-        </BrowserRouter>
+        </HashRouter>
       </TooltipProvider>
     </QueryProvider>
   );
