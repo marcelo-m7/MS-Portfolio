@@ -15,6 +15,7 @@ const FeaturedProjectCard = memo(({
   prefersReducedMotion 
 }: { 
   project: {
+    slug: string; // Added slug to project type
     name: string;
     summary: string;
     category: string;
@@ -25,7 +26,6 @@ const FeaturedProjectCard = memo(({
   index: number;
   prefersReducedMotion: boolean | null;
 }) => {
-  const linkTarget = project.url ?? project.repo_url;
   const techStack = useMemo(() => {
     return (
       ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
@@ -45,11 +45,7 @@ const FeaturedProjectCard = memo(({
       transition={{ delay: index * 0.1, duration: 0.5 }}
       className="group"
     >
-      <motion.a
-        href={linkTarget}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Abrir ${project.name} em nova aba`}
+      <motion.div // Changed from <a> to <div> to wrap the Link
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         style={{ transformStyle: 'preserve-3d' }}
         whileHover={
@@ -60,33 +56,35 @@ const FeaturedProjectCard = memo(({
         whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
         transition={{ type: 'spring', stiffness: 200, damping: 22 }}
       >
-        <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
-              <Code2 className="text-white" size={24} aria-hidden />
-            </div>
-            <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
-              {project.category}
-            </span>
-          </div>
-          <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
-            {project.name}
-          </h3>
-          <p className="text-muted-foreground mb-4 text-sm">
-            {project.summary}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {techStack.map((tech) => (
-              <span
-                key={tech}
-                className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
-              >
-                {tech}
+        <Link to={`/portfolio/${project.slug}`} className="block"> {/* Link to project detail page */}
+          <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
+                <Code2 className="text-white" size={24} aria-hidden />
+              </div>
+              <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                {project.category}
               </span>
-            ))}
+            </div>
+            <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
+              {project.name}
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              {project.summary}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
-      </motion.a>
+        </Link>
+      </motion.div>
     </motion.div>
   );
 });
