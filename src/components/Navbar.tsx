@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
 import { useProfile } from '@/hooks/usePortfolioData';
@@ -12,6 +12,8 @@ const MotionLink = motion(Link);
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
   const location = useLocation();
   const shouldReduceMotion = useReducedMotion();
   const { data: profile } = useProfile();
@@ -21,6 +23,33 @@ export default function Navbar() {
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+
+      if (menuRef.current?.contains(target)) return;
+      if (toggleRef.current?.contains(target)) return;
+
+      setIsOpen(false);
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen]);
 
   // Memoize navLinks to prevent recreation on every render
   const navLinks = useMemo(() => [
@@ -109,6 +138,7 @@ export default function Navbar() {
           <ThemeToggle className="md:hidden" />
           <button
             onClick={() => setIsOpen(!isOpen)}
+            ref={toggleRef}
             className="flex h-11 w-11 items-center justify-center rounded-2xl border border-border/60 bg-card/70 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             aria-label={isOpen ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={isOpen}
@@ -136,6 +166,7 @@ export default function Navbar() {
               exit={shouldReduceMotion ? undefined : { opacity: 0, y: -12, scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 210, damping: 26 }}
               className="absolute left-0 right-0 top-[calc(100%+0.75rem)] z-50 px-4 sm:px-6 md:hidden"
+              ref={menuRef}
             >
               <div className="mx-auto max-w-6xl rounded-3xl border border-border/70 bg-card/95 p-4 shadow-2xl shadow-primary/10">
                 {/* Close button */}
