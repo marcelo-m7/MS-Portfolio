@@ -38,7 +38,11 @@ async function loadCvData(): Promise<Record<string, unknown>> {
   if (cvDataPromise) return cvDataPromise;
   
   // Create new loading promise
-  cvDataPromise = fetch('/data/cv.json')
+  // Use Vite base URL so the JSON is fetched correctly when the app is served from a subpath
+  const base = (import.meta as any).env?.BASE_URL || '/';
+  const cvUrl = base.endsWith('/') ? `${base}data/cv.json` : `${base}/data/cv.json`;
+
+  cvDataPromise = fetch(cvUrl)
     .then(response => response.json())
     .then((data: unknown) => {
       cvDataCache = data as Record<string, unknown>;
