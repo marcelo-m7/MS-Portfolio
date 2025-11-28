@@ -7,9 +7,11 @@ interface MobileNavLinkProps {
   label: string;
   isActive: boolean;
   onClose: () => void;
+  type?: 'internal' | 'external'; // Added type prop
+  target?: string; // Added target prop for external links
 }
 
-const MobileNavLink: React.FC<MobileNavLinkProps> = ({ to, label, isActive, onClose }) => {
+const MobileNavLink: React.FC<MobileNavLinkProps> = ({ to, label, isActive, onClose, type = 'internal', target }) => {
   const navigate = useNavigate();
   const prefersReducedMotion = useReducedMotion();
   
@@ -19,23 +21,33 @@ const MobileNavLink: React.FC<MobileNavLinkProps> = ({ to, label, isActive, onCl
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     
-    // 1. Trigger menu close (starts exit animation)
-    onClose();
+    onClose(); // Always close the menu
 
-    // 2. Delay navigation to allow exit animation to complete
-    if (prefersReducedMotion) {
-      navigate(to);
+    if (type === 'external') {
+      // For external links, open in a new tab
+      if (target === '_blank') {
+        window.open(to, '_blank', 'noopener noreferrer');
+      } else {
+        window.location.href = to;
+      }
     } else {
-      setTimeout(() => {
+      // For internal links, delay navigation to allow exit animation to complete
+      if (prefersReducedMotion) {
         navigate(to);
-      }, EXIT_DURATION_MS);
+      } else {
+        setTimeout(() => {
+          navigate(to);
+        }, EXIT_DURATION_MS);
+      }
     }
   };
 
   return (
-    <Link
-      to={to}
+    <a // Changed from Link to <a> to handle both internal and external
+      href={to}
       onClick={handleClick}
+      target={target}
+      rel={target === '_blank' ? 'noopener noreferrer' : undefined}
       className={`block w-full rounded-xl px-4 py-3 text-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
         isActive
           ? 'bg-primary text-primary-foreground shadow-md'
@@ -43,7 +55,7 @@ const MobileNavLink: React.FC<MobileNavLinkProps> = ({ to, label, isActive, onCl
       }`}
     >
       {label}
-    </Link>
+    </a>
   );
 };
 

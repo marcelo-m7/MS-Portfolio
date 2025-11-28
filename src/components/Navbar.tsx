@@ -7,7 +7,8 @@ import { useProfile } from '@/hooks/usePortfolioData';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useTranslations } from '@/hooks/useTranslations';
-import MobileNavLink from './MobileNavLink'; // <-- New Import
+import MobileNavLink from './MobileNavLink';
+import { LINKS } from '@/lib/siteLinks'; // Import LINKS
 
 const MotionLink = motion(Link);
 
@@ -54,11 +55,12 @@ export default function Navbar() {
 
   // Memoize navLinks to prevent recreation on every render
   const navLinks = useMemo(() => [
-    { href: '/', label: t.nav.home },
-    { href: '/portfolio', label: t.nav.portfolio },
-    { href: '/about', label: t.nav.about },
-    { href: '/thoughts', label: t.nav.thoughts },
-    { href: '/contact', label: t.nav.contact },
+    { href: '/', label: t.nav.home, type: 'internal' as const },
+    { href: '/portfolio', label: t.nav.portfolio, type: 'internal' as const },
+    { href: '/about', label: t.nav.about, type: 'internal' as const },
+    { href: '/thoughts', label: t.nav.thoughts, type: 'internal' as const },
+    { href: '/contact', label: t.nav.contact, type: 'internal' as const },
+    { href: LINKS.repositories, label: t.nav.repositories, type: 'external' as const, target: '_blank' }, // New external link
   ], [t]);
 
   // Memoize isActive check
@@ -137,6 +139,28 @@ export default function Navbar() {
           >
             {navLinks.map((link) => {
               const active = isActive(link.href);
+              if (link.type === 'external') {
+                return (
+                  <motion.a
+                    key={link.href}
+                    href={link.href}
+                    target={link.target}
+                    rel="noopener noreferrer"
+                    className={`relative rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                      active ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+                    }`}
+                    {...(!shouldReduceMotion
+                      ? {
+                          whileHover: {
+                            y: -2,
+                          },
+                        }
+                      : {})}
+                  >
+                    {link.label}
+                  </motion.a>
+                );
+              }
               return (
                 <MotionLink
                   key={link.href}
@@ -210,6 +234,8 @@ export default function Navbar() {
                     label={link.label}
                     isActive={isActive(link.href)}
                     onClose={() => setIsMobileMenuOpen(false)}
+                    type={link.type}
+                    target={link.target}
                   />
                 </motion.div>
               ))}
