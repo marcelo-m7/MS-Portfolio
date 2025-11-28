@@ -20,8 +20,11 @@ export default function Navbar() {
 
   // Close menu on route change
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [location.pathname]);
+    // Ensure menu is closed whenever the path changes
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+    }
+  }, [location.pathname]); // Depend on location.pathname
 
   // Close menu on outside click or Escape key
   useEffect(() => {
