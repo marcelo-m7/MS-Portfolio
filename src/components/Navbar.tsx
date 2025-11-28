@@ -79,10 +79,14 @@ export default function Navbar() {
     },
     exit: {
       opacity: 0,
-      y: -20,
-      scale: 0.95,
+      y: -50, // Drop down further
+      rotate: -5, // Slight rotation
+      scale: 0.8, // Shrink slightly
       transition: {
-        duration: 0.2,
+        type: 'spring',
+        stiffness: 200,
+        damping: 20,
+        duration: 0.4, // Longer duration for the bounce effect
       },
     },
   }), []);
