@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       buffer: 'buffer',
+      // Alias the problematic internal path to a publicly exposed StyleSheet export
+      'react-native-web/dist/apis/StyleSheet/registry': 'react-native-web/dist/exports/StyleSheet',
     },
   },
   define: {
