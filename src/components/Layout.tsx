@@ -20,7 +20,7 @@ export default function Layout() {
       <LanguageMetadata />
       {/* Galaxy Background - Forced visibility on all devices */}
       <div className="block"> {/* Removed hidden md:block */}
-        <div className="fixed inset-0 w-full h-full -z-20">
+        <div className="fixed inset-0 w-full h-full z-10"> {/* Changed z-index from -z-20 to z-10 */}
           <Suspense fallback={null}>
             <Galaxy
               mouseInteraction={true}
