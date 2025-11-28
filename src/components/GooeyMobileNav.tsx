@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import GooeyNav from 'react-bits/GooeyNav';
+import GooeyNav from 'react-bits'; // Corrected import path
 import { useLocation } from 'react-router-dom';
 import { Home, FolderKanban, User, BookText, Mail } from 'lucide-react';
 
