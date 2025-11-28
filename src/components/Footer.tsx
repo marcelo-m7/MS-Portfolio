@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Github, Linkedin, Mail, Globe } from 'lucide-react'; // Added Globe icon
 import { motion, useReducedMotion } from 'framer-motion';
 import { useMemo } from 'react';
 import { useProfile, useContact } from '@/hooks/usePortfolioData';
@@ -33,6 +33,12 @@ export default function Footer() {
       href: `mailto:${contact?.email || LINKS.email.replace('mailto:','')}`,
       label: 'Email',
       colorClass: 'hover:text-accent',
+    },
+    {
+      icon: Globe, // Added Monynha Softwares site
+      href: LINKS.monynhaSite,
+      label: 'Monynha Softwares',
+      colorClass: 'hover:text-primary',
     },
   ], [contact?.email]);
 

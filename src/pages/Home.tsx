@@ -1,12 +1,13 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
+import { ArrowRight, Code2, Sparkles, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo, memo } from 'react';
 import { Button } from '@/components/ui/button';
-import { useProfile, useProjects, useThoughts } from '@/hooks/usePortfolioData';
+import { useProfile, useProjects } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+import { LINKS } from '@/lib/siteLinks'; // Import LINKS
 
 // Memoized project card component to prevent re-renders
 const FeaturedProjectCard = memo(({ 
@@ -101,7 +102,6 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
   const { data: profile, isLoading: loadingProfile } = useProfile();
   const { data: projects, isLoading: loadingProjects } = useProjects();
-  const { data: thoughts, isLoading: loadingThoughts } = useThoughts();
   const t = useTranslations();
   
   // Translate dynamic content from cv.json
@@ -217,24 +217,19 @@ export default function Home() {
                   {t.home.getInTouch}
                 </Link>
               </Button>
-            </motion.div>
 
-            <motion.div
-              variants={itemVariants}
-              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
-            >
-              <motion.div
-                variants={itemVariants}
-                className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
+              {/* New button for Monynha.com */}
+              <Button
+                asChild
+                variant="secondary"
+                size="lg"
+                className="px-10 shadow-lg shadow-accent/30"
               >
-                <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
-                <span>Nova rota: reflexões em tecnologia e arte</span>
-              </motion.div>
-              <Button asChild className="bg-gradient-to-r from-secondary/80 to-primary/80 px-5 text-sm font-semibold text-white shadow-md hover:brightness-105">
-                <Link to="/thoughts">
-                  Ler os pensamentos recentes
-                  <ArrowRight className="h-4 w-4" aria-hidden />
-                </Link>
+                <a href={LINKS.monynhaSite} target="_blank" rel="noopener noreferrer">
+                  <Globe className="mr-2" />
+                  Monynha Softwares
+                  <ArrowRight className="ml-2" />
+                </a>
               </Button>
             </motion.div>
           </motion.div>
