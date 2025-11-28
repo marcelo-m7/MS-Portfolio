@@ -240,7 +240,7 @@ export default function Home() {
           initial={prefersReducedMotion ? undefined : { opacity: 0 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
         >
           <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-2">
             <motion.div
