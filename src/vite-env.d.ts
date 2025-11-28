@@ -6,7 +6,6 @@ interface ImportMetaEnv {
   readonly VITE_SUPABASE_SCHEMA: string;
   readonly VITE_ENABLE_HERO_3D?: string;
   readonly VITE_ENABLE_ART_3D?: string;
-  readonly VITE_GITHUB_API_TOKEN?: string;
 }
 
 interface ImportMeta {
