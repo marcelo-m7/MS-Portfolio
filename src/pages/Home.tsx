@@ -193,12 +193,12 @@ export default function Home() {
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center items-center"
             >
               <Button
                 asChild
                 size="lg"
-                className="px-10 shadow-lg shadow-secondary/30"
+                className="px-10 shadow-lg shadow-secondary/30 w-full sm:w-auto"
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
@@ -211,7 +211,7 @@ export default function Home() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-2 border-border/70 bg-card/60 px-10 hover:border-primary/70 hover:text-primary"
+                className="border-2 border-border/70 bg-card/60 px-10 hover:border-primary/70 hover:text-primary w-full sm:w-auto"
               >
                 <Link to="/contact">
                   {t.home.getInTouch}
@@ -223,7 +223,7 @@ export default function Home() {
                 asChild
                 variant="secondary"
                 size="lg"
-                className="px-10 shadow-lg shadow-accent/30"
+                className="px-10 shadow-lg shadow-accent/30 w-full sm:w-auto"
               >
                 <a href={LINKS.monynhaSite} target="_blank" rel="noopener noreferrer">
                   <Globe className="mr-2" />
