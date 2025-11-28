@@ -28,6 +28,8 @@ export default defineConfig(({ mode }) => ({
         global: 'globalThis',
       },
     },
+    // Explicitly include react-native-web to ensure proper pre-bundling
+    include: ['react-native-web'],
   },
   build: {
     rollupOptions: {
