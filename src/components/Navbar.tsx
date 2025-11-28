@@ -2,12 +2,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import MonynhaLogo from './MonynhaLogo'; // Import the new logo component
+import MonynhaLogo from './MonynhaLogo';
 import { useProfile } from '@/hooks/usePortfolioData';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useTranslations } from '@/hooks/useTranslations';
-import GooeyMobileNav from './GooeyMobileNav'; // Import the new GooeyMobileNav component
 
 const MotionLink = motion(Link);
 
@@ -16,6 +15,38 @@ export default function Navbar() {
   const shouldReduceMotion = useReducedMotion();
   const { data: profile } = useProfile();
   const t = useTranslations();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close menu on outside click or Escape key
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isMobileMenuOpen]);
 
   // Memoize navLinks to prevent recreation on every render
   const navLinks = useMemo(() => [
@@ -28,6 +59,34 @@ export default function Navbar() {
 
   // Memoize isActive check
   const isActive = useCallback((path: string) => location.pathname === path, [location.pathname]);
+
+  const mobileMenuVariants = useMemo(() => ({
+    hidden: { opacity: 0, y: -20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+        damping: 30,
+        staggerChildren: 0.05,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      scale: 0.95,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  }), []);
+
+  const mobileLinkVariants = useMemo(() => ({
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+  }), []);
 
   return (
     <nav className="fixed left-1/2 top-4 z-50 w-full -translate-x-1/2 px-4 sm:px-6">
@@ -52,6 +111,7 @@ export default function Navbar() {
           </span>
         </MotionLink>
 
+        {/* Desktop Navigation */}
         <div className="hidden flex-1 items-center justify-end gap-4 md:flex">
           <motion.div
             className="flex items-center gap-2 rounded-full border border-border/60 bg-background/60 p-1 shadow-inner"
@@ -90,16 +150,65 @@ export default function Navbar() {
             <ThemeToggle />
           </div>
         </div>
-        {/* Mobile toggles for language and theme, GooeyNav will handle navigation */}
+
+        {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-2 md:hidden">
           <LanguageToggle />
-          <ThemeToggle className="md:hidden" />
+          <ThemeToggle className="hidden sm:block" /> {/* Keep theme toggle visible on small screens */}
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="rounded-full p-2 text-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            aria-label={isMobileMenuOpen ? t.nav.closeMenu : t.nav.openMenu}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
       </motion.div>
-      {/* GooeyNav for mobile */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        <GooeyMobileNav navLinks={navLinks} />
-      </div>
+
+      {/* Mobile Menu Content */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            ref={menuRef}
+            variants={mobileMenuVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="absolute left-0 right-0 top-full mt-3 mx-4 md:hidden rounded-2xl border border-border/60 bg-card/95 p-4 shadow-xl backdrop-blur-xl origin-top"
+          >
+            <motion.nav
+              variants={containerVariants}
+              initial={shouldReduceMotion ? undefined : 'hidden'}
+              animate={shouldReduceMotion ? undefined : 'visible'}
+              className="flex flex-col space-y-2"
+            >
+              {navLinks.map((link, index) => (
+                <motion.div key={link.href} variants={mobileLinkVariants}>
+                  <Link
+                    to={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`block w-full rounded-xl px-4 py-3 text-lg font-medium transition-colors ${
+                      isActive(link.href)
+                        ? 'bg-primary text-primary-foreground shadow-md'
+                        : 'text-foreground hover:bg-muted/50'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.nav>
+            <div className="mt-4 pt-4 border-t border-border/60 flex justify-between items-center">
+              <ThemeToggle />
+              <span className="text-sm text-muted-foreground">
+                {t.nav.menu}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
