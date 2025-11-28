@@ -58,8 +58,8 @@ export async function fetchGitHubRepoStats(repoUrl: string): Promise<GitHubRepoS
       headers: {
         Accept: 'application/vnd.github.v3+json',
         // Optional: Add GitHub token via env var for higher rate limits
-        ...(import.meta.env.VITE_GITHUB_TOKEN
-          ? { Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}` }
+        ...(import.meta.env.VITE_GITHUB_API_TOKEN
+          ? { Authorization: `Bearer ${import.meta.env.VITE_GITHUB_API_TOKEN}` }
           : {}),
       },
     });
@@ -68,7 +68,7 @@ export async function fetchGitHubRepoStats(repoUrl: string): Promise<GitHubRepoS
       if (response.status === 404) {
         logger.warn(`GitHub repository not found: ${repoUrl}`, { component: 'githubApi' });
       } else if (response.status === 403) {
-        logger.warn('GitHub API rate limit exceeded. Consider adding VITE_GITHUB_TOKEN.', {
+        logger.warn('GitHub API rate limit exceeded. Consider adding VITE_GITHUB_API_TOKEN.', {
           component: 'githubApi',
         });
       }
@@ -146,6 +146,6 @@ export function formatRelativeTime(dateString: string): string {
   if (diffDays === 1) return 'Yesterday';
   if (diffDays < 7) return `${diffDays} days ago`;
   if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-  if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+  if (diffDays < 365) return `${Math.floor(diffDays / 365)} months ago`;
   return `${Math.floor(diffDays / 365)} years ago`;
 }
