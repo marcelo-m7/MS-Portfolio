@@ -7,6 +7,7 @@ import { useProfile } from '@/hooks/usePortfolioData';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useTranslations } from '@/hooks/useTranslations';
+import MobileNavLink from './MobileNavLink'; // <-- New Import
 
 const MotionLink = motion(Link);
 
@@ -200,17 +201,12 @@ export default function Navbar() {
             >
               {navLinks.map((link, index) => (
                 <motion.div key={link.href} variants={mobileLinkVariants}>
-                  <Link
+                  <MobileNavLink
                     to={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block w-full rounded-xl px-4 py-3 text-lg font-medium transition-colors ${
-                      isActive(link.href)
-                        ? 'bg-primary text-primary-foreground shadow-md'
-                        : 'text-foreground hover:bg-muted/50'
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
+                    label={link.label}
+                    isActive={isActive(link.href)}
+                    onClose={() => setIsMobileMenuOpen(false)}
+                  />
                 </motion.div>
               ))}
             </motion.nav>
