@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  base: './', // Set base path to relative for static server compatibility
   plugins: [
     react(),
     // mode === "development" && componentTagger() // Comment this line out
