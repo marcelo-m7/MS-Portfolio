@@ -11,34 +11,34 @@ const Galaxy = lazy(() => import('./Galaxy'));
 
 export default function Layout() {
   useScrollToTop();
-  const { canHandle3D } = useDeviceCapabilities();
+  // NOTE: We call the hook but ignore the result to force the background to render
+  // on all devices, overriding the performance optimization for low-end hardware.
+  useDeviceCapabilities(); 
 
   return (
     <div className="relative flex flex-col min-h-[100dvh]">
       <LanguageMetadata />
-      {/* Galaxy Background - Optimized for performance */}
-      {canHandle3D && (
-        <div className="hidden md:block">
-          <div className="fixed inset-0 w-full h-full -z-20">
-            <Suspense fallback={null}>
-              <Galaxy
-                mouseInteraction={true}
-                mouseRepulsion={true}
-                density={2.1}
-                glowIntensity={0.6}
-                saturation={1}
-                hueShift={200}
-                twinkleIntensity={0.8}
-                rotationSpeed={0}
-                repulsionStrength={4.5}
-                autoCenterRepulsion={0}
-                starSpeed={0.3}
-                speed={1}
-              />
-            </Suspense>
-          </div>
+      {/* Galaxy Background - Forced visibility on all devices */}
+      <div className="block"> {/* Removed hidden md:block */}
+        <div className="fixed inset-0 w-full h-full -z-20">
+          <Suspense fallback={null}>
+            <Galaxy
+              mouseInteraction={true}
+              mouseRepulsion={true}
+              density={2.1}
+              glowIntensity={0.6}
+              saturation={1}
+              hueShift={200}
+              twinkleIntensity={0.8}
+              rotationSpeed={0}
+              repulsionStrength={4.5}
+              autoCenterRepulsion={0}
+              starSpeed={0.3}
+              speed={1}
+            />
+          </Suspense>
         </div>
-      )}
+      </div>
       
       <Navbar />
       <main className="flex-grow pt-24 pb-16 relative z-0">
