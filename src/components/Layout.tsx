@@ -25,13 +25,13 @@ export default function Layout() {
             <Galaxy
               mouseInteraction={true}
               mouseRepulsion={true}
-              density={2.1}
-              glowIntensity={0.6}
-              saturation={1}
+              density={1}
+              glowIntensity={0.3}
+              saturation={0.5}
               hueShift={200}
               twinkleIntensity={0.8}
-              rotationSpeed={0}
-              repulsionStrength={4.5}
+              rotationSpeed={0.01}
+              repulsionStrength={2}
               autoCenterRepulsion={0}
               starSpeed={0.3}
               speed={1}
