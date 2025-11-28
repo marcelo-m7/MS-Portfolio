@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { GooeyNav } from 'react-bits'; // Changed to named import
+import * as ReactBits from 'react-bits'; // Changed to namespace import
 import { useLocation } from 'react-router-dom';
 import { Home, FolderKanban, User, BookText, Mail } from 'lucide-react';
 
@@ -33,7 +33,7 @@ export default function GooeyMobileNav({ navLinks }: GooeyMobileNavProps) {
 
   return (
     <div className="relative h-[80px] w-full flex items-center justify-center">
-      <GooeyNav
+      <ReactBits.GooeyNav
         items={items}
         particleCount={15}
         particleDistances={[90, 10]}
