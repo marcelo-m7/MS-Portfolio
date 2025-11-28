@@ -170,11 +170,11 @@ export default function Navbar() {
                   }`}
                   {...(!shouldReduceMotion
                     ? {
-                        whileHover: {
-                          y: -2,
-                        },
-                      }
-                    : {})}
+                          whileHover: {
+                            y: -2,
+                          },
+                        }
+                      : {})}
                 >
                   {active && (
                     <motion.span
@@ -196,8 +196,6 @@ export default function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <div className="flex items-center gap-2 md:hidden">
-          <LanguageToggle />
-          <ThemeToggle className="hidden sm:block" /> {/* Keep theme toggle visible on small screens */}
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -241,7 +239,10 @@ export default function Navbar() {
               ))}
             </motion.nav>
             <div className="mt-4 pt-4 border-t border-border/60 flex justify-between items-center">
-              <ThemeToggle />
+              <div className="flex items-center gap-2"> {/* Grouping toggles */}
+                <LanguageToggle />
+                <ThemeToggle />
+              </div>
               <span className="text-sm text-muted-foreground">
                 {t.nav.menu}
               </span>
