@@ -72,15 +72,23 @@ vi.mock('@/components/MobileNavLink', () => ({
   ),
 }));
 
-vi.mock('@/components/ThemeToggle', () => ({
-  ThemeToggle: (props: { className?: string }) => (
+vi.mock('@/components/ThemeToggle', () => {
+  const ThemeToggle = (props: { className?: string }) => (
     <button type="button" data-testid="theme-toggle" {...props} />
-  ),
-}));
+  );
+  return {
+    __esModule: true,
+    ThemeToggle,
+  };
+});
 
-vi.mock('@/components/LanguageToggle', () => ({
-  LanguageToggle: () => <button type="button" data-testid="language-toggle" />,
-}));
+vi.mock('@/components/LanguageToggle', () => {
+  const LanguageToggle = () => <button type="button" data-testid="language-toggle" />;
+  return {
+    __esModule: true,
+    LanguageToggle,
+  };
+});
 
 vi.mock('@/components/MonynhaLogo', () => ({
   __esModule: true,
