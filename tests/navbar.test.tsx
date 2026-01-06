@@ -4,6 +4,12 @@ import { MemoryRouter, useNavigate } from 'react-router-dom';
 import React from 'react';
 import Navbar from '@/components/Navbar';
 
+// Mock icon components to avoid undefined React elements
+vi.mock('lucide-react', () => ({
+  Menu: (props: Record<string, unknown>) => <svg data-testid="icon-menu" {...props} />,
+  X: (props: Record<string, unknown>) => <svg data-testid="icon-x" {...props} />,
+}));
+
 vi.mock('framer-motion', () => {
   const createMotionComponent = (element: React.ElementType) =>
     React.forwardRef<HTMLElement, Record<string, unknown>>((props, ref) =>
