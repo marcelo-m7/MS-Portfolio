@@ -6,64 +6,66 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7.1-purple)](https://vitejs.dev/)
 
-Portfolio pessoal e site profissional de [@marcelo-m7](https://github.com/marcelo-m7), fundador da Monynha Softwares. Este repositório é um laboratório vivo para interações modernas, acessibilidade, 3D e boas práticas de front-end.
+Este é o meu portfólio pessoal e site profissional. Aqui eu apresento minha trajetória, projetos e experimentos como desenvolvedor e fundador da **Monynha Softwares**. Este repositório também funciona como um laboratório vivo onde exploro interações modernas, acessibilidade, experiências 3D e boas práticas de front‑end.
 
 ![Portfolio Preview - 3D Fluid Background](./public/preview.svg)
 
-> Experiência imersiva com animações 3D em WebGL, design responsivo e suporte multilíngue (PT, EN, ES, FR)
+> Uma experiência imersiva com animações 3D em WebGL, design responsivo e suporte multilíngue (PT, EN, ES, FR).
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Setup](#setup)
-- [Development](#development)
-- [Testing](#testing)
-- [Build](#build)
-- [Deployment](#deployment)
-- [Language handling](#language-handling)
-- [Contributing](#contributing)
-- [License / Contact](#license--contact)
+* [Overview](#overview)
+* [Setup](#setup)
+* [Development](#development)
+* [Testing](#testing)
+* [Build](#build)
+* [Deployment](#deployment)
+* [Language handling](#language-handling)
+* [Contributing](#contributing)
+* [License / Contact](#license--contact)
 
 ## Overview
 
-SPA built with Vite + React + TypeScript, styled with Tailwind and shadcn/ui, data-driven via a `cv.json` source with optional Supabase backend. CI runs lint, tests, and build on every push/PR.
+Este projeto é uma SPA construída com **Vite + React + TypeScript**, estilizada com **Tailwind** e **shadcn/ui**. O conteúdo é orientado por dados a partir de um arquivo `cv.json`, com backend opcional em **Supabase**. O pipeline de CI executa lint, testes e build a cada push ou pull request.
 
-Quick docs: browse the full docs index at [docs/README.md](./docs/README.md).
+A documentação detalhada está disponível em [docs/README.md](./docs/README.md).
 
 ## Setup
 
-Prerequisites:
+### Pré‑requisitos
 
-- Node.js >= 20.19
-- npm >= 9
+* Node.js >= 20.19
+* npm >= 9
 
-Instale dependências:
+### Instalação
 
 ```powershell
 npm install
 ```
 
-Ambiente (opcional, Supabase): crie `.env` (veja "Banco de dados")
+### Ambiente (opcional — Supabase)
 
-Dev server (porta 8080):
+Crie um arquivo `.env` conforme descrito na seção de banco de dados.
+
+### Servidor de desenvolvimento (porta 8080)
 
 ```powershell
 npm run dev
 ```
 
-Build de produção:
+### Build de produção
 
 ```powershell
 npm run build
 ```
 
-Preview do build:
+### Preview do build
 
 ```powershell
 npm run preview
 ```
 
-Testes e lint:
+### Testes e lint
 
 ```powershell
 npm run test
@@ -74,154 +76,142 @@ npm run lint
 
 ## 🧰 Scripts úteis
 
-- `npm run dev` — servidor de desenvolvimento
-- `npm run build` — build de produção
-- `npm run preview` — serve o build localmente
-- `npm run test` — Vitest (use `--coverage` para cobertura)
-- `npm run lint` — ESLint + typecheck
+* `npm run dev` — servidor de desenvolvimento
+* `npm run build` — build de produção
+* `npm run preview` — serve o build localmente
+* `npm run test` — testes com Vitest (use `--coverage` para cobertura)
+* `npm run lint` — ESLint + verificação de tipos
 
 ---
 
 ## Testing
 
-This project uses Vitest for unit tests and also includes a few manual helper scripts.
+Utilizo **Vitest** para testes unitários, além de alguns scripts auxiliares para validações manuais.
 
-### Unit tests
+### Testes unitários
 
-- Run all tests:
+* Executar todos os testes:
 
 ```powershell
 npm run test
 ```
 
-- With coverage (used in CI):
+* Com cobertura (usado no CI):
 
 ```powershell
 npm run test:coverage
 ```
 
-### Manual test scripts
+### Scripts de teste manual
 
-These scripts live under `tests/` to keep the repo root clean.
+Os scripts ficam na pasta `tests/` para manter o repositório organizado.
 
-- Connectivity and Supabase sanity checks:
-  - Script: `tests/test-connectivity.js`
-  - What it does: verifies Supabase connection, reads basic data from the `portfolio` schema, attempts a test insert into `public.leads` (RLS-aware), and runs a JOIN sample.
-  - Run (PowerShell):
+* **Testes de conectividade e Supabase**
+
+  * Script: `tests/test-connectivity.js`
+  * O que faz: valida a conexão com o Supabase, lê dados básicos do schema `portfolio`, executa um insert de teste em `public.leads` (respeitando RLS) e roda um exemplo de JOIN.
+  * Execução:
 
 ```powershell
 node .\tests\test-connectivity.js
 ```
 
-Tip: you can override credentials with env vars `VITE_SUPABASE_URL` and `VITE_SUPABASE_KEY`.
+Variáveis `VITE_SUPABASE_URL` e `VITE_SUPABASE_KEY` podem ser sobrescritas via ambiente.
 
-- Free Google Translate endpoint demo:
-  - Script: `tests/test-free-translation.js`
-  - What it does: makes a few translation requests to the free web endpoint and prints results.
-  - Run (PowerShell, Node 20+):
+* **Demo de tradução via endpoint público do Google Translate**
+
+  * Script: `tests/test-free-translation.js`
+  * Execução:
 
 ```powershell
 node .\tests\test-free-translation.js
 ```
 
-Or paste into your browser DevTools console to run in-page.
+Também pode ser executado diretamente no console do navegador.
 
-- Supabase Edge Function email test:
-  - Script: `tests/test-edge-function.sh`
-  - What it does: posts a payload to the `send-contact-email` Edge Function.
-  - Run (bash):
+* **Teste de Edge Function de e‑mail (Supabase)**
+
+  * Script: `tests/test-edge-function.sh`
+  * Execução:
 
 ```bash
 chmod +x tests/test-edge-function.sh
 ./tests/test-edge-function.sh
 ```
 
-Windows: run via WSL or Git Bash. Update the URL/key inside the script as needed.
+No Windows, utilize WSL ou Git Bash.
 
 ---
 
 ## 🏗️ Arquitetura em 1 minuto
 
-- Frontend: React 18 + TypeScript + Vite 7
-- Estilos: Tailwind + shadcn/ui
-- Estado/Async: TanStack Query
-- 3D: Three.js / React Three Fiber
-- Animações: Framer Motion
-- Router: React Router v6
-- Testes: Vitest (+ happy-dom)
-- CI/CD: GitHub Actions
+* Frontend: React 18 + TypeScript + Vite 7
+* Estilos: Tailwind + shadcn/ui
+* Estado e async: TanStack Query
+* 3D: Three.js / React Three Fiber
+* Animações: Framer Motion
+* Roteamento: React Router v6
+* Testes: Vitest (+ happy-dom)
+* CI/CD: GitHub Actions
 
-Estrutura:
+### Estrutura do projeto
 
 ```text
 MS-Portfolio/
 ├── src/
 │   ├── components/     # UI (shadcn + custom)
 │   ├── pages/          # Rotas (lazy-loaded)
-│   ├── lib/            # Utils, client Supabase, traduções
+│   ├── lib/            # Utilitários, cliente Supabase, idiomas
 │   ├── hooks/          # Hooks React
-│   └── types/          # Tipos TS
+│   └── types/          # Tipos TypeScript
 ├── public/
 │   ├── data/           # cv.json (fonte de conteúdo)
 │   └── images/         # SVGs acessíveis (com <title>)
 └── supabase/
-    └── migrations/     # Schema & seeds
+    └── migrations/     # Schema e seeds
 ```
 
 ---
 
 ## 🌍 Conteúdo & Idiomas
 
-- **Projetos, séries, artes**: `public/data/cv.json`
-- **Blog posts (Pensamentos)**: Markdown files in `public/content/blog/` (see [Adding Blog Posts](#-adding-blog-posts) below)
-- Idiomas e eventos: `src/lib/language.ts` (evento `monynha:languagechange`)
-- Traduções dinâmicas: `src/lib/translateService.ts` (endpoint web do Google Translate com cache em `localStorage`)
+* **Projetos, séries e artes**: `public/data/cv.json`
+* **Posts (Pensamentos)**: arquivos Markdown em `public/content/blog/`
+* Controle de idioma: `src/lib/language.ts`
+* Traduções dinâmicas: `src/lib/translateService.ts` (com cache em `localStorage`)
 
-### Adding Content (Projects, Art, Series)
+### Adicionando conteúdo (projetos, artes, séries)
 
-1. Edite `public/data/cv.json`  
-1. Adicione uma miniatura SVG em `public/images/` com `<title>`  
-1. Referencie no JSON (ex.: `"thumbnail": "/images/meu-projeto.svg"`)  
-1. Rode `npm run build` para verificar orçamento de bundle
+1. Edite `public/data/cv.json`
+2. Adicione uma miniatura SVG em `public/images/` (com `<title>`)
+3. Referencie no JSON (`"thumbnail": "/images/meu-projeto.svg"`)
+4. Execute `npm run build` para validar o bundle
 
-### 📝 Adding Blog Posts
+### 📝 Blog posts
 
-Blog posts are written in Markdown with YAML frontmatter. To add a new post:
-
-1. Create a new `.md` file in `public/content/blog/`:
+Os posts são escritos em Markdown com frontmatter YAML:
 
 ```markdown
 ---
-title: "Your Post Title"
+title: "Título do Post"
 date: "2025-11-02"
 author: "Marcelo Santos"
-tags: ["tag1", "tag2", "tag3"]
-excerpt: "A short summary of your post (1-2 sentences)."
+tags: ["tag1", "tag2"]
+excerpt: "Resumo curto do post."
 ---
 
-Your markdown content goes here...
+Conteúdo em Markdown...
 ```
 
-1. Add the slug (filename without `.md`) to the `BLOG_POSTS` array in `src/lib/markdownLoader.ts`:
-
-```typescript
-const BLOG_POSTS = [
-  'design-tecnologia-inclusiva',
-  'your-new-post-slug',  // Add here
-];
-```
-
-1. Build and verify: `npm run build`
-
-**Note**: Blog posts support full Markdown syntax including code blocks, lists, links, and emphasis.
+Depois, adicione o slug ao array `BLOG_POSTS` em `src/lib/markdownLoader.ts` e gere o build.
 
 ---
 
 ## 🗄️ Banco de dados (opcional)
 
-Integra com **Supabase** e faz graceful fallback para `cv.json` quando indisponível.
+O projeto integra com **Supabase**, com fallback automático para `cv.json` caso o backend não esteja disponível.
 
-1. Crie `.env` com:
+Crie o arquivo `.env`:
 
 ```bash
 VITE_SUPABASE_URL=https://seu-projeto.supabase.co
@@ -229,69 +219,28 @@ VITE_SUPABASE_KEY=sua-anon-key
 VITE_SUPABASE_SCHEMA=portfolio
 ```
 
-1. (Optional) Configure email fallback for contact form:
-   - Deploy the `send-contact-email` Edge Function (see `EDGE_FUNCTION_SETUP.md`)
-   - Add `RESEND_API_KEY` secret in Supabase Dashboard
-1. Restart the dev server
+A configuração completa de schema e migrações está documentada em [`docs/SUPABASE.md`](./docs/SUPABASE.md).
 
-**📖 For complete database setup, schema details, and migration guide, see [SUPABASE.md](./docs/SUPABASE.md)**  
-**📧 For Edge Function deployment and email configuration, see [EDGE_FUNCTION_SETUP.md](./docs/EDGE_FUNCTION_SETUP.md)**
+### Schema
 
-### Database Schema (15 Tables)
+O banco possui tabelas para perfil, projetos, artes, séries, experiências profissionais, habilidades e contatos. O formulário de contato sempre registra `project_source='portfolio'` para rastreabilidade.
 
-- `profile` - Portfolio owner profile (singleton)
-- `contact` - Contact form configuration (singleton)
-- `projects` + `project_stack` + `technologies` - Project portfolio with tech stack
-- `artworks` + `artwork_media` + `artwork_materials` - Art portfolio with media files
-- `series` + `series_works` - Collections of related projects/artworks
-- `thoughts` + `thought_tags` - Blog posts/articles with tags *(legacy: now using Markdown files)*
-- `experience` + `experience_highlights` - Work history with achievements
-- `skills` - Technical skills with proficiency levels
-
-All contact form submissions automatically include `project_source='portfolio'` to identify their origin.
-
-**Note**: The blog (Thoughts) now sources content from Markdown files in `public/content/blog/` instead of the database. The database tables are maintained for backwards compatibility but are not actively used for new blog posts.
+---
 
 ## Language handling
 
-The portfolio content is authored in Portuguese. The helper located at `src/lib/language.ts` keeps the `<html lang>` attribute in sync with the visitor preference stored in `localStorage` (`monynha-lang`) and broadcasts updates through the `monynha:languagechange` custom event. The `useCurrentLanguage` hook consumes that event so pages can reactively adjust locale-sensitive elements such as date formatting.
+O conteúdo é originalmente escrito em português. O helper em `src/lib/language.ts` mantém o atributo `<html lang>` sincronizado com a preferência do visitante armazenada em `localStorage` (`monynha-lang`) e dispara um evento customizado para atualização reativa da interface.
 
-When introducing new locales, extend the `SUPPORTED_LANGUAGES` tuple inside `src/lib/language.ts` and provide translated copy for the pages and JSON datasets under `public/data/`.
+Para adicionar novos idiomas, basta estender a lista de idiomas suportados e fornecer os textos traduzidos.
 
-To change the language programmatically you can call:
-
-```ts
-import { setLanguage } from '@/lib/language';
-
-setLanguage('pt');
-```
-
-## Adding new projects to `cv.json`
-
-Project cards, portfolio thumbnails and extra pages consume the single source of truth located at `public/data/cv.json`.
-
-1. Duplicate an existing entry inside the `projects` array and adjust the fields (`name`, `summary`, `stack`, `url`, `category`, `year`).
-2. Create a **vector** thumbnail (SVG only) under `public/images/`. Make sure to include a descriptive `<title>` element for accessibility and keep the canvas 16:9 (640x360 works well).
-3. Reference the SVG through the `thumbnail` property (e.g. `"thumbnail": "/images/novo-projeto.svg"`).
-4. Run `npm run build` to ensure the bundle stays under budget.
-
-**Artworks and series** follow the same approach: update the JSON and link SVG assets—no raster formats should be added to the repository.
-
-**Blog posts** are now managed via Markdown files (see [Adding Blog Posts](#-adding-blog-posts) section above).
-
-## 📚 Documentation
-
-- Full project documentation lives in [`./docs/`](./docs/)
-- AI agent quickstart: [`AGENTS.md`](./AGENTS.md)
-- Detailed rules for AI agents: [`AI_RULES.md`](./AI_RULES.md)
+---
 
 ## Contributing
 
-Issues and PRs are welcome. Please see [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for guidelines, commit conventions, and local setup.
+Issues e pull requests são bem‑vindos. Consulte [`CONTRIBUTING.md`](./docs/CONTRIBUTING.md) para convenções de commit e instruções de setup local.
 
 ## License / Contact
 
-MIT. © Marcelo Santos — [marcelo.monynha.com](https://marcelo.monynha.com)
+MIT. © Marcelo Santos — [https://marcelo.monynha.com](https://marcelo.monynha.com)
 
-For opportunities or questions, reach me at: <mailto:marcelo@monynha.com>
-
+Para oportunidades ou dúvidas, entre em contato: [mailto:marcelo@monynha.com](mailto:marcelo@monynha.com)
