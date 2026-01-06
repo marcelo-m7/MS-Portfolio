@@ -1,12 +1,13 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Code2, Sparkles, PenSquare, Layers, Palette } from 'lucide-react';
+import { ArrowRight, Code2, Sparkles, Globe, Layers, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useMemo, memo } from 'react';
 import { Button } from '@/components/ui/button';
-import { useProfile, useProjects, useThoughts } from '@/hooks/usePortfolioData';
+import { useProfile, useProjects } from '@/hooks/usePortfolioData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+import { LINKS } from '@/lib/siteLinks'; // Import LINKS
 
 // Memoized project card component to prevent re-renders
 const FeaturedProjectCard = memo(({ 
@@ -15,17 +16,18 @@ const FeaturedProjectCard = memo(({
   prefersReducedMotion 
 }: { 
   project: {
+    slug: string; // Added slug to project type
     name: string;
     summary: string;
     category: string;
     url?: string | null;
     repo_url?: string | null;
     technologies?: Array<{ name: string }>;
+    year: number; // Ensure year is part of the project type
   };
   index: number;
   prefersReducedMotion: boolean | null;
 }) => {
-  const linkTarget = project.url ?? project.repo_url;
   const techStack = useMemo(() => {
     return (
       ((project.technologies as Array<{ name: string }> | undefined)?.map((t) => t.name) ??
@@ -45,11 +47,7 @@ const FeaturedProjectCard = memo(({
       transition={{ delay: index * 0.1, duration: 0.5 }}
       className="group"
     >
-      <motion.a
-        href={linkTarget}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Abrir ${project.name} em nova aba`}
+      <motion.div // Changed from <a> to <div> to wrap the Link
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         style={{ transformStyle: 'preserve-3d' }}
         whileHover={
@@ -60,33 +58,40 @@ const FeaturedProjectCard = memo(({
         whileTap={prefersReducedMotion ? undefined : { scale: 0.99 }}
         transition={{ type: 'spring', stiffness: 200, damping: 22 }}
       >
-        <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
-              <Code2 className="text-white" size={24} aria-hidden />
+        <Link to={`/portfolio/${project.slug}`} className="block"> {/* Link to project detail page */}
+          <div className="rounded-2xl border border-border/70 bg-card/70 p-6 shadow-md transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-lg">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/80 via-secondary/70 to-accent/70 text-white shadow-md">
+                <Code2 className="text-white" size={24} aria-hidden />
+              </div>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
+                  {project.category}
+                </span>
+                <span className="text-xs font-medium px-3 py-1 rounded-full border border-border/60 bg-background/70 text-muted-foreground">
+                  {project.year}
+                </span>
+              </div>
             </div>
-            <span className="text-xs font-medium px-3 py-1 rounded-full bg-muted text-muted-foreground">
-              {project.category}
-            </span>
+            <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
+              {project.name}
+            </h3>
+            <p className="text-muted-foreground mb-4 text-sm">
+              {project.summary}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
-          <h3 className="text-xl font-display font-bold mb-2 group-hover:text-primary transition-colors">
-            {project.name}
-          </h3>
-          <p className="text-muted-foreground mb-4 text-sm">
-            {project.summary}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {techStack.map((tech) => (
-              <span
-                key={tech}
-                className="text-xs px-3 py-1 rounded-xl bg-muted/60 text-foreground/80"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </motion.a>
+        </Link>
+      </motion.div>
     </motion.div>
   );
 });
@@ -97,7 +102,6 @@ export default function Home() {
   const prefersReducedMotion = useReducedMotion();
   const { data: profile, isLoading: loadingProfile } = useProfile();
   const { data: projects, isLoading: loadingProjects } = useProjects();
-  const { data: thoughts, isLoading: loadingThoughts } = useThoughts();
   const t = useTranslations();
   
   // Translate dynamic content from cv.json
@@ -189,12 +193,12 @@ export default function Home() {
 
             <motion.div
               variants={itemVariants}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-8 justify-center items-center"
             >
               <Button
                 asChild
                 size="lg"
-                className="px-10 shadow-lg shadow-secondary/30"
+                className="px-10 shadow-lg shadow-secondary/30 w-full sm:w-auto"
               >
                 <Link to="/portfolio">
                   <Code2 className="mr-2" />
@@ -207,30 +211,25 @@ export default function Home() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-2 border-border/70 bg-card/60 px-10 hover:border-primary/70 hover:text-primary"
+                className="border-2 border-border/70 bg-card/60 px-10 hover:border-primary/70 hover:text-primary w-full sm:w-auto"
               >
                 <Link to="/contact">
                   {t.home.getInTouch}
                 </Link>
               </Button>
-            </motion.div>
 
-            <motion.div
-              variants={itemVariants}
-              className="mt-10 flex flex-col items-center gap-3 text-sm text-muted-foreground/80"
-            >
-              <motion.div
-                variants={itemVariants}
-                className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2"
+              {/* New button for Monynha.com */}
+              <Button
+                asChild
+                variant="secondary"
+                size="lg"
+                className="px-10 shadow-lg shadow-accent/30 w-full sm:w-auto"
               >
-                <PenSquare className="h-4 w-4 text-secondary" aria-hidden />
-                <span>Nova rota: reflexões em tecnologia e arte</span>
-              </motion.div>
-              <Button asChild className="bg-gradient-to-r from-secondary/80 to-primary/80 px-5 text-sm font-semibold text-white shadow-md hover:brightness-105">
-                <Link to="/thoughts">
-                  Ler os pensamentos recentes
-                  <ArrowRight className="h-4 w-4" aria-hidden />
-                </Link>
+                <a href={LINKS.monynhaSite} target="_blank" rel="noopener noreferrer">
+                  <Globe className="mr-2" />
+                  Monynha Softwares
+                  <ArrowRight className="ml-2" />
+                </a>
               </Button>
             </motion.div>
           </motion.div>
@@ -241,7 +240,7 @@ export default function Home() {
           initial={prefersReducedMotion ? undefined : { opacity: 0 }}
           animate={prefersReducedMotion ? undefined : { opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30"
         >
           <div className="w-6 h-10 border-2 border-muted-foreground/30 rounded-full flex items-start justify-center p-2">
             <motion.div

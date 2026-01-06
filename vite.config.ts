@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  base: './', // Set base path to relative for static server compatibility
   plugins: [
     react(),
     // mode === "development" && componentTagger() // Comment this line out
@@ -17,6 +18,8 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       buffer: 'buffer',
+      // Alias the problematic internal path to a publicly exposed StyleSheet export
+      'react-native-web/dist/apis/StyleSheet/registry': 'react-native-web/dist/exports/StyleSheet',
     },
   },
   define: {
@@ -28,6 +31,8 @@ export default defineConfig(({ mode }) => ({
         global: 'globalThis',
       },
     },
+    // Explicitly include react-native-web to ensure proper pre-bundling
+    include: ['react-native-web'],
   },
   build: {
     rollupOptions: {

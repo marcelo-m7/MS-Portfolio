@@ -17,6 +17,7 @@ export interface Translations {
     menu: string;
     closeMenu: string;
     openMenu: string;
+    repositories: string; // Added repositories
   };
   common: {
     loading: string;
@@ -116,6 +117,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
       menu: 'Menu',
       closeMenu: 'Fechar menu',
       openMenu: 'Abrir menu',
+      repositories: 'Repositórios', // Added
     },
     common: {
       loading: 'Carregando…',
@@ -213,6 +215,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
       menu: 'Menu',
       closeMenu: 'Close menu',
       openMenu: 'Open menu',
+      repositories: 'Repositories', // Added
     },
     common: {
       loading: 'Loading…',
@@ -310,6 +313,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
       menu: 'Menú',
       closeMenu: 'Cerrar menú',
       openMenu: 'Abrir menú',
+      repositories: 'Repositorios', // Added
     },
     common: {
       loading: 'Cargando…',
@@ -407,6 +411,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
       menu: 'Menu',
       closeMenu: 'Fermer le menu',
       openMenu: 'Ouvrir le menu',
+      repositories: 'Référentiels', // Added
     },
     common: {
       loading: 'Chargement…',

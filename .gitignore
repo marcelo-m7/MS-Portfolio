@@ -26,9 +26,9 @@ coverage
 *.sw?
 
 # Lock files (keep only npm)
-pnpm-lock.yaml
+!pnpm-lock.yaml
 yarn.lock
 bun.lockb
 
 # Keep package-lock.json (npm)
-!package-lock.json
+# !package-lock.json
