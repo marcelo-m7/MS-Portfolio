@@ -46,8 +46,24 @@ vi.mock('@/hooks/useTranslations', () => ({
       menu: 'Menu',
       closeMenu: 'Close menu',
       openMenu: 'Open menu',
+      repositories: 'Repositories',
     },
   }),
+}));
+
+vi.mock('@/lib/siteLinks', () => ({
+  LINKS: {
+    repositories: 'https://github.com/test',
+  },
+}));
+
+vi.mock('@/components/MobileNavLink', () => ({
+  __esModule: true,
+  default: ({ to, label, isActive, onClose }: { to: string; label: string; isActive: boolean; onClose: () => void }) => (
+    <a href={to} onClick={onClose} className={isActive ? 'active' : ''}>
+      {label}
+    </a>
+  ),
 }));
 
 vi.mock('@/components/ThemeToggle', () => ({
