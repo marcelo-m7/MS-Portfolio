@@ -26,6 +26,7 @@ vi.mock('framer-motion', () => {
       button: createMotionComponent('button'),
       nav: createMotionComponent('nav'),
       span: createMotionComponent('span'),
+      a: createMotionComponent('a'),
     },
   );
 
@@ -124,7 +125,7 @@ describe('Navbar mobile menu', () => {
 
     expect(toggleButton.getAttribute('aria-expanded')).toBe('true');
 
-    fireEvent.pointerDown(document.body);
+    fireEvent.mouseDown(document.body);
 
     expect(toggleButton.getAttribute('aria-expanded')).toBe('false');
   });
