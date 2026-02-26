@@ -40,8 +40,16 @@ jobs:
         id: pnpm-cache-key
         run: echo "key=pnpm-modules-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}" >> $GITHUB_OUTPUT
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies with retry
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 30
+          command: pnpm install --frozen-lockfile
+        env:
+          # Increase network timeout for binary downloads
+          PNPM_FETCH_TIMEOUT: 300000
 
       - name: Record pnpm and node versions
         run: |
@@ -75,8 +83,15 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies with retry
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 30
+          command: pnpm install --frozen-lockfile
+        env:
+          PNPM_FETCH_TIMEOUT: 300000
 
       - name: Run ESLint
         env:
@@ -100,8 +115,15 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies with retry
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 30
+          command: pnpm install --frozen-lockfile
+        env:
+          PNPM_FETCH_TIMEOUT: 300000
 
       - name: Run tests with coverage
         env:
@@ -135,8 +157,15 @@ jobs:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+      - name: Install dependencies with retry
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_wait_seconds: 30
+          command: pnpm install --frozen-lockfile
+        env:
+          PNPM_FETCH_TIMEOUT: 300000
 
       - name: Build project
         env:
