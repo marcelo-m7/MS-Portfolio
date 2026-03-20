@@ -5,43 +5,41 @@ import Footer from './Footer';
 import { LanguageMetadata } from './LanguageMetadata';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
 import { useDeviceCapabilities } from '@/hooks/useDeviceCapabilities';
+import { StaticBackdrop } from '@/components/background/StaticBackdrop';
 
-// Lazy load Galaxy background for better performance
 const Galaxy = lazy(() => import('./Galaxy'));
 
 export default function Layout() {
   useScrollToTop();
-  // NOTE: We call the hook but ignore the result to force the background to render
-  // on all devices, overriding the performance optimization for low-end hardware.
-  useDeviceCapabilities(); 
+  const capabilities = useDeviceCapabilities();
 
   return (
-    <div className="relative flex flex-col min-h-[100dvh]">
+    <div className="relative flex min-h-[100dvh] flex-col">
       <LanguageMetadata />
-      {/* Galaxy Background - Forced visibility on all devices */}
-      <div className="block"> {/* Removed hidden md:block */}
-        <div className="fixed inset-0 w-full h-full -z-20"> {/* Changed z-index from z-10 back to -z-20 */}
-          <Suspense fallback={null}>
+      <div className="fixed inset-0 -z-20 h-full w-full">
+        {capabilities.shouldUseStaticExperience ? (
+          <StaticBackdrop />
+        ) : (
+          <Suspense fallback={<StaticBackdrop />}>
             <Galaxy
-              mouseInteraction={true}
-              mouseRepulsion={true}
-              density={1}
-              glowIntensity={0.3}
-              saturation={0.5}
+              mouseInteraction={!capabilities.prefersReducedMotion}
+              mouseRepulsion={!capabilities.prefersReducedMotion}
+              density={capabilities.hasDiscreteGPU ? 1 : 0.72}
+              glowIntensity={capabilities.hasDiscreteGPU ? 0.28 : 0.18}
+              saturation={0.45}
               hueShift={200}
-              twinkleIntensity={0.8}
-              rotationSpeed={0.01}
-              repulsionStrength={2}
+              twinkleIntensity={capabilities.hasDiscreteGPU ? 0.55 : 0.32}
+              rotationSpeed={capabilities.hasDiscreteGPU ? 0.01 : 0.004}
+              repulsionStrength={capabilities.hasDiscreteGPU ? 1.6 : 1}
               autoCenterRepulsion={0}
-              starSpeed={0.3}
-              speed={1}
+              starSpeed={capabilities.hasDiscreteGPU ? 0.22 : 0.16}
+              speed={capabilities.hasDiscreteGPU ? 0.75 : 0.55}
             />
           </Suspense>
-        </div>
+        )}
       </div>
-      
       <Navbar />
-      <main className="flex-grow pt-24 pb-16 relative z-0">
+      <main className="relative z-0 flex-grow pb-16 pt-24">
         <Outlet />
       </main>
       <Footer />

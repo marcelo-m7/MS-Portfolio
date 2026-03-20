@@ -1,19 +1,18 @@
 /**
- * React Query hooks for GitHub repository statistics
+ * React Query hooks for GitHub repository statistics and highlighted activity.
  */
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchGitHubRepoStats, fetchMultipleRepoStats, type GitHubRepoStats } from '@/lib/githubApi';
+import {
+  fetchGitHubRepoStats,
+  fetchHighlightedRepos,
+  fetchMultipleRepoStats,
+  type GitHubRepoStats,
+} from '@/lib/githubApi';
 
-// Cache GitHub stats for 30 minutes (GitHub API has rate limits)
 const GITHUB_STALE_TIME = 30 * 60 * 1000;
-const GITHUB_CACHE_TIME = 60 * 60 * 1000; // 1 hour
+const GITHUB_CACHE_TIME = 60 * 60 * 1000;
 
-/**
- * Hook to fetch GitHub repository statistics for a single repo
- * @param repoUrl - Full GitHub repository URL
- * @param enabled - Whether to enable the query (default: true)
- */
 export function useGitHubRepoStats(repoUrl: string | null | undefined, enabled = true) {
   return useQuery({
     queryKey: ['github-repo-stats', repoUrl],
@@ -24,15 +23,10 @@ export function useGitHubRepoStats(repoUrl: string | null | undefined, enabled =
     enabled: enabled && !!repoUrl,
     staleTime: GITHUB_STALE_TIME,
     gcTime: GITHUB_CACHE_TIME,
-    retry: 1, // Only retry once for GitHub API
+    retry: 1,
   });
 }
 
-/**
- * Hook to fetch GitHub statistics for multiple repositories
- * @param repoUrls - Array of GitHub repository URLs
- * @param enabled - Whether to enable the query (default: true)
- */
 export function useMultipleGitHubRepoStats(repoUrls: string[], enabled = true) {
   return useQuery({
     queryKey: ['github-multi-stats', repoUrls.sort().join(',')],
@@ -43,3 +37,16 @@ export function useMultipleGitHubRepoStats(repoUrls: string[], enabled = true) {
     retry: 1,
   });
 }
+
+export function useGitHubHighlights(enabled = true) {
+  return useQuery({
+    queryKey: ['github-highlights'],
+    queryFn: fetchHighlightedRepos,
+    enabled,
+    staleTime: GITHUB_STALE_TIME,
+    gcTime: GITHUB_CACHE_TIME,
+    retry: 1,
+  });
+}
+
+export type { GitHubRepoStats };
