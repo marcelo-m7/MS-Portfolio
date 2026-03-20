@@ -23,6 +23,7 @@ import BackButton from '@/components/BackButton';
 import MetadataBadge from '@/components/MetadataBadge';
 import { useImageErrorHandler } from '@/hooks/useImageErrorHandler';
 import DetailPageContainer from '@/components/DetailPageContainer';
+import { useDocumentMetadata } from '@/lib/metadata';
 
 const MotionButton = motion(Button);
 const MotionImg = motion.img;
@@ -54,6 +55,14 @@ export default function ArtDetail() {
   const materials = artwork?.materials?.map(m => m.material) ?? [];
 
   const canRender3DPreview = Boolean(artwork?.url_3d && Art3DPreviewLazy);
+
+  useDocumentMetadata({
+    title: artwork ? `${artwork.title} · Arte digital Monynha` : 'Arte digital · Monynha',
+    description: artwork ? artwork.description ?? 'Detalhe de obra digital do ecossistema Monynha.' : 'Detalhe de obra digital do ecossistema Monynha.',
+    path: artwork ? `/art/${artwork.slug}` : '/portfolio',
+    type: 'article',
+  });
+
 
   const handleOpenMedia = (media: string) => {
     setActiveMedia(media);

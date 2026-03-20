@@ -25,37 +25,7 @@ import {
   fetchTechnologies,
 } from '@/lib/api/queries';
 import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/markdownLoader';
-
-// Shared cvData cache - only load once across all hooks
-let cvDataCache: Record<string, unknown> | null = null;
-let cvDataPromise: Promise<Record<string, unknown>> | null = null;
-
-async function loadCvData(): Promise<Record<string, unknown>> {
-  // Return cached data if available
-  if (cvDataCache) return cvDataCache;
-  
-  // Return existing promise if already loading
-  if (cvDataPromise) return cvDataPromise;
-  
-  // Create new loading promise
-  // Use Vite base URL so the JSON is fetched correctly when the app is served from a subpath
-  const base = import.meta.env.BASE_URL || '/';
-  const cvUrl = base.endsWith('/') ? `${base}data/cv.json` : `${base}/data/cv.json`;
-
-  cvDataPromise = fetch(cvUrl)
-    .then(response => response.json())
-    .then((data: unknown) => {
-      cvDataCache = data as Record<string, unknown>;
-      cvDataPromise = null;
-      return cvDataCache;
-    })
-    .catch(error => {
-      cvDataPromise = null;
-      throw error;
-    });
-  
-  return cvDataPromise;
-}
+import { loadCvData } from '@/services/cvData';
 
 // Stale time: 15 minutes (data is considered fresh for 15 min)
 // Portfolio content changes infrequently, so longer cache improves performance

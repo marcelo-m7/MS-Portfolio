@@ -10,7 +10,6 @@ import {
   Shield,
   GitBranch,
 } from 'lucide-react';
-import { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useProject } from '@/hooks/usePortfolioData';
 import { Button } from '@/components/ui/button';
@@ -33,6 +32,7 @@ import BackButton from '@/components/BackButton';
 import MetadataBadge from '@/components/MetadataBadge';
 import { useImageErrorHandler } from '@/hooks/useImageErrorHandler';
 import { staggerContainerVariants, staggerItemVariants } from '@/lib/animations';
+import { useDocumentMetadata } from '@/lib/metadata';
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -47,40 +47,12 @@ export default function ProjectDetail() {
   const translatedSummary = useTranslatedText(dbProject?.summary ?? '');
   const translatedDescription = useTranslatedText(dbProject?.full_description ?? dbProject?.fullDescription ?? '');
 
-  useEffect(() => {
-    if (typeof document === 'undefined' || !dbProject) return;
-
-    const previousTitle = document.title;
-    document.title = `${dbProject.name} · Portfólio Monynha Softwares`;
-
-    const descriptionSelector = 'meta[name="description"]';
-    const existingMeta = document.querySelector<HTMLMetaElement>(
-      descriptionSelector,
-    );
-    const createdMeta = !existingMeta;
-    const meta =
-      existingMeta ?? document.createElement('meta');
-    const previousDescription = meta.getAttribute('content') ?? '';
-
-    if (!existingMeta) {
-      meta.name = 'description';
-      document.head.appendChild(meta);
-    }
-
-    meta.setAttribute(
-      'content',
-      `${dbProject.name} – ${dbProject.summary}`,
-    );
-
-    return () => {
-      document.title = previousTitle;
-      if (createdMeta && meta.parentNode) {
-        meta.parentNode.removeChild(meta);
-      } else {
-        meta.setAttribute('content', previousDescription);
-      }
-    };
-  }, [dbProject]);
+  useDocumentMetadata({
+    title: dbProject ? `${dbProject.name} · Portfólio Monynha Softwares` : 'Projeto · Portfólio Monynha Softwares',
+    description: dbProject ? `${dbProject.name} – ${dbProject.summary}` : 'Detalhes de projeto do portfólio Monynha.',
+    path: dbProject ? `/portfolio/${dbProject.slug}` : '/portfolio',
+    type: 'article',
+  });
 
   // Loading state
   if (isLoading) {
