@@ -1,5 +1,6 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
 import { useEffect, useRef } from 'react';
+import { debounce } from '@/lib/performanceUtils';
 
 const vertexShader = `
 attribute vec2 uv;
@@ -259,15 +260,17 @@ export default function Galaxy({
       }
     });
 
-    function resize() {
-      const scale = 1;
-      renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
+    const resize = debounce(() => {
+      const width = Math.max(ctn.offsetWidth, 1);
+      const height = Math.max(ctn.offsetHeight, 1);
+      renderer.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      renderer.setSize(width, height);
       program.uniforms.uResolution.value = new Color(
         gl.canvas.width,
         gl.canvas.height,
-        gl.canvas.width / gl.canvas.height
+        gl.canvas.width / Math.max(gl.canvas.height, 1)
       );
-    }
+    }, 120);
     window.addEventListener('resize', resize, false);
     resize();
 
@@ -276,6 +279,9 @@ export default function Galaxy({
 
     function update(t: number) {
       animateId = requestAnimationFrame(update);
+      if (document.hidden) {
+        return;
+      }
       if (!disableAnimation) {
         program.uniforms.uTime.value = t * 0.001;
         program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0;

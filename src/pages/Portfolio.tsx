@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { useEffect, useMemo, useState, useCallback, memo } from 'react';
+import { useMemo, useState, useCallback, memo } from 'react';
 import { useProjects, useArtworks, useSeries } from '@/hooks/usePortfolioData';
 import type { Tables as DBTables } from '@/types/database.types';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import SeriesCard from '@/components/SeriesCard';
 import { LoadingPortfolioGrid } from '@/components/LoadingStates';
 import { useTranslations } from '@/hooks/useTranslations';
 import { useTranslatedText } from '@/hooks/useTranslatedContent';
+import { useDocumentMetadata } from '@/lib/metadata';
 
 // Memoized filter button component to prevent re-renders
 const FilterButton = memo(({ 
@@ -135,39 +136,11 @@ export default function Portfolio() {
     }));
   }, [dbSeries]);
 
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
-    const previousTitle = document.title;
-    document.title = 'Portfólio · Monynha Softwares';
-
-    const descriptionSelector = 'meta[name="description"]';
-    const existingMeta = document.querySelector<HTMLMetaElement>(
-      descriptionSelector,
-    );
-    const createdMeta = !existingMeta;
-    const meta = existingMeta ?? document.createElement('meta');
-    const previousDescription = meta.getAttribute('content') ?? '';
-
-    if (!existingMeta) {
-      meta.name = 'description';
-      document.head.appendChild(meta);
-    }
-
-    meta.setAttribute(
-      'content',
-      'Portfólio oficial da Monynha Softwares com produtos digitais, iniciativas de IA, infraestrutura e experiências criativas.',
-    );
-
-    return () => {
-      document.title = previousTitle;
-      if (createdMeta && meta.parentNode) {
-        meta.parentNode.removeChild(meta);
-      } else {
-        meta.setAttribute('content', previousDescription);
-      }
-    };
-  }, []);
+  useDocumentMetadata({
+    title: 'Portfólio · Marcelo Santos / Monynha Softwares',
+    description: 'Projetos, arte digital e experiências do ecossistema Monynha com dados dinâmicos e fallback local.',
+    path: '/portfolio',
+  });
 
   const categories = useMemo(() => {
     const base = [

@@ -1,47 +1,20 @@
 import { Outlet } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import { LanguageMetadata } from './LanguageMetadata';
 import { useScrollToTop } from '@/hooks/useScrollToTop';
-import { useDeviceCapabilities } from '@/hooks/useDeviceCapabilities';
-
-// Lazy load Galaxy background for better performance
-const Galaxy = lazy(() => import('./Galaxy'));
+import { BackgroundScene } from '@/components/background/BackgroundScene';
 
 export default function Layout() {
   useScrollToTop();
-  // NOTE: We call the hook but ignore the result to force the background to render
-  // on all devices, overriding the performance optimization for low-end hardware.
-  useDeviceCapabilities(); 
 
   return (
-    <div className="relative flex flex-col min-h-[100dvh]">
+    <div className="relative flex min-h-[100dvh] flex-col overflow-hidden">
       <LanguageMetadata />
-      {/* Galaxy Background - Forced visibility on all devices */}
-      <div className="block"> {/* Removed hidden md:block */}
-        <div className="fixed inset-0 w-full h-full -z-20"> {/* Changed z-index from z-10 back to -z-20 */}
-          <Suspense fallback={null}>
-            <Galaxy
-              mouseInteraction={true}
-              mouseRepulsion={true}
-              density={1}
-              glowIntensity={0.3}
-              saturation={0.5}
-              hueShift={200}
-              twinkleIntensity={0.8}
-              rotationSpeed={0.01}
-              repulsionStrength={2}
-              autoCenterRepulsion={0}
-              starSpeed={0.3}
-              speed={1}
-            />
-          </Suspense>
-        </div>
-      </div>
-      
+      <BackgroundScene />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/35 via-background/80 to-background" aria-hidden />
       <Navbar />
-      <main className="flex-grow pt-24 pb-16 relative z-0">
+      <main className="relative z-0 flex-grow pt-24 pb-16">
         <Outlet />
       </main>
       <Footer />
